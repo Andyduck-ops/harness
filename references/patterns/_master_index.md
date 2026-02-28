@@ -34,6 +34,7 @@
 | 3 | [merge-fence-required-checks-lineage](./product-delivery/merge-fence-required-checks-lineage.md) | product-delivery | 0.79 | OPML + HN + OpenAI + GitHub + OpenAPI + Pact + Tokens + Storybook |
 | 3 | [opml-hn-priority-watchlist](./autonomous-ops/opml-hn-priority-watchlist.md) | autonomous-ops | 0.77 | OPML + HN + GitHub Docs |
 | 3 | [proof-bundle-issue-form-gate](./product-delivery/proof-bundle-issue-form-gate.md) | product-delivery | 0.76 | OPML + HN + GitHub Docs + OpenAPI + Pact |
+| 3 | [exploit-explore-evidence-router](./signal-governance/exploit-explore-evidence-router.md) | signal-governance | 0.75 | OPML + HN + OpenAI + GitHub |
 | 3 | [24h-unattended-ai-loop](./autonomous-ops/24h-unattended-ai-loop.md) | autonomous-ops | 0.72 | OpenAI + HN |
 | 3 | [prd-to-issue-execution-loop](./product-delivery/prd-to-issue-execution-loop.md) | product-delivery | 0.70 | Harness + GitHub + HN |
 | 3 | [frontend-system-first](./fullstack-engineering/frontend-system-first.md) | fullstack-engineering | 0.68 | HN blogs + web.dev |
@@ -56,10 +57,11 @@
 | [context-governance/](./context-governance/) | 1 | 上下文预算与压缩交接契约治理 |
 | [state-governance/](./state-governance/) | 1 | 每 agent 状态隔离与回放信封治理 |
 | [comprehension-governance/](./comprehension-governance/) | 1 | 速度超过理解时的预算治理与解释闸门 |
+| [signal-governance/](./signal-governance/) | 1 | 稳定增量与新颖发现并行的证据路由守门 |
 
 ## 统计
 
-- 总计：31 patterns
+- 总计：32 patterns
 - 平均 confidence：0.81
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：16 patterns
+- 待验证（<0.80）：17 patterns

@@ -1,11 +1,12 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T18:43:32Z",
-  "cycle": 15,
+  "updated_at": "2026-02-28T18:49:31Z",
+  "cycle": 16,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
-    "夜间证据巡航（背景异步 + OPML/HN 融合 + 本地落盘）",
+    "稳定信号车道（OPML + HN top + 官方文档）",
+    "新颖信号车道（HN show/new + serendipity）",
     "白天晋级车道（分支保护 + 环境审批）",
     "设计令牌治理（schema + drift lint）",
     "组件验收治理（story + a11y + visual gate）",
@@ -15,27 +16,36 @@
     "需求计划闭环（PRD -> Epic -> Issue）",
     "交付证据闭环（PR -> Pattern + lineage attestation）",
     "工作区可恢复性治理（checkpoint + artifact + reflog）",
-    "上下文预算治理（compaction contract + checkpoint handoff）",
     "状态隔离与回放信封（per-agent state cell + WAL + artifact digest）",
-    "认知债务闸门（comprehension budget + explainability bundle）"
+    "双预算接管治理（compaction + comprehension gate）",
+    "证据路由守门（exploit/explore quota + promotion gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 15,
+    "last_cycle": 16,
     "actions": [
       {
-        "type": "expand",
-        "added": "认知债务闸门（comprehension budget + explainability bundle）",
-        "reason": "HN top 同轮出现 Cognitive Debt、VSDD、747s and coding agents，显示自治系统瓶颈从生成速度转向可理解与可接管"
+        "type": "split",
+        "from": "夜间证据巡航（背景异步 + OPML/HN 融合 + 本地落盘）",
+        "into": [
+          "稳定信号车道（OPML + HN top + 官方文档）",
+          "新颖信号车道（HN show/new + serendipity）"
+        ],
+        "reason": "同一方向同时承担稳定增量与新颖发现，导致调度冲突；拆分后可独立配额并提升可审计性"
       },
       {
-        "type": "split",
-        "from": "PRD -> Epic -> Issue -> PR -> Pattern 执行闭环",
-        "into": [
-          "需求计划闭环（PRD -> Epic -> Issue）",
-          "交付证据闭环（PR -> Pattern + lineage attestation）"
+        "type": "merge",
+        "from": [
+          "上下文预算治理（compaction contract + checkpoint handoff）",
+          "认知债务闸门（comprehension budget + explainability bundle）"
         ],
-        "reason": "计划映射与证据审计属于不同执行面，拆分后可分别定义验收闸门，降低同构失败"
+        "into": "双预算接管治理（compaction + comprehension gate）",
+        "reason": "两条方向都服务于次日接管能力，保留双轨会产生同构闸门与重复清单"
+      },
+      {
+        "type": "expand",
+        "added": "证据路由守门（exploit/explore quota + promotion gate）",
+        "reason": "HN top/show/new 与 OPML 同轮显示双峰信号结构，需要新增路由守门方向避免单车道失真"
       }
     ]
   },
@@ -55,6 +65,6 @@
     "https://storybook.js.org/docs/"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/comprehension-governance/comprehension-budget-gate.md",
-  "last_cycle_commit": "pending-cycle-15"
+  "last_pattern": "references/patterns/signal-governance/exploit-explore-evidence-router.md",
+  "last_cycle_commit": "pending-cycle-16"
 }

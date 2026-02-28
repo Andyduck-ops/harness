@@ -1,3 +1,51 @@
+# Morning Brief（Nightshift Cycle 16）
+
+> 更新时间：2026-02-28 19:00 UTC  
+> 本轮目标：把“信号收集”升级为“可配额、可晋级、可审计”的双车道路由闸门。
+
+## 本轮新增（已落盘）
+
+1. `signal-governance/exploit-explore-evidence-router`
+2. `signal-governance/_index.md`
+3. `_master_index.md`（新增 topic 与 pattern 索引）
+
+## 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `夜间证据巡航（背景异步 + OPML/HN 融合 + 本地落盘）` 为：
+  - `稳定信号车道（OPML + HN top + 官方文档）`
+  - `新颖信号车道（HN show/new + serendipity）`
+  - reason: 原方向在执行中同时承担“稳定增量”和“新颖发现”，容易形成单车道拥塞并降低落盘质量。
+- `merge`：合并方向
+  - from: `上下文预算治理（compaction contract + checkpoint handoff）`
+  - from: `认知债务闸门（comprehension budget + explainability bundle）`
+  - into: `双预算接管治理（compaction + comprehension gate）`
+  - reason: 两者都在约束“次日可接管”，继续分治会产生同构闸门与重复审计字段。
+- `expand`：新增方向 `证据路由守门（exploit/explore quota + promotion gate）`
+  - 触发依据：HN `news/show/newest` 持续并发“高热趋势 + 新颖项目”双信号，单源策略无法兼顾稳定与新发现。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist，active 2026-02-28）。
+- HN `top/show/new`：已采样并用于双车道路由设计。
+- 官方证据链（已补齐）：
+  - OpenAI Background mode（长任务异步执行）
+  - OpenAI Conversation state（状态分层边界）
+  - GitHub protected branches required checks（晋级硬门）
+  - GitHub Actions artifacts（证据包持久化）
+
+## 本轮结论
+
+- 夜间自治不应只做“信息抓取”，而应做“信号分流 + 配额控制 + 晋级守门”。
+- 只有把 explore 发现先进入候选池，才能避免新颖性吞噬稳定产出。
+- 只有把晋级结果落到 required checks + artifacts，次日接管才可追责。
+
+## Cycle 17 预载任务
+
+1. 产出 `signal_router.json` 的 lint 规则（配额透支直接 fail）。
+2. 对齐 `promotion_report` 与 `lineage_manifest` 字段，消除双清单漂移。
+3. 评估 `exploit-explore-evidence-router` 与 `opml-hn-priority-watchlist` 的去重边界，决定是否归并。
+
+---
 # Morning Brief（Nightshift Cycle 15）
 
 > 更新时间：2026-02-28 18:43 UTC  
