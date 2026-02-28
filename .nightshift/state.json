@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T21:39:48Z",
-  "cycle": 48,
+  "updated_at": "2026-02-28T21:49:54Z",
+  "cycle": 49,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -53,25 +53,27 @@
     "工具输出占比触发冻结治理（tool-output-ratio freeze trigger gate）",
     "浏览器会话边界声明治理（browser runtime-boundary manifest gate）",
     "浏览器工具权限同构治理（browser tool-scope parity gate）",
-    "自驱代码库晋级证明治理（self-driving codebase promotion proof gate）"
+    "自驱代码生成证据账本治理（self-driving code generation evidence ledger gate）",
+    "自驱代码人审触发门禁治理（self-driving code human-review trigger gate）",
+    "代理最小权限白名单治理（agent least-privilege scope manifest gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 48,
+    "last_cycle": 49,
     "actions": [
       {
         "type": "split",
-        "from": "浏览器内代理运行边界治理（browser-contained agent runtime boundary gate）",
+        "from": "自驱代码库晋级证明治理（self-driving codebase promotion proof gate）",
         "into": [
-          "浏览器会话边界声明治理（browser runtime-boundary manifest gate）",
-          "浏览器工具权限同构治理（browser tool-scope parity gate）"
+          "自驱代码生成证据账本治理（self-driving code generation evidence ledger gate）",
+          "自驱代码人审触发门禁治理（self-driving code human-review trigger gate）"
         ],
-        "reason": "将执行边界声明与工具权限同构拆分为两个独立方向，避免边界校验与权限校验字段耦合。"
+        "reason": "将“自动生成证据”与“人工触发门禁”拆分，避免一个方向同时承载产出证明与审批升级两类语义。"
       },
       {
         "type": "expand",
-        "added": "自驱代码库晋级证明治理（self-driving codebase promotion proof gate）",
-        "reason": "HN newest 出现 The Self-Driving Codebase 话题，代码生成到交付链路更短，需要新增晋级证明方向。"
+        "added": "代理最小权限白名单治理（agent least-privilege scope manifest gate）",
+        "reason": "HN newest 出现 Be Careful with LLM Agents 且 GitHub GITHUB_TOKEN 文档强调最小权限，需补充 scope 白名单独立方向。"
       }
     ]
   },
@@ -98,6 +100,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/runtime-governance/browser-runtime-boundary-manifest-gate.md",
-  "last_cycle_commit": "pending-cycle-48"
+  "last_pattern": "references/patterns/runtime-governance/browser-tool-scope-parity-gate.md",
+  "last_cycle_commit": "pending-cycle-49"
 }

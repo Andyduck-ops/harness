@@ -1,3 +1,53 @@
+# Morning Brief（Nightshift Cycle 49）
+
+> 更新时间：2026-02-28 21:49 UTC  
+> 本轮目标：把“跨 runtime 结果可完成”升级为“跨 runtime 权限必须同构”，阻断 scope 漂移下的静默晋级。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/runtime-governance/browser-tool-scope-parity-gate.md`
+2. `references/patterns/runtime-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 49）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `自驱代码库晋级证明治理（self-driving codebase promotion proof gate）` 为：
+  - `自驱代码生成证据账本治理（self-driving code generation evidence ledger gate）`
+  - `自驱代码人审触发门禁治理（self-driving code human-review trigger gate）`
+  - reason: 自动生成的“证据完备性”与人工审批的“晋级触发约束”是两类门禁，拆分后可独立演化。
+- `expand`：新增方向 `代理最小权限白名单治理（agent least-privilege scope manifest gate）`
+  - 触发依据：HN newest 出现 `Be Careful with LLM Agents`，且 GitHub `GITHUB_TOKEN` 文档强调最小权限，需补 scope manifest 独立方向。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:47:01Z）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`): `Obsidian Sync now has a headless client`
+  - show (`show`): `Show HN: Now I Get It – Translate scientific papers into interactive webpages`
+  - new (`newest`): `Be Careful with LLM Agents`（作为本轮信号条目）
+- 官方文档证据链（本轮重点）
+  - OpenAI Background mode（异步状态与取消语义）
+  - OpenAI Conversation state（`previous_response_id` / `conversation` 链路）
+  - GitHub Protected Branches（required checks 晋级硬门禁）
+  - GitHub `GITHUB_TOKEN`（最小权限与 `permissions` 配置）
+  - Hacker News API（`topstories/showstories/newstories` 车道端点）
+
+### 本轮结论
+
+- “完成”只能说明任务结束，不能说明权限一致；scope parity 必须独立验收。
+- `scope_parity_pass` 应与 `runtime_boundary_pass` 并列 required check。
+- 会话链连续但 scope 不同，必须默认 quarantine，而不是弱告警。
+
+### Cycle 50 预载任务
+
+1. 增加 `scope_diff_severity` 分级策略（read-only drift / write-capable drift）。
+2. 将 `scope_parity_pass` 接入 `candidate -> issue` 与 `issue -> PR` 双阶段门禁。
+3. 为 browser runtime 增加 `scope_manifest_version`，防止字段静默扩展。
+
+---
+
 # Morning Brief（Nightshift Cycle 48）
 
 > 更新时间：2026-02-28 21:39 UTC  
