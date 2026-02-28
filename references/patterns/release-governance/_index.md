@@ -6,3 +6,4 @@
 - [environment-wait-timer-reverify-gate](./environment-wait-timer-reverify-gate.md) — 把 environment wait timer 建模为强制重验触发器，阻断“等待导致证据过窗”后直接晋级
 - [environment-bypass-audit-quarantine-gate](./environment-bypass-audit-quarantine-gate.md) — 把 deployment bypass 从“手工例外”升级为“身份约束 + 审计隔离 + 重验恢复”的强制双轨门禁
 - [branch-environment-no-bypass-parity-gate](./branch-environment-no-bypass-parity-gate.md) — 把分支禁绕与环境旁路策略做同一性闸门，阻断“规则禁绕但流程可旁路”的策略反转
+- [bypass-reason-registry-gate](./bypass-reason-registry-gate.md) — 把旁路理由从自由文本升级为枚举注册表与证据绑定门禁，阻断“可绕过但不可归因”的灰放行

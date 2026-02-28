@@ -1,3 +1,57 @@
+# Morning Brief（Nightshift Cycle 42）
+
+> 更新时间：2026-02-28 21:09 UTC  
+> 本轮目标：把 deployment bypass 的“自由文本理由”升级为“可枚举、可验签、可追责”的注册门禁，阻断灰放行。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/release-governance/bypass-reason-registry-gate.md`
+2. `references/patterns/release-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 42）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `旁路理由枚举注册治理（bypass reason registry gate）` 为：
+  - `旁路理由分类治理（bypass reason taxonomy gate）`
+  - `旁路理由证据绑定治理（bypass reason evidence-binding gate）`
+  - reason: 原方向同时承载“理由词表设计”和“证据校验约束”，执行动作过宽，不利于自动化 gate。
+- `merge`：合并方向
+  - from: `旁路授权-禁绕策略同一治理（bypass authorization and no-bypass parity gate）`
+  - from: `旁路理由证据绑定治理（bypass reason evidence-binding gate）`
+  - into: `旁路授权-理由同一治理（bypass authorization-reason parity gate）`
+  - reason: 旁路是否允许与旁路理由是否合规属于同一准入面，拆开会产生“有权限但无合规理由”的审计裂缝。
+- `expand`：新增方向 `规则集旁路名单漂移治理（ruleset bypass-list drift gate）`
+  - 触发依据：GitHub rulesets 明确存在 bypass list，需要把名单变更纳入漂移审计与晋级阻断。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:09:22Z）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`): `MCP Spec Is Wrong: M×N ≠ M+N`
+  - show (`show`): `Show HN: Lok, a modern HN web and terminal client`
+  - new (`newest`): `Show HN: Aider Polyglot - One command install and launch all your coding agents`
+- 官方文档证据链（本轮重点）
+  - GitHub rulesets（bypass list）
+  - GitHub review deployments（bypass deployment protection rules）
+  - GitHub protected branches（do not allow bypassing）
+  - GitHub merge queue（队列校验独立上下文）
+
+### 本轮结论
+
+- bypass 不应只校验“谁可以”，还必须校验“为什么可以”且理由必须结构化。
+- `bypass_reason_code` 必须与证据要求绑定；无注册 code 的旁路默认不可晋级。
+- `promotion_decision.json` 必须包含 `reason_registry_pass`，否则次日无法归因审批依据。
+
+### Cycle 43 预载任务
+
+1. 增加 `reason_code -> required_evidence` 的模板与最小字段 lint（缺字段即 fail）。
+2. 把 `ruleset_bypass_list_diff.json` 接入 required checks。
+3. 为 `emergency` 类 reason 增加 TTL 上限与自动失效回放字段。
+
+---
+
 # Morning Brief（Nightshift Cycle 41）
 
 > 更新时间：2026-02-28 21:04 UTC  
