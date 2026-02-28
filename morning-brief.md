@@ -1,3 +1,61 @@
+# Morning Brief（Nightshift Cycle 71）
+
+> 更新时间：2026-03-01 07:48 UTC  
+> 本轮目标：把 `newest` 首现热度从“可立即晋级”降级为“必须经过时滞预算 + 复采样”的信号。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/discovery-governance/shownew-promotion-latency-gate.md`
+2. `references/patterns/discovery-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `Shownew->Top 跨车道时滞预算治理（shownew-to-top lag-budget gate）`
+  - reason: newest 首现经常先于可执行证据形成，必须把“发现时刻”与“晋级时刻”拆开治理。
+- `split`：拆分方向
+  - from: `Shownew 晋级延迟采样治理（shownew-promotion-latency gate）`
+  - into: `Shownew 首现-晋级时滞基线门禁（shownew-promotion-lag-baseline gate）`
+  - into: `Shownew 衰减前复采样门禁（shownew-pre-decay-reverify gate）`
+  - reason: 时滞阈值与复采样稳定性是两个独立失效面，需独立阈值和阻断动作。
+- `merge`：合并方向
+  - from: `Show 可执行预检门禁（show executability preflight gate）`
+  - from: `Show 可达-存活预检门禁（show reachability-liveness preflight gate）`
+  - into: `Show 预检统一合同门禁（show unified preflight contract gate）`
+  - reason: 两方向同属 preflight 合同，合并后可避免同构 pattern 漂移。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML（Gist Last active 2026-02-28）。
+- HN 三车道页面同窗采样（2026-03-01）
+  - news: item `47221127` — `Show HN: Browser Use CLI...`
+  - show: item `47220379` — `Show HN: Fine Structure Preserving Transformations`
+  - newest: item `47221464` — `Show HN: Honey Route AI...`
+- HN API 端点锚点（2026-03-01）
+  - `topstories[0] = 47221159`
+  - `showstories[0] = 47220379`
+  - `newstories[0] = 47221464`
+- 官方文档补链
+  - HN API：`topstories/showstories/newstories` 为独立分发车道。
+  - GitHub Merge Queue + `merge_group`：队列内变更需独立触发检查。
+  - GitHub Protected Branches：required status checks 不通过不可合并。
+
+### 本轮结论
+
+- `newest` 的“首现快”不等于“可执行成熟快”。
+- candidate->issue 晋级必须引入 `first_seen -> lag_budget -> cross_lane_recheck` 三步闭环。
+- 没有时滞预算与复采样证据的晋级，应被视为高噪声晋级并阻断。
+
+### Cycle 72 预载任务
+
+1. 输出 `shownew_lag_budget.json` 与 `shownew_cross_lane_recheck.json` 的 schema + lint。
+2. 将 `shownew_lag_budget_pass` 接入 candidate->issue 晋级必填 checks。
+3. 给“复采样失败”场景补充自动回退到观察池的处置模板。
+
+---
 # Morning Brief（Nightshift Cycle 70）
 
 > 更新时间：2026-03-01 00:05 UTC  
@@ -52,7 +110,6 @@
 3. 给 `show-top` 共振场景补充“冷却失败自动降级到观察队列”的处置模板。
 
 ---
-
 # Morning Brief（Nightshift Cycle 69）
 
 > 更新时间：2026-02-28 23:39 UTC  
@@ -108,7 +165,6 @@
 3. 输出 `show promotion required-checks matrix`，区分可达性失败与验签失败处置路径。
 
 ---
-
 # Morning Brief（Nightshift Cycle 68）
 
 > 更新时间：2026-02-28 23:33 UTC  
@@ -164,7 +220,6 @@
 3. 给 `merge_group` 增补 Show 证据门禁检查模板。
 
 ---
-
 # Morning Brief（Nightshift Cycle 67）
 
 > 更新时间：2026-02-28 23:17 UTC  
@@ -219,7 +274,6 @@
 3. 给 `Start all waiting jobs` 增加最小独立审批人数和 incident 绑定模板。
 
 ---
-
 # Morning Brief（Nightshift Cycle 66）
 
 > 更新时间：2026-02-28 23:11 UTC  
@@ -274,7 +328,6 @@
 3. 为审批冲击场景补充“自动降并发 + 禁止旁路常态化”的回退模板。
 
 ---
-
 # Morning Brief（Nightshift Cycle 65）
 
 > 更新时间：2026-02-28 23:07 UTC  
@@ -329,7 +382,6 @@
 3. 为审批超载场景补充“自动降并发 + 禁止旁路常态化”的回退策略模板。
 
 ---
-
 # Morning Brief（Nightshift Cycle 64）
 
 > 更新时间：2026-02-28 23:02 UTC  
@@ -385,7 +437,6 @@
 3. 将容量压差 gate 接入 candidate->issue 晋级表单，阻断无容量预算的提速请求。
 
 ---
-
 # Morning Brief（Nightshift Cycle 63）
 
 > 更新时间：2026-02-28 23:10 UTC  
@@ -441,7 +492,6 @@
 3. 将 `queue_fallback_dual_failure_surface_budget` 接入候选晋级表单，统一触发面预算。
 
 ---
-
 # Morning Brief（Nightshift Cycle 62）
 
 > 更新时间：2026-02-28 22:52 UTC  
@@ -497,7 +547,6 @@
 3. 把 `queue reorder throughput-loss` 与 `fallback recovery` 联立为统一夜间阈值仪表盘。
 
 ---
-
 # Morning Brief（Nightshift Cycle 61）
 
 > 更新时间：2026-02-28 22:48 UTC  
@@ -555,7 +604,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 60）
 
 > 更新时间：2026-02-28 22:42 UTC  
@@ -613,7 +661,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 59）
 
 > 更新时间：2026-02-28 22:36 UTC  
@@ -670,7 +717,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 58）
 
 > 更新时间：2026-02-28 22:28 UTC  
@@ -728,7 +774,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 57）
 
 > 更新时间：2026-02-28 22:23 UTC  
@@ -785,7 +830,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 56）
 
 > 更新时间：2026-02-28 22:18 UTC  
@@ -842,7 +886,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 55）
 
 > 更新时间：2026-02-28 22:13 UTC  
@@ -899,7 +942,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 54）
 
 > 更新时间：2026-02-28 22:07 UTC  
@@ -958,7 +1000,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 53）
 
 > 更新时间：2026-02-28 22:03 UTC  
@@ -1017,7 +1058,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 52）
 
 > 更新时间：2026-02-28 21:59 UTC  
@@ -1070,7 +1110,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 51）
 
 > 更新时间：2026-02-28 21:54 UTC  
@@ -1123,7 +1162,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 50）
 
 > 更新时间：2026-02-28 21:50 UTC  
@@ -1180,7 +1218,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 49）
 
 > 更新时间：2026-02-28 21:49 UTC  
@@ -1232,7 +1269,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 48）
 
 > 更新时间：2026-02-28 21:39 UTC  
@@ -1283,7 +1319,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 47）
 
 > 更新时间：2026-02-28 21:35 UTC  
@@ -1334,7 +1369,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 46）
 
 > 更新时间：2026-02-28 21:31 UTC  
@@ -1386,7 +1420,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 45）
 
 > 更新时间：2026-02-28 21:33 UTC  
@@ -1441,7 +1474,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 44）
 
 > 更新时间：2026-02-28 21:19 UTC  
@@ -1496,7 +1528,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 43）
 
 > 更新时间：2026-02-28 21:15 UTC  
@@ -1552,7 +1583,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 42）
 
 > 更新时间：2026-02-28 21:09 UTC  
@@ -1608,7 +1638,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 41）
 
 > 更新时间：2026-02-28 21:04 UTC  
@@ -1664,7 +1693,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 40）
 
 > 更新时间：2026-02-28 20:59 UTC  
@@ -1720,7 +1748,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 39）
 
 > 更新时间：2026-02-28 20:55 UTC  
@@ -1776,7 +1803,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 38）
 
 > 更新时间：2026-02-28 20:50 UTC  
@@ -1832,7 +1858,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 37）
 
 > 更新时间：2026-02-28 20:45 UTC  
@@ -1888,7 +1913,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 36）
 
 > 更新时间：2026-02-28 20:41 UTC  
@@ -1944,7 +1968,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 35）
 
 > 更新时间：2026-02-28 20:36 UTC  
@@ -2000,7 +2023,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 34）
 
 > 更新时间：2026-02-28 20:28 UTC  
@@ -2050,7 +2072,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 33）
 
 > 更新时间：2026-02-28 20:24 UTC  
@@ -2100,7 +2121,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 32）
 
 > 更新时间：2026-02-28 20:18 UTC  
@@ -2156,7 +2176,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 31）
 
 > 更新时间：2026-02-28 20:12 UTC  
@@ -2212,7 +2231,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 30）
 
 > 更新时间：2026-02-28 20:10 UTC  
@@ -2267,7 +2285,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 29）
 
 > 更新时间：2026-02-28 20:02 UTC  
@@ -2323,7 +2340,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 28）
 
 > 更新时间：2026-02-28 20:06 UTC  
@@ -2378,7 +2394,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 27）
 
 > 更新时间：2026-02-28 19:58 UTC  
@@ -2433,7 +2448,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 26）
 
 > 更新时间：2026-02-28 19:46 UTC  
@@ -2488,7 +2502,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 25）
 
 > 更新时间：2026-02-28 19:39 UTC  
@@ -2543,7 +2556,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 24）
 
 > 更新时间：2026-02-28 19:44 UTC  
@@ -2597,7 +2609,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 23）
 
 > 更新时间：2026-02-28 19:28 UTC  
@@ -2653,7 +2664,6 @@
 ---
 
 ---
-
 # Morning Brief（Nightshift Cycle 22）
 
 > 更新时间：2026-02-28 19:23 UTC  
@@ -2706,444 +2716,5 @@
 3. 评估 `comprehension-debt-ratchet-freeze-gate` 与 `comprehension-budget-gate` 的收敛边界，避免同构膨胀。
 
 ---
-
----
-
-# Morning Brief（Nightshift Cycle 21）
-
-> 更新时间：2026-02-28 19:16 UTC  
-> 本轮目标：把“固定配额路由”升级为“证据债务驱动路由”，防止 show/new 波动期出现晋级积压与审计盲区。
-
-## 本轮新增（已落盘）
-
-1. `signal-governance/lane-debt-ratchet-gate`
-2. `signal-governance/_index.md`（新增 pattern 索引）
-3. `_master_index.md`（新增 pattern 行与 topic/统计更新）
-4. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-## 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `新颖信号车道（HN show/new + serendipity）` 为：
-  - `show 讨论原型车道（HN show + builder chatter）`
-  - `new 早信号车道（HN newest + freshness spike）`
-  - reason: `show` 与 `newest` 的时效和噪声结构不同，混在同一车道会让配额策略失真。
-- `merge`：合并方向
-  - from: `交付证据闭环（PR -> Pattern + lineage attestation）`
-  - from: `证据-任务绑定账本（digest-bound promotion manifest）`
-  - into: `交付证据账本闭环（digest-bound PR->Pattern lineage）`
-  - reason: 两条方向都在定义同一条交付链路账本，分开维护导致字段重复和审计口径不一致。
-- `expand`：新增方向 `方向债务回收（lane debt + carry-over ratchet）`
-  - 触发依据：固定配额无法解释“为何某车道长期积压”，需要独立方向沉淀债务账本与棘轮调参策略。
-
-## 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist，active 2026-02-28）。
-- HN `top/show/new`：已采样并观察到显著分层：
-  - top 存在高分热点（本轮采样可见 300+ 分级别条目）；
-  - show/new 以早期低分信号为主，适合作为探索输入而非直接晋级。
-- 官方证据链（本轮）：
-  - Hacker News API（`topstories/showstories/newstories` + item 主键）
-  - GitHub Issue Forms required 字段（晋级输入结构化）
-  - GitHub protected branches required checks（不可绕过门禁）
-  - GitHub Actions artifacts（账本与决策留痕）
-
-## 本轮结论
-
-- 配额本身不是治理，只有“债务账本 + 动态棘轮”才是可操作治理。
-- `show/new` 的发现价值必须通过 ratification lane 消化，否则会形成“发现繁荣、晋级停滞”。
-- 若不记录 `carry_over_debt` 与 `oldest_age_hours`，次日接管无法判断路由是否真实有效。
-
-## Cycle 22 预载任务
-
-1. 在 `lane_ledger` 增加 `debt_half_life` 规则，限制历史债务无限累积。
-2. 为 `ratchet_decision` 增加可解释字段模板（`trigger_metric`、`fallback_rule`）。
-3. 评估 `lane-debt-ratchet-gate` 与 `exploit-explore-evidence-router` 的边界，避免策略重复描述。
-
----
-
----
-
-# Morning Brief（Nightshift Cycle 20）
-
-> 更新时间：2026-02-28 19:12 UTC  
-> 本轮目标：把“社区发现”与“执行晋级”之间的主断点，收敛成 OPML/HN/官方文档三角校验闸门。
-
-## 本轮新增（已落盘）
-
-1. `source-governance/triangulated-evidence-ratification-gate`
-2. `source-governance/_index.md`
-3. `_master_index.md`（新增 pattern 与 topic 统计）
-
-## 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `稳定信号车道（OPML + HN top + 官方文档）` 为：
-  - `长周期作者基座（OPML canonical pool）`
-  - `热度锚定采样（HN top anchor lane）`
-  - reason: 原方向把“作者池维护”和“热度窗口采样”绑定在一个操作单元，导致节奏无法独立调参。
-- `merge`：合并方向
-  - from: `发现入库晋级（candidate -> issue promotion gate）`
-  - from: `结构化需求入口（issue form required evidence fields）`
-  - into: `候选晋级表单治理（candidate intake + issue form gate）`
-  - reason: 两条方向都在定义候选晋级入口，长期并行维护会产生同构字段与双标准。
-- `expand`：新增方向 `信源三角校验（OPML/HN/Official ratification）`
-  - 触发依据：HN 实时流提供发现，官方文档提供约束；缺少三角仲裁会把“热门观点”误判为“可执行方案”。
-
-## 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist，active 2026-02-28）。
-- HN `top/show/new`：已采样，继续呈现“长期趋势 + 新奇噪声”并存形态。
-- 官方证据链（本轮重点）：
-  - Hacker News API（claim 主键与时间锚）
-  - GitHub Issue Forms required 字段（晋级入口结构化）
-  - GitHub protected branches required checks（不可绕过门禁）
-  - GitHub Actions artifacts（ratification 结果持久化）
-
-## 本轮结论
-
-- “看到信号”不等于“可执行证据”，必须先做三角校验再晋级。
-- OPML/HN 负责发现广度，官方文档负责执行边界；两者缺一不可。
-- 不落盘 `ratification_matrix`，次日接管会回到口头判断，无法审计追责。
-
-## Cycle 21 预载任务
-
-1. 为 `promotion_decision.json` 增加 `consistency_rule_id` 与 `official_doc_ref` 强校验字段。
-2. 设计 `ratification_matrix` lint（缺官方锚点直接 fail）。
-3. 评估 `triangulated-evidence-ratification-gate` 与 `candidate-to-issue-promotion-contract` 的合并边界，控制同构膨胀。
-
----
-
----
-
-# Morning Brief（Nightshift Cycle 19）
-
-> 更新时间：2026-02-28 19:07 UTC  
-> 本轮目标：把“证据可回放”升级为“证据可验签”，补齐夜间发现到白天晋级之间的防篡改断点。
-
-## 本轮新增（已落盘）
-
-1. `evidence-governance/attested-evidence-provenance-gate`
-2. `evidence-governance/_index.md`
-3. `_master_index.md`（新增 pattern 索引与统计）
-
-## 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `外部证据时序锁（HN snapshot ledger + doc version pin）` 为：
-  - `外部证据时间锚定（HN snapshot ledger + freshness window）`
-  - `外部证据溯源验签（artifact attestation + verify）`
-  - reason: 原方向同时承担“时间漂移治理”和“完整性验真”，失败归因不可操作。
-- `merge`：合并方向
-  - from: `外部证据时间锚定（HN snapshot ledger + freshness window）`
-  - from: `证据时效治理（freshness SLA + snapshot pinning）`
-  - into: `证据时效治理（freshness SLA + snapshot ledger pinning）`
-  - reason: 两条方向本质同构，统一后可减少重复字段与双账本漂移。
-- `expand`：新增方向 `证据-任务绑定账本（digest-bound promotion manifest）`
-  - 触发依据：官方 attestation 文档明确支持产物溯源与离线验证，适合把 `candidate -> issue -> pr -> pattern` 绑定到同一 digest 证据主键。
-
-## 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist，active 2026-02-28）。
-- HN `top/show/new`：已采样，持续呈现高时变信号，证明“仅时间锚定”不足以防篡改。
-- 官方证据链（本轮重点补齐）：
-  - Hacker News API（故事 ID 与时间字段作为可回放主键）
-  - GitHub artifact attestations（构建 provenance 与离线验签）
-  - GitHub protected branches required checks（把验签门禁变为不可绕过硬约束）
-
-## 本轮结论
-
-- “能回放”不等于“能验真”，外部证据必须引入 attestation verify。
-- freshness gate 解决的是“是否过期”，attestation gate 解决的是“是否被替换”；两者必须并联。
-- 若 digest 不与 `candidate/issue/pr/pattern` 绑定，审计链仍可被拼接伪造。
-
-## Cycle 20 预载任务
-
-1. 为 `promotion_report` 增加 `subject_digest` 与 `attestation_verified` 强校验字段。
-2. 设计 `digest-bound lineage manifest` lint（digest 不一致直接 fail）。
-3. 评估 `attested-evidence-provenance-gate` 与 `issue-pr-artifact-lineage-manifest` 的合并边界，压缩同构 pattern。
-
----
-
----
-
-# Morning Brief（Nightshift Cycle 18）
-
-> 更新时间：2026-02-28 19:03 UTC  
-> 本轮目标：把“链接可见”升级为“证据可回放”，解决外部信号时变导致的次日不可复盘问题。
-
-## 本轮新增（已落盘）
-
-1. `evidence-governance/temporal-evidence-freshness-gate`
-2. `evidence-governance/_index.md`
-3. `_master_index.md`（新增 topic 与 pattern 索引）
-
-## 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `回放证据保全（Replay/Artifact）` 为：
-  - `证据时效治理（freshness SLA + snapshot pinning）`
-  - `回放完整性治理（artifact replay + checksum）`
-  - reason: 原方向同时覆盖“时效”和“完整性”，执行时无法区分是过期失败还是回放失败。
-- `merge`：合并方向
-  - from: `运行态恢复治理（state cell + checkpoint + reflog + artifact digest）`
-  - from: `回放完整性治理（artifact replay + checksum）`
-  - into: `恢复回放一体治理（state cell + checkpoint + artifact replay digest）`
-  - reason: 两条方向都服务于次日接管，字段与闸门高度同构，拆开维护造成重复审计。
-- `expand`：新增方向 `外部证据时序锁（HN snapshot ledger + doc version pin）`
-  - 触发依据：HN top/show/new 在短窗口内高频变化，若无时序锁，结论无法稳定回放。
-
-## 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist，active 2026-02-28）。
-- HN `top/show/new`：已采样，页面内容在同日内显著漂移，证明“只存链接”不足以支撑复盘。
-- 官方证据链（已补齐）：
-  - Hacker News API（`topstories/newstories/showstories` 与 item 时间字段）
-  - GitHub Actions artifacts（证据快照与摘要清单持久化）
-  - GitHub protected branches required checks（freshness/replay 门禁硬约束）
-
-## 本轮结论
-
-- “抓到信号”不等于“保住证据”，夜间自治必须强制记录采样时刻与摘要哈希。
-- 候选晋级前应先通过 freshness gate，超时证据必须重采样而非直接执行。
-- 将回放清单纳入 required checks 后，次日接管才能做到可验证、可追责。
-
-## Cycle 19 预载任务
-
-1. 产出 `evidence_snapshot` 字段 lint（缺 `sampled_at_utc` 或 `digest` 直接 fail）。
-2. 对齐 `freshness_gate` 与 `promotion_report` 字段，避免双账本漂移。
-3. 评估 `temporal-evidence-freshness-gate` 与 `candidate-to-issue-promotion-contract` 的合并边界，控制同构膨胀。
-
----
-
----
-
-# Morning Brief（Nightshift Cycle 17）
-
-> 更新时间：2026-02-28 18:57 UTC  
-> 本轮目标：把“发现信号”与“执行任务”之间的断层，收敛成可审计的候选晋级合同。
-
-## 本轮新增（已落盘）
-
-1. `backlog-governance/candidate-to-issue-promotion-contract`
-2. `backlog-governance/_index.md`
-3. `_master_index.md`（新增 topic 与 pattern 索引）
-
-## 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `证据路由守门（exploit/explore quota + promotion gate）` 为：
-  - `信号配额路由（exploit/explore quota）`
-  - `发现入库晋级（candidate -> issue promotion gate）`
-  - reason: 原方向把“信号分流”与“任务入库”耦合在同一闸门，导致失败归因不清。
-- `merge`：合并方向
-  - from: `工作区可恢复性治理（checkpoint + artifact + reflog）`
-  - from: `状态隔离与回放信封（per-agent state cell + WAL + artifact digest）`
-  - into: `运行态恢复治理（state cell + checkpoint + reflog + artifact digest）`
-  - reason: 两条方向都在解决“次日可恢复接管”，并行维护产生同构字段与重复审计。
-- `expand`：新增方向 `结构化需求入口（issue form required evidence fields）`
-  - 触发依据：HN top/show/new 持续提供高吞吐候选信号，而 GitHub Issue Forms 支持 required 字段，适合做晋级硬门。
-
-## 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist，active 2026-02-28）。
-- HN `top/show/new`：已采样，观察到稳定趋势信号与高频新奇信号并存，直接入库会放大 backlog 噪声。
-- 官方证据链（已补齐）：
-  - GitHub Projects（项目视图与自动化流转）
-  - GitHub Issue Forms（结构化必填字段）
-  - GitHub protected branches required checks（晋级硬门）
-  - GitHub Actions artifacts（证据包持久化）
-
-## 本轮结论
-
-- “发现很多”不等于“可执行很多”，必须先做 candidate 入池再晋级 Issue。
-- 发现到执行的主闸门应该是结构化 Issue Form，而不是人工口头约定。
-- 只有把 `candidate_id -> issue_id -> pr_id -> pattern_id` 落成 artifact，次日接管才可追责。
-
-## Cycle 18 预载任务
-
-1. 产出 `candidate_queue` 与 `issue_form` 字段对齐 lint（字段缺失即 fail）。
-2. 将 `promotion_report` 与 `lineage_manifest` 的 ID 规范合并，减少双账本漂移。
-3. 评估 `candidate-to-issue-promotion-contract` 与 `merge-fence-required-checks-lineage` 的边界，避免同构 pattern 膨胀。
-
----
-
----
-
-# Morning Brief（Nightshift Cycle 16）
-
-> 更新时间：2026-02-28 19:00 UTC  
-> 本轮目标：把“信号收集”升级为“可配额、可晋级、可审计”的双车道路由闸门。
-
-## 本轮新增（已落盘）
-
-1. `signal-governance/exploit-explore-evidence-router`
-2. `signal-governance/_index.md`
-3. `_master_index.md`（新增 topic 与 pattern 索引）
-
-## 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `夜间证据巡航（背景异步 + OPML/HN 融合 + 本地落盘）` 为：
-  - `稳定信号车道（OPML + HN top + 官方文档）`
-  - `新颖信号车道（HN show/new + serendipity）`
-  - reason: 原方向在执行中同时承担“稳定增量”和“新颖发现”，容易形成单车道拥塞并降低落盘质量。
-- `merge`：合并方向
-  - from: `上下文预算治理（compaction contract + checkpoint handoff）`
-  - from: `认知债务闸门（comprehension budget + explainability bundle）`
-  - into: `双预算接管治理（compaction + comprehension gate）`
-  - reason: 两者都在约束“次日可接管”，继续分治会产生同构闸门与重复审计字段。
-- `expand`：新增方向 `证据路由守门（exploit/explore quota + promotion gate）`
-  - 触发依据：HN `news/show/newest` 持续并发“高热趋势 + 新颖项目”双信号，单源策略无法兼顾稳定与新发现。
-
-## 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist，active 2026-02-28）。
-- HN `top/show/new`：已采样并用于双车道路由设计。
-- 官方证据链（已补齐）：
-  - OpenAI Background mode（长任务异步执行）
-  - OpenAI Conversation state（状态分层边界）
-  - GitHub protected branches required checks（晋级硬门）
-  - GitHub Actions artifacts（证据包持久化）
-
-## 本轮结论
-
-- 夜间自治不应只做“信息抓取”，而应做“信号分流 + 配额控制 + 晋级守门”。
-- 只有把 explore 发现先进入候选池，才能避免新颖性吞噬稳定产出。
-- 只有把晋级结果落到 required checks + artifacts，次日接管才可追责。
-
-## Cycle 17 预载任务
-
-1. 产出 `signal_router.json` 的 lint 规则（配额透支直接 fail）。
-2. 对齐 `promotion_report` 与 `lineage_manifest` 字段，消除双清单漂移。
-3. 评估 `exploit-explore-evidence-router` 与 `opml-hn-priority-watchlist` 的去重边界，决定是否归并。
-
----
-
----
-
-# Morning Brief（Nightshift Cycle 15）
-
-> 更新时间：2026-02-28 18:43 UTC  
-> 本轮目标：把“夜间高吞吐”升级为“可理解、可接管、可审计”的认知闸门机制。
-
-## 本轮新增（已落盘）
-
-1. `comprehension-governance/comprehension-budget-gate`
-2. `comprehension-governance/_index.md`
-
-## 激进动态策略执行（本轮）
-
-- `expand`：新增方向 `认知债务闸门（comprehension budget + explainability bundle）`
-  - 触发依据：HN top 同轮出现 `Cognitive Debt`、`VSDD`、`747s and coding agents`，共同指向“速度超过理解”的系统性风险。
-- `split`：拆分方向 `PRD -> Epic -> Issue -> PR -> Pattern 执行闭环` 为：
-  - `需求计划闭环（PRD -> Epic -> Issue）`
-  - `交付证据闭环（PR -> Pattern + lineage attestation）`
-  - reason: 原方向过宽，执行时容易把“计划映射”与“证据审计”混成单闸门，导致验收标准失焦。
-
-## 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist）。
-- HN `top/show/new`：已采样并记录高价值信号（`Cognitive Debt`、`VSDD`、`747s and coding agents`）。
-- 官方证据链（已补齐）：
-  - OpenAI Conversation state（状态分层边界）
-  - GitHub protected branches（required checks）
-  - GitHub Actions artifacts（解释包持久化）
-
-## 本轮结论
-
-- AI 流程的主风险正在从“做不出来”转向“做太快但无法验证理解”。
-- 合并闸门必须同时校验 `预算约束 + 解释包完整性 + 可复现命令`，否则次晨接管不可控。
-- “会话连续性”不应替代“工程证据连续性”，二者必须分层治理。
-
-## Cycle 16 预载任务
-
-1. 产出 `comprehension-gate` 的机器校验规则（预算超阈值直接 fail）。
-2. 对齐 `lineage-manifest` 与 `comprehension_report` 字段，消除双清单漂移。
-3. 评估 `comprehension-budget-gate` 与 `execution-proof-bundle` 的合并边界，避免同构 pattern 膨胀。
-
----
-
----
-
-# Morning Brief（Nightshift Cycle 14）
-
-> 更新时间：2026-02-28 18:39 UTC  
-> 本轮目标：把“24h 无人推进”从“有日志”升级为“有隔离状态单元 + 可回放信封”的可验证执行面。
-
-## 本轮新增（已落盘）
-
-1. `state-governance/agent-state-cell-replay-envelope`
-2. `state-governance/_index.md`
-
-## 激进动态策略执行（本轮）
-
-- `expand`：新增方向 `状态隔离与回放信封（per-agent state cell + WAL + artifact digest）`
-  - 触发依据：HN top 出现“每 agent/tenant/document 独立 SQLite”与“Don’t trust AI agents”并发信号，说明状态隔离与可验证回放已进入刚需阶段。
-- `merge`：合并方向
-  - from: `夜间证据车道（背景异步 + 本地落盘）`
-  - from: `Hacker News + OPML 长短信号融合`
-  - into: `夜间证据巡航（背景异步 + OPML/HN 融合 + 本地落盘）`
-  - reason: 两条方向都服务于同一条证据采集流水线，分离会造成同构 pattern 和重复调度。
-
-## 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist）。
-- HN `top/show/new`：已采样，捕获到“状态隔离”“默认不信任 agent”“本地优先记忆与上下文治理”连续信号。
-- 官方证据链（已补齐）：
-  - OpenAI Background mode（长任务异步执行）
-  - OpenAI Conversations API（会话状态管理边界）
-  - SQLite WAL（状态持久化与 checkpoint）
-  - GitHub Actions artifacts（回放信封跨步骤保存与校验）
-
-## 本轮结论
-
-- 仅有执行日志不足以支撑次晨接管，必须补 `state_cell_id + db_snapshot_ref + action_log_ref`。
-- “会话状态”与“运行态存储”必须分层：前者用于对话连续性，后者用于可回放审计。
-- 把回放信封做成 artifact 后，夜间自治才具备可验证与可追责属性。
-
-## Cycle 15 预载任务
-
-1. 产出 `state-cell-lint` 规则（隔离键缺失即 fail）。
-2. 设计 `replay-envelope` 与 `lineage-manifest` 的字段映射，减少双清单漂移。
-3. 评估 `回放证据保全` 与 `状态隔离与回放信封` 的 pattern 合并边界，控制同构膨胀。
-
----
-
----
-
-# Morning Brief（Nightshift Cycle 13）
-
-> 更新时间：2026-02-28 18:35 UTC  
-> 本轮目标：把“前端设计系统”从可展示升级为“可交接、可闸门、可审计”的 Agent 执行契约。
-
-## 本轮新增（已落盘）
-
-1. `fullstack-engineering/agent-design-export-contract`
-2. `fullstack-engineering/_index.md`
-
-## 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `前端设计系统（可次日直接实战）` 为：
-  - `设计令牌治理（schema + drift lint）`
-  - `组件验收治理（story + a11y + visual gate）`
-  - reason: 原方向过宽，落地时经常把“设计语义”与“验收闸门”混在一条执行线，导致产出不可验证。
-- `expand`：新增方向 `AI 设计导出契约（design-export + required-checks）`
-  - 触发依据：HN show 出现面向 agent 时代的设计导出工具（Mowgli），说明“设计到代码交接协议化”已成为一线需求。
-
-## 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist）。
-- HN `top/show/new`：已采样，捕获到“认知债务”“设计导出”“规格驱动交付”连续信号。
-- 官方证据链（已补齐）：
-  - Design Tokens 规范（结构化设计语义）
-  - Storybook UI Testing（interaction/a11y/visual + CI）
-  - GitHub protected branches required checks（不可绕过闸门）
-
-## 本轮结论
-
-- “可展示的设计系统”不等于“可自动执行的交接系统”，缺口在机器可验证合同。
-- 必须把 `token_schema + component_contract + interaction_matrix + required_checks` 作为交接最小包。
-- 只有把 design gate 设为 required checks，次日接管才不会退化为人工抽检。
-
-## Cycle 14 预载任务
-
-1. 产出 `design-contract-lint` 字段规则（缺字段即 fail）。
-2. 将 `visual_baseline_ref` 与 `lineage_id` 对齐，减少审计断链。
-3. 评估 `design-gate` 与 `lineage-gate` 的去重合并条件，避免同构闸门膨胀。
 
 ---
