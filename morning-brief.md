@@ -1,3 +1,54 @@
+# Morning Brief（Nightshift Cycle 51）
+
+> 更新时间：2026-02-28 21:54 UTC  
+> 本轮目标：把“最小权限”从二元开关升级为“漂移分级 + 车道预算 + required checks”门禁，降低误报并阻断真风险。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/permission-governance/agent-scope-drift-severity-budget-gate.md`
+2. `references/patterns/permission-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 51）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `merge`：合并方向
+  - from: `代理最小权限白名单治理（agent least-privilege scope manifest gate）`
+  - from: `代理会话最小权限漂移治理（agent session least-privilege drift gate）`
+  - into: `代理最小权限分级预算治理（agent least-privilege drift budget gate）`
+  - reason: 两方向都在治理权限最小化与漂移控制，合并后统一到“分级预算”控制面，减少同构 pattern 重复。
+- `expand`：新增方向 `代理记忆持久化权限分区治理（agent memory persistence scope partition gate）`
+  - 触发依据：HN show 车道出现 agent memory 相关项目（`MemoryKit: A persistent memory layer for AI agents`、`SQLite for Rivet Actors`），提示“记忆持久化”正在成为新的权限边界。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:53:01Z）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`): `Obsidian Sync now has a headless client`
+  - show (`show`): `Show HN: Now I Get It – Translate scientific papers into interactive webpages`
+  - new (`newest`): `Be Careful with LLM Agents`
+- 官方文档证据链（本轮重点）
+  - OpenAI Background mode（异步状态机，`completed` 仅表示运行结束）
+  - OpenAI Conversation state（`previous_response_id` / `conversation` 链路）
+  - GitHub Protected Branches（required status checks 晋级硬门禁）
+  - GitHub `GITHUB_TOKEN` 权限控制（最小权限与显式 `permissions`）
+  - Hacker News API（`topstories/showstories/newstories` 车道端点）
+
+### 本轮结论
+
+- “权限漂移是否发生”不足以做晋级决策，必须补 `T1/T2/T3` 分级。
+- `scope_drift_budget_pass` 应与 `scope_manifest_pass`、`escalation_replay_pass` 并列 required checks。
+- 车道预算缺失时默认冻结晋级，而不是降级为日志告警。
+
+### Cycle 52 预载任务
+
+1. 在 `promotion_packet` 增加 `drift_tier` 与 `lane_budget_snapshot` 以支持复盘。
+2. 把分级预算门禁接入 `candidate -> issue -> PR` 全链路。
+3. 为 memory-persistence 场景补最小权限分区模板（read cache / write memory / external sync）。
+
+---
+
 # Morning Brief（Nightshift Cycle 50）
 
 > 更新时间：2026-02-28 21:50 UTC  

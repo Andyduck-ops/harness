@@ -43,6 +43,7 @@
 | 3 | [browser-runtime-boundary-manifest-gate](./runtime-governance/browser-runtime-boundary-manifest-gate.md) | runtime-governance | 0.77 | OPML + HN + OpenAI + GitHub |
 | 3 | [browser-tool-scope-parity-gate](./runtime-governance/browser-tool-scope-parity-gate.md) | runtime-governance | 0.78 | OPML + HN + OpenAI + GitHub |
 | 3 | [agent-scope-manifest-escalation-gate](./permission-governance/agent-scope-manifest-escalation-gate.md) | permission-governance | 0.78 | OPML + HN + OpenAI + GitHub |
+| 3 | [agent-scope-drift-severity-budget-gate](./permission-governance/agent-scope-drift-severity-budget-gate.md) | permission-governance | 0.79 | OPML + HN + OpenAI + GitHub |
 | 3 | [comprehension-budget-gate](./comprehension-governance/comprehension-budget-gate.md) | comprehension-governance | 0.76 | OPML + HN + OpenAI + GitHub |
 | 3 | [issue-pr-artifact-lineage-manifest](./product-delivery/issue-pr-artifact-lineage-manifest.md) | product-delivery | 0.78 | OPML + HN + GitHub Docs + OpenAPI + Pact + Storybook |
 | 3 | [merge-fence-required-checks-lineage](./product-delivery/merge-fence-required-checks-lineage.md) | product-delivery | 0.79 | OPML + HN + OpenAI + GitHub + OpenAPI + Pact + Tokens + Storybook |
@@ -91,7 +92,7 @@
 | [context-governance/](./context-governance/) | 2 | 上下文预算、压缩交接与回放冻结治理 |
 | [state-governance/](./state-governance/) | 2 | 每 agent 状态隔离、回放信封与游标时效治理 |
 | [runtime-governance/](./runtime-governance/) | 2 | 浏览器与 CLI 双 runtime 的边界声明、权限同构与晋级门禁治理 |
-| [permission-governance/](./permission-governance/) | 1 | 会话最小权限白名单、升级封套与重放晋级门禁治理 |
+| [permission-governance/](./permission-governance/) | 2 | 会话最小权限、漂移分级预算与升级重放晋级门禁治理 |
 | [comprehension-governance/](./comprehension-governance/) | 2 | 速度超过理解时的预算治理与解释闸门 |
 | [signal-governance/](./signal-governance/) | 2 | 稳定增量与新颖发现并行的证据路由守门 |
 | [artifact-governance/](./artifact-governance/) | 2 | 工件摘要同一性、失配升级与保留期-验签窗口协同治理 |
@@ -104,7 +105,7 @@
 
 ## 统计
 
-- 总计：66 patterns
+- 总计：67 patterns
 - 平均 confidence：0.79
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：50 patterns
+- 待验证（<0.80）：51 patterns

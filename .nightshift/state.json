@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T21:50:19Z",
-  "cycle": 50,
+  "updated_at": "2026-02-28T21:54:25Z",
+  "cycle": 51,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -54,36 +54,27 @@
     "浏览器工具权限同构治理（browser tool-scope parity gate）",
     "自驱代码生成证据账本治理（self-driving code generation evidence ledger gate）",
     "自驱代码人审触发门禁治理（self-driving code human-review trigger gate）",
-    "代理最小权限白名单治理（agent least-privilege scope manifest gate）",
     "绕过时效预算治理（bypass freshness budget gate）",
-    "代理会话最小权限漂移治理（agent session least-privilege drift gate）"
+    "代理最小权限分级预算治理（agent least-privilege drift budget gate）",
+    "代理记忆持久化权限分区治理（agent memory persistence scope partition gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 50,
+    "last_cycle": 51,
     "actions": [
-      {
-        "type": "split",
-        "from": "审批-绕过双轨时效治理（approval-bypass dual-track freshness gate）",
-        "into": [
-          "审批时效预算治理（approval freshness budget gate）",
-          "绕过时效预算治理（bypass freshness budget gate）"
-        ],
-        "reason": "审批窗口和绕过窗口的风险类型不同，拆分后可独立定义时效预算与 required check。"
-      },
       {
         "type": "merge",
         "from": [
-          "旁路理由分类治理（bypass reason taxonomy gate）",
-          "旁路授权-理由同一治理（bypass authorization-reason parity gate）"
+          "代理最小权限白名单治理（agent least-privilege scope manifest gate）",
+          "代理会话最小权限漂移治理（agent session least-privilege drift gate）"
         ],
-        "into": "旁路理由授权一致性治理（bypass reason-authorization coherence gate）",
-        "reason": "两方向都约束 bypass 的理由与授权一致性，合并可减少同构 pattern 重复。"
+        "into": "代理最小权限分级预算治理（agent least-privilege drift budget gate）",
+        "reason": "白名单治理和会话漂移治理在执行面高度耦合，统一为分级预算门禁可减少重复 pattern 并提升可执行性。"
       },
       {
         "type": "expand",
-        "added": "代理会话最小权限漂移治理（agent session least-privilege drift gate）",
-        "reason": "HN newest 出现 Be Careful with LLM Agents，且 GitHub GITHUB_TOKEN 文档强调 permissions 最小化，需要独立跟踪会话级权限漂移。"
+        "added": "代理记忆持久化权限分区治理（agent memory persistence scope partition gate）",
+        "reason": "HN show 出现 MemoryKit 与 SQLite for Rivet Actors 等 agent memory 信号，持久化记忆正在成为新的权限边界，需要新增方向。"
       }
     ]
   },
@@ -107,9 +98,10 @@
     "https://docs.pact.io/",
     "https://www.designtokens.org/tr/drafts/format/",
     "https://storybook.js.org/docs/",
-    "https://2005.opml.org/spec2.html"
+    "https://2005.opml.org/spec2.html",
+    "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/permission-governance/agent-scope-manifest-escalation-gate.md",
-  "last_cycle_commit": "pending-cycle-50"
+  "last_pattern": "references/patterns/permission-governance/agent-scope-drift-severity-budget-gate.md",
+  "last_cycle_commit": "pending-cycle-51"
 }
