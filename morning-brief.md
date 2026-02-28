@@ -1,3 +1,56 @@
+# Morning Brief（Nightshift Cycle 44）
+
+> 更新时间：2026-02-28 21:19 UTC  
+> 本轮目标：把 ruleset 旁路名单“可见性盲区”升级为晋级硬门禁，阻断低权限快照导致的静默误放行。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/release-governance/ruleset-bypass-visibility-attestation-gate.md`
+2. `references/patterns/release-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 44）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `规则集导出盲区补偿治理（ruleset export blind-spot compensation gate）` 为：
+  - `规则集导出同构校验治理（ruleset export parity gate）`
+  - `低权限可见性降级治理（low-privilege visibility degradation gate）`
+  - reason: 原方向同时覆盖“导出同构差异”和“权限导致字段不可见”，执行边界过宽。
+- `merge`：合并方向
+  - from: `旁路名单主体漂移治理（bypass actor-set drift gate）`
+  - from: `低权限可见性降级治理（low-privilege visibility degradation gate）`
+  - into: `旁路主体可见性漂移治理（bypass actor-visibility drift gate）`
+  - reason: 两方向都治理旁路主体边界变化，一个是“真变更”，一个是“可见性退化”，应合并到同一门禁语义。
+- `expand`：新增方向 `队列容错显式降级治理（merge-queue non-failing explicit fallback gate）`
+  - 触发依据：GitHub merge queue 支持允许失败 PR 混入队列，可见性异常时需自动降级为“仅合并 non-failing PR”。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:19:40Z）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`): `How to build a coding agent`
+  - show (`show`): `Show HN: Self-hosting all your coding agents with a single script`
+  - new (`newest`): `Nvidia's net margin in AI peaks amid shrinking cloud rents`
+- 官方文档证据链（本轮重点）
+  - GitHub Rulesets REST API（`bypass_actors` 在写权限上下文才返回）
+  - GitHub merge queue（`Only merge non-failing pull requests` 模式开关）
+  - GitHub protected branches（required checks 与最新 commit/时效约束）
+
+### 本轮结论
+
+- 旁路名单审计首先要审计“可见性”，字段缺失不能等价为空。
+- 当 `visibility_unknown=true` 时，必须把 merge queue 降级到最保守模式并强制 `merge_group` 重验。
+- 没有 `bypass_visibility_attested` 的晋级决策，默认视为不可审计放行。
+
+### Cycle 45 预载任务
+
+1. 引入 `scope_hash` 与 token 角色映射，区分“字段为空”与“字段不可见”。
+2. 将 `visibility_unknown` 直接接到 required checks 的 fail-fast 入口。
+3. 为 `merge-queue non-failing fallback` 增加 TTL，避免长期保守模式形成吞吐债务。
+
+---
+
 # Morning Brief（Nightshift Cycle 43）
 
 > 更新时间：2026-02-28 21:15 UTC  

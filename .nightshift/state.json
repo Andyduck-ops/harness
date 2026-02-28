@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T21:15:38Z",
-  "cycle": 43,
+  "updated_at": "2026-02-28T21:21:00Z",
+  "cycle": 44,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -44,37 +44,38 @@
     "分支规则禁绕约束治理（branch-rule no-bypass enforcement gate）",
     "旁路理由分类治理（bypass reason taxonomy gate）",
     "旁路授权-理由同一治理（bypass authorization-reason parity gate）",
-    "旁路名单主体漂移治理（bypass actor-set drift gate）",
     "旁路模式升级漂移治理（bypass_mode escalation drift gate）",
     "队列尾绿容错预算联动治理（tail-green attestation-budget parity gate）",
-    "规则集导出盲区补偿治理（ruleset export blind-spot compensation gate）"
+    "规则集导出同构校验治理（ruleset export parity gate）",
+    "旁路主体可见性漂移治理（bypass actor-visibility drift gate）",
+    "队列容错显式降级治理（merge-queue non-failing explicit fallback gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 43,
+    "last_cycle": 44,
     "actions": [
       {
         "type": "split",
-        "from": "规则集旁路名单漂移治理（ruleset bypass-list drift gate）",
+        "from": "规则集导出盲区补偿治理（ruleset export blind-spot compensation gate）",
         "into": [
-          "旁路名单主体漂移治理（bypass actor-set drift gate）",
-          "旁路模式升级漂移治理（bypass_mode escalation drift gate）"
+          "规则集导出同构校验治理（ruleset export parity gate）",
+          "低权限可见性降级治理（low-privilege visibility degradation gate）"
         ],
-        "reason": "把主体集合变化与 bypass_mode 升级拆分，便于独立门禁与责任归因。"
+        "reason": "把导出同构差异与权限导致的字段不可见拆开，避免单方向承载两个失效面。"
       },
       {
         "type": "merge",
         "from": [
-          "队列容错模式验签（tail-green mode attestation gate）",
-          "队列尾绿掩蔽预算治理（tail-green masking budget gate）"
+          "旁路名单主体漂移治理（bypass actor-set drift gate）",
+          "低权限可见性降级治理（low-privilege visibility degradation gate）"
         ],
-        "into": "队列尾绿容错预算联动治理（tail-green attestation-budget parity gate）",
-        "reason": "两方向都治理 tail-green 风险接受边界，合并后统一预算与验签口径。"
+        "into": "旁路主体可见性漂移治理（bypass actor-visibility drift gate）",
+        "reason": "两方向都在治理旁路主体边界变化，一个是真变更一个是可见性退化，合并后门禁语义一致。"
       },
       {
         "type": "expand",
-        "added": "规则集导出盲区补偿治理（ruleset export blind-spot compensation gate）",
-        "reason": "ruleset history 导出不含 bypass actor 细节，需新增 API 快照补偿方向。"
+        "added": "队列容错显式降级治理（merge-queue non-failing explicit fallback gate）",
+        "reason": "merge queue 支持容错模式；当旁路可见性未知时需新增显式降级方向保障晋级安全。"
       }
     ]
   },
@@ -101,6 +102,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/release-governance/ruleset-bypass-list-drift-gate.md",
-  "last_cycle_commit": "pending-cycle-43"
+  "last_pattern": "references/patterns/release-governance/ruleset-bypass-visibility-attestation-gate.md",
+  "last_cycle_commit": "pending-cycle-44"
 }
