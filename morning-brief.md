@@ -1,3 +1,58 @@
+# Morning Brief（Nightshift Cycle 56）
+
+> 更新时间：2026-02-28 22:18 UTC  
+> 本轮目标：把“达标但断崖式退化”的可读性风险显式化，新增对比回退斜率门禁并接入晋级硬检查。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/accessibility-governance/theme-contrast-regression-slope-gate.md`
+2. `references/patterns/accessibility-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 56）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `主题对比回退斜率治理（theme contrast regression slope gate）`
+  - reason: HN `newstories` 出现 `Thinking deeply about Theming and Color Naming`，结合 WCAG 仅给绝对下限，提示需补“相对回退幅度”门禁。
+- `split`：拆分方向
+  - from: `色觉可达性安全调色治理（color-vision accessibility palette gate）`
+  - into: `高对比主题压测治理（high-contrast theme stress gate）`
+  - into: `色觉仿真回放治理（color-vision simulation replay gate）`
+  - reason: 压测强度控制与色觉仿真回放是两个不同失效面，需独立 gate。
+- `merge`：合并方向
+  - from: `show 讨论原型车道（HN show + builder chatter）`
+  - from: `new 早信号车道（HN newest + freshness spike）`
+  - into: `原型-早信号双车道仲裁治理（show-new dual-lane arbitration gate）`
+  - reason: 两者都在解决“早期信号晋级仲裁”，合并后可减少同构 pattern 重复。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已解析到 OPML 原始源（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b/raw/4292aaea6b37c7c486f8998ea0f12f64bf2ac91d/hn-popular-blogs-2025.opml`，checked 2026-02-28T22:18:54Z）。
+- HN API `top/show/new`：已采样（2026-02-28）
+  - top (`topstories`): item `47202466` — `Obsidian Sync now has a headless client`
+  - show (`showstories`): item `47195123` — `Show HN: Now I Get It – Translate scientific papers into interactive webpages`
+  - new (`newstories`): item `47203158` — `Thinking deeply about Theming and Color Naming`
+- 官方文档证据链（本轮重点）
+  - W3C WCAG 2.2：`Contrast (Minimum)` 与 `Non-text Contrast`
+  - Storybook：`writing-tests`（多主题回放落点）
+  - GitHub Protected Branches：required status checks（晋级硬门禁）
+
+### 本轮结论
+
+- 仅满足 WCAG 绝对阈值不足以阻断“达标但显著退化”的风险。
+- 必须并列强制 `contrast_regression_slope_pass` 与文本/非文本阈值门禁。
+- 对比回退达到 `severe` 时必须 quarantine，不可自动晋级。
+
+### Cycle 57 预载任务
+
+1. 将 `ratio_drop` 分桶（mild/moderate/severe）写入统一晋级策略枚举，消除实现歧义。
+2. 为 `theme_contrast_baseline.json` 增加基线冻结策略，防止每轮覆盖导致“回退被洗白”。
+3. 把 `show-new` 双车道仲裁结果接入 candidate->issue 的入库门禁。
+
+---
+
 # Morning Brief（Nightshift Cycle 55）
 
 > 更新时间：2026-02-28 22:13 UTC  

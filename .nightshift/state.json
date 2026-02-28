@@ -1,15 +1,13 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T22:13:06Z",
-  "cycle": 55,
+  "updated_at": "2026-02-28T22:18:54Z",
+  "cycle": 56,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
     "OPML 重定向锚定（shortlink -> canonical target lock）",
     "OPML 修订漂移监控（gist revision + digest diff）",
     "热度锚定采样（HN top anchor lane）",
-    "show 讨论原型车道（HN show + builder chatter）",
-    "new 早信号车道（HN newest + freshness spike）",
     "部署审批身份门禁（deployment reviewer identity gate）",
     "设计令牌治理（schema + drift lint）",
     "组件验收治理（story + a11y + visual gate）",
@@ -60,36 +58,39 @@
     "文本对比预算治理（text contrast budget gate）",
     "非文本对比预算治理（non-text contrast budget gate）",
     "主题语义回放治理（theme semantic replay governance）",
-    "色觉可达性安全调色治理（color-vision accessibility palette gate）"
+    "主题对比回退斜率治理（theme contrast regression slope gate）",
+    "高对比主题压测治理（high-contrast theme stress gate）",
+    "色觉仿真回放治理（color-vision simulation replay gate）",
+    "原型-早信号双车道仲裁治理（show-new dual-lane arbitration gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 55,
+    "last_cycle": 56,
     "actions": [
       {
         "type": "expand",
-        "added": "色觉可达性安全调色治理（color-vision accessibility palette gate）",
-        "reason": "WCAG 2.2 对比规则与 HN newest 的产品化反思同向，提示可读性预算需扩展到色觉可达性。"
+        "added": "主题对比回退斜率治理（theme contrast regression slope gate）",
+        "reason": "HN newstories 出现 Theming and Color Naming 新证据，WCAG 绝对阈值之外需要补充相对回退斜率门禁。"
       },
       {
         "type": "split",
         "from": [
-          "主题对比可读性预算治理（theme contrast readability budget gate）"
+          "色觉可达性安全调色治理（color-vision accessibility palette gate）"
         ],
         "into": [
-          "文本对比预算治理（text contrast budget gate）",
-          "非文本对比预算治理（non-text contrast budget gate）"
+          "高对比主题压测治理（high-contrast theme stress gate）",
+          "色觉仿真回放治理（color-vision simulation replay gate）"
         ],
-        "reason": "文本与非文本对比失效面的检测规则和阈值不同，拆分后可独立设 gate。"
+        "reason": "高对比压测与色觉仿真属于不同失效面，拆分后可独立设置阻断阈值。"
       },
       {
         "type": "merge",
         "from": [
-          "语义色名规范化治理（semantic color naming canonicalization gate）",
-          "主题切换回放门禁（theme-switch replay gate）"
+          "show 讨论原型车道（HN show + builder chatter）",
+          "new 早信号车道（HN newest + freshness spike）"
         ],
-        "into": "主题语义回放治理（theme semantic replay governance）",
-        "reason": "语义命名与主题回放服务同一元问题，合并后减少同构 pattern 重复。"
+        "into": "原型-早信号双车道仲裁治理（show-new dual-lane arbitration gate）",
+        "reason": "两方向都服务早期发现仲裁，合并可降低同构 pattern 重复与仲裁分叉。"
       }
     ]
   },
@@ -117,6 +118,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/accessibility-governance/theme-contrast-readability-budget-gate.md",
-  "last_cycle_commit": "pending-cycle-55"
+  "last_pattern": "references/patterns/accessibility-governance/theme-contrast-regression-slope-gate.md",
+  "last_cycle_commit": "pending-cycle-56"
 }
