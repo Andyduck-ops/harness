@@ -1,49 +1,50 @@
-# Morning Brief（Nightshift Cycle 1）
+# Morning Brief（Nightshift Cycle 2）
 
 > 更新时间：2026-02-28 15:40 UTC  
-> 目标：为“明天可实战的前端/后端/24h无人AI/PRD执行”建立首轮知识地图与执行框架。
+> 本轮目标：围绕“可控无人推进 / 前端设计系统 / 后端契约回放 / PRD执行闭环”产出可明日实战的新增模式。
 
 ## 本轮新增（已落盘）
 
-1. `autonomous-ops/24h-unattended-ai-loop`
-2. `fullstack-engineering/frontend-system-first`
-3. `fullstack-engineering/backend-contract-first`
-4. `product-delivery/prd-to-issue-execution-loop`
+1. `autonomous-ops/audit-gated-autonomy`
+2. `fullstack-engineering/token-storybook-readiness`
+3. `fullstack-engineering/contract-replay-verification-gate`
+4. `product-delivery/prd-epic-issue-pr-pattern-closure`
 
-## 关键信号（外部）
+## 必选信源执行结果
 
-- `https://t.co/dwAiIjlXet` 在 2026-02-28 重定向到 HN Popular Blogs 2025 的 OPML Gist（92 个 RSS 源）。
-- Hacker News（2026-02-28）Top/Show/New 出现大量 Agent、RAG、开发自动化项目，说明“无人推进 + 工程守门”仍是高热方向。
-- Top/Show 快速噪声较多，必须配合“高质量长期作者池”（OPML）做稳定学习底座。
+- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML（Gist，92 feeds，最近活跃时间为 2026-02-28）。
+- HN `top/show/new`：已抓取当日首页快照，Agent 与开发自动化仍是高频方向。
+- 官方证据链补齐：
+  - OpenAI Background mode（长任务异步执行）
+  - GitHub deployment reviewers + audit log（守门与审计）
+  - W3C Design Tokens format + Storybook docs（设计系统执行底座）
+  - OpenAPI spec + Pact docs（契约优先与验证）
+  - GitHub Issue forms / PR 关联 Issue / Projects 自定义字段（PRD 闭环结构化）
 
-## 方向判断
+## 本轮结论
 
-### A. 24h 无人推进
-- 不应是“无限循环”，而是“有停止条件、有守门规则、有审计轨迹”的循环。
-- Nightshift 的核心收益来自“蒸馏 + 合并”，不是“抓更多链接”。
+### A. 24h 无人 AI 推进
+- 可持续的关键是“双车道”：探索车道（无副作用）+ 变更车道（受控副作用）。
+- 守门和审计要内建在流程中，不是次日补日志。
 
-### B. 前端设计
-- 明日落地优先级：Token → Primitive → Section → Page，先系统后页面。
-- 将性能与可访问性作为组件层验收，而非上线前补救。
+### B. 前端设计系统（明天可实战）
+- 直接采用 `Token -> Storybook -> Page` 三段式。
+- 页面层禁止新增局部视觉规则，避免系统失真。
 
-### C. 后端工程化
-- AI 高速开发下，契约漂移是第一风险；契约优先可显著减少返工。
-- 每次后端变更都应带 replay 用例，作为无人巡航的夜间回归资产。
+### C. 后端契约优先 + 回放验证
+- 契约不是文档附件，应成为 CI 闸门入口。
+- `contract verify -> replay verify` 连续通过才允许合并。
 
-### D. PRD 最佳实现
-- 必须把 PRD 切成可执行 Issue，并在 PR 合并后回灌知识库。
-- 推荐闭环：PRD Slice → Epic → Issue → PR → Pattern。
+### D. PRD 闭环
+- 闭环不止到 PR，必须到 Pattern 回灌。
+- 通过 Issue Form 与 PR 关联字段将执行轨迹结构化。
 
-## 下一轮（Cycle 2）计划
+## Cycle 3 预载任务
 
-1. 从 OPML 中筛选 12 位“与你目标最相关”的高价值作者，建立 `priority-watchlist`。
-2. 对 HN Show HN 的 Agent 类项目做“实现路径拆解”，提炼可复用模板。
-3. 补齐官方文档证据链（OpenAI/Anthropic/GitHub Docs/web.dev），提升新增 pattern 置信度到 0.75+。
-4. 产出一份“明日实战清单”：
-   - 前端：设计系统骨架脚手架
-   - 后端：契约模板 + replay 基线
-   - PRD：切片模板 + Issue 生成规范
+1. 从 OPML 中筛选 12 个优先作者，建立 `priority-watchlist` 候选池。
+2. 从 HN Show HN 中提取“可复制实现路径”并生成组件级执行卡。
+3. 把回放失败样本格式化为通用回归资产模板。
 
 ---
 
-> 审阅建议：先读 `references/patterns/_master_index.md` 再按 topic 深入。
+> 历史：Cycle 1 输出已归并进 `references/patterns/_master_index.md`。

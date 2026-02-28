@@ -1,19 +1,26 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T15:40:00Z",
-  "cycle": 1,
+  "updated_at": "2026-02-28T15:40:38Z",
+  "cycle": 2,
   "status": "active",
   "active_directions": [
-    "24h 无人 AI 推进",
-    "前端设计系统化",
-    "后端契约优先",
-    "PRD -> Issue -> PR 闭环",
-    "Hacker News 前沿信号"
+    "24h 无人 AI 推进（可控守门 + 可审计）",
+    "前端设计系统（明天可实战）",
+    "后端契约优先与回放验证",
+    "PRD -> Epic -> Issue -> PR -> Pattern 执行闭环",
+    "Hacker News + OPML 长短信号融合"
   ],
   "sources_seed": [
     "https://t.co/dwAiIjlXet",
-    "https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b",
-    "https://hacker-news.firebaseio.com/v0/"
+    "https://news.ycombinator.com/news",
+    "https://news.ycombinator.com/show",
+    "https://news.ycombinator.com/newest",
+    "https://platform.openai.com/docs/guides/background",
+    "https://docs.github.com/",
+    "https://spec.openapis.org/oas/latest.html",
+    "https://docs.pact.io/",
+    "https://www.designtokens.org/tr/drafts/format/"
   ],
-  "last_brief": "morning-brief.md"
+  "last_brief": "morning-brief.md",
+  "last_cycle_commit": null
 }
