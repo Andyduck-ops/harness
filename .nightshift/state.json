@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T21:49:54Z",
-  "cycle": 49,
+  "updated_at": "2026-02-28T21:50:19Z",
+  "cycle": 50,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -40,10 +40,9 @@
     "晋级双时点重放治理（capture+promotion replay dual-phase gate）",
     "队列预检-部署连续性双门禁（queue preflight-deploy continuity dual gate）",
     "环境等待计时上限治理（environment wait-timer ceiling gate）",
-    "审批-绕过双轨时效治理（approval-bypass dual-track freshness gate）",
+    "审批时效预算治理（approval freshness budget gate）",
     "分支规则禁绕约束治理（branch-rule no-bypass enforcement gate）",
-    "旁路理由分类治理（bypass reason taxonomy gate）",
-    "旁路授权-理由同一治理（bypass authorization-reason parity gate）",
+    "旁路理由授权一致性治理（bypass reason-authorization coherence gate）",
     "旁路模式升级漂移治理（bypass_mode escalation drift gate）",
     "规则集导出同构校验治理（ruleset export parity gate）",
     "旁路主体可见性漂移治理（bypass actor-visibility drift gate）",
@@ -55,25 +54,36 @@
     "浏览器工具权限同构治理（browser tool-scope parity gate）",
     "自驱代码生成证据账本治理（self-driving code generation evidence ledger gate）",
     "自驱代码人审触发门禁治理（self-driving code human-review trigger gate）",
-    "代理最小权限白名单治理（agent least-privilege scope manifest gate）"
+    "代理最小权限白名单治理（agent least-privilege scope manifest gate）",
+    "绕过时效预算治理（bypass freshness budget gate）",
+    "代理会话最小权限漂移治理（agent session least-privilege drift gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 49,
+    "last_cycle": 50,
     "actions": [
       {
         "type": "split",
-        "from": "自驱代码库晋级证明治理（self-driving codebase promotion proof gate）",
+        "from": "审批-绕过双轨时效治理（approval-bypass dual-track freshness gate）",
         "into": [
-          "自驱代码生成证据账本治理（self-driving code generation evidence ledger gate）",
-          "自驱代码人审触发门禁治理（self-driving code human-review trigger gate）"
+          "审批时效预算治理（approval freshness budget gate）",
+          "绕过时效预算治理（bypass freshness budget gate）"
         ],
-        "reason": "将“自动生成证据”与“人工触发门禁”拆分，避免一个方向同时承载产出证明与审批升级两类语义。"
+        "reason": "审批窗口和绕过窗口的风险类型不同，拆分后可独立定义时效预算与 required check。"
+      },
+      {
+        "type": "merge",
+        "from": [
+          "旁路理由分类治理（bypass reason taxonomy gate）",
+          "旁路授权-理由同一治理（bypass authorization-reason parity gate）"
+        ],
+        "into": "旁路理由授权一致性治理（bypass reason-authorization coherence gate）",
+        "reason": "两方向都约束 bypass 的理由与授权一致性，合并可减少同构 pattern 重复。"
       },
       {
         "type": "expand",
-        "added": "代理最小权限白名单治理（agent least-privilege scope manifest gate）",
-        "reason": "HN newest 出现 Be Careful with LLM Agents 且 GitHub GITHUB_TOKEN 文档强调最小权限，需补充 scope 白名单独立方向。"
+        "added": "代理会话最小权限漂移治理（agent session least-privilege drift gate）",
+        "reason": "HN newest 出现 Be Careful with LLM Agents，且 GitHub GITHUB_TOKEN 文档强调 permissions 最小化，需要独立跟踪会话级权限漂移。"
       }
     ]
   },
@@ -100,6 +110,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/runtime-governance/browser-tool-scope-parity-gate.md",
-  "last_cycle_commit": "pending-cycle-49"
+  "last_pattern": "references/patterns/permission-governance/agent-scope-manifest-escalation-gate.md",
+  "last_cycle_commit": "pending-cycle-50"
 }
