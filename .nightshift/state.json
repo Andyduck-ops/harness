@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T23:33:00Z",
-  "cycle": 68,
+  "updated_at": "2026-02-28T23:39:00Z",
+  "cycle": 69,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -73,37 +73,39 @@
     "跨阶段评审身份重叠预算治理（cross-stage reviewer overlap budget gate）",
     "部署批量审批隔离审计治理（deployment batch-approval quarantine gate）",
     "审批波次配额治理（approval wave-quota gate）",
-    "Show 复现证据签名治理（show-repro attestation gate）",
-    "Show 可执行预检门禁（show executability preflight gate）"
+    "Show 可执行预检门禁（show executability preflight gate）",
+    "Show URL 可达门禁（show-url reachability gate）",
+    "Show 复现验签门禁（show-repro attestation gate）",
+    "Show-Top 共振冷却晋级治理（show-top resonance cooldown gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 68,
+    "last_cycle": 69,
     "actions": [
       {
         "type": "expand",
-        "added": "Show 复现证据签名治理（show-repro attestation gate）",
-        "reason": "Show 条目会在 newest/show/news 之间快速迁移，需把可复现证据签名独立成门禁方向。"
+        "added": "Show-Top 共振冷却晋级治理（show-top resonance cooldown gate）",
+        "reason": "top 与 show 同窗共振会放大晋级冲动，需要独立冷却晋级预算。"
       },
       {
         "type": "split",
         "from": [
-          "Show 车道可执行性门禁（show-lane executability gate）"
+          "Show 可执行预检门禁（show executability preflight gate）"
         ],
         "into": [
-          "Show 演示可达性门禁（show-demo reachability gate）",
-          "Show 复现工件验签门禁（show-repro artifact attestation gate）"
+          "Show URL 可达门禁（show-url reachability gate）",
+          "Show 复现验签门禁（show-repro attestation gate）"
         ],
-        "reason": "演示可达与复现可验证是不同失效面，需要独立阈值与阻断条件。"
+        "reason": "可达性与可复现验签属于不同失效面，必须拆分独立门禁。"
       },
       {
         "type": "merge",
         "from": [
-          "Show 演示可达性门禁（show-demo reachability gate）",
-          "HN 条目存活预检治理（dead/deleted pre-promotion gate）"
+          "Show 复现证据签名治理（show-repro attestation gate）",
+          "Show 复现工件验签门禁（show-repro artifact attestation gate）"
         ],
-        "into": "Show 可执行预检门禁（show executability preflight gate）",
-        "reason": "两方向都服务于晋级前过滤无效条目，合并后统一预检口径并减少同构重复。"
+        "into": "Show 复现验签门禁（show-repro attestation gate）",
+        "reason": "两方向语义同构，合并后统一 schema 与 required checks，减少重复维护。"
       }
     ]
   },
@@ -131,6 +133,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/discovery-governance/show-lane-executability-gate.md",
-  "last_cycle_commit": "pending-cycle-68"
+  "last_pattern": "references/patterns/discovery-governance/show-repro-attestation-gate.md",
+  "last_cycle_commit": "pending-cycle-69"
 }

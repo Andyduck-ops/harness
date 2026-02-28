@@ -1,3 +1,59 @@
+# Morning Brief（Nightshift Cycle 69）
+
+> 更新时间：2026-02-28 23:39 UTC  
+> 本轮目标：把 Show 热度晋级从“可见性阈值”升级为“复现验签阈值”，阻断仅凭热度的伪晋级。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/discovery-governance/show-repro-attestation-gate.md`
+2. `references/patterns/discovery-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `Show-Top 共振冷却晋级治理（show-top resonance cooldown gate）`
+  - reason: HN `top` 与 `show` 同窗共振会加速晋级冲动，需要独立冷却策略避免热度即执行。
+- `split`：拆分方向
+  - from: `Show 可执行预检门禁（show executability preflight gate）`
+  - into: `Show URL 可达门禁（show-url reachability gate）`
+  - into: `Show 复现验签门禁（show-repro attestation gate）`
+  - reason: 可达性检查与可复现验签属于不同失效面，需分离阈值和阻断依据。
+- `merge`：合并方向
+  - from: `Show 复现证据签名治理（show-repro attestation gate）`
+  - from: `Show 复现工件验签门禁（show-repro artifact attestation gate）`
+  - into: `Show 复现验签门禁（show-repro attestation gate）`
+  - reason: 两方向语义同构，合并后统一 schema 与 required checks，减少重复 pattern 漂移。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已重定向并锚定到 HN Popular Blogs OPML raw（2026-02-28）。
+- HN top/show/new API 同窗采样（2026-02-28）
+  - `topstories[0]`: item `47220686` — `Show HN: BrowserOS: Browser + Linux = local apps in your browser tab`
+  - `showstories[1]`: item `47219451` — `Show HN: Escape from Los Angeles 1996`
+  - `newstories[0]`: item `47220825` — `Show HN: Text containers in tool docs should not be comments`
+- HN Show 规则页（官方）
+  - Show 帖先进入 `shownew`，达到 4 points/2 comments 后才进入 `show`，且可设置 no-show。
+- 官方文档证据链（本轮重点）
+  - GitHub Protected Branches：required status checks 必须通过才能合并
+  - GitHub Artifact Attestations：构建产物 provenance 可加密验签
+
+### 本轮结论
+
+- Show 可见性阈值（shownew→show）是社区分发规则，不是工程可复现规则。
+- candidate->issue 晋级应增加 `show_repro_attestation_verified_pass` 硬门禁。
+- 三车道热度共振只能决定“关注优先级”，不能替代“可复现签名证据”。
+
+### Cycle 70 预载任务
+
+1. 将 `show_repro_attestation.json` 字段映射到 issue form 必填项（缺失即阻断）。
+2. 为 `show-top resonance` 方向补充最小冷却窗口与复采样阈值。
+3. 输出 `show promotion required-checks matrix`，区分可达性失败与验签失败处置路径。
+
+---
+
 # Morning Brief（Nightshift Cycle 68）
 
 > 更新时间：2026-02-28 23:33 UTC  
