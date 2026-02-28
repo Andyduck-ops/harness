@@ -80,6 +80,7 @@
 | 3 | [queue-reorder-evidence-epoch-invalidation-gate](./queue-governance/queue-reorder-evidence-epoch-invalidation-gate.md) | queue-governance | 0.80 | OPML + HN(news/show/new + API) + GitHub Merge Queue + merge_group |
 | 3 | [queue-jump-throughput-loss-budget-gate](./queue-governance/queue-jump-throughput-loss-budget-gate.md) | queue-governance | 0.79 | OPML + HN(news/show/new + API) + GitHub Merge Queue + merge_group |
 | 3 | [queue-fallback-recovery-threshold-gate](./queue-governance/queue-fallback-recovery-threshold-gate.md) | queue-governance | 0.78 | OPML + HN(news/show/new + API) + GitHub Merge Queue + merge_group |
+| 3 | [queue-fallback-hysteresis-cooldown-gate](./queue-governance/queue-fallback-hysteresis-cooldown-gate.md) | queue-governance | 0.79 | OPML + HN(news/show/new + API) + GitHub Merge Queue + merge_group |
 | 3 | [24h-unattended-ai-loop](./autonomous-ops/24h-unattended-ai-loop.md) | autonomous-ops | 0.72 | OpenAI + HN |
 | 3 | [prd-to-issue-execution-loop](./product-delivery/prd-to-issue-execution-loop.md) | product-delivery | 0.70 | Harness + GitHub + HN |
 | 3 | [frontend-system-first](./fullstack-engineering/frontend-system-first.md) | fullstack-engineering | 0.68 | HN blogs + web.dev |
@@ -115,11 +116,11 @@
 | [source-governance/](./source-governance/) | 2 | 社区信号与官方规范的三角校验、订阅体身份约束与晋级仲裁治理 |
 | [feed-governance/](./feed-governance/) | 4 | 短链入口、同窗预算与车道身份一致性治理 |
 | [discovery-governance/](./discovery-governance/) | 1 | show/newest 信号的成熟度冷却、可执行证据与晋级仲裁治理 |
-| [queue-governance/](./queue-governance/) | 6 | merge queue 同构校验、队尾绿灯风险预算与重排重建/证据纪元失效门禁治理 |
+| [queue-governance/](./queue-governance/) | 7 | merge queue 同构校验、队尾绿灯风险预算与重排重建/证据纪元失效及模式振荡抑制门禁治理 |
 
 ## 统计
 
-- 总计：77 patterns
+- 总计：78 patterns
 - 平均 confidence：0.79
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：59 patterns
+- 待验证（<0.80）：60 patterns

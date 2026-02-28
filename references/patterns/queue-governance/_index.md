@@ -6,3 +6,4 @@
 - [queue-reorder-evidence-epoch-invalidation-gate](./queue-reorder-evidence-epoch-invalidation-gate.md) — 将 queue 重建与外部证据纪元强绑定，阻断“代码重建但证据未重采样”的跨纪元晋级
 - [queue-jump-throughput-loss-budget-gate](./queue-jump-throughput-loss-budget-gate.md) — 将 jump 重排转为吞吐损耗预算门禁，阻断“以应急名义持续触发全量重建”的队列抖动
 - [queue-fallback-recovery-threshold-gate](./queue-fallback-recovery-threshold-gate.md) — 将 fallback 容错模式切换转为恢复阈值门禁，阻断“只降级不恢复”的长期质量债务
+- [queue-fallback-hysteresis-cooldown-gate](./queue-fallback-hysteresis-cooldown-gate.md) — 将 fallback 恢复升级为双阈值滞回+冷却门禁，阻断“恢复后立刻回退”的模式振荡

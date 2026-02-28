@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T22:52:37Z",
-  "cycle": 62,
+  "updated_at": "2026-02-28T22:59:04Z",
+  "cycle": 63,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -64,39 +64,40 @@
     "OPML 规范锚点存活治理（canonical redirect + retrievability gate）",
     "队列降级恢复门槛治理（queue fallback recovery-threshold gate）",
     "浏览器边界-权限同构协同治理（browser boundary-scope parity co-gate）",
-    "队列降级触发失败密度预算治理（queue fallback failure-density budget gate）",
-    "队列降级触发冲突密度预算治理（queue fallback conflict-density budget gate）",
     "队列重排吞吐损耗预算治理（queue reorder throughput-loss budget gate）",
-    "队列容错恢复确认窗口治理（queue fallback recovery confirmation-window gate）"
+    "队列模式滞回冷却治理（queue mode hysteresis cooldown gate）",
+    "队列恢复清洁窗口治理（queue recovery clean-window gate）",
+    "队列恢复回退冷却治理（queue recovery rollback-cooldown gate）",
+    "队列降级触发双失效面预算治理（queue fallback dual-failure-surface budget gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 62,
+    "last_cycle": 63,
     "actions": [
       {
         "type": "expand",
-        "added": "队列容错恢复确认窗口治理（queue fallback recovery confirmation-window gate）",
-        "reason": "GitHub merge queue 支持 minimum pull requests to merge，可作为 fallback→strict 的恢复确认窗口阈值，避免“刚降噪就立刻恢复”反复抖动。"
+        "added": "队列模式滞回冷却治理（queue mode hysteresis cooldown gate）",
+        "reason": "fallback 恢复后仍可能因短窗噪声立刻回退；需用滞回阈值+冷却窗抑制 strict/fallback 高频振荡。"
       },
       {
         "type": "split",
         "from": [
-          "队列降级触发密度预算治理（queue fallback trigger-density budget gate）"
+          "队列容错恢复确认窗口治理（queue fallback recovery confirmation-window gate）"
         ],
         "into": [
-          "队列降级触发失败密度预算治理（queue fallback failure-density budget gate）",
-          "队列降级触发冲突密度预算治理（queue fallback conflict-density budget gate）"
+          "队列恢复清洁窗口治理（queue recovery clean-window gate）",
+          "队列恢复回退冷却治理（queue recovery rollback-cooldown gate）"
         ],
-        "reason": "fallback 触发由“检查失败密度”和“合并冲突密度”两个独立失效面驱动，拆分后可分别设置 required checks 阈值。"
+        "reason": "恢复判定中的“连续清洁窗口”与“恢复后冷却窗口”属于独立失效面，拆分后可分别设置 required checks。"
       },
       {
         "type": "merge",
         "from": [
-          "队列重建吞吐损耗预算治理（queue rebuild throughput loss budget gate）",
-          "队列跳跃吞吐损耗预算治理（queue jump throughput-loss budget gate）"
+          "队列降级触发失败密度预算治理（queue fallback failure-density budget gate）",
+          "队列降级触发冲突密度预算治理（queue fallback conflict-density budget gate）"
         ],
-        "into": "队列重排吞吐损耗预算治理（queue reorder throughput-loss budget gate）",
-        "reason": "两方向都衡量 queue reorder 导致的吞吐损耗，合并后统一预算口径并减少同构 pattern 重复。"
+        "into": "队列降级触发双失效面预算治理（queue fallback dual-failure-surface budget gate）",
+        "reason": "两方向都服务于 fallback 触发判定，合并后统一预算口径并减少同构 pattern 重复。"
       }
     ]
   },
@@ -124,6 +125,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/queue-governance/queue-fallback-recovery-threshold-gate.md",
-  "last_cycle_commit": "pending-cycle-62"
+  "last_pattern": "references/patterns/queue-governance/queue-fallback-hysteresis-cooldown-gate.md",
+  "last_cycle_commit": "pending-cycle-63"
 }

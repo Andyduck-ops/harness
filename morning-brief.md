@@ -1,3 +1,59 @@
+# Morning Brief（Nightshift Cycle 63）
+
+> 更新时间：2026-02-28 23:10 UTC  
+> 本轮目标：把 merge queue 的 fallback 恢复从“过阈值即切回”升级为“滞回 + 冷却”门禁，抑制 strict/fallback 高频振荡。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/queue-governance/queue-fallback-hysteresis-cooldown-gate.md`
+2. `references/patterns/queue-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `队列模式滞回冷却治理（queue mode hysteresis cooldown gate）`
+  - reason: fallback 恢复后频繁回退会造成 queue 抖动，需独立治理“恢复后稳定窗口”。
+- `split`：拆分方向
+  - from: `队列容错恢复确认窗口治理（queue fallback recovery confirmation-window gate）`
+  - into: `队列恢复清洁窗口治理（queue recovery clean-window gate）`
+  - into: `队列恢复回退冷却治理（queue recovery rollback-cooldown gate）`
+  - reason: “连续清洁窗口”与“恢复后冷却”是两个独立失效面，需独立 required checks。
+- `merge`：合并方向
+  - from: `队列降级触发失败密度预算治理（queue fallback failure-density budget gate）`
+  - from: `队列降级触发冲突密度预算治理（queue fallback conflict-density budget gate）`
+  - into: `队列降级触发双失效面预算治理（queue fallback dual-failure-surface budget gate）`
+  - reason: 两方向共同服务于 fallback 触发判定，可合并为统一预算口径减少同构重复。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已解析并重定向到 HN Popular Blogs OPML Gist（checked 2026-02-28）。
+- HN 三车道页面快照（2026-02-28）
+  - news: `Ask HN: How to think about and design LLM apps?`
+  - show: `Show HN: Fullly [sic] Open Source SMS Authentication for Laravel`
+  - newest: `The confidence game of startup fundraising`
+- 官方文档证据链（本轮重点）
+  - GitHub Merge Queue：支持 `Only merge non-failing pull requests`、`Status check timeout`、`minimum pull requests to merge`
+  - GitHub Actions：merge queue required checks 需监听 `merge_group`
+  - HN API：`topstories/showstories/newstories` 与 item `deleted/dead`
+  - OPML 2.0：`outline` 的 `text/type/xmlUrl` 契约
+
+### 本轮结论
+
+- fallback 治理必须从“单阈值切换”升级为“进入阈值 + 退出阈值 + 冷却期”的滞回状态机。
+- strict 恢复前必须执行 `merge_group` 重验并刷新 `queue_epoch_id + evidence_epoch_id`。
+- 外部信号（HN/OPML）不稳定时，只允许维持 fallback，不允许触发恢复晋级。
+
+### Cycle 64 预载任务
+
+1. 产出 `queue_mode_hysteresis.json` 与 `queue_mode_state.json` 的最小 schema 与校验规则。
+2. 新增 `recovery_oscillation_rate` 指标，量化 24h 内 strict/fallback 切换振荡频率。
+3. 将 `queue_fallback_dual_failure_surface_budget` 接入候选晋级表单，统一触发面预算。
+
+---
+
 # Morning Brief（Nightshift Cycle 62）
 
 > 更新时间：2026-02-28 22:52 UTC  
