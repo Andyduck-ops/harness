@@ -1,3 +1,53 @@
+# Morning Brief（Nightshift Cycle 46）
+
+> 更新时间：2026-02-28 21:31 UTC  
+> 本轮目标：把“上下文窗口燃烧”从成本优化问题升级为“压缩后回放冻结”的晋级硬门禁，避免后台续跑在语义不完整时误晋级。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/context-governance/context-burn-replay-freeze-gate.md`
+2. `references/patterns/context-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 46）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `merge`：合并方向
+  - from: `恢复回放账本治理（checkpoint + replay + compaction）`
+  - from: `认知负债冻结治理（comprehension debt + freeze gate）`
+  - into: `上下文燃烧-回放冻结协同治理（context burn replay-freeze governance）`
+  - reason: 两方向在执行面已收敛到同一事故链（压缩前快照缺失 -> 续跑语义断裂 -> 误晋级），合并后可统一冻结门禁与回放验签字段。
+- `expand`：新增方向 `工具输出占比预算治理（tool-output ratio budget gate）`
+  - 触发依据：HN top 当轮出现 “Stop Burning Your Context Window: How We Cut MCP Token Usage by 98%”，说明工具输出占比已成为自治系统稳定性的独立控制面。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，采样时页面显示 last active 为 2026-02-28）。
+- HN `top/show/new`：已采样并写入证据链（2026-03-01）：
+  - top (`news`): `Stop Burning Your Context Window: How We Cut MCP Token Usage by 98%`
+  - show (`show`): `Show HN: Syncari – AI-driven Infrastructure as Code Automation`
+  - new (`newest`): `A Proposal for Implementing Claude Code in the Browser`
+- 官方文档证据链（本轮重点）
+  - OpenAI Background mode（后台状态机、`store=true` 要求、cancel 语义）
+  - OpenAI Conversation state（`previous_response_id` / `conversation` 状态链接与压缩相关端点）
+  - GitHub Actions Artifacts（artifact digest 与 retention 字段）
+  - GitHub Protected Branches（required status checks 作为不可绕过门禁）
+
+### 本轮结论
+
+- “压缩成功”不等于“语义连续”；压缩必须成为结构化快照事件，而不是透明优化。
+- `tool_output_ratio` 是上下文燃烧的先行指标，应直接接入冻结门触发逻辑。
+- 晋级前必须同时满足 `previous_response_id` 连续性与 `artifact_digest` 一致性，否则默认冻结。
+
+### Cycle 47 预载任务
+
+1. 为 `pre_compaction_snapshot.json` 增加 `decision_delta_hash` 与 `pending_claim_count` 的阈值告警。
+2. 将 `context_burn_replay_pass` 接入 `candidate -> issue` 晋级 check，而非仅用于 PR 合并前检查。
+3. 引入 `tool_output_ratio` 的分方向基线（探索车道 vs 晋级车道）防止统一阈值误报。
+
+---
+
 # Morning Brief（Nightshift Cycle 45）
 
 > 更新时间：2026-02-28 21:33 UTC  

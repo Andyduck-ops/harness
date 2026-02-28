@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T21:33:00Z",
-  "cycle": 45,
+  "updated_at": "2026-02-28T21:31:00Z",
+  "cycle": 46,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -18,8 +18,8 @@
     "破坏性变更预算治理（breaking-change budget + semantic diff）",
     "消费者回放覆盖治理（consumer replay coverage + provider verification）",
     "需求到证据闭环治理（PRD->Pattern lineage control plane）",
-    "恢复回放账本治理（checkpoint + replay + compaction）",
-    "认知负债冻结治理（comprehension debt + freeze gate）",
+    "上下文燃烧-回放冻结协同治理（context burn replay-freeze governance）",
+    "工具输出占比预算治理（tool-output ratio budget gate）",
     "信号债务路由（exploit/explore + debt ratchet）",
     "候选晋级表单治理（candidate intake + issue form gate）",
     "证据时效验签一体化（freshness + provenance ratification gate）",
@@ -53,30 +53,21 @@
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 45,
+    "last_cycle": 46,
     "actions": [
-      {
-        "type": "split",
-        "from": "跨阶段时序预算治理（cross-stage window freshness budget gate）",
-        "into": [
-          "队列重排时序预算治理（queue reorder freshness budget gate）",
-          "审批跨阶段时序预算治理（approval cross-stage freshness budget gate）"
-        ],
-        "reason": "把队列重排窗口与审批跨阶段窗口拆开，避免一个方向同时承载两个时序失效面。"
-      },
       {
         "type": "merge",
         "from": [
-          "队列尾绿容错预算联动治理（tail-green attestation-budget parity gate）",
-          "队列容错显式降级治理（merge-queue non-failing explicit fallback gate）"
+          "恢复回放账本治理（checkpoint + replay + compaction）",
+          "认知负债冻结治理（comprehension debt + freeze gate）"
         ],
-        "into": "队列容错预算降级一体化治理（merge-queue fallback-budget parity gate）",
-        "reason": "两方向都在约束容错模式放行边界，合并后可统一预算阈值与降级动作，避免同构重复。"
+        "into": "上下文燃烧-回放冻结协同治理（context burn replay-freeze governance）",
+        "reason": "将“压缩恢复账本”与“认知冻结门”合并为同一执行面，统一压缩前快照、续跑回放与晋级冻结语义。"
       },
       {
         "type": "expand",
-        "added": "队列重排重建验签治理（queue reorder rebuild attestation gate）",
-        "reason": "GitHub merge queue 支持 jump 重排并触发重建，需要把重建事件升级为证据失效与重放验签的硬门禁。"
+        "added": "工具输出占比预算治理（tool-output ratio budget gate）",
+        "reason": "HN top 出现“Stop Burning Your Context Window”高热案例，说明工具输出占比需要从观察指标升级为强约束门禁。"
       }
     ]
   },
@@ -103,6 +94,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/queue-governance/queue-reorder-rebuild-attestation-gate.md",
-  "last_cycle_commit": "pending-cycle-45"
+  "last_pattern": "references/patterns/context-governance/context-burn-replay-freeze-gate.md",
+  "last_cycle_commit": "pending-cycle-46"
 }

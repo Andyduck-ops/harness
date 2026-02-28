@@ -1,7 +1,7 @@
 # Pattern Master Index
 
 > 自动生成的全局索引。按 rank 排序。
-> 最后更新：2026-02-28
+> 最后更新：2026-03-01
 
 ## Top Patterns
 
@@ -37,6 +37,7 @@
 | 3 | [agent-design-export-contract](./fullstack-engineering/agent-design-export-contract.md) | fullstack-engineering | 0.78 | OPML + HN + Design Tokens + Storybook + GitHub |
 | 3 | [contract-breaking-budget-replay-gate](./fullstack-engineering/contract-breaking-budget-replay-gate.md) | fullstack-engineering | 0.77 | OPML + HN + HN API + OpenAPI + Pact + GitHub |
 | 3 | [compaction-recovery-contract](./context-governance/compaction-recovery-contract.md) | context-governance | 0.77 | OPML + HN + OpenAI + GitHub + git-reflog |
+| 3 | [context-burn-replay-freeze-gate](./context-governance/context-burn-replay-freeze-gate.md) | context-governance | 0.78 | OPML + HN + OpenAI + GitHub |
 | 3 | [agent-state-cell-replay-envelope](./state-governance/agent-state-cell-replay-envelope.md) | state-governance | 0.77 | OPML + HN + OpenAI + SQLite + GitHub |
 | 3 | [comprehension-budget-gate](./comprehension-governance/comprehension-budget-gate.md) | comprehension-governance | 0.76 | OPML + HN + OpenAI + GitHub |
 | 3 | [issue-pr-artifact-lineage-manifest](./product-delivery/issue-pr-artifact-lineage-manifest.md) | product-delivery | 0.78 | OPML + HN + GitHub Docs + OpenAPI + Pact + Storybook |
@@ -83,7 +84,7 @@
 | [product-delivery/](./product-delivery/) | 7 | PRD 到执行闭环 |
 | [release-governance/](./release-governance/) | 9 | 夜间产出与白天晋级的发布治理 |
 | [recovery-governance/](./recovery-governance/) | 1 | 长时自治执行中的可恢复性治理 |
-| [context-governance/](./context-governance/) | 1 | 上下文预算与压缩交接契约治理 |
+| [context-governance/](./context-governance/) | 2 | 上下文预算、压缩交接与回放冻结治理 |
 | [state-governance/](./state-governance/) | 1 | 每 agent 状态隔离与回放信封治理 |
 | [comprehension-governance/](./comprehension-governance/) | 2 | 速度超过理解时的预算治理与解释闸门 |
 | [signal-governance/](./signal-governance/) | 2 | 稳定增量与新颖发现并行的证据路由守门 |
@@ -97,7 +98,7 @@
 
 ## 统计
 
-- 总计：61 patterns
+- 总计：62 patterns
 - 平均 confidence：0.79
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：45 patterns
+- 待验证（<0.80）：46 patterns
