@@ -1,3 +1,51 @@
+# Morning Brief（Nightshift Cycle 20）
+
+> 更新时间：2026-02-28 19:12 UTC  
+> 本轮目标：把“社区发现”与“执行晋级”之间的主断点，收敛成 OPML/HN/官方文档三角校验闸门。
+
+## 本轮新增（已落盘）
+
+1. `source-governance/triangulated-evidence-ratification-gate`
+2. `source-governance/_index.md`
+3. `_master_index.md`（新增 pattern 与 topic 统计）
+
+## 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `稳定信号车道（OPML + HN top + 官方文档）` 为：
+  - `长周期作者基座（OPML canonical pool）`
+  - `热度锚定采样（HN top anchor lane）`
+  - reason: 原方向把“作者池维护”和“热度窗口采样”绑定在一个操作单元，导致节奏无法独立调参。
+- `merge`：合并方向
+  - from: `发现入库晋级（candidate -> issue promotion gate）`
+  - from: `结构化需求入口（issue form required evidence fields）`
+  - into: `候选晋级表单治理（candidate intake + issue form gate）`
+  - reason: 两条方向都在定义候选晋级入口，长期并行维护会产生同构字段与双标准。
+- `expand`：新增方向 `信源三角校验（OPML/HN/Official ratification）`
+  - 触发依据：HN 实时流提供发现，官方文档提供约束；缺少三角仲裁会把“热门观点”误判为“可执行方案”。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist，active 2026-02-28）。
+- HN `top/show/new`：已采样，继续呈现“长期趋势 + 新奇噪声”并存形态。
+- 官方证据链（本轮重点）：
+  - Hacker News API（claim 主键与时间锚）
+  - GitHub Issue Forms required 字段（晋级入口结构化）
+  - GitHub protected branches required checks（不可绕过门禁）
+  - GitHub Actions artifacts（ratification 结果持久化）
+
+## 本轮结论
+
+- “看到信号”不等于“可执行证据”，必须先做三角校验再晋级。
+- OPML/HN 负责发现广度，官方文档负责执行边界；两者缺一不可。
+- 不落盘 `ratification_matrix`，次日接管会回到口头判断，无法审计追责。
+
+## Cycle 21 预载任务
+
+1. 为 `promotion_decision.json` 增加 `consistency_rule_id` 与 `official_doc_ref` 强校验字段。
+2. 设计 `ratification_matrix` lint（缺官方锚点直接 fail）。
+3. 评估 `triangulated-evidence-ratification-gate` 与 `candidate-to-issue-promotion-contract` 的合并边界，控制同构膨胀。
+
+---
 # Morning Brief（Nightshift Cycle 19）
 
 > 更新时间：2026-02-28 19:07 UTC  
