@@ -32,6 +32,7 @@
 | 3 | [comprehension-budget-gate](./comprehension-governance/comprehension-budget-gate.md) | comprehension-governance | 0.76 | OPML + HN + OpenAI + GitHub |
 | 3 | [issue-pr-artifact-lineage-manifest](./product-delivery/issue-pr-artifact-lineage-manifest.md) | product-delivery | 0.78 | OPML + HN + GitHub Docs + OpenAPI + Pact + Storybook |
 | 3 | [merge-fence-required-checks-lineage](./product-delivery/merge-fence-required-checks-lineage.md) | product-delivery | 0.79 | OPML + HN + OpenAI + GitHub + OpenAPI + Pact + Tokens + Storybook |
+| 3 | [comprehension-debt-ratchet-freeze-gate](./comprehension-governance/comprehension-debt-ratchet-freeze-gate.md) | comprehension-governance | 0.79 | OPML + HN + HN API + OpenAI + GitHub |
 | 3 | [lane-debt-ratchet-gate](./signal-governance/lane-debt-ratchet-gate.md) | signal-governance | 0.78 | OPML + HN + HN API + GitHub Docs |
 | 3 | [opml-hn-priority-watchlist](./autonomous-ops/opml-hn-priority-watchlist.md) | autonomous-ops | 0.77 | OPML + HN + GitHub Docs |
 | 3 | [proof-bundle-issue-form-gate](./product-delivery/proof-bundle-issue-form-gate.md) | product-delivery | 0.76 | OPML + HN + GitHub Docs + OpenAPI + Pact |
@@ -61,7 +62,7 @@
 | [recovery-governance/](./recovery-governance/) | 1 | 长时自治执行中的可恢复性治理 |
 | [context-governance/](./context-governance/) | 1 | 上下文预算与压缩交接契约治理 |
 | [state-governance/](./state-governance/) | 1 | 每 agent 状态隔离与回放信封治理 |
-| [comprehension-governance/](./comprehension-governance/) | 1 | 速度超过理解时的预算治理与解释闸门 |
+| [comprehension-governance/](./comprehension-governance/) | 2 | 速度超过理解时的预算治理与解释闸门 |
 | [signal-governance/](./signal-governance/) | 2 | 稳定增量与新颖发现并行的证据路由守门 |
 | [backlog-governance/](./backlog-governance/) | 1 | 夜间发现到可执行 Issue 的结构化入库治理 |
 | [evidence-governance/](./evidence-governance/) | 2 | 外部证据时效闸门与可回放锚点治理 |
@@ -69,7 +70,7 @@
 
 ## 统计
 
-- 总计：37 patterns
+- 总计：38 patterns
 - 平均 confidence：0.80
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：22 patterns
+- 待验证（<0.80）：23 patterns

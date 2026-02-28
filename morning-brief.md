@@ -1,3 +1,55 @@
+# Morning Brief（Nightshift Cycle 22）
+
+> 更新时间：2026-02-28 19:23 UTC  
+> 本轮目标：把“证据路由可审计”升级为“接管能力可审计”，防止夜间吞吐在次日形成认知债务雪崩。
+
+## 本轮新增（已落盘）
+
+1. `comprehension-governance/comprehension-debt-ratchet-freeze-gate`
+2. `comprehension-governance/_index.md`（新增 pattern 索引）
+3. `_master_index.md`（新增 pattern 行与 topic/统计更新）
+4. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+## 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `双预算接管治理（compaction + comprehension gate）` 为：
+  - `压缩恢复预算治理（compaction budget + recovery envelope）`
+  - `认知负债冻结治理（comprehension debt + freeze gate）`
+  - reason: 压缩预算与接管预算在故障处置时触发条件不同，绑定在同一方向会导致冻结策略不可解释。
+- `merge`：合并方向
+  - from: `信号配额路由（exploit/explore quota）`
+  - from: `方向债务回收（lane debt + carry-over ratchet）`
+  - into: `信号债务路由（exploit/explore + debt ratchet）`
+  - reason: 两条方向都在定义“路由预算如何随积压调整”，拆开维护导致同构账本重复。
+- `expand`：新增方向 `异步执行取消SLA治理（background run + cancel budget）`
+  - 触发依据：官方 Background mode 状态机支持 queued/in_progress/completed 轮询，适合沉淀“可中断自治”的审计契约。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist，active 2026-02-28）。
+- HN `top/show/new`：已通过 API 采样并验证分层：
+  - `topstories` 样本（id `45806736`）分值 `326`，代表高共识成熟信号；
+  - `showstories` 样本（id `45804620`）分值 `2`；
+  - `newstories` 样本（id `45808555`）分值 `1`，代表早信号高噪声入口。
+- 官方证据链（本轮重点）
+  - OpenAI Background mode（后台任务 + 轮询状态机）
+  - OpenAI Conversation state（`previous_response_id` / `conversation` 状态延续）
+  - GitHub protected branches required checks（冻结闸门不可绕过）
+  - GitHub Actions artifacts（账本与解释包持久化）
+
+## 本轮结论
+
+- 仅有“证据债务棘轮”不足以保证白天可接管，必须并联“认知债务冻结闸门”。
+- 当 `comprehension_debt_ratio` 超阈值时，系统应冻结晋级而不是继续推进闭环。
+- freeze/unfreeze 决策若不落盘 `ratchet_decision + freeze_reason`，审计链仍不可追责。
+
+## Cycle 23 预载任务
+
+1. 定义 `comprehension_debt_ratio` 统一公式并写入 lint 规则。
+2. 为 `freeze_gate_report.json` 增加 `unfreeze_evidence_refs` 强制字段。
+3. 评估 `comprehension-debt-ratchet-freeze-gate` 与 `comprehension-budget-gate` 的收敛边界，避免同构膨胀。
+
+---
 # Morning Brief（Nightshift Cycle 21）
 
 > 更新时间：2026-02-28 19:16 UTC  
