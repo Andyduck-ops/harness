@@ -1,15 +1,38 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T18:16:57Z",
-  "cycle": 9,
+  "updated_at": "2026-03-01T02:31:00Z",
+  "cycle": 10,
   "status": "active",
+  "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
-    "24h 无人 AI 推进（可控守门 + 可审计）",
+    "夜间证据车道（背景异步 + 本地落盘）",
+    "白天晋级车道（分支保护 + 环境审批）",
     "前端设计系统（可次日直接实战）",
     "后端契约优先与回放验证",
     "PRD -> Epic -> Issue -> PR -> Pattern 执行闭环",
-    "Hacker News + OPML 长短信号融合"
+    "Hacker News + OPML 长短信号融合",
+    "发布晋级治理（required reviewers + prevent self-reviews + deployment success gate）"
   ],
+  "exhausted_directions": [],
+  "direction_evolution": {
+    "last_cycle": 10,
+    "actions": [
+      {
+        "type": "split",
+        "from": "24h 无人 AI 推进（可控守门 + 可审计）",
+        "to": [
+          "夜间证据车道（背景异步 + 本地落盘）",
+          "白天晋级车道（分支保护 + 环境审批）"
+        ],
+        "reason": "把无人执行与环境副作用隔离，降低高风险动作误触发"
+      },
+      {
+        "type": "expand",
+        "added": "发布晋级治理（required reviewers + prevent self-reviews + deployment success gate）",
+        "reason": "HN + 官方文档共同指向“晋级安全”是无人推进后的瓶颈"
+      }
+    ]
+  },
   "sources_seed": [
     "https://t.co/dwAiIjlXet",
     "https://news.ycombinator.com/news",
@@ -23,5 +46,6 @@
     "https://storybook.js.org/docs/"
   ],
   "last_brief": "morning-brief.md",
-  "last_cycle_commit": "pending-cycle-9"
+  "last_pattern": "references/patterns/release-governance/staged-promotion-gate.md",
+  "last_cycle_commit": "pending-cycle-10"
 }

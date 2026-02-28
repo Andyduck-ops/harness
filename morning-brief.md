@@ -1,3 +1,43 @@
+# Morning Brief（Nightshift Cycle 10）
+
+> 更新时间：2026-03-01 02:31 UTC  
+> 本轮目标：把“夜间无人推进”与“白天受控发布”拆成可执行的两段式晋级闸门，避免效率与安全二选一。
+
+## 本轮新增（已落盘）
+
+1. `release-governance/staged-promotion-gate`
+2. `release-governance/_index.md`
+
+## 激进动态策略执行（本轮）
+
+- `split`：将 `24h 无人 AI 推进（可控守门 + 可审计）` 拆分为：
+  - `夜间证据车道（背景异步 + 本地落盘）`
+  - `白天晋级车道（分支保护 + 环境审批）`
+- `expand`：新增方向 `发布晋级治理（required reviewers + prevent self-reviews + deployment success gate）`
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist）。
+- HN `top/show/newest`：已采样，持续出现 AI 编程长期实战、工具链和自治可靠性讨论信号。
+- 官方证据链（已补齐）：
+  - OpenAI Background mode（异步长任务）
+  - GitHub environments（required reviewers + prevent self-reviews）
+  - GitHub protected branches（required checks + deployment success before merge）
+
+## 本轮结论
+
+- 无人推进系统应默认只跑“证据车道”，把“发布副作用”推迟到可审批的晋级车道。
+- `required checks` 解决“能否合并”，`required reviewers` 解决“能否晋级环境”，二者不可互相替代。
+- 统一 `lineage_id` 仍是跨车道审计主键，否则次晨无法快速追责与复盘。
+
+## Cycle 11 预载任务
+
+1. 补 `promotion-manifest-lint`（字段缺失即 fail）。
+2. 把 `deployment_env` 与 reviewer 组映射到环境配置模板。
+3. 评估 `lineage-gate` 与 `promotion-gate` 的去重合并条件，避免闸门同构膨胀。
+
+---
+
 # Morning Brief（Nightshift Cycle 9）
 
 > 更新时间：2026-02-28 18:16 UTC  

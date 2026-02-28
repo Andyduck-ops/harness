@@ -1,7 +1,7 @@
 # Pattern Master Index
 
 > 自动生成的全局索引。按 rank 排序。
-> 最后更新：2026-02-28
+> 最后更新：2026-03-01
 
 ## Top Patterns
 
@@ -18,6 +18,7 @@
 | 2 | [staleness-detection](./knowledge-evolution/staleness-detection.md) | knowledge-evolution | 0.85 | Trellis, OpenAI, Compound Eng |
 | 2 | [custom-linter-messages](./quality-enforcement/custom-linter-messages.md) | quality-enforcement | 0.85 | OpenAI, Trellis, Code Factory |
 | 2 | [prd-epic-issue-pr-pattern-closure](./product-delivery/prd-epic-issue-pr-pattern-closure.md) | product-delivery | 0.84 | GitHub Docs + HN |
+| 2 | [staged-promotion-gate](./release-governance/staged-promotion-gate.md) | release-governance | 0.83 | OpenAI + GitHub + HN |
 | 2 | [contract-replay-verification-gate](./fullstack-engineering/contract-replay-verification-gate.md) | fullstack-engineering | 0.82 | OpenAPI + Pact + HN |
 | 2 | [audit-gated-autonomy](./autonomous-ops/audit-gated-autonomy.md) | autonomous-ops | 0.81 | OpenAI + GitHub + HN |
 | 2 | [token-storybook-readiness](./fullstack-engineering/token-storybook-readiness.md) | fullstack-engineering | 0.80 | W3C Tokens + Storybook + HN |
@@ -45,10 +46,11 @@
 | [autonomous-ops/](./autonomous-ops/) | 3 | 24h 无人巡航与守门机制 |
 | [fullstack-engineering/](./fullstack-engineering/) | 4 | 前后端工程化执行模式 |
 | [product-delivery/](./product-delivery/) | 7 | PRD 到执行闭环 |
+| [release-governance/](./release-governance/) | 1 | 夜间产出与白天晋级的发布治理 |
 
 ## 统计
 
-- 总计：25 patterns
+- 总计：26 patterns
 - 平均 confidence：0.81
 - 高置信度（≥0.90）：5 patterns
 - 待验证（<0.80）：11 patterns
