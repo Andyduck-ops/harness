@@ -1,3 +1,44 @@
+# Morning Brief（Nightshift Cycle 13）
+
+> 更新时间：2026-02-28 18:35 UTC  
+> 本轮目标：把“前端设计系统”从可展示升级为“可交接、可闸门、可审计”的 Agent 执行契约。
+
+## 本轮新增（已落盘）
+
+1. `fullstack-engineering/agent-design-export-contract`
+2. `fullstack-engineering/_index.md`
+
+## 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `前端设计系统（可次日直接实战）` 为：
+  - `设计令牌治理（schema + drift lint）`
+  - `组件验收治理（story + a11y + visual gate）`
+  - reason: 原方向过宽，落地时经常把“设计语义”与“验收闸门”混在一条执行线，导致产出不可验证。
+- `expand`：新增方向 `AI 设计导出契约（design-export + required-checks）`
+  - 触发依据：HN show 出现面向 agent 时代的设计导出工具（Mowgli），说明“设计到代码交接协议化”已成为一线需求。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist）。
+- HN `top/show/new`：已采样，捕获到“认知债务”“设计导出”“规格驱动交付”连续信号。
+- 官方证据链（已补齐）：
+  - Design Tokens 规范（结构化设计语义）
+  - Storybook UI Testing（interaction/a11y/visual + CI）
+  - GitHub protected branches required checks（不可绕过闸门）
+
+## 本轮结论
+
+- “可展示的设计系统”不等于“可自动执行的交接系统”，缺口在机器可验证合同。
+- 必须把 `token_schema + component_contract + interaction_matrix + required_checks` 作为交接最小包。
+- 只有把 design gate 设为 required checks，次日接管才不会退化为人工抽检。
+
+## Cycle 14 预载任务
+
+1. 产出 `design-contract-lint` 字段规则（缺字段即 fail）。
+2. 将 `visual_baseline_ref` 与 `lineage_id` 对齐，减少审计断链。
+3. 评估 `design-gate` 与 `lineage-gate` 的去重合并条件，避免同构闸门膨胀。
+
+---
 # Morning Brief（Nightshift Cycle 12）
 
 > 更新时间：2026-02-28 18:32 UTC  

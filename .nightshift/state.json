@@ -1,13 +1,15 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T18:32:14Z",
-  "cycle": 12,
+  "updated_at": "2026-02-28T18:35:12Z",
+  "cycle": 13,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
     "夜间证据车道（背景异步 + 本地落盘）",
     "白天晋级车道（分支保护 + 环境审批）",
-    "前端设计系统（可次日直接实战）",
+    "设计令牌治理（schema + drift lint）",
+    "组件验收治理（story + a11y + visual gate）",
+    "AI 设计导出契约（design-export + required-checks）",
     "契约变更门禁（OpenAPI/Pact）",
     "回放证据保全（Replay/Artifact）",
     "PRD -> Epic -> Issue -> PR -> Pattern 执行闭环",
@@ -17,21 +19,21 @@
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 12,
+    "last_cycle": 13,
     "actions": [
       {
-        "type": "expand",
-        "added": "上下文预算治理（compaction contract + checkpoint handoff）",
-        "reason": "HN top 出现上下文窗口治理强信号，且官方文档已出现 conversation compaction，说明需将预算控制升级为恢复契约"
+        "type": "split",
+        "from": "前端设计系统（可次日直接实战）",
+        "to": [
+          "设计令牌治理（schema + drift lint）",
+          "组件验收治理（story + a11y + visual gate）"
+        ],
+        "reason": "原方向过宽，执行时将设计语义与验收闸门混在同一层，导致产物可展示但不可验证"
       },
       {
-        "type": "split",
-        "from": "后端契约优先与回放验证",
-        "to": [
-          "契约变更门禁（OpenAPI/Pact）",
-          "回放证据保全（Replay/Artifact）"
-        ],
-        "reason": "原方向过宽导致执行与验收耦合，拆分后可分别映射 contract-gate 与 replay-gate"
+        "type": "expand",
+        "added": "AI 设计导出契约（design-export + required-checks）",
+        "reason": "HN show 出现 Mowgli 设计导出工具，HN new 同步出现 VSDD 规格驱动交付，说明设计到代码交接契约化已成为高价值新方向"
       }
     ]
   },
@@ -51,6 +53,6 @@
     "https://storybook.js.org/docs/"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/context-governance/compaction-recovery-contract.md",
-  "last_cycle_commit": "pending-cycle-12"
+  "last_pattern": "references/patterns/fullstack-engineering/agent-design-export-contract.md",
+  "last_cycle_commit": "pending-cycle-13"
 }

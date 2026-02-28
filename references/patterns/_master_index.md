@@ -26,6 +26,7 @@
 | 3 | [dual-gate-execution-card](./product-delivery/dual-gate-execution-card.md) | product-delivery | 0.79 | OPML + HN + OpenAPI + Pact + GitHub Docs |
 | 3 | [execution-proof-bundle](./product-delivery/execution-proof-bundle.md) | product-delivery | 0.78 | OPML + HN + OpenAI + GitHub + OpenAPI + Pact + Storybook |
 | 3 | [workspace-recovery-envelope](./recovery-governance/workspace-recovery-envelope.md) | recovery-governance | 0.78 | OPML + HN + OpenAI + GitHub + git-reflog |
+| 3 | [agent-design-export-contract](./fullstack-engineering/agent-design-export-contract.md) | fullstack-engineering | 0.78 | OPML + HN + Design Tokens + Storybook + GitHub |
 | 3 | [compaction-recovery-contract](./context-governance/compaction-recovery-contract.md) | context-governance | 0.77 | OPML + HN + OpenAI + GitHub + git-reflog |
 | 3 | [issue-pr-artifact-lineage-manifest](./product-delivery/issue-pr-artifact-lineage-manifest.md) | product-delivery | 0.78 | OPML + HN + GitHub Docs + OpenAPI + Pact + Storybook |
 | 3 | [merge-fence-required-checks-lineage](./product-delivery/merge-fence-required-checks-lineage.md) | product-delivery | 0.79 | OPML + HN + OpenAI + GitHub + OpenAPI + Pact + Tokens + Storybook |
@@ -46,7 +47,7 @@
 | [knowledge-evolution/](./knowledge-evolution/) | 3 | 知识进化机制 |
 | [meta-framework/](./meta-framework/) | 1 | 元框架自身的模式 |
 | [autonomous-ops/](./autonomous-ops/) | 3 | 24h 无人巡航与守门机制 |
-| [fullstack-engineering/](./fullstack-engineering/) | 4 | 前后端工程化执行模式 |
+| [fullstack-engineering/](./fullstack-engineering/) | 5 | 前后端工程化执行模式 |
 | [product-delivery/](./product-delivery/) | 7 | PRD 到执行闭环 |
 | [release-governance/](./release-governance/) | 1 | 夜间产出与白天晋级的发布治理 |
 | [recovery-governance/](./recovery-governance/) | 1 | 长时自治执行中的可恢复性治理 |
@@ -54,7 +55,7 @@
 
 ## 统计
 
-- 总计：28 patterns
+- 总计：29 patterns
 - 平均 confidence：0.81
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：13 patterns
+- 待验证（<0.80）：14 patterns
