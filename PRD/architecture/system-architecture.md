@@ -1,4 +1,4 @@
-# System Architecture — 三层架构
+# System Architecture — 四层架构
 
 ## 设计哲学
 
@@ -84,13 +84,73 @@
 | `spec/*/index.md` | 领域知识索引 |
 | `ADR/` | 架构决策记录 |
 
+## Layer 4: 元能力层（Meta-Capability）
+
+### 职责
+- 持续从外部世界获取和蒸馏新知识
+- 管理知识的评分、排序、合并、清理
+- 根据项目特征生成适配的执行环境
+- 自迭代改进自身的知识处理能力
+
+### 核心模块
+
+| 模块 | 职责 | 触发方式 |
+|------|------|----------|
+| **Scout** | 从信源列表 + 关键词搜索获取新知 | nightshift / calibrate |
+| **Distill** | 蒸馏为 Skill 格式的结构化知识 | Scout 之后自动 |
+| **Analyze** | 第一性原理交叉验证 | Distill 之后自动 |
+| **Rank** | 多维评分 + rerank 排序 | 每次知识变更后 |
+| **Merge** | 同构知识合并 + 过期清理 | 定期 / nightshift |
+
+### Generator（项目适配生成器）
+
+从 patterns/ 选择适用模式 → 结合项目特征 → 生成定制的 .harness/ 配置：
+
+| 生成产物 | 说明 |
+|---------|------|
+| hooks 配置 | 哪些 hook、触发条件、严格程度 |
+| agent 列表 | 需要哪些 agent、各自职责 |
+| workflow 定义 | 流水线阶段和顺序 |
+| quality gate 配置 | 验证命令、失败阈值 |
+| spec 目录结构 | 按项目领域组织 |
+| JSONL 初始内容 | 按 spec 结构生成 |
+
+**方法论固定，实现动态适配。不教条，走项目特色。**
+
+详见 → [meta-capability.md](./meta-capability.md) | [nightshift.md](./nightshift.md)
+
 ## 跨层交互
 
+- **下行流**：治理层的策略通过 Hook 注入到执行层
+- **上行流**：执行层的证据反馈到治理层
+- **内循环**：compound 从证据中提取教训 → 沉淀到 patterns
+- **外循环**：Scout 从外部获取新知 → 蒸馏 → 融入 patterns
+- **生成流**：Generator 从 patterns + 项目特征 → 生成适配的执行层配置
+
+## 跨平台设计
+
+### 通用层（平台无关，存于 Git 仓库）
 
 
-- **下行流**：治理层的策略（原则、spec、lessons）通过 Hook 注入到执行层
-- **上行流**：执行层的证据（agent-outputs、staleness）反馈到治理层
-- **闭环**：compound 命令从证据中提取教训 → 人审核 → 写入 spec → 下次注入
+
+任何 AI agent 都能读 Markdown。知识与平台解耦。
+
+### 平台适配层（生成产物）
+
+| 目标平台 | 配置目录 | Hook 机制 | Agent 机制 |
+|---------|---------|----------|----------|
+| **Claude Code** | `.claude/` | Python hooks（4 种事件）| `.claude/agents/*.md` |
+| **Codex** | `.agents/` | 无原生 hook（AGENTS.md 指令替代）| `.agents/skills/*/SKILL.md` |
+| **Cursor** | `.cursor/` | 无原生 hook（rules 替代）| 无独立 agent |
+
+### 降级策略
+
+| 能力 | Claude Code | Codex | Cursor |
+|------|------------|-------|--------|
+| 强制注入 | ✅ Hook | ⚠️ AGENTS.md | ⚠️ Rules |
+| 质量门 | ✅ SubagentStop | ❌ 靠 CI | ❌ 靠 CI |
+| 渐进注入 | ✅ JSONL + Hook | ⚠️ Skill 三级加载 | ❌ 全量 |
+| 夜间学习 | ✅ background agent | ✅ async task | ❌ 无 |
 
 ## 隔离保障
 

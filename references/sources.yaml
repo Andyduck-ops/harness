@@ -1,0 +1,103 @@
+# Tracked Sources — 信源列表
+
+# 评分规则：
+# - official: 初始 0.9（官方博客/文档）
+# - framework: 初始 0.8（框架官方）
+# - practitioner: 初始 0.7（知名实践者）
+# - community: 初始 0.5（社区/一般博客）
+# - score 会根据产出质量动态调整
+
+sources:
+  # === Official ===
+  - name: OpenAI Engineering Blog
+    url: https://openai.com/index/
+    type: official
+    score: 0.95
+    last_checked: 2026-02-28
+    keywords: [harness, codex, agent, engineering]
+    notes: "Harness Engineering 文章来源"
+
+  - name: Anthropic Claude Code Docs
+    url: https://docs.anthropic.com/claude-code
+    type: official
+    score: 0.95
+    last_checked: 2026-02-28
+    keywords: [claude-code, hooks, agents, skills]
+
+  - name: Anthropic Engineering Blog
+    url: https://www.anthropic.com/engineering
+    type: official
+    score: 0.90
+    last_checked: 2026-02-28
+    keywords: [claude, agent, context]
+
+  # === Framework ===
+  - name: LangChain Blog
+    url: https://blog.langchain.com
+    type: framework
+    score: 0.80
+    last_checked: 2026-02-28
+    keywords: [agent, harness, tracing, evaluation]
+    notes: "Harness improvement with tracing 文章"
+
+  - name: Mindfold Trellis
+    url: https://github.com/mindfold-ai/Trellis
+    type: framework
+    score: 0.75
+    last_checked: 2026-02-28
+    keywords: [hooks, agents, dispatch, spec]
+    notes: "Harness 前身，227 commits"
+
+  # === Practitioners ===
+  - name: "@ryancarson (Code Factory)"
+    url: https://x.com/ryancarson
+    type: practitioner
+    score: 0.85
+    last_checked: 2026-02-28
+    keywords: [code-factory, risk, SHA-lock, quality]
+
+  - name: "@_lopopolo (OpenAI Harness)"
+    url: https://x.com/_lopopolo
+    type: practitioner
+    score: 0.85
+    last_checked: 2026-02-28
+    keywords: [harness, codex, agent-first]
+
+  - name: "@kieranklaassen (Compound Engineering)"
+    url: https://x.com/kieranklaassen
+    type: practitioner
+    score: 0.80
+    last_checked: 2026-02-28
+    keywords: [compound, learning-loop, AGENTS.md]
+
+  - name: DTX Systems Blog
+    url: https://dtx.systems/blog
+    type: practitioner
+    score: 0.70
+    last_checked: 2026-02-28
+    keywords: [agent, configuration, enforcement]
+    status: evaluating
+
+  - name: SashiDo Blog
+    url: https://www.sashido.io/en/blog
+    type: practitioner
+    score: 0.65
+    last_checked: 2026-02-28
+    keywords: [prompt-engineering, opus, codex]
+    status: evaluating
+
+  # === Community / Research ===
+  - name: Agent-Skills-for-Context-Engineering
+    url: https://github.com/anthropics/agent-skills-for-context-engineering
+    type: community
+    score: 0.75
+    last_checked: 2026-02-28
+    keywords: [skills, progressive-disclosure, context]
+    notes: "北大论文引用，token 优化 87%"
+
+  - name: Coding-Agent-prompt-best-practice
+    url: https://github.com/2217173240/Coding-Agent-prompt-best-practice
+    type: community
+    score: 0.70
+    last_checked: 2026-02-28
+    keywords: [harness, skill, agent, prompt]

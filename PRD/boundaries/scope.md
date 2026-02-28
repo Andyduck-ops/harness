@@ -2,14 +2,16 @@
 
 ## Harness 是什么
 
-Harness 是一个 **AI Agent 执行环境工程系统**。
+Harness 是一个 **自进化 AI Agent 执行环境工程系统**。
 
 它做的事：
 - 构建让 Agent 可靠产出代码的结构化环境
 - 通过 Hook 在关键边界点强制注入上下文和拦截违规
-- 管理知识资产（spec、lessons、ADR）的生命周期
+- 管理知识资产（spec、lessons、patterns）的生命周期
 - 定义 Agent 的权限阶梯、失败预算和求助协议
-- 实现知识复利——每次任务让系统变得更好
+- 持续从外部世界和内部经验中进化知识库
+- 根据项目特征动态生成适配的执行环境
+- 跨平台适配（Claude Code / Codex / Cursor）
 
 ## Harness 不是什么
 
@@ -19,7 +21,7 @@ Harness 是一个 **AI Agent 执行环境工程系统**。
 | **不是 AI 模型** | 它是模型的执行环境，不是模型本身 |
 | **不是项目管理工具** | 它不管 sprint、ticket、人员分配 |
 | **不是 CI/CD 系统** | 它利用 CI/CD，但不替代 GitHub Actions 等 |
-| **不是全自动无人系统** | 人在高杠杆点守门（P12） |
+| **不是全自动无人系统** | 人在高杠杆点守门（P12），但大部分操作自动化 |
 
 ## 范围内（Must Have）
 
@@ -35,6 +37,10 @@ Harness 是一个 **AI Agent 执行环境工程系统**。
 | S8 | Compound 知识复利命令 | P10 |
 | S9 | Staleness 腐化检测 | P11 |
 | S10 | PRD 模板（成功标准 + 边界 + 命令 + Intent ID） | P5, P6 |
+| S11 | Meta-Agent 元能力（Scout/Distill/Analyze/Rank/Merge） | P13, P14 |
+| S12 | Nightshift 夜间自主学习 | P13, P14 |
+| S13 | Generator 项目适配生成器 | P14 |
+| S14 | 跨平台适配（Claude Code / Codex / Cursor） | P14 |
 
 ## 范围外（Explicitly Out）
 
@@ -43,9 +49,10 @@ Harness 是一个 **AI Agent 执行环境工程系统**。
 | AI-to-AI 自动生成 spec | 第九轮辩论否决：可靠性 81%（0.95^4），ROI 负 | 人写 spec，AI 辅助起草 |
 | 4 阶段自动门控流水线 | 第九轮辩论否决：9/30 分，735 行 = 7.35x 复杂度 | 人在 spec 审批点守门 |
 | 完整的多后端调度 | myclaude codeagent-wrapper 是独立组件 | 未来作为可选桥接 |
-| 跨项目知识共享 | 当前每个项目独立 | 未来通过 global skill 实现 |
 | 可视化 dashboard | 过度工程化 | CLI 输出 + git log 足够 |
 | 自动回滚机制 | git revert 已够用 | 手动 git revert |
+| 修改 bedrock 原则 | 自迭代的安全边界 | 仅人工显式批准可修改 |
+| 自动修改项目代码 | 夜间学习的安全边界 | nightshift 只更新知识库 |
 
 ## 安全边界
 

@@ -57,6 +57,19 @@ Agent 不会"自觉遵守"文档。有效的约束必须是机械化的：
 - 新模式 → 编码到 agent prompt / structural test
 - 新失败 → 编码到 escalation threshold
 
+### 论点 5：知识是流动的，环境必须自进化
+
+AI coding 的最佳实践每天都在变——X 上的大佬发新玩法、官方更新 API、社区发现新 pattern。
+任何静态系统都会在几周内过时。
+
+因此 Harness 不是一个固定的工具集，而是一个**自进化系统**：
+- **外循环（calibrate）**：持续从外部世界获取新知识，蒸馏、验证、融合
+- **内循环（compound）**：从自己的任务经验中提取教训，沉淀为模式
+- **夜间自主学习（nightshift）**：Agent 在人睡觉时自主冲浪，早上产出 morning brief
+- **自迭代**：Harness 的元能力模块本身也在进化范围内
+
+> 世界是运动与变化的。静态系统维护知识，动态系统进化知识。
+
 ## 北极星
 
 **Harness 的成功标准不是"写了多少代码"，而是"系统每天变得更聪明了多少"。**
@@ -76,4 +89,4 @@ Agent 不会"自觉遵守"文档。有效的约束必须是机械化的：
 | **暴论 v2** | 意图工程哲学、Intent ID 体系、双向闸门、漂移治理 | "代码可抛弃" 的极端立场 |
 | **OpenAI Harness** | Progressive disclosure、mechanical enforcement、garbage collection、repo as brain | 特定技术选型（他们用的是 Codex + 内部工具） |
 
-Harness = Trellis 的经验 + myclaude 的野心 + 暴论的哲学 + OpenAI 的模式。
+Harness = Trellis 的经验 + myclaude 的野心 + 暴论的哲学 + OpenAI 的模式 + 自进化的元能力。

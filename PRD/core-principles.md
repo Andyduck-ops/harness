@@ -1,7 +1,7 @@
 # Core Principles — Harness 的不可违反原则
 
-> 这 12 条原则从 18 轮 Trellis 分析、OpenAI Harness Engineering、意图工程暴论、
-> 圆桌辩论（Brooks/Lamport/Taleb/Hickey/Karpathy）中提炼而来。
+> 这 14 条原则从 18 轮 Trellis 分析、OpenAI Harness Engineering、意图工程暴论、
+> 圆桌辩论（Brooks/Lamport/Taleb/Hickey/Karpathy）、以及元能力框架设计中提炼而来。
 > 每条原则都经过多轮辩论验证。违反任何一条都应触发审查。
 
 ---
@@ -169,31 +169,74 @@ Slack 讨论、口头约定、个人笔记——Agent 看不到。
 
 高杠杆点：
 - PRD/Spec 审批（决定做什么）
-- 教训写入 spec（决定系统怎么进化）
+- 战略方向调整（决定系统往哪走）
 - 高风险操作（安全/支付/权限/生产环境）
 
 低杠杆点（Agent 自主）：
-- 代码生成
-- 测试执行
-- 常规 lint/format
+- 代码生成、测试执行、常规 lint/format
+- 知识校准（calibrate/nightshift）
+- 教训提取和沉淀（compound）
 - Agent-to-Agent review
+
+**人的带宽极其有限，自动化一切可以自动化的。**
 
 > 来源：第十轮 "人审核批准 = 最可靠的 gate"
 > 来源：OpenAI "Minimal blocking gates — corrections are cheap, waiting is expensive."
+> 演化：从"人审核每条知识"→"人只看 morning brief"（元能力框架升级）
+
+---
+
+## 第五类：进化原则（Evolution > Static）
+
+### P13. Living Knowledge
+
+**知识必须流动，不能静止。世界是运动与变化的。**
+
+AI coding 最佳实践每天都在变。静态知识库在几周内过时。
+系统必须具备持续校准能力：
+
+- **外循环**：从外部世界（X、博客、官方文档）获取新知识
+- **内循环**：从自己的任务经验中提取教训
+- **合并**：外部新知 + 内部经验 → 更新 patterns
+- **清理**：过期/低质量知识定期衰减、归档
+
+知识的三层腐化速度不同：
+- Bedrock（原理）→ 几乎不变
+- Patterns（模式）→ 季度级
+- Practices（实践）→ 周级~日级
+
+> 来源："世界是运动与变化的" — 元能力框架讨论
+> 来源：OpenAI compound engineering "每次工作改善系统本身"
+
+### P14. Self-Evolving System
+
+**Harness 必须能改进自己。方法论固定，实现动态适配。**
+
+底层的元问题是不变的（Agent 的 4 个架构缺陷、知识腐化、强制执行的必要性等）。
+但具体解法必须根据项目特征和最新实践动态调整：
+
+- **不教条主义**：每个 pattern 带多种实现变体，按项目选最优
+- **阶段性适配**：项目不同阶段需要不同的 harness 配置
+- **夜间自主学习**：Agent 可以挂机自主冲浪，第二天产出 morning brief
+- **有界自迭代**：Harness 可以改进自己的知识获取和处理方式，但不改核心原则
+
+> 来源："实践论，不教条主义" — 元能力框架讨论
+> 来源：OpenAI "When the agent struggles, build the missing capability into the repo"
 
 ---
 
 ## 原则的使用方式
 
-1. **每次设计决策前**：检查是否违反 12 条原则中的任何一条
+1. **每次设计决策前**：检查是否违反 14 条原则中的任何一条
 2. **每次 PR 审查时**：验证变更是否符合相关原则
 3. **每次系统改进时**：确认改进方向与原则一致
 4. **每次辩论分歧时**：用原则作为裁决依据
+5. **每次 nightshift 校准后**：检查新知识是否挑战现有原则
 
 ## 原则的演化
 
-这 12 条原则不是永恒不变的。但修改原则本身需要：
+这 14 条原则不是永恒不变的。但修改原则本身需要：
 - 明确的反例或新证据
 - 至少 3 次实践验证
 - 记录变更的 ADR
-- 人工显式批准
+- 人工显式批准（原则修改是高杠杆决策）
