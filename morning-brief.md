@@ -1,3 +1,60 @@
+# Morning Brief（Nightshift Cycle 54）
+
+> 更新时间：2026-02-28 22:07 UTC  
+> 本轮目标：把“色值命名”升级为“语义角色命名 + alias 回放 + 多主题门禁”，避免无人值守前端改动出现同名不同义。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/design-governance/semantic-color-role-canonicalization-gate.md`
+2. `references/patterns/design-governance/_index.md`（新建 topic 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 行与统计更新）
+4. `morning-brief.md`（新增 Cycle 54）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `主题对比可读性预算治理（theme contrast readability budget gate）`
+  - reason: HN `newstories` 出现 `Thinking deeply about Theming and Color Naming`，主题命名与对比度风险成为显性问题。
+- `split`：拆分方向
+  - from: `前端视觉基线守门（design tokens + visual regression budget）`
+  - into: `语义色名规范化治理（semantic color naming canonicalization gate）`
+  - into: `视觉回归预算分层治理（visual regression tiered budget gate）`
+  - into: `主题切换回放门禁（theme-switch replay gate）`
+  - reason: 命名规范、视觉预算、主题回放属于三个不同失效面，拆分后可独立定义 required checks。
+- `merge`：合并方向
+  - from: `OPML 三元主键约束（text/xmlUrl/htmlUrl tri-key contract）`
+  - from: `OPML 可编辑字段漂移探针（outline text edit-drift probe）`
+  - into: `OPML 订阅体身份漂移治理（outline identity + edit-drift governance）`
+  - reason: 两方向都在处理订阅体身份稳定性，合并后可统一漂移门禁并降低同构 pattern 重复。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T22:07:41Z）。
+- HN `top/show/new`：已采样（2026-02-28，Hacker News API）
+  - top (`topstories`): item `43387092` — `Npm package with all possible semver combinations`
+  - show (`showstories`): item `43385853` — `Show HN: Browser AI Agent to automate your browser with Gemini`
+  - new (`newstories`): item `43386402` — `Thinking deeply about Theming and Color Naming`
+- 官方文档证据链（本轮重点）
+  - Design Tokens Format（token 引用与结构化语义承载）
+  - Storybook Test docs（组件视觉/交互/a11y 测试入口）
+  - GitHub Protected Branches（required status checks 作为不可绕过门禁）
+  - GitHub `GITHUB_TOKEN` permissions（自动化最小权限显式声明）
+
+### 本轮结论
+
+- 只做视觉回归不足以约束“语义色名漂移”，必须增加 token 角色规范化门禁。
+- `token_role_canonicalization_pass`、`theme_replay_pass`、`a11y_contrast_pass` 需并列 required checks。
+- theme 切换失败或 alias 图出现环路时必须 quarantine，禁止晋级。
+
+### Cycle 55 预载任务
+
+1. 为 `token_alias_graph.json` 增加跨主题循环引用检测（light/dark/high-contrast）。
+2. 把 `token_role_canonicalization_pass` 接入 `candidate -> issue -> PR` 的门禁链路。
+3. 补“同义不同名”自动归并策略，降低多 agent 并发改动的命名碎片化。
+
+---
+
 # Morning Brief（Nightshift Cycle 53）
 
 > 更新时间：2026-02-28 22:03 UTC  

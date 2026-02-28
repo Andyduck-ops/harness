@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T22:03:20Z",
-  "cycle": 53,
+  "updated_at": "2026-02-28T22:07:41Z",
+  "cycle": 54,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -14,7 +14,6 @@
     "设计令牌治理（schema + drift lint）",
     "组件验收治理（story + a11y + visual gate）",
     "AI 设计导出契约（design-export + required-checks）",
-    "前端视觉基线守门（design tokens + visual regression budget）",
     "破坏性变更预算治理（breaking-change budget + semantic diff）",
     "消费者回放覆盖治理（consumer replay coverage + provider verification）",
     "上下文燃烧-回放冻结协同治理（context burn replay-freeze governance）",
@@ -31,8 +30,6 @@
     "根信任轮换门禁（trusted-root rotation gate）",
     "离线验签实例漂移探针（offline verification instance drift probe）",
     "归档保留-验签对账流水（retention-attestation reconciliation ledger）",
-    "OPML 三元主键约束（text/xmlUrl/htmlUrl tri-key contract）",
-    "OPML 可编辑字段漂移探针（outline text edit-drift probe）",
     "Claim-ID 强绑定治理（claim_id -> hn_item_id -> outline_key binding）",
     "锚点存活预算治理（anchor retrievability SLA + mirror fallback）",
     "墓碑晋级冻结门禁（tombstone promotion freeze gate）",
@@ -57,36 +54,42 @@
     "需求到实现血缘治理（PRD->Epic->Issue->PR lineage governance）",
     "证据到模式回放治理（evidence->pattern replay governance）",
     "代理记忆分区闭环治理（agent memory partition closure gate）",
-    "外部身份租约回放治理（external identity lease replay gate）"
+    "外部身份租约回放治理（external identity lease replay gate）",
+    "语义色名规范化治理（semantic color naming canonicalization gate）",
+    "视觉回归预算分层治理（visual regression tiered budget gate）",
+    "主题切换回放门禁（theme-switch replay gate）",
+    "OPML 订阅体身份漂移治理（outline identity + edit-drift governance）",
+    "主题对比可读性预算治理（theme contrast readability budget gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 53,
+    "last_cycle": 54,
     "actions": [
       {
         "type": "expand",
-        "added": "外部身份租约回放治理（external identity lease replay gate）",
-        "reason": "HN newest 出现 AgentMailr 与 Be Careful with LLM Agents，外部身份凭证在无人值守链路中的复用风险上升。"
+        "added": "主题对比可读性预算治理（theme contrast readability budget gate）",
+        "reason": "HN newest 出现 Thinking deeply about Theming and Color Naming，主题命名与对比可读性风险上升。"
       },
       {
         "type": "split",
         "from": [
-          "需求到证据闭环治理（PRD->Pattern lineage control plane）"
+          "前端视觉基线守门（design tokens + visual regression budget）"
         ],
         "into": [
-          "需求到实现血缘治理（PRD->Epic->Issue->PR lineage governance）",
-          "证据到模式回放治理（evidence->pattern replay governance）"
+          "语义色名规范化治理（semantic color naming canonicalization gate）",
+          "视觉回归预算分层治理（visual regression tiered budget gate）",
+          "主题切换回放门禁（theme-switch replay gate）"
         ],
-        "reason": "需求交付与证据回放属于不同失效面，拆分后可分别治理晋级门禁与回放审计。"
+        "reason": "命名规范、视觉预算、主题回放属于不同失效面，拆分后可独立设 gate。"
       },
       {
         "type": "merge",
         "from": [
-          "代理记忆持久化权限分区治理（agent memory persistence scope partition gate）",
-          "代理记忆分区最小权限治理（agent memory partition least-privilege gate）"
+          "OPML 三元主键约束（text/xmlUrl/htmlUrl tri-key contract）",
+          "OPML 可编辑字段漂移探针（outline text edit-drift probe）"
         ],
-        "into": "代理记忆分区闭环治理（agent memory partition closure gate）",
-        "reason": "两个方向同构且重复，合并为闭环治理以降低重复 pattern 演化成本。"
+        "into": "OPML 订阅体身份漂移治理（outline identity + edit-drift governance）",
+        "reason": "两方向都治理订阅体身份稳定性，合并后减少同构 pattern 重复。"
       }
     ]
   },
@@ -114,6 +117,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/identity-governance/external-identity-lease-replay-gate.md",
-  "last_cycle_commit": "pending-cycle-53"
+  "last_pattern": "references/patterns/design-governance/semantic-color-role-canonicalization-gate.md",
+  "last_cycle_commit": "pending-cycle-54"
 }
