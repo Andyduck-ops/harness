@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T22:42:20Z",
-  "cycle": 60,
+  "updated_at": "2026-02-28T22:48:54Z",
+  "cycle": 61,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -34,12 +34,9 @@
     "旁路模式升级漂移治理（bypass_mode escalation drift gate）",
     "规则集导出同构校验治理（ruleset export parity gate）",
     "旁路主体可见性漂移治理（bypass actor-visibility drift gate）",
-    "队列容错预算降级一体化治理（merge-queue fallback-budget parity gate）",
     "队列重排代码纪元失效治理（queue reorder code-epoch invalidation gate）",
     "队列重排证据纪元失效治理（queue reorder evidence-epoch invalidation gate）",
     "队列重建吞吐损耗预算治理（queue rebuild throughput loss budget gate）",
-    "浏览器会话边界声明治理（browser runtime-boundary manifest gate）",
-    "浏览器工具权限同构治理（browser tool-scope parity gate）",
     "自驱代码生成证据账本治理（self-driving code generation evidence ledger gate）",
     "自驱代码人审触发门禁治理（self-driving code human-review trigger gate）",
     "代理最小权限分级预算治理（agent least-privilege drift budget gate）",
@@ -65,36 +62,40 @@
     "HN 条目存活预检治理（dead/deleted pre-promotion gate）",
     "跨车道身份同一门禁（cross-lane identity quorum gate）",
     "跨车道去重预算门禁（cross-lane dedupe budget gate）",
-    "OPML 规范锚点存活治理（canonical redirect + retrievability gate）"
+    "OPML 规范锚点存活治理（canonical redirect + retrievability gate）",
+    "队列跳跃吞吐损耗预算治理（queue jump throughput-loss budget gate）",
+    "队列降级触发密度预算治理（queue fallback trigger-density budget gate）",
+    "队列降级恢复门槛治理（queue fallback recovery-threshold gate）",
+    "浏览器边界-权限同构协同治理（browser boundary-scope parity co-gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 60,
+    "last_cycle": 61,
     "actions": [
       {
         "type": "expand",
-        "added": "队列重建吞吐损耗预算治理（queue rebuild throughput loss budget gate）",
-        "reason": "GitHub merge queue 文档明确 jump 到队首会触发在途 PR 全量重建，需新增吞吐损耗预算以限制频繁重排。"
+        "added": "队列跳跃吞吐损耗预算治理（queue jump throughput-loss budget gate）",
+        "reason": "GitHub merge queue 文档指出 jump 会触发 in-progress PR 全量重建并可能降低 merge velocity，需要独立吞吐预算门禁。"
       },
       {
         "type": "split",
         "from": [
-          "队列重排重建验签治理（queue reorder rebuild attestation gate）"
+          "队列容错预算降级一体化治理（merge-queue fallback-budget parity gate）"
         ],
         "into": [
-          "队列重排代码纪元失效治理（queue reorder code-epoch invalidation gate）",
-          "队列重排证据纪元失效治理（queue reorder evidence-epoch invalidation gate）"
+          "队列降级触发密度预算治理（queue fallback trigger-density budget gate）",
+          "队列降级恢复门槛治理（queue fallback recovery-threshold gate）"
         ],
-        "reason": "重排后“代码判定面变化”与“外部证据纪元失效”是两个独立故障面，拆分后可分别落 required checks。"
+        "reason": "队列降级的触发条件与恢复条件是两类独立失效面，拆分后可分别设定 required checks 与阈值。"
       },
       {
         "type": "merge",
         "from": [
-          "队列重排时序预算治理（queue reorder freshness budget gate）",
-          "审批跨阶段时序预算治理（approval cross-stage freshness budget gate）"
+          "浏览器会话边界声明治理（browser runtime-boundary manifest gate）",
+          "浏览器工具权限同构治理（browser tool-scope parity gate）"
         ],
-        "into": "跨阶段重排新鲜度预算治理（cross-stage reorder freshness budget gate）",
-        "reason": "两条方向都在治理“排队等待导致时效衰减”，合并后可统一预算口径并减少同构治理。"
+        "into": "浏览器边界-权限同构协同治理（browser boundary-scope parity co-gate）",
+        "reason": "两方向都治理 browser runtime 的边界声明与权限同构，合并可统一策略并减少同构重复。"
       }
     ]
   },
@@ -122,6 +123,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/queue-governance/queue-reorder-evidence-epoch-invalidation-gate.md",
-  "last_cycle_commit": "pending-cycle-60"
+  "last_pattern": "references/patterns/queue-governance/queue-jump-throughput-loss-budget-gate.md",
+  "last_cycle_commit": "pending-cycle-61"
 }

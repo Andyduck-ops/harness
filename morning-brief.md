@@ -1,3 +1,59 @@
+# Morning Brief（Nightshift Cycle 61）
+
+> 更新时间：2026-02-28 22:48 UTC  
+> 本轮目标：把 merge queue 的 `jump` 从“可随意提速按钮”升级为“吞吐损耗预算门禁”，避免夜间频繁重排导致重建风暴。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/queue-governance/queue-jump-throughput-loss-budget-gate.md`
+2. `references/patterns/queue-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `队列跳跃吞吐损耗预算治理（queue jump throughput-loss budget gate）`
+  - reason: GitHub merge queue 文档明确 `jump` 会触发 in-progress PR 全量重建并可能降低合并速度，需单独预算门禁。
+- `split`：拆分方向
+  - from: `队列容错预算降级一体化治理（merge-queue fallback-budget parity gate）`
+  - into: `队列降级触发密度预算治理（queue fallback trigger-density budget gate）`
+  - into: `队列降级恢复门槛治理（queue fallback recovery-threshold gate）`
+  - reason: “何时降级”与“何时恢复”是独立失效面，拆分后可独立 required checks。
+- `merge`：合并方向
+  - from: `浏览器会话边界声明治理（browser runtime-boundary manifest gate）`
+  - from: `浏览器工具权限同构治理（browser tool-scope parity gate）`
+  - into: `浏览器边界-权限同构协同治理（browser boundary-scope parity co-gate）`
+  - reason: 两方向均治理 browser runtime 边界与权限一致性，合并可减少同构重复并统一验收口径。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已解析并重定向到 HN Popular Blogs OPML Gist（checked 2026-02-28）。
+- HN 三车道（2026-02-28）
+  - news: item `47205591` — `MinIO Is Dead, Long Live MinIO`
+  - show: item `47205198` — `Show HN: Now I Get It – Translate scientific papers into interactive webpages`
+  - newest: `Show HN: Free, open-source native macOS client for di.fm`
+- 官方文档证据链（本轮重点）
+  - GitHub Merge Queue：`jump` 到队首会触发 in-progress pull requests 全量重建并影响 merge velocity
+  - GitHub Actions 事件：merge queue required checks 需监听 `merge_group`
+  - HN API：`topstories/newstories/showstories` + item `deleted/dead`
+  - OPML 2.0：`outline.text` 与 RSS `xmlUrl` 契约
+
+### 本轮结论
+
+- 仅做“重排后重验”还不够，必须先做“是否值得重排”的预算判定。
+- `jump` 应从应急手段升级为可计量成本对象，超预算只能走 incident 覆盖路径。
+- 预算门禁、merge_group 重建回放、外部证据稳定性（HN/OPML）必须联动，否则会出现吞吐损耗与错误晋级双重放大。
+
+### Cycle 62 预载任务
+
+1. 增加 `queue_jump_budget.json` 的成本归因维度（按 required check 分类耗时）。
+2. 引入 `incident_override` 的自动审计字段，追踪超预算 jump 的审批闭环。
+3. 将 `queue_jump_budget_pass` 接入候选晋级表单，阻断无预算评估的重排请求。
+
+---
+
 # Morning Brief（Nightshift Cycle 60）
 
 > 更新时间：2026-02-28 22:42 UTC  
