@@ -1,17 +1,17 @@
-# /harness:nightshift — Overnight Autonomous Learning
+# /harness:nightshift — 持续自主学习守护进程
 
-Full-cycle knowledge evolution running unattended while human sleeps.
-Produces a morning brief summarizing all changes.
+持续冲浪学习，直到人主动停止。每轮 3-5 分钟。
+morning-brief.md 增量更新，人随时打开都能看到最新进展。
 
-**~2 hours. Autonomous. Overnight.**
+**无时间上限。持续运行。人叫停才停。**
 
 ---
 
 ## When to Use
 
-- Before going to sleep: `/harness:nightshift`
-- Via cron/scheduler for continuous learning
-- Weekly deep calibration of the entire knowledge base
+- 睡前启动：`/harness:nightshift` → 挂着，早上看 morning-brief.md
+- 任何空闲时间：开个终端挂着，让 agent 持续学习
+- 白天也可以跑——不限于夜间
 
 ---
 
@@ -21,242 +21,203 @@ Produces a morning brief summarizing all changes.
 
 ---
 
-## Execution Model
+## 执行模型：持续学习循环
 
-Nightshift runs as a background agent:
-
-### Claude Code
-
-
-### Codex
-
-
----
-
-## Phase 1: Scout (~40 min)
-
-### 1a. Load Source Registry
+### 核心循环
 
 
 
-Sort sources by score (highest first). Process top 10.
-
-### 1b. Scan Each Source
-
-For each source in priority order:
-
-
-
-**Budget:** Max 10 sources × 3 findings = 30 raw findings.
-
-### 1c. Write Scout Log
+### 目标选择策略（轮转）
 
 
 
 ---
 
-## Phase 2: Distill (~30 min)
+## 每个学习单元（3-5 分钟）
 
-### 2a. Filter Noise
-
-From scout-log.md, discard:
-- Findings marked `rehash` of known patterns
-- Marketing/promotional content with no technical substance
-- Findings with no actionable insight
-
-### 2b. Distill to Pattern Format
-
-For each retained finding, produce:
+### Step 1: Scout
 
 
 
-### 2c. Write Distill Log
+如果用 WebSearch（二级探索）：
+
+
+### Step 2: Distill
+
+将每个 finding 压缩为 pattern 格式：
+
+
+
+**核心：找到元问题。** 不同文章说的往往是同一个底层问题的不同解法。
+
+### Step 3: Analyze
+
+读取 `$HARNESS_HOME/references/bedrock/first-principles.md`，对每个 finding 检查：
+
+| 检查 | 通过 | 未通过 |
+|------|------|--------|
+| 与 bedrock 原理一致？ | 继续 | 标记 `[BEDROCK_CONFLICT]` → conflicts.md |
+| 不是已有 pattern 的重复？ | 新建 | 合并为已有 pattern 的变体 |
+| 有实际证据（非纯观点）？ | 继续 | confidence -= 0.15 |
+| 可操作（非纯理论）？ | 继续 | 标记 `[THEORY_ONLY]`，降 rank |
+| confidence ≥ 0.4？ | 写入 | 丢弃 |
+| 关于 meta-framework 自身？ | 标记 `[SELF_MODIFY]` | — |
+
+### Step 4: Rank & Merge
+
+读取 `_master_index.md`：
+
+- **同一元问题已存在** → 合并为实现变体，更新 sources/verified_count/confidence
+- **新元问题** → 创建新 pattern 文件，更新 _master_index.md
+- **与已有 pattern 矛盾** → 写入 conflicts.md，不自动解决
+
+信源评分更新：
+- 产出高质量 finding → score += 0.02（上限 0.95）
+- 大部分是 noise → score -= 0.03（下限 0.3）
+- 无新内容 → 不变
+
+### Step 5: 增量更新 Morning Brief
+
+每个学习单元完成后**立即追加**到 `$HARNESS_HOME/morning-brief.md`：
+
+
+
+### Step 6: Git Commit
+
+每轮自动 commit（不 push）：
+
+
+---
+
+## 并行加速（可选）
+
+当一个信源的 Scout 返回多个 finding 时，可以并行处理：
+
+
+
+这样可以实现**流水线并行**：Scout 和 Distill+Analyze 交错执行。
+
+---
+
+## Decay Sweep（每 10 轮）
 
 
 
 ---
 
-## Phase 3: Analyze (~20 min)
+## 停止条件
 
-### 3a. Load Bedrock
+| 条件 | 行为 |
+|------|------|
+| **人主动停止**（Ctrl+C / 发消息） | 写最终 brief → commit → 退出 |
+| **连续 5 次错误** | 写 `[INTERRUPTED]` brief → commit → 退出 |
+| **所有信源 + 二级探索穷尽** | 写 `[EXHAUSTED]` brief → commit → 等待（极少发生） |
+| **Git 冲突 / 磁盘满** | 写错误日志 → 退出 |
 
-
-
-### 3b. Load Existing Patterns
-
-
-
-### 3c. Cross-Validate Each Finding
-
-For each distilled finding:
-
-| Check | Pass | Fail Action |
-|-------|------|------------|
-| Bedrock alignment | Continue | Tag `[BEDROCK_CONFLICT]` → conflicts.md |
-| Not duplicate of existing | Continue | Merge as variant → existing pattern |
-| Evidence > anecdotal | Continue | Lower confidence by 0.15 |
-| Actionable (not just theory) | Continue | Tag `[THEORY_ONLY]` → lower rank |
-| Confidence ≥ 0.4 | Continue | Discard |
-
-### 3d. Check for Self-Modify
-
-If finding is about meta-framework/ topic (Scout/Distill/Rank/Merge improvement):
-- Tag with `[SELF_MODIFY]`
-- Include in morning brief with high visibility
-- Still write to meta-framework/ (bounded self-improvement)
-- **Never modify bedrock/**
+**没有时间上限。** 可以跑一晚上，也可以跑一周。
 
 ---
 
-## Phase 4: Rank & Merge (~20 min)
+## 安全边界
 
-### 4a. Merge into Existing Patterns
+### CAN do（自主执行）
 
-For findings that match existing meta-problems:
-1. Read existing pattern file
-2. Add variant to `## 实现变体`
-3. Add source to frontmatter
-4. Update `verified_count`, `last_verified`, `confidence`
-
-### 4b. Create New Patterns
-
-For genuinely new findings:
-1. Write to `$HARNESS_HOME/references/patterns/{topic}/{name}.md`
-2. Add entry to `_master_index.md`
-
-### 4c. Decay Sweep
-
-Check ALL existing patterns:
-
-
-### 4d. Compression Check
-
-
-
-If > 100: identify patterns with same topic and similar meta-problems, merge aggressively.
-
-### 4e. Update Source Scores
-
-For each source that was scouted:
-- Produced high-quality findings → score += 0.02 (cap at 0.95)
-- Produced mostly noise → score -= 0.03 (floor at 0.3)
-- No new content → no change
-
-Write updated `sources.yaml`.
-
----
-
-## Phase 5: Morning Brief (~10 min)
-
-### 5a. Generate Brief
-
-Write `$HARNESS_HOME/morning-brief.md`:
-
-
-
-### 5b. Git Commit
-
-All nightshift changes committed automatically:
-
-
-
-**Note: Does NOT push.** Human reviews morning-brief.md and pushes if satisfied.
-
-### 5c. Cleanup
-
-
-
----
-
-## Safety Boundaries
-
-### CAN do (autonomous)
-
-| Action | Scope |
+| 操作 | 范围 |
 |--------|-------|
-| WebFetch/WebSearch | Read-only, source URLs only |
-| Create/update references/patterns/ | Knowledge base |
-| Create/update references/sources.yaml | Source scores |
-| Move patterns to archive/ | Decay cleanup |
-| Write morning-brief.md | Reporting |
-| Write .nightshift/ logs | Internal state |
-| Git commit (no push) | Version control |
+| WebFetch / WebSearch | 只读，信源 URL 和搜索 |
+| 创建/更新 references/patterns/ | 知识库 |
+| 创建/更新 references/sources.yaml | 信源评分 |
+| 移动 patterns 到 archive/ | 衰减清理 |
+| 写 morning-brief.md | 增量报告 |
+| 写 .nightshift/ 日志 | 内部状态 |
+| Git commit（不 push） | 版本控制 |
 
-### CANNOT do (hardcoded blocks)
+### CANNOT do（硬性禁止）
 
-| Action | Reason |
+| 操作 | 原因 |
 |--------|--------|
-| Modify PRD/ | Intent assets need human decision |
-| Modify bedrock/ | First principles are immutable |
-| Modify generator/*.md | Self-iteration needs human confirm |
-| Modify project code | Out of scope |
-| Git push | Human reviews first |
-| Send messages / create PRs | No nighttime disturbance |
-| Delete non-archive patterns | Prevent accidental data loss |
-| Run for > 3 hours | Cost safety valve |
+| 修改 PRD/ | 意图资产需要人工决策 |
+| 修改 bedrock/ | 第一性原理不可自动修改 |
+| 修改 generator/*.md | 自迭代需要人确认 |
+| 修改项目代码 | 超出知识管理范围 |
+| Git push | 人审核后才推 |
+| 发消息 / 创建 PR | 不打扰人 |
+| 删除非 archive 的 patterns | 防止误删 |
 
-### Emergency Stop
+### Bedrock Guard
 
-If nightshift runs > 3 hours or encounters > 5 consecutive errors:
-1. Write partial morning-brief.md with `[INTERRUPTED]` tag
-2. Commit whatever was completed
-3. Log error details to `.nightshift/errors.md`
-4. Exit cleanly
+如果 finding 与 bedrock 原理冲突：
+1. **不写入 patterns/**
+2. 写入 `$HARNESS_HOME/.nightshift/conflicts.md`
+3. morning-brief.md 高亮标记 `[BEDROCK_CONFLICT]`
+4. 等人工判断
 
----
+### Self-Modify Guard
 
-## Scheduling
-
-### Manual (Recommended Initially)
-
-
-
-### Cron (After Trust is Established)
-
-
-
-### Weekly Deep Calibration
-
-
+如果 finding 关于改进 Scout/Distill/Rank/Merge 自身：
+1. **仍然写入 patterns/meta-framework/**（有界自改进）
+2. morning-brief.md 高亮标记 `[SELF_MODIFY]`
+3. **不自动修改 generator/*.md**（需要人确认后才改）
 
 ---
 
-## Relationship to Other Commands
+## 状态文件
 
-| Command | Trigger | Scope | Duration | Human Role |
-|---------|---------|-------|----------|------------|
-| `/harness:calibrate` | Manual, daytime | Focused (1 topic/URL) | ~20 min | Interactive |
-| `/harness:nightshift` | Manual/cron, night | Full (all sources) | ~2 hours | Reviews morning brief |
-| `/harness:compound` | After task completion | Internal experience | ~10 min | Reviews lessons |
+### `.nightshift/state.json`
 
-**Data flow:**
+
+
+### `.nightshift/metrics.jsonl`（追加式）
+
 
 
 ---
 
-## Metrics
+## Morning Brief 格式
 
-Track in `.nightshift/metrics.jsonl` (append-only):
+`$HARNESS_HOME/morning-brief.md`（增量追加，人随时可看）：
 
 
-
-Morning brief includes trend line when ≥ 5 data points exist.
 
 ---
 
-## Key Principles
+## 与其他命令的关系
 
-> **Nightshift is a librarian, not an architect.**
+| 命令 | 触发 | 范围 | 持续 | 人的角色 |
+|------|------|------|------|----------|
+| `/harness:calibrate` | 手动，白天 | 聚焦（1 个 URL/topic） | ~20 min | 交互式 |
+| `/harness:nightshift` | 手动启动 | 全部信源 + 探索 | **无上限** | 看 brief |
+| `/harness:compound` | 任务完成后 | 内部经验 | ~10 min | 审核教训 |
+
+**数据流：**
+
+
+---
+
+## 快速启动
+
+
+
+---
+
+## 核心原则
+
+> **Nightshift 是不知疲倦的图书馆员。**
 >
-> It organizes, catalogs, and cleans the knowledge library.
-> It never redesigns the library itself (that's human + calibrate).
+> 它整理、分类、清洁知识库。
+> 它永远不会重新设计图书馆本身——那是人 + calibrate 的事。
 
-> **Morning brief is the only human interface.**
+> **Morning brief 是增量的，不是最后才写的。**
 >
-> Everything nightshift does must be summarizable in 5 minutes of reading.
-> If a change can't be explained in the brief, it shouldn't be made.
+> 人随时打开 morning-brief.md 都能看到最新进展。
+> 不需要等到"完成"才能看结果。
 
 > **Commit but never push.**
 >
-> Git history provides full audit trail and rollback capability.
-> Human pushes after reviewing morning brief = implicit approval.
+> Git 历史提供完整审计轨迹和回滚能力。
+> 人推送 = 隐式批准。
+
+> **没有时间上限，只有停止信号。**
+>
+> 世界是运动与变化的。学习不应该有人为的截止时间。
+> 人叫停，或者信源穷尽，才是真正的停止条件。
