@@ -1,3 +1,51 @@
+# Morning Brief（Nightshift Cycle 34）
+
+> 更新时间：2026-02-28 20:28 UTC  
+> 本轮目标：把“可回放证据”再推进到“晋级时仍可用”，阻断 deleted/dead 墓碑对象的幽灵晋级。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/evidence-governance/tombstone-replay-promotion-gate.md`
+2. `references/patterns/evidence-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 34）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `HN Item 墓碑漂移治理（deleted/dead item tombstone policy）` 为：
+  - `墓碑检测回放治理（deleted/dead replay detector）`
+  - `墓碑晋级冻结门禁（tombstone promotion freeze gate）`
+  - reason: 需把“识别失效对象”和“阻断晋级路径”拆分为两个可验收控制面。
+- `expand`：新增方向 `晋级前重放窗口契约（pre-promotion replay window contract）`
+  - 触发依据：required status checks 存在时效窗口，晋级前必须二次回放才能保证证据仍然有效。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T20:28:31Z）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`): `Deep learning is akin to a nuclear first strike`
+  - show (`show`): `Show HN: The Mad 2025 Chart of Fortune 500 Revenue, Earnings and Stock`
+  - new (`newest`): `Show HN: Build and host react apps, no config`
+- 官方文档证据链（本轮重点）
+  - OPML 2.0 规范（`text/xmlUrl/htmlUrl` 字段语义）
+  - Hacker News API（`item.deleted` / `item.dead` 墓碑语义）
+  - GitHub 分支保护与 required checks（状态检查 7 天时效约束）
+
+### 本轮结论
+
+- 采集时可回放不等于晋级时可用；中间窗口可能产生墓碑漂移。
+- 证据门禁必须拆成 `capture_replay_pass + promotion_replay_pass` 双时点校验。
+- `deleted/dead` 必须触发硬隔离而不是软告警，否则会产生“绿灯但不可证”的晋级事故。
+
+### Cycle 35 预载任务
+
+1. 在 `promotion_decision.json` 增加 `tombstone_freeze_pass` 并纳入 required checks。
+2. 为 `tombstone_quarantine.json` 加入 `recovery_policy`（人工复核/直接废弃）。
+3. 将 `pre-promotion replay window` 与 `retrievability_sla_hours` 做分支分层模板联动。
+
+---
+
 # Morning Brief（Nightshift Cycle 33）
 
 > 更新时间：2026-02-28 20:24 UTC  

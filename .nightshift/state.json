@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T20:24:10Z",
-  "cycle": 33,
+  "updated_at": "2026-02-28T20:28:15Z",
+  "cycle": 34,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -36,25 +36,27 @@
     "OPML 可编辑字段漂移探针（outline text edit-drift probe）",
     "Claim-ID 强绑定治理（claim_id -> hn_item_id -> outline_key binding）",
     "锚点存活预算治理（anchor retrievability SLA + mirror fallback）",
-    "HN Item 墓碑漂移治理（deleted/dead item tombstone policy）"
+    "墓碑检测回放治理（deleted/dead replay detector）",
+    "墓碑晋级冻结门禁（tombstone promotion freeze gate）",
+    "晋级前重放窗口契约（pre-promotion replay window contract）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 33,
+    "last_cycle": 34,
     "actions": [
       {
         "type": "split",
-        "from": "证据引用可检索契约（claim id + anchor retrievability contract）",
+        "from": "HN Item 墓碑漂移治理（deleted/dead item tombstone policy）",
         "into": [
-          "Claim-ID 强绑定治理（claim_id -> hn_item_id -> outline_key binding）",
-          "锚点存活预算治理（anchor retrievability SLA + mirror fallback）"
+          "墓碑检测回放治理（deleted/dead replay detector）",
+          "墓碑晋级冻结门禁（tombstone promotion freeze gate）"
         ],
-        "reason": "单一方向过宽，已拆分为“强绑定约束”和“回放可存活预算”两条可执行子方向，分别治理身份一致性与证据存活性。"
+        "reason": "墓碑问题需拆分为“检测失效对象”和“冻结晋级路径”两条独立控制面，便于 required checks 精确落地。"
       },
       {
         "type": "expand",
-        "added": "HN Item 墓碑漂移治理（deleted/dead item tombstone policy）",
-        "reason": "HN API item 支持 deleted/dead 语义；新增方向用于在夜间重放时识别失效证据并阻断错误晋级。"
+        "added": "晋级前重放窗口契约（pre-promotion replay window contract）",
+        "reason": "GitHub required checks 存在时效窗口，新增方向用于把晋级前重放从建议升级为硬门禁。"
       }
     ]
   },
@@ -79,6 +81,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/evidence-governance/claim-anchor-retrievability-gate.md",
-  "last_cycle_commit": "pending-cycle-33"
+  "last_pattern": "references/patterns/evidence-governance/tombstone-replay-promotion-gate.md",
+  "last_cycle_commit": "pending-cycle-34"
 }

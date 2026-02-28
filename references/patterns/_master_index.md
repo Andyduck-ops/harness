@@ -48,6 +48,7 @@
 | 3 | [temporal-evidence-freshness-gate](./evidence-governance/temporal-evidence-freshness-gate.md) | evidence-governance | 0.75 | OPML + HN + HN API + GitHub |
 | 3 | [attested-evidence-provenance-gate](./evidence-governance/attested-evidence-provenance-gate.md) | evidence-governance | 0.76 | OPML + HN + HN API + GitHub Attestations |
 | 3 | [claim-anchor-retrievability-gate](./evidence-governance/claim-anchor-retrievability-gate.md) | evidence-governance | 0.77 | OPML + HN + HN API + GitHub Gists API |
+| 3 | [tombstone-replay-promotion-gate](./evidence-governance/tombstone-replay-promotion-gate.md) | evidence-governance | 0.79 | OPML + HN + HN API + GitHub Rules |
 | 3 | [artifact-digest-mismatch-escalation-gate](./artifact-governance/artifact-digest-mismatch-escalation-gate.md) | artifact-governance | 0.79 | OPML + HN + HN API + GitHub Attestations + GitHub Rules |
 | 3 | [candidate-to-issue-promotion-contract](./backlog-governance/candidate-to-issue-promotion-contract.md) | backlog-governance | 0.74 | OPML + HN + GitHub Projects + Issue Forms + Actions |
 | 3 | [triangulated-evidence-ratification-gate](./source-governance/triangulated-evidence-ratification-gate.md) | source-governance | 0.74 | OPML + HN + HN API + GitHub Docs |
@@ -78,13 +79,13 @@
 | [artifact-governance/](./artifact-governance/) | 2 | 工件摘要同一性、失配升级与保留期-验签窗口协同治理 |
 | [trust-governance/](./trust-governance/) | 1 | 离线验签根信任时效、轮换与隔离升级治理 |
 | [backlog-governance/](./backlog-governance/) | 1 | 夜间发现到可执行 Issue 的结构化入库治理 |
-| [evidence-governance/](./evidence-governance/) | 3 | 外部证据时效闸门、可回放锚点与可检索契约治理 |
+| [evidence-governance/](./evidence-governance/) | 4 | 外部证据时效闸门、可回放锚点与可检索契约治理 |
 | [source-governance/](./source-governance/) | 2 | 社区信号与官方规范的三角校验、订阅体身份约束与晋级仲裁治理 |
 | [feed-governance/](./feed-governance/) | 4 | 短链入口、同窗预算与车道身份一致性治理 |
 
 ## 统计
 
-- 总计：49 patterns
+- 总计：50 patterns
 - 平均 confidence：0.80
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：33 patterns
+- 待验证（<0.80）：34 patterns
