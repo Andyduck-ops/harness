@@ -1,3 +1,57 @@
+# Morning Brief（Nightshift Cycle 40）
+
+> 更新时间：2026-02-28 20:59 UTC  
+> 本轮目标：把 deployment bypass 从“人工例外”升级为“可追责旁路”，阻断强制放行绕过审计链。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/release-governance/environment-bypass-audit-quarantine-gate.md`
+2. `references/patterns/release-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 40）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `环境保护绕过审计门禁（environment protection bypass audit gate）` 为：
+  - `绕过执行身份约束治理（bypass actor authorization gate）`
+  - `绕过审计隔离治理（bypass audit quarantine gate）`
+  - reason: 原方向同时覆盖“谁能绕过”和“绕过后如何隔离追责”，执行边界过宽。
+- `merge`：合并方向
+  - from: `绕过审计隔离治理（bypass audit quarantine gate）`
+  - from: `审批-等待双触发重验治理（approval+wait dual-trigger reverify gate）`
+  - into: `审批-绕过双轨时效治理（approval-bypass dual-track freshness gate）`
+  - reason: 两方向都在治理“晋级前重验与例外放行”，合并后形成统一双轨门禁。
+- `expand`：新增方向 `分支保护禁绕策略一致性治理（branch no-bypass policy parity gate）`
+  - 触发依据：GitHub protected branches 提供“不允许绕过设置”策略面，需要与 environment bypass 审计口径一致。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T20:59:56Z）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`): `How to stop overcomplicating your product`
+  - show (`show`): `Show HN: Matrix, but it is all Git`
+  - new (`newest`): `10 years ago, someone asked me if there was any way to block AI from crawling`
+- 官方文档证据链（本轮重点）
+  - GitHub review deployments（bypass deployment protection rules）
+  - GitHub deployments/environments（required reviewers + prevent self-reviews + wait timer）
+  - GitHub protected branches（do not allow bypassing）
+  - GitHub merge queue（队列校验独立上下文）
+
+### 本轮结论
+
+- bypass 不是日志注释，而是独立晋级路径；必须有身份约束和对象绑定。
+- bypass 后默认应进入 `quarantine_review`，而不是沿用旧绿灯直接 promote。
+- 没有 `bypass_override_audit.json` 的放行，不具备次日可追责能力。
+
+### Cycle 41 预载任务
+
+1. 输出 `bypass_reason_code` 枚举与最小字段 lint（缺字段直接 fail）。
+2. 将 `post_bypass_reverify` 纳入 required checks，禁止 bypass 后跳过重验。
+3. 对齐 `branch no-bypass` 与 `environment bypass` 的冲突裁决顺序，避免策略打架。
+
+---
+
 # Morning Brief（Nightshift Cycle 39）
 
 > 更新时间：2026-02-28 20:55 UTC  

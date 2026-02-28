@@ -27,6 +27,7 @@
 | 3 | [queue-deploy-continuity-dual-gate](./release-governance/queue-deploy-continuity-dual-gate.md) | release-governance | 0.79 | OPML + HN + GitHub Merge Queue + Deployments |
 | 3 | [approval-freshness-budget-gate](./release-governance/approval-freshness-budget-gate.md) | release-governance | 0.78 | OPML + HN + GitHub Merge Queue + Deployments + Protected Branches |
 | 3 | [environment-wait-timer-reverify-gate](./release-governance/environment-wait-timer-reverify-gate.md) | release-governance | 0.77 | OPML + HN + GitHub Deployments + Merge Queue + Protected Branches |
+| 3 | [environment-bypass-audit-quarantine-gate](./release-governance/environment-bypass-audit-quarantine-gate.md) | release-governance | 0.78 | OPML + HN + GitHub Review Deployments + Protected Branches |
 | 3 | [execution-proof-bundle](./product-delivery/execution-proof-bundle.md) | product-delivery | 0.78 | OPML + HN + OpenAI + GitHub + OpenAPI + Pact + Storybook |
 | 3 | [workspace-recovery-envelope](./recovery-governance/workspace-recovery-envelope.md) | recovery-governance | 0.78 | OPML + HN + OpenAI + GitHub + git-reflog |
 | 3 | [agent-design-export-contract](./fullstack-engineering/agent-design-export-contract.md) | fullstack-engineering | 0.78 | OPML + HN + Design Tokens + Storybook + GitHub |
@@ -75,7 +76,7 @@
 | [autonomous-ops/](./autonomous-ops/) | 4 | 24h 无人巡航与守门机制 |
 | [fullstack-engineering/](./fullstack-engineering/) | 6 | 前后端工程化执行模式 |
 | [product-delivery/](./product-delivery/) | 7 | PRD 到执行闭环 |
-| [release-governance/](./release-governance/) | 4 | 夜间产出与白天晋级的发布治理 |
+| [release-governance/](./release-governance/) | 5 | 夜间产出与白天晋级的发布治理 |
 | [recovery-governance/](./recovery-governance/) | 1 | 长时自治执行中的可恢复性治理 |
 | [context-governance/](./context-governance/) | 1 | 上下文预算与压缩交接契约治理 |
 | [state-governance/](./state-governance/) | 1 | 每 agent 状态隔离与回放信封治理 |
@@ -91,7 +92,7 @@
 
 ## 统计
 
-- 总计：55 patterns
+- 总计：56 patterns
 - 平均 confidence：0.79
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：39 patterns
+- 待验证（<0.80）：40 patterns
