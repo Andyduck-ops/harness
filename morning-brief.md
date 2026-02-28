@@ -1,3 +1,59 @@
+# Morning Brief（Nightshift Cycle 60）
+
+> 更新时间：2026-02-28 22:42 UTC  
+> 本轮目标：把 merge queue 的“重排重建”升级为“代码纪元 + 证据纪元”双失效门禁，阻断跨纪元误晋级。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/queue-governance/queue-reorder-evidence-epoch-invalidation-gate.md`
+2. `references/patterns/queue-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `队列重建吞吐损耗预算治理（queue rebuild throughput loss budget gate）`
+  - reason: GitHub merge queue 文档明确 `jump` 到队首会触发在途 PR 全量重建，需要新增吞吐损耗预算以约束频繁重排。
+- `split`：拆分方向
+  - from: `队列重排重建验签治理（queue reorder rebuild attestation gate）`
+  - into: `队列重排代码纪元失效治理（queue reorder code-epoch invalidation gate）`
+  - into: `队列重排证据纪元失效治理（queue reorder evidence-epoch invalidation gate）`
+  - reason: 代码判定面变化与外部证据纪元失效是两个独立故障面，需独立 required checks。
+- `merge`：合并方向
+  - from: `队列重排时序预算治理（queue reorder freshness budget gate）`
+  - from: `审批跨阶段时序预算治理（approval cross-stage freshness budget gate）`
+  - into: `跨阶段重排新鲜度预算治理（cross-stage reorder freshness budget gate）`
+  - reason: 两方向都在治理排队等待带来的时效衰减，合并后统一预算口径并减少同构重复。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已解析到 HN Popular Blogs OPML Gist（raw 修订 `426957f4...`，checked 2026-02-28T22:43:33Z）。
+- HN 三车道（2026-02-28）
+  - news: item `47205076` — `Stop Burning your tokens. Do this instead.`
+  - show: item `47200167` — `Show HN: A promptless way to create editable SVGs`
+  - newest: `Wouldn't It Be Nice if Apps Could Tell Us How They Use Our Data?`
+- 官方文档证据链（本轮重点）
+  - GitHub Merge Queue：`jump` 到队首会触发 in-progress pull requests 全量重建
+  - GitHub Actions 事件：merge queue required checks 需监听 `merge_group`
+  - HN API：`topstories/newstories/showstories` + item `deleted/dead`
+  - OPML 2.0：`outline.text` 与 RSS `xmlUrl` 结构契约
+
+### 本轮结论
+
+- 仅做 queue 重建回放不够，必须同时失效并重采样外部证据纪元。
+- `queue_epoch_id` 与 `evidence_epoch_id` 必须强绑定到同一晋级包。
+- `deleted/dead` 复检和 `merge_group` 复检缺一不可，否则跨纪元误晋级不可审计。
+
+### Cycle 61 预载任务
+
+1. 增加 `evidence_epoch_rebound_pass` 失败分桶（missing-resample / stale-item / opml-contract-drift）。
+2. 设计 `queue_rebuild_cost_budget.json`，把重排频率与吞吐损耗绑定告警阈值。
+3. 将 `queue_epoch_id + evidence_epoch_id` 接入 candidate->issue 晋级模板，消除人工补证。
+
+---
+
 # Morning Brief（Nightshift Cycle 59）
 
 > 更新时间：2026-02-28 22:36 UTC  
@@ -2508,71 +2564,3 @@
 
 ---
 
-# Morning Brief（Nightshift Cycle 10）
-
-> 更新时间：2026-03-01 02:31 UTC  
-> 本轮目标：把“夜间无人推进”与“白天受控发布”拆成可执行的两段式晋级闸门，避免效率与安全二选一。
-
-## 本轮新增（已落盘）
-
-1. `release-governance/staged-promotion-gate`
-2. `release-governance/_index.md`
-
-## 激进动态策略执行（本轮）
-
-- `split`：将 `24h 无人 AI 推进（可控守门 + 可审计）` 拆分为：
-  - `夜间证据车道（背景异步 + 本地落盘）`
-  - `白天晋级车道（分支保护 + 环境审批）`
-- `expand`：新增方向 `发布晋级治理（required reviewers + prevent self-reviews + deployment success gate）`
-
-## 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist）。
-- HN `top/show/newest`：已采样，持续出现 AI 编程长期实战、工具链和自治可靠性讨论信号。
-- 官方证据链（已补齐）：
-  - OpenAI Background mode（异步长任务）
-  - GitHub environments（required reviewers + prevent self-reviews）
-  - GitHub protected branches（required checks + deployment success before merge）
-
-## 本轮结论
-
-- 无人推进系统应默认只跑“证据车道”，把“发布副作用”推迟到可审批的晋级车道。
-- `required checks` 解决“能否合并”，`required reviewers` 解决“能否晋级环境”，二者不可互相替代。
-- 统一 `lineage_id` 仍是跨车道审计主键，否则次晨无法快速追责与复盘。
-
-## Cycle 11 预载任务
-
-1. 补 `promotion-manifest-lint`（字段缺失即 fail）。
-2. 把 `deployment_env` 与 reviewer 组映射到环境配置模板。
-3. 评估 `lineage-gate` 与 `promotion-gate` 的去重合并条件，避免闸门同构膨胀。
-
----
-
-# Morning Brief（Nightshift Cycle 9）
-
-> 更新时间：2026-02-28 18:16 UTC  
-> 本轮目标：将“证据已产出但可被绕过”的风险收敛为受保护分支的 required checks 合并围栏。
-
-## 本轮新增（已落盘）
-
-1. `product-delivery/merge-fence-required-checks-lineage`
-
-## 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist）。
-- HN `top/show/newest`：已采样，观测到“长期 AI 编程实战”“Spec 驱动工程”“Agent 可信性讨论”等连续信号。
-- 官方证据链：OpenAI Background、GitHub protected branches / issue forms / PR 链接 / workflow artifacts、OpenAPI、Pact、Design Tokens、Storybook。
-
-## 本轮结论
-
-- 真正决定无人推进质量的不是“有没有流程文档”，而是“闸门是否被配置为 required checks”。
-- 四个固定方向可收敛为三道必过检查：`design-gate`、`contract-gate`、`lineage-gate`。
-- `lineage_id` 必须从 Issue Form 起就成为硬约束，否则次日审计仍会断链。
-
-## Cycle 10 预载任务
-
-1. 产出可直接复用的 branch protection 配置清单（required checks + 审批规则）。
-2. 补一个 `lineage-manifest-lint` 最小实现草案（字段缺失即 fail）。
-3. 将 Pattern 回写触发源切换到 `lineage-manifest.json`（非日志文本）。
-
----

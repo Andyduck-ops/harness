@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T22:36:04Z",
-  "cycle": 59,
+  "updated_at": "2026-02-28T22:42:20Z",
+  "cycle": 60,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -18,8 +18,7 @@
     "候选晋级表单治理（candidate intake + issue form gate）",
     "证据时效验签一体化（freshness + provenance ratification gate）",
     "取消-晋级时序治理（cancel-to-promote sequencing gate）",
-    "队列重排时序预算治理（queue reorder freshness budget gate）",
-    "审批跨阶段时序预算治理（approval cross-stage freshness budget gate）",
+    "跨阶段重排新鲜度预算治理（cross-stage reorder freshness budget gate）",
     "摘要同一-隔离闭环治理（digest parity + quarantine closed loop）",
     "工件保留期分层策略（branch-tier artifact retention policy）",
     "根信任轮换门禁（trusted-root rotation gate）",
@@ -36,7 +35,9 @@
     "规则集导出同构校验治理（ruleset export parity gate）",
     "旁路主体可见性漂移治理（bypass actor-visibility drift gate）",
     "队列容错预算降级一体化治理（merge-queue fallback-budget parity gate）",
-    "队列重排重建验签治理（queue reorder rebuild attestation gate）",
+    "队列重排代码纪元失效治理（queue reorder code-epoch invalidation gate）",
+    "队列重排证据纪元失效治理（queue reorder evidence-epoch invalidation gate）",
+    "队列重建吞吐损耗预算治理（queue rebuild throughput loss budget gate）",
     "浏览器会话边界声明治理（browser runtime-boundary manifest gate）",
     "浏览器工具权限同构治理（browser tool-scope parity gate）",
     "自驱代码生成证据账本治理（self-driving code generation evidence ledger gate）",
@@ -68,32 +69,32 @@
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 59,
+    "last_cycle": 60,
     "actions": [
       {
         "type": "expand",
-        "added": "HN 条目存活预检治理（dead/deleted pre-promotion gate）",
-        "reason": "HN API item 包含 deleted/dead 字段，热度样本可能在晋级前失效，需要独立存活预检门禁。"
+        "added": "队列重建吞吐损耗预算治理（queue rebuild throughput loss budget gate）",
+        "reason": "GitHub merge queue 文档明确 jump 到队首会触发在途 PR 全量重建，需新增吞吐损耗预算以限制频繁重排。"
       },
       {
         "type": "split",
         "from": [
-          "跨车道一致性预算治理（quorum-identity-dedupe budget gate）"
+          "队列重排重建验签治理（queue reorder rebuild attestation gate）"
         ],
         "into": [
-          "跨车道身份同一门禁（cross-lane identity quorum gate）",
-          "跨车道去重预算门禁（cross-lane dedupe budget gate）"
+          "队列重排代码纪元失效治理（queue reorder code-epoch invalidation gate）",
+          "队列重排证据纪元失效治理（queue reorder evidence-epoch invalidation gate）"
         ],
-        "reason": "身份同一性与去重预算是不同失效面，拆分后可独立绑定 required checks。"
+        "reason": "重排后“代码判定面变化”与“外部证据纪元失效”是两个独立故障面，拆分后可分别落 required checks。"
       },
       {
         "type": "merge",
         "from": [
-          "OPML 重定向锚定（shortlink -> canonical target lock）",
-          "锚点存活预算治理（anchor retrievability SLA + mirror fallback）"
+          "队列重排时序预算治理（queue reorder freshness budget gate）",
+          "审批跨阶段时序预算治理（approval cross-stage freshness budget gate）"
         ],
-        "into": "OPML 规范锚点存活治理（canonical redirect + retrievability gate）",
-        "reason": "两条方向都在约束入口可达与身份稳定，合并后减少同构重复并统一锚点策略。"
+        "into": "跨阶段重排新鲜度预算治理（cross-stage reorder freshness budget gate）",
+        "reason": "两条方向都在治理“排队等待导致时效衰减”，合并后可统一预算口径并减少同构治理。"
       }
     ]
   },
@@ -121,6 +122,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/discovery-governance/show-new-evidence-maturity-arbitration-gate.md",
-  "last_cycle_commit": "pending-cycle-59"
+  "last_pattern": "references/patterns/queue-governance/queue-reorder-evidence-epoch-invalidation-gate.md",
+  "last_cycle_commit": "pending-cycle-60"
 }
