@@ -73,7 +73,7 @@ WebFetch(source.url, prompt="Find recent content (last 30 days) about {topic}.
   Extract key insights, new patterns, or updated practices.")
 ```
 
-Limit: top 5 sources by score. Max 3 articles per source.
+按 score 排序，优先处理高分信源。每个信源提取有价值的发现即可，不限数量。
 
 ### 2c. Source-based Scout
 
@@ -301,8 +301,7 @@ Stale patterns are included in the report under "### Stale Patterns (consider re
 | Never modify generator/ core logic | Hardcoded path check |
 | Confidence < 0.4 → discard | Automatic |
 | Contradictions → conflicts.md, not auto-resolve | Automatic |
-| Max 5 sources per calibration | Prevent runaway costs |
-| Max 500 words per distilled pattern | Prevent bloat |
+| Confidence < 0.4 → discard | 质量控制靠 Analyze，不靠字数 |
 | patterns/ > 100 → trigger merge warning | Automatic |
 
 ---
