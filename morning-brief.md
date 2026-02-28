@@ -1,3 +1,55 @@
+# Morning Brief（Nightshift Cycle 28）
+
+> 更新时间：2026-02-28 20:06 UTC  
+> 本轮目标：补齐 HN `top/show/new` 的“车道身份一致性”硬门禁，避免页面车道与 API 车道混用导致伪晋级。
+
+## 本轮新增（已落盘）
+
+1. `feed-governance/hn-lane-identity-parity-gate`
+2. `feed-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+## 激进动态策略执行（本轮）
+
+- `merge`：合并方向
+  - from: `三榜同窗采样契约（window-aligned lane sampling contract）`
+  - from: `同窗偏斜预算治理（sampling skew budget gate）`
+  - into: `同窗时序预算治理（window alignment + skew budget gate）`
+  - reason: 两条方向都在控制时间对齐，长期并行会重复产出同构预算字段。
+- `split`：拆分方向 `HN lane quorum 仲裁（top/show/new quorum promotion gate）` 为：
+  - `车道完备性仲裁（lane completeness quorum gate）`
+  - `车道身份一致性审计（lane identity parity gate）`
+  - reason: “车道存在”与“车道同一”是两类不同风险，必须拆分建模并独立挂 required checks。
+- `expand`：新增方向 `Artifact 摘要一致性告警（artifact digest mismatch escalation）`
+  - 触发依据：官方 artifact 文档提供 digest 校验语义，可用于夜间回放包的一致性告警闭环。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：确认重定向到 HN Popular Blogs OPML Gist（redirect checked 2026-02-28T19:56:00Z）。
+- HN `top/show/new`：已采样并写入证据链（示例）：
+  - top (`news`): `id=47196582`
+  - show (`show`): `id=47195123`
+  - new (`newest`): `id=47199259`
+- 官方文档证据链（本轮重点）
+  - Hacker News API（`topstories/showstories/newstories`）
+  - GitHub required status checks 文档
+  - GitHub workflow artifacts 文档
+  - OPML 2.0 规范
+
+## 本轮结论
+
+- 仅 `quorum + skew budget` 仍不足以防止“页面/API 车道混配”的伪一致。
+- 必须把 `news/show/newest ↔ topstories/showstories/newstories` 映射显式落盘为 `lane_identity_manifest`。
+- 晋级门禁需要并联 `identity_parity_pass`，否则夜间结果无法稳定回放与解释。
+
+## Cycle 29 预载任务
+
+1. 给 `lane_parity_mismatch_ratio` 增加历史漂移基线（按时段分桶）。
+2. 设计 `identity_parity_fail` 的自动补采回放策略（限定重试次数与窗口）。
+3. 评估 `hn-lane-identity-parity-gate` 与 `triangulated-evidence-ratification-gate` 的串并联顺序模板。
+
+---
 # Morning Brief（Nightshift Cycle 27）
 
 > 更新时间：2026-02-28 19:58 UTC  

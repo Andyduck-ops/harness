@@ -35,6 +35,7 @@
 | 3 | [merge-fence-required-checks-lineage](./product-delivery/merge-fence-required-checks-lineage.md) | product-delivery | 0.79 | OPML + HN + OpenAI + GitHub + OpenAPI + Pact + Tokens + Storybook |
 | 3 | [comprehension-debt-ratchet-freeze-gate](./comprehension-governance/comprehension-debt-ratchet-freeze-gate.md) | comprehension-governance | 0.79 | OPML + HN + HN API + OpenAI + GitHub |
 | 3 | [lane-debt-ratchet-gate](./signal-governance/lane-debt-ratchet-gate.md) | signal-governance | 0.78 | OPML + HN + HN API + GitHub Docs |
+| 3 | [hn-lane-identity-parity-gate](./feed-governance/hn-lane-identity-parity-gate.md) | feed-governance | 0.80 | OPML + HN + HN API + GitHub Docs |
 | 3 | [hn-window-skew-budget-gate](./feed-governance/hn-window-skew-budget-gate.md) | feed-governance | 0.79 | OPML + HN + HN API + GitHub Docs |
 | 3 | [hn-lane-watermark-replay-contract](./feed-governance/hn-lane-watermark-replay-contract.md) | feed-governance | 0.78 | OPML + HN + HN API + GitHub Docs |
 | 3 | [cancel-budget-stale-run-gate](./autonomous-ops/cancel-budget-stale-run-gate.md) | autonomous-ops | 0.78 | OPML + HN + OpenAI + GitHub |
@@ -72,11 +73,11 @@
 | [backlog-governance/](./backlog-governance/) | 1 | 夜间发现到可执行 Issue 的结构化入库治理 |
 | [evidence-governance/](./evidence-governance/) | 2 | 外部证据时效闸门与可回放锚点治理 |
 | [source-governance/](./source-governance/) | 1 | 社区信号与官方规范的三角校验与晋级仲裁治理 |
-| [feed-governance/](./feed-governance/) | 3 | 短链入口、同窗偏斜预算与榜单一致性治理 |
+| [feed-governance/](./feed-governance/) | 4 | 短链入口、同窗预算与车道身份一致性治理 |
 
 ## 统计
 
-- 总计：43 patterns
+- 总计：44 patterns
 - 平均 confidence：0.80
 - 高置信度（≥0.90）：5 patterns
 - 待验证（<0.80）：28 patterns
