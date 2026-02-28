@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T21:21:00Z",
-  "cycle": 44,
+  "updated_at": "2026-02-28T21:33:00Z",
+  "cycle": 45,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -24,7 +24,8 @@
     "候选晋级表单治理（candidate intake + issue form gate）",
     "证据时效验签一体化（freshness + provenance ratification gate）",
     "取消-晋级时序治理（cancel-to-promote sequencing gate）",
-    "跨阶段时序预算治理（cross-stage window freshness budget gate）",
+    "队列重排时序预算治理（queue reorder freshness budget gate）",
+    "审批跨阶段时序预算治理（approval cross-stage freshness budget gate）",
     "跨车道去重预算一体化治理（dedupe key + duplicate ratio gate）",
     "车道仲裁同一双门禁（lane quorum + identity dual gate）",
     "摘要同一-隔离闭环治理（digest parity + quarantine closed loop）",
@@ -45,37 +46,37 @@
     "旁路理由分类治理（bypass reason taxonomy gate）",
     "旁路授权-理由同一治理（bypass authorization-reason parity gate）",
     "旁路模式升级漂移治理（bypass_mode escalation drift gate）",
-    "队列尾绿容错预算联动治理（tail-green attestation-budget parity gate）",
     "规则集导出同构校验治理（ruleset export parity gate）",
     "旁路主体可见性漂移治理（bypass actor-visibility drift gate）",
-    "队列容错显式降级治理（merge-queue non-failing explicit fallback gate）"
+    "队列容错预算降级一体化治理（merge-queue fallback-budget parity gate）",
+    "队列重排重建验签治理（queue reorder rebuild attestation gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 44,
+    "last_cycle": 45,
     "actions": [
       {
         "type": "split",
-        "from": "规则集导出盲区补偿治理（ruleset export blind-spot compensation gate）",
+        "from": "跨阶段时序预算治理（cross-stage window freshness budget gate）",
         "into": [
-          "规则集导出同构校验治理（ruleset export parity gate）",
-          "低权限可见性降级治理（low-privilege visibility degradation gate）"
+          "队列重排时序预算治理（queue reorder freshness budget gate）",
+          "审批跨阶段时序预算治理（approval cross-stage freshness budget gate）"
         ],
-        "reason": "把导出同构差异与权限导致的字段不可见拆开，避免单方向承载两个失效面。"
+        "reason": "把队列重排窗口与审批跨阶段窗口拆开，避免一个方向同时承载两个时序失效面。"
       },
       {
         "type": "merge",
         "from": [
-          "旁路名单主体漂移治理（bypass actor-set drift gate）",
-          "低权限可见性降级治理（low-privilege visibility degradation gate）"
+          "队列尾绿容错预算联动治理（tail-green attestation-budget parity gate）",
+          "队列容错显式降级治理（merge-queue non-failing explicit fallback gate）"
         ],
-        "into": "旁路主体可见性漂移治理（bypass actor-visibility drift gate）",
-        "reason": "两方向都在治理旁路主体边界变化，一个是真变更一个是可见性退化，合并后门禁语义一致。"
+        "into": "队列容错预算降级一体化治理（merge-queue fallback-budget parity gate）",
+        "reason": "两方向都在约束容错模式放行边界，合并后可统一预算阈值与降级动作，避免同构重复。"
       },
       {
         "type": "expand",
-        "added": "队列容错显式降级治理（merge-queue non-failing explicit fallback gate）",
-        "reason": "merge queue 支持容错模式；当旁路可见性未知时需新增显式降级方向保障晋级安全。"
+        "added": "队列重排重建验签治理（queue reorder rebuild attestation gate）",
+        "reason": "GitHub merge queue 支持 jump 重排并触发重建，需要把重建事件升级为证据失效与重放验签的硬门禁。"
       }
     ]
   },
@@ -102,6 +103,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/release-governance/ruleset-bypass-visibility-attestation-gate.md",
-  "last_cycle_commit": "pending-cycle-44"
+  "last_pattern": "references/patterns/queue-governance/queue-reorder-rebuild-attestation-gate.md",
+  "last_cycle_commit": "pending-cycle-45"
 }

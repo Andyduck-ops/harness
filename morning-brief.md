@@ -1,3 +1,56 @@
+# Morning Brief（Nightshift Cycle 45）
+
+> 更新时间：2026-02-28 21:33 UTC  
+> 本轮目标：把 merge queue 的“重排重建”从调度细节升级为晋级硬门禁，阻断 jump 后复用旧证据的隐式放行。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/queue-governance/queue-reorder-rebuild-attestation-gate.md`
+2. `references/patterns/queue-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 45）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `跨阶段时序预算治理（cross-stage window freshness budget gate）` 为：
+  - `队列重排时序预算治理（queue reorder freshness budget gate）`
+  - `审批跨阶段时序预算治理（approval cross-stage freshness budget gate）`
+  - reason: 原方向同时承载“队列重排窗口”和“审批跨阶段窗口”，执行约束边界过宽。
+- `merge`：合并方向
+  - from: `队列尾绿容错预算联动治理（tail-green attestation-budget parity gate）`
+  - from: `队列容错显式降级治理（merge-queue non-failing explicit fallback gate）`
+  - into: `队列容错预算降级一体化治理（merge-queue fallback-budget parity gate）`
+  - reason: 两方向都在约束容错模式放行边界，拆开会重复维护同一审计语义。
+- `expand`：新增方向 `队列重排重建验签治理（queue reorder rebuild attestation gate）`
+  - 触发依据：GitHub merge queue 文档确认 jump 到队首会触发 in-progress PR 重建，必须把重建事件提升为证据失效信号。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:27:10Z）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`): `747s and Coding Agents`
+  - show (`show`): `Show HN: Obsidian Garden for running local llm agents`
+  - new (`newest`): `Open Source and self host your own private Telegram using Telegram API`
+- 官方文档证据链（本轮重点）
+  - GitHub merge queue（jump 到队首会触发 in-progress PR 重建）
+  - GitHub Actions `merge_group` 事件（队列重建后的独立校验触发面）
+  - GitHub GraphQL（`EnqueuePullRequestInput.jump` / `MergeQueueParametersInput.groupingStrategy`）
+
+### 本轮结论
+
+- queue 重排不是“调度层小变更”，而是“验证对象切换”，必须触发旧证据失效。
+- `queue_epoch_id` + `merge_group_head_sha` 是最小绑定对；缺任何一项都不应晋级。
+- `groupingStrategy` 变化必须进入 quarantine 并要求人工确认，不能静默继承旧绿灯。
+
+### Cycle 46 预载任务
+
+1. 为 `queue_epoch_manifest.json` 增加历史链路字段（`previous_epoch_id` / `invalidated_at_utc`）。
+2. 把 `jump_requested=true` 接入 required checks 的 fail-fast 模板。
+3. 将 `groupingStrategy` 变化与 tail-green 风险预算做统一阈值表。
+
+---
+
 # Morning Brief（Nightshift Cycle 44）
 
 > 更新时间：2026-02-28 21:19 UTC  
