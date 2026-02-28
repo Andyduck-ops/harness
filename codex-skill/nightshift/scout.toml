@@ -1,0 +1,4 @@
+# Scout agent — 使用 gpt-5.2 做搜索探索
+model_provider = "right-my"
+model = "gpt-5.2"
+model_reasoning_effort = "medium"

@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+"""Nightshift stop guard — 阻止 agent 在无合法理由时自行退出。
+
+合法停止条件：
+1. 人主动停止（检测到 user interrupt 信号）
+2. 连续 5 次 Scout 错误
+3. 所有方向穷尽
+4. 系统错误（git 冲突 / 磁盘满）
+
+其他情况一律阻止退出，注入继续工作的指令。
+"""
+import json
+import os
+import sys
+
+
+def main():
+    try:
+        payload = json.load(sys.stdin)
+    except (json.JSONDecodeError, EOFError):
+        # 无法解析输入，不阻止
+        print("{}")
+        return
+
+    event = payload.get("hook_event_name", "")
+    last_msg = payload.get("last_assistant_message", "") or ""
+
+    # 检查是否有合法停止理由
+    legitimate_stops = [
+        "[INTERRUPTED]",
+        "[EXHAUSTED]",
+        "[DISK_FULL]",
+        "[GIT_CONFLICT]",
+        "[SYSTEM_ERROR]",
+        "[USER_STOP]",
+    ]
+
+    for marker in legitimate_stops:
+        if marker in last_msg:
+            # 合法停止，放行
+            print(json.dumps({"decision": "allow"}))
+            return
+
+    # 检查 .nightshift/state.json 的连续错误计数
+    state_path = os.path.join(os.getcwd(), ".nightshift", "state.json")
+    if os.path.exists(state_path):
+        try:
+            with open(state_path, "r", encoding="utf-8") as f:
+                state = json.load(f)
+            if state.get("consecutive_errors", 0) >= 5:
+                print(json.dumps({"decision": "allow"}))
+                return
+            if state.get("status") == "exhausted":
+                print(json.dumps({"decision": "allow"}))
+                return
+        except (json.JSONDecodeError, IOError):
+            pass
+
+    # 无合法理由 → 阻止退出，注入继续指令
+    reason = (
+        "Nightshift 没有合法停止理由。继续探索。"
+        "如果你觉得当前方向穷尽了，分析知识地图找新的空白区域。"
+        "如果连续遇到错误，检查网络状态并切换搜索策略。"
+    )
+
+    if event in ("Stop", "stop"):
+        print(json.dumps({"decision": "block", "reason": reason}))
+        sys.exit(2)
+    elif event in ("SubagentStop", "subagent_stop"):
+        # subagent 停止 — 检查是否是 scout/analyst
+        agent_type = payload.get("agent_type", "")
+        if agent_type in ("scout", "analyst", "cartographer"):
+            print(json.dumps({"decision": "block", "reason": reason}))
+            sys.exit(2)
+
+    print("{}")
+
+
+if __name__ == "__main__":
+    main()

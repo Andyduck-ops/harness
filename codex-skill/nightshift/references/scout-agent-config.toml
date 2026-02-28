@@ -1,0 +1,7 @@
+# Nightshift Scout Agent Config
+# 放置于 ~/.codex/agents/scout.toml
+# 使用 gpt-5.2 模型，适合搜索探索任务
+
+model_provider = "right-my"
+model = "gpt-5.2"
+model_reasoning_effort = "medium"
