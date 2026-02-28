@@ -22,6 +22,7 @@
 | 2 | [audit-gated-autonomy](./autonomous-ops/audit-gated-autonomy.md) | autonomous-ops | 0.81 | OpenAI + GitHub + HN |
 | 2 | [token-storybook-readiness](./fullstack-engineering/token-storybook-readiness.md) | fullstack-engineering | 0.80 | W3C Tokens + Storybook + HN |
 | 2 | [observation-masking](./context-injection/observation-masking.md) | context-injection | 0.80 | Agent-Skills-CE, BrowseComp |
+| 3 | [opml-hn-priority-watchlist](./autonomous-ops/opml-hn-priority-watchlist.md) | autonomous-ops | 0.77 | OPML + HN + GitHub Docs |
 | 3 | [24h-unattended-ai-loop](./autonomous-ops/24h-unattended-ai-loop.md) | autonomous-ops | 0.72 | OpenAI + HN |
 | 3 | [prd-to-issue-execution-loop](./product-delivery/prd-to-issue-execution-loop.md) | product-delivery | 0.70 | Harness + GitHub + HN |
 | 3 | [frontend-system-first](./fullstack-engineering/frontend-system-first.md) | fullstack-engineering | 0.68 | HN blogs + web.dev |
@@ -36,13 +37,13 @@
 | [agent-lifecycle/](./agent-lifecycle/) | 3 | Agent 生命周期管理 |
 | [knowledge-evolution/](./knowledge-evolution/) | 3 | 知识进化机制 |
 | [meta-framework/](./meta-framework/) | 1 | 元框架自身的模式 |
-| [autonomous-ops/](./autonomous-ops/) | 2 | 24h 无人巡航与守门机制 |
+| [autonomous-ops/](./autonomous-ops/) | 3 | 24h 无人巡航与守门机制 |
 | [fullstack-engineering/](./fullstack-engineering/) | 4 | 前后端工程化执行模式 |
 | [product-delivery/](./product-delivery/) | 2 | PRD 到执行闭环 |
 
 ## 统计
 
-- 总计：19 patterns
-- 平均 confidence：0.81
+- 总计：20 patterns
+- 平均 confidence：0.82
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：5 patterns
+- 待验证（<0.80）：6 patterns

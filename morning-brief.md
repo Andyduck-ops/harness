@@ -1,41 +1,30 @@
-# Morning Brief（Nightshift Cycle 3）
+# Morning Brief（Nightshift Cycle 4）
 
-> 更新时间：2026-02-28 15:41 UTC  
-> 本轮目标：把 Cycle 2 的 4 条新模式从“方向性结论”升级为“可直接执行的闸门字段与作战卡”。
+> 更新时间：2026-02-28 15:45 UTC  
+> 本轮目标：补齐 OPML 长周期与 HN 短周期融合策略，形成可执行优先作者池。
 
-## 本轮落盘（更新）
+## 本轮新增（已落盘）
 
-1. `autonomous-ops/audit-gated-autonomy`（新增守门字段矩阵）
-2. `fullstack-engineering/token-storybook-readiness`（新增 6 小时实战执行卡）
-3. `fullstack-engineering/contract-replay-verification-gate`（新增回放资产最小格式）
-4. `product-delivery/prd-epic-issue-pr-pattern-closure`（新增自动闭环规则）
+1. `autonomous-ops/opml-hn-priority-watchlist`
 
 ## 必选信源执行确认
 
-- OPML 种子：`https://t.co/dwAiIjlXet`（重定向至 HN Popular Blogs OPML）。
-- HN 快照：`top/show/new` 持续作为短周期信号源。
-- 官方证据链：OpenAI / GitHub / W3C / OpenAPI / Pact 已用于本轮字段化落地。
+- `https://t.co/dwAiIjlXet`：用于 OPML 长周期作者池。
+- HN `top/show/new`：用于短周期趋势捕捉与样本补充。
+- 官方文档补充：GitHub Projects 自定义字段用于评分卡结构化落地。
 
-## 本轮强化结果
+## 本轮结论
 
-### 1) 24h 无人 AI 推进
-- 从“概念守门”升级为“可落 CI 的守门字段”：`run_id/actor/scope/risk_level/reviewer`。
+- 夜间巡航应采用“长短融合”而非单一信源。
+- 建议把 `actionability/evidence_quality/focus_fit/novelty` 固化为每轮评分字段。
+- 只有评分达阈值的发现才进入主 pattern 索引，防止噪声挤占知识库。
 
-### 2) 前端设计系统
-- 从“结构建议”升级为“明日 6 小时执行卡”，可直接排班推进。
+## Cycle 5 预载任务
 
-### 3) 后端契约与回放
-- 明确回放资产字段，避免“有回放口号、无回放数据结构”。
-
-### 4) PRD 闭环
-- 增加自动闭环规则（Issue 字段、PR 关联、Pattern 回写时限）形成硬约束。
-
-## Cycle 4 预载任务
-
-1. 产出 `priority-watchlist`（OPML 中 12 位优先作者）并落盘为 pattern。
-2. 解析 HN Show HN 的 3 个可复制工程样式，沉淀成“执行卡模板”。
-3. 把 replay 失败样本归并为可共享的回归资产索引。
+1. 产出 12 位优先作者实际名单并落盘。
+2. 为评分字段补充权重与自动排序规则。
+3. 从 HN Show HN 提取 2 个可复制执行卡并写入 patterns。
 
 ---
 
-> 历史：Cycle 2 的新增模式已保留在 `references/patterns/_master_index.md`。
+> 历史：Cycle 2-3 的四条核心模式已在 `_master_index.md` 提升到 rank 2 段。
