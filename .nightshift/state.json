@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T20:02:39Z",
-  "cycle": 29,
+  "updated_at": "2026-02-28T20:10:00Z",
+  "cycle": 30,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -22,8 +22,7 @@
     "认知负债冻结治理（comprehension debt + freeze gate）",
     "信号债务路由（exploit/explore + debt ratchet）",
     "候选晋级表单治理（candidate intake + issue form gate）",
-    "时序证据抑制治理（freshness SLA + stale suppression）",
-    "信源仲裁验签（triangulation + provenance attestation）",
+    "证据时效验签一体化（freshness + provenance ratification gate）",
     "取消-晋级时序治理（cancel-to-promote sequencing gate）",
     "同窗时序预算治理（window alignment + skew budget gate）",
     "跨车道去重预算一体化治理（dedupe key + duplicate ratio gate）",
@@ -31,34 +30,36 @@
     "车道身份一致性审计（lane identity parity gate）",
     "构建摘要同一性闸门（build subject digest parity gate）",
     "摘要失配隔离升级（digest mismatch quarantine escalation）",
-    "工件保留期-验签窗口协同（artifact retention-verification window alignment）"
+    "工件保留期分层策略（branch-tier artifact retention policy）",
+    "验签根信任新鲜度治理（trusted-root freshness gate）",
+    "归档保留-验签对账流水（retention-attestation reconciliation ledger）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 29,
+    "last_cycle": 30,
     "actions": [
       {
         "type": "split",
-        "from": "Artifact 摘要一致性告警（artifact digest mismatch escalation）",
+        "from": "工件保留期-验签窗口协同（artifact retention-verification window alignment）",
         "into": [
-          "构建摘要同一性闸门（build subject digest parity gate）",
-          "摘要失配隔离升级（digest mismatch quarantine escalation）"
+          "工件保留期分层策略（branch-tier artifact retention policy）",
+          "验签根信任新鲜度治理（trusted-root freshness gate）"
         ],
-        "reason": "“发现失配”与“处理失配”是两套不同控制面，拆分后可分别挂接 parity check 与 quarantine policy。"
+        "reason": "保留期预算与根信任时效对应不同失效面，拆分后可分别挂接 retention policy 与 root freshness gate。"
       },
       {
         "type": "merge",
         "from": [
-          "跨车道去重主键治理（lane-cross dedupe key governance）",
-          "跨车道重复率预算治理（cross-lane duplicate ratio budget）"
+          "信源仲裁验签（triangulation + provenance attestation）",
+          "时序证据抑制治理（freshness SLA + stale suppression）"
         ],
-        "into": "跨车道去重预算一体化治理（dedupe key + duplicate ratio gate）",
-        "reason": "两条方向都在同一去重控制面，合并后可避免重复维护 key 与 ratio 的同构字段。"
+        "into": "证据时效验签一体化（freshness + provenance ratification gate）",
+        "reason": "两条方向都在约束证据可信生命周期，合并后避免同构门禁并提升审计一致性。"
       },
       {
         "type": "expand",
-        "added": "工件保留期-验签窗口协同（artifact retention-verification window alignment）",
-        "reason": "官方 artifact 文档存在 retention 语义，新增方向用于约束“可验签窗口”与“工件保留期”协同，避免过期后伪补验签。"
+        "added": "归档保留-验签对账流水（retention-attestation reconciliation ledger）",
+        "reason": "GitHub artifacts retention 与离线验签 trusted root 新鲜度来自不同机制，需要新增对账方向避免次日复验断链。"
       }
     ]
   },
@@ -83,6 +84,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/artifact-governance/artifact-digest-mismatch-escalation-gate.md",
-  "last_cycle_commit": "pending-cycle-29"
+  "last_pattern": "references/patterns/artifact-governance/artifact-retention-verification-window-gate.md",
+  "last_cycle_commit": "pending-cycle-30"
 }
