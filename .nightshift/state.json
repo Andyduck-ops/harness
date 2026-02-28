@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T20:41:14Z",
-  "cycle": 36,
+  "updated_at": "2026-02-28T20:45:37Z",
+  "cycle": 37,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -10,7 +10,7 @@
     "热度锚定采样（HN top anchor lane）",
     "show 讨论原型车道（HN show + builder chatter）",
     "new 早信号车道（HN newest + freshness spike）",
-    "环境审批发布门禁（environment approval release gate）",
+    "部署审批身份门禁（deployment reviewer identity gate）",
     "设计令牌治理（schema + drift lint）",
     "组件验收治理（story + a11y + visual gate）",
     "AI 设计导出契约（design-export + required-checks）",
@@ -38,36 +38,37 @@
     "锚点存活预算治理（anchor retrievability SLA + mirror fallback）",
     "墓碑晋级冻结门禁（tombstone promotion freeze gate）",
     "晋级双时点重放治理（capture+promotion replay dual-phase gate）",
-    "合并队列同构预检门禁（queue preflight parity gate）",
+    "队列预检-部署连续性双门禁（queue preflight-deploy continuity dual gate）",
     "队列容错模式验签（tail-green mode attestation gate）",
-    "队列尾绿掩蔽预算治理（tail-green masking budget gate）"
+    "队列尾绿掩蔽预算治理（tail-green masking budget gate）",
+    "审批时效预算治理（approval freshness budget gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 36,
+    "last_cycle": 37,
     "actions": [
       {
         "type": "split",
-        "from": "merge_group 事件同构校验（merge_group parity checks）",
+        "from": "环境审批发布门禁（environment approval release gate）",
         "into": [
-          "merge_group 触发同构校验（merge_group event parity gate）",
-          "队列容错模式验签（tail-green mode attestation gate）"
+          "部署审批身份门禁（deployment reviewer identity gate）",
+          "队列-部署连续性门禁（queue-to-deploy continuity gate）"
         ],
-        "reason": "同一方向同时覆盖触发面一致性与容错策略一致性，粒度过宽，拆分后可分别验收。"
+        "reason": "原方向同时覆盖审批身份和 queue->deploy 连续性，控制面过宽，拆分后可独立验收。"
       },
       {
         "type": "merge",
         "from": [
-          "合并队列预检门禁（merge queue preflight gate）",
-          "merge_group 触发同构校验（merge_group event parity gate）"
+          "合并队列同构预检门禁（queue preflight parity gate）",
+          "队列-部署连续性门禁（queue-to-deploy continuity gate）"
         ],
-        "into": "合并队列同构预检门禁（queue preflight parity gate）",
-        "reason": "两方向都在控制入队前同构校验，合并后统一检查字段并降低重复门禁。"
+        "into": "队列预检-部署连续性双门禁（queue preflight-deploy continuity dual gate）",
+        "reason": "两方向共同约束晋级连续性，合并后统一 lineage/freshness 字段并减少重复规则。"
       },
       {
         "type": "expand",
-        "added": "队列尾绿掩蔽预算治理（tail-green masking budget gate）",
-        "reason": "merge queue 支持容错模式（允许失败 PR 混入），需要独立预算治理避免责任掩蔽。"
+        "added": "审批时效预算治理（approval freshness budget gate）",
+        "reason": "queue 通过到 deploy 审批存在时滞，需新增审批 freshness 预算避免过期绿灯继承。"
       }
     ]
   },
@@ -94,6 +95,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/queue-governance/merge-queue-tail-green-risk-gate.md",
-  "last_cycle_commit": "pending-cycle-36"
+  "last_pattern": "references/patterns/release-governance/queue-deploy-continuity-dual-gate.md",
+  "last_cycle_commit": "pending-cycle-37"
 }

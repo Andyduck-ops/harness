@@ -1,3 +1,57 @@
+# Morning Brief（Nightshift Cycle 37）
+
+> 更新时间：2026-02-28 20:45 UTC  
+> 本轮目标：补齐 merge queue 与 environment 审批之间的连续性断层，避免“合并绿灯”直接穿透到“发布绿灯”。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/release-governance/queue-deploy-continuity-dual-gate.md`
+2. `references/patterns/release-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 37）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `环境审批发布门禁（environment approval release gate）` 为：
+  - `部署审批身份门禁（deployment reviewer identity gate）`
+  - `队列-部署连续性门禁（queue-to-deploy continuity gate）`
+  - reason: 原方向同时包含“审批身份约束”和“queue→deploy 连续性校验”，执行边界过宽，需拆分。
+- `merge`：合并方向
+  - from: `合并队列同构预检门禁（queue preflight parity gate）`
+  - from: `队列-部署连续性门禁（queue-to-deploy continuity gate）`
+  - into: `队列预检-部署连续性双门禁（queue preflight-deploy continuity dual gate）`
+  - reason: 两方向都约束晋级连续性，分离维护会重复同一批审计字段。
+- `expand`：新增方向 `审批时效预算治理（approval freshness budget gate）`
+  - 触发依据：queue 通过与 deploy 审批之间存在自然时滞，需独立 freshness 预算治理。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T20:45:37Z）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`): `Signal says it’s pulling feature users exploited to protect privacy`
+  - show (`show`): `Show HN: Wavpilot - Voice to Cursor in Your Browser`
+  - new (`newest`): `Introducing Claude 4.5`
+- 官方文档证据链（本轮重点）
+  - GitHub merge queue（队列阶段独立合并上下文）
+  - GitHub Actions `merge_group` 事件（队列校验独立触发面）
+  - GitHub deployments/environments + review deployments（environment 保护规则、required reviewers、阻止自审）
+  - GitHub required status checks（最新 SHA + 时效约束）
+
+### 本轮结论
+
+- “queue 可合并”与“deployment 可发布”不是同一闸门，必须做 lineage 绑定。
+- 部署审批卡片需要强绑定 `lineage_id + merge_group_sha + deploy_sha`，否则审计链会断。
+- queue 到 deploy 的时间窗必须纳入 freshness 预算，超窗后要重验而不是继承旧绿灯。
+
+### Cycle 38 预载任务
+
+1. 将 `queue_deploy_continuity.json` 纳入 required checks 与合并门禁。
+2. 对 `approval freshness budget` 增加分支分层阈值（main/release/hotfix）。
+3. 给 deploy 拒绝场景补 `quarantine_replay_report`（含 reviewer 决策轨迹）。
+
+---
+
 # Morning Brief（Nightshift Cycle 36）
 
 > 更新时间：2026-02-28 20:41 UTC  
