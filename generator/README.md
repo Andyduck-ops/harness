@@ -10,10 +10,21 @@ based on the project's language, framework, structure, and applicable patterns.
 | Command | Description | Status |
 |---------|-------------|--------|
 | [init.md](./init.md) | `/harness:init` — Scan project, generate `.harness/` | ✅ Designed |
-| calibrate.md | `/harness:calibrate` — External knowledge calibration | 🔲 Planned |
-| nightshift.md | `/harness:nightshift` — Overnight autonomous learning | 🔲 Planned |
+| [calibrate.md](./calibrate.md) | `/harness:calibrate` — Focused knowledge calibration | ✅ Designed |
+| [nightshift.md](./nightshift.md) | `/harness:nightshift` — Overnight autonomous learning | ✅ Designed |
 
-## Templates
+## Hook Templates (Production-Quality)
+
+Derived from Trellis hooks (battle-tested through 18 rounds of iteration):
+
+| Hook | Trigger | Key Features |
+|------|---------|--------------|
+| `session-start.py` | SessionStart | UTF-8 safe, CLAUDE_PROJECT_DIR aware, lessons + staleness injection |
+| `inject-context.py` | PreToolUse(Task) | JSONL parsing, prd.md auto-extraction (F5), spec.jsonl fallback |
+| `track-staleness.py` | PostToolUse(Edit/Write) | Zero-LLM detection, atomic writes, repo root walking |
+| `quality-gate.py` | SubagentStop | Verify command execution (not just mention), 3-Failure Protocol, per-task state, timeout |
+
+## Base Templates
 
 
 
