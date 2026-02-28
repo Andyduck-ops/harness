@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T21:54:25Z",
-  "cycle": 51,
+  "updated_at": "2026-02-28T21:59:14Z",
+  "cycle": 52,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -40,7 +40,6 @@
     "晋级双时点重放治理（capture+promotion replay dual-phase gate）",
     "队列预检-部署连续性双门禁（queue preflight-deploy continuity dual gate）",
     "环境等待计时上限治理（environment wait-timer ceiling gate）",
-    "审批时效预算治理（approval freshness budget gate）",
     "分支规则禁绕约束治理（branch-rule no-bypass enforcement gate）",
     "旁路理由授权一致性治理（bypass reason-authorization coherence gate）",
     "旁路模式升级漂移治理（bypass_mode escalation drift gate）",
@@ -54,27 +53,28 @@
     "浏览器工具权限同构治理（browser tool-scope parity gate）",
     "自驱代码生成证据账本治理（self-driving code generation evidence ledger gate）",
     "自驱代码人审触发门禁治理（self-driving code human-review trigger gate）",
-    "绕过时效预算治理（bypass freshness budget gate）",
     "代理最小权限分级预算治理（agent least-privilege drift budget gate）",
-    "代理记忆持久化权限分区治理（agent memory persistence scope partition gate）"
+    "代理记忆持久化权限分区治理（agent memory persistence scope partition gate）",
+    "审批-旁路双轨时效同构治理（approval-bypass dual-track freshness parity gate）",
+    "代理记忆分区最小权限治理（agent memory partition least-privilege gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 51,
+    "last_cycle": 52,
     "actions": [
       {
         "type": "merge",
         "from": [
-          "代理最小权限白名单治理（agent least-privilege scope manifest gate）",
-          "代理会话最小权限漂移治理（agent session least-privilege drift gate）"
+          "审批时效预算治理（approval freshness budget gate）",
+          "绕过时效预算治理（bypass freshness budget gate）"
         ],
-        "into": "代理最小权限分级预算治理（agent least-privilege drift budget gate）",
-        "reason": "白名单治理和会话漂移治理在执行面高度耦合，统一为分级预算门禁可减少重复 pattern 并提升可执行性。"
+        "into": "审批-旁路双轨时效同构治理（approval-bypass dual-track freshness parity gate）",
+        "reason": "审批与旁路在晋级面共享同一身份与时效约束，长期分离维护会产生策略漂移，合并为双轨同构门禁以减少重复。"
       },
       {
         "type": "expand",
-        "added": "代理记忆持久化权限分区治理（agent memory persistence scope partition gate）",
-        "reason": "HN show 出现 MemoryKit 与 SQLite for Rivet Actors 等 agent memory 信号，持久化记忆正在成为新的权限边界，需要新增方向。"
+        "added": "代理记忆分区最小权限治理（agent memory partition least-privilege gate）",
+        "reason": "HN show/new 出现 AgentMailr 与 Be Careful with LLM Agents，持久化记忆与外部系统写入边界风险上升，需要新增方向。"
       }
     ]
   },
@@ -102,6 +102,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/permission-governance/agent-scope-drift-severity-budget-gate.md",
-  "last_cycle_commit": "pending-cycle-51"
+  "last_pattern": "references/patterns/permission-governance/agent-memory-partition-least-privilege-gate.md",
+  "last_cycle_commit": "pending-cycle-52"
 }

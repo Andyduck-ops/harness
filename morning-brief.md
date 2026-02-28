@@ -1,3 +1,54 @@
+# Morning Brief（Nightshift Cycle 52）
+
+> 更新时间：2026-02-28 21:59 UTC  
+> 本轮目标：把“最小权限”从运行时 scope 扩展到“记忆分区重放”层，阻断低权限会话复用高权限历史记忆。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/permission-governance/agent-memory-partition-least-privilege-gate.md`
+2. `references/patterns/permission-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 52）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `merge`：合并方向
+  - from: `审批时效预算治理（approval freshness budget gate）`
+  - from: `绕过时效预算治理（bypass freshness budget gate）`
+  - into: `审批-旁路双轨时效同构治理（approval-bypass dual-track freshness parity gate）`
+  - reason: 审批与旁路在晋级面共享同一“身份+时效”校验点，拆分维护导致门禁策略漂移，合并后可统一 required checks。
+- `expand`：新增方向 `代理记忆分区最小权限治理（agent memory partition least-privilege gate）`
+  - 触发依据：HN show 出现 `AgentMailr`（Agent 直接读写邮箱）与 HN newest 的 `Be Careful with LLM Agents`，说明“持久化记忆 + 外部系统”边界风险上升。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:59:14Z）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`): `Obsidian Sync now has a headless client`
+  - show (`show`): `Show HN: AgentMailr, an MCP server that can read and write emails`
+  - new (`newest`): `Be Careful with LLM Agents`
+- 官方文档证据链（本轮重点）
+  - OpenAI Background mode（异步状态机，`completed` 仅表示执行结束）
+  - OpenAI Conversation state（跨会话链路与 `previous_response_id`）
+  - GitHub Protected Branches（required checks 晋级硬门禁）
+  - GitHub `GITHUB_TOKEN`（显式 `permissions` 最小权限）
+  - Hacker News API（`topstories/showstories/newstories` 车道端点）
+
+### 本轮结论
+
+- “运行时权限最小化”不足以覆盖持久化记忆风险，必须增加记忆分区门禁。
+- `memory_partition_replay_pass` 需要与 `scope_manifest_pass`、`scope_drift_budget_pass` 并列 required checks。
+- 权限降级后若仍可读取高分区历史记忆，必须 quarantine，禁止晋级。
+
+### Cycle 53 预载任务
+
+1. 增加 `memory_scope_matrix.yaml` 的 namespace 继承冲突检测。
+2. 在 `promotion_packet` 中补 `memory_tier_diff` 与 `blocked_reason` 标准枚举。
+3. 将记忆分区门禁接入 `candidate -> issue -> PR` 全链路回放。
+
+---
+
 # Morning Brief（Nightshift Cycle 51）
 
 > 更新时间：2026-02-28 21:54 UTC  
