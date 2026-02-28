@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T21:31:00Z",
-  "cycle": 46,
+  "updated_at": "2026-02-28T21:35:53Z",
+  "cycle": 47,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -19,7 +19,6 @@
     "消费者回放覆盖治理（consumer replay coverage + provider verification）",
     "需求到证据闭环治理（PRD->Pattern lineage control plane）",
     "上下文燃烧-回放冻结协同治理（context burn replay-freeze governance）",
-    "工具输出占比预算治理（tool-output ratio budget gate）",
     "信号债务路由（exploit/explore + debt ratchet）",
     "候选晋级表单治理（candidate intake + issue form gate）",
     "证据时效验签一体化（freshness + provenance ratification gate）",
@@ -49,25 +48,28 @@
     "规则集导出同构校验治理（ruleset export parity gate）",
     "旁路主体可见性漂移治理（bypass actor-visibility drift gate）",
     "队列容错预算降级一体化治理（merge-queue fallback-budget parity gate）",
-    "队列重排重建验签治理（queue reorder rebuild attestation gate）"
+    "队列重排重建验签治理（queue reorder rebuild attestation gate）",
+    "工具输出占比分层阈值治理（lane-tiered tool-output ratio threshold gate）",
+    "工具输出占比触发冻结治理（tool-output-ratio freeze trigger gate）",
+    "浏览器内代理运行边界治理（browser-contained agent runtime boundary gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 46,
+    "last_cycle": 47,
     "actions": [
       {
-        "type": "merge",
-        "from": [
-          "恢复回放账本治理（checkpoint + replay + compaction）",
-          "认知负债冻结治理（comprehension debt + freeze gate）"
+        "type": "split",
+        "from": "工具输出占比预算治理（tool-output ratio budget gate）",
+        "into": [
+          "工具输出占比分层阈值治理（lane-tiered tool-output ratio threshold gate）",
+          "工具输出占比触发冻结治理（tool-output-ratio freeze trigger gate）"
         ],
-        "into": "上下文燃烧-回放冻结协同治理（context burn replay-freeze governance）",
-        "reason": "将“压缩恢复账本”与“认知冻结门”合并为同一执行面，统一压缩前快照、续跑回放与晋级冻结语义。"
+        "reason": "将“观测阈值”与“晋级冻结触发”拆分，避免同一方向同时承担监控与决策执行导致字段耦合。"
       },
       {
         "type": "expand",
-        "added": "工具输出占比预算治理（tool-output ratio budget gate）",
-        "reason": "HN top 出现“Stop Burning Your Context Window”高热案例，说明工具输出占比需要从观察指标升级为强约束门禁。"
+        "added": "浏览器内代理运行边界治理（browser-contained agent runtime boundary gate）",
+        "reason": "HN newest 出现浏览器内 Agent 提案，执行边界从本地CLI扩展到浏览器沙箱，需要提前建立边界与审计约束。"
       }
     ]
   },
@@ -94,6 +96,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/context-governance/context-burn-replay-freeze-gate.md",
-  "last_cycle_commit": "pending-cycle-46"
+  "last_pattern": "references/patterns/state-governance/background-cursor-freshness-gate.md",
+  "last_cycle_commit": "pending-cycle-47"
 }

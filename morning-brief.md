@@ -1,3 +1,52 @@
+# Morning Brief（Nightshift Cycle 47）
+
+> 更新时间：2026-02-28 21:35 UTC  
+> 本轮目标：把“后台任务可运行”升级为“后台结论可晋级”，新增游标时效门禁，阻断晚到旧 run 的静默晋级。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/state-governance/background-cursor-freshness-gate.md`
+2. `references/patterns/state-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 47）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `工具输出占比预算治理（tool-output ratio budget gate）` 为：
+  - `工具输出占比分层阈值治理（lane-tiered tool-output ratio threshold gate）`
+  - `工具输出占比触发冻结治理（tool-output-ratio freeze trigger gate）`
+  - reason: 原方向同时覆盖“监控阈值”和“晋级冻结触发”，执行面过宽，拆分后可分别定义预算与闸门字段。
+- `expand`：新增方向 `浏览器内代理运行边界治理（browser-contained agent runtime boundary gate）`
+  - 触发依据：HN newest 出现 “A Proposal for Implementing Claude Code in the Browser”，说明 browser-contained agent 正成为新执行形态，需要提前治理隔离边界与审计接口。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:35:53Z）。
+- HN `top/show/new`：已采样并写入证据链（2026-03-01）：
+  - top (`news`): `Stop Burning Your Context Window: How We Cut MCP Token Usage by 98%`
+  - show (`show`): `Show HN: Syncari – AI-driven Infrastructure as Code Automation`
+  - new (`newest`): `A Proposal for Implementing Claude Code in the Browser`
+- 官方文档证据链（本轮重点）
+  - OpenAI Background mode（后台状态机与取消语义）
+  - OpenAI Conversation state（`previous_response_id` / `conversation` 链路）
+  - GitHub Protected Branches（required status checks 作为晋级硬门禁）
+  - Hacker News API（`topstories/showstories/newstories` 车道主键）
+
+### 本轮结论
+
+- 异步完成不是有效完成；必须验证“完成时游标是否仍绑定最新锚点窗口”。
+- `previous_response_id` 链连续性与 `anchor_window_id` 新鲜度应作为同级门禁，不可拆分。
+- `cursor_freshness_pass` 必须是 required check，否则夜间旧结论仍可能绕过晋级。
+
+### Cycle 48 预载任务
+
+1. 增加 `max_cursor_lag_seconds` 的分车道阈值（top/show/new 各自预算）。
+2. 为 browser-contained agent 设计最小 `runtime_boundary_manifest` 字段集。
+3. 把 `cursor_freshness_report` 挂接到 candidate->issue 的晋级检查，不仅用于 PR 合并前。
+
+---
+
 # Morning Brief（Nightshift Cycle 46）
 
 > 更新时间：2026-02-28 21:31 UTC  
