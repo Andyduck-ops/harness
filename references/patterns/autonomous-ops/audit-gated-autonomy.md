@@ -1,8 +1,8 @@
 ---
 name: audit-gated-autonomy
 topic: autonomous-ops
-confidence: 0.79
-verified_count: 7
+confidence: 0.81
+verified_count: 8
 sources:
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (2026-02-28)
   - Hacker News top/show/new snapshot (2026-02-28)
@@ -43,6 +43,15 @@ rank: 2
 1. 把夜间任务分成“探索车道”和“变更车道”两组 runner。
 2. 所有高风险动作统一汇聚到审批队列（默认拒绝）。
 3. 以 `commit` + `audit log` 生成次晨审计摘要。
+
+## 守门字段（可直接落 CI）
+
+| 关卡 | 必填字段 | 触发动作 |
+|------|----------|----------|
+| 任务提交 | `run_id` / `actor` / `scope` | 写入 `.nightshift/state.json` |
+| 高风险操作 | `risk_level` / `justification` | 进入人工审批队列 |
+| 部署相关 | `environment` / `reviewer` | Required reviewer 审批 |
+| 审计回放 | `commit` / `timestamp` / `result` | 次晨审计汇总 |
 
 ## 反模式
 

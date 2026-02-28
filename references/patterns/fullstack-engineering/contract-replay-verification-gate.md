@@ -1,8 +1,8 @@
 ---
 name: contract-replay-verification-gate
 topic: fullstack-engineering
-confidence: 0.80
-verified_count: 6
+confidence: 0.82
+verified_count: 7
 sources:
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (2026-02-28)
   - Hacker News top/new snapshot (2026-02-28)
@@ -38,6 +38,17 @@ rank: 2
 2. PR 必须附 `breaking/non-breaking` 标记。
 3. CI 分两段：`contract verify` -> `replay verify`。
 4. 回放失败自动生成“复现最小输入”并写入回归集。
+
+## 回放资产最小格式
+
+| 字段 | 说明 |
+|------|------|
+| `case_id` | 用例唯一标识 |
+| `contract_version` | 契约版本快照 |
+| `request` | 输入请求体（可脱敏） |
+| `expected` | 预期响应与状态码 |
+| `actual` | 实际返回（失败时记录） |
+| `repro` | 最小复现命令/脚本 |
 
 ## 反模式
 

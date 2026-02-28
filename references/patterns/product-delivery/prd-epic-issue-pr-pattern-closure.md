@@ -1,8 +1,8 @@
 ---
 name: prd-epic-issue-pr-pattern-closure
 topic: product-delivery
-confidence: 0.82
-verified_count: 7
+confidence: 0.84
+verified_count: 8
 sources:
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (2026-02-28)
   - Hacker News show/new snapshot (2026-02-28)
@@ -40,6 +40,12 @@ Issue 能执行，但执行结果没有回灌为可复用 pattern。
 1. 新建 `Issue Form`：强制验收标准和回滚策略。
 2. PR 模板增加：`PRD Slice ID`、`Issue ID`、`Pattern 回写链接`。
 3. 合并后自动触发 pattern 回灌检查，不通过则阻断关闭流程。
+
+## 自动闭环规则（建议直接配置）
+
+1. Issue 未填写验收字段时，阻断创建。
+2. PR 未关联 Issue 时，阻断合并。
+3. PR 合并后 24h 内未提交 pattern 回写，自动打回到 `needs-knowledge-sync` 状态。
 
 ## 反模式
 

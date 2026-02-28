@@ -17,10 +17,10 @@
 | 2 | [structured-escalation](./agent-lifecycle/structured-escalation.md) | agent-lifecycle | 0.85 | SKILL.md, Trellis, OpenAI |
 | 2 | [staleness-detection](./knowledge-evolution/staleness-detection.md) | knowledge-evolution | 0.85 | Trellis, OpenAI, Compound Eng |
 | 2 | [custom-linter-messages](./quality-enforcement/custom-linter-messages.md) | quality-enforcement | 0.85 | OpenAI, Trellis, Code Factory |
-| 2 | [prd-epic-issue-pr-pattern-closure](./product-delivery/prd-epic-issue-pr-pattern-closure.md) | product-delivery | 0.82 | GitHub Docs + HN |
-| 2 | [contract-replay-verification-gate](./fullstack-engineering/contract-replay-verification-gate.md) | fullstack-engineering | 0.80 | OpenAPI + Pact + HN |
-| 2 | [audit-gated-autonomy](./autonomous-ops/audit-gated-autonomy.md) | autonomous-ops | 0.79 | OpenAI + GitHub + HN |
-| 2 | [token-storybook-readiness](./fullstack-engineering/token-storybook-readiness.md) | fullstack-engineering | 0.78 | W3C Tokens + Storybook + HN |
+| 2 | [prd-epic-issue-pr-pattern-closure](./product-delivery/prd-epic-issue-pr-pattern-closure.md) | product-delivery | 0.84 | GitHub Docs + HN |
+| 2 | [contract-replay-verification-gate](./fullstack-engineering/contract-replay-verification-gate.md) | fullstack-engineering | 0.82 | OpenAPI + Pact + HN |
+| 2 | [audit-gated-autonomy](./autonomous-ops/audit-gated-autonomy.md) | autonomous-ops | 0.81 | OpenAI + GitHub + HN |
+| 2 | [token-storybook-readiness](./fullstack-engineering/token-storybook-readiness.md) | fullstack-engineering | 0.80 | W3C Tokens + Storybook + HN |
 | 2 | [observation-masking](./context-injection/observation-masking.md) | context-injection | 0.80 | Agent-Skills-CE, BrowseComp |
 | 3 | [24h-unattended-ai-loop](./autonomous-ops/24h-unattended-ai-loop.md) | autonomous-ops | 0.72 | OpenAI + HN |
 | 3 | [prd-to-issue-execution-loop](./product-delivery/prd-to-issue-execution-loop.md) | product-delivery | 0.70 | Harness + GitHub + HN |
@@ -45,4 +45,4 @@
 - 总计：19 patterns
 - 平均 confidence：0.81
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：7 patterns
+- 待验证（<0.80）：5 patterns

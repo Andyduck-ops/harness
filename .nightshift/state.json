@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T15:40:38Z",
-  "cycle": 2,
+  "updated_at": "2026-02-28T15:44:15Z",
+  "cycle": 3,
   "status": "active",
   "active_directions": [
     "24h 无人 AI 推进（可控守门 + 可审计）",
@@ -22,5 +22,5 @@
     "https://www.designtokens.org/tr/drafts/format/"
   ],
   "last_brief": "morning-brief.md",
-  "last_cycle_commit": null
+  "last_cycle_commit": "47c593f"
 }

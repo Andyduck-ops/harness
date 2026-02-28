@@ -1,50 +1,41 @@
-# Morning Brief（Nightshift Cycle 2）
+# Morning Brief（Nightshift Cycle 3）
 
-> 更新时间：2026-02-28 15:40 UTC  
-> 本轮目标：围绕“可控无人推进 / 前端设计系统 / 后端契约回放 / PRD执行闭环”产出可明日实战的新增模式。
+> 更新时间：2026-02-28 15:41 UTC  
+> 本轮目标：把 Cycle 2 的 4 条新模式从“方向性结论”升级为“可直接执行的闸门字段与作战卡”。
 
-## 本轮新增（已落盘）
+## 本轮落盘（更新）
 
-1. `autonomous-ops/audit-gated-autonomy`
-2. `fullstack-engineering/token-storybook-readiness`
-3. `fullstack-engineering/contract-replay-verification-gate`
-4. `product-delivery/prd-epic-issue-pr-pattern-closure`
+1. `autonomous-ops/audit-gated-autonomy`（新增守门字段矩阵）
+2. `fullstack-engineering/token-storybook-readiness`（新增 6 小时实战执行卡）
+3. `fullstack-engineering/contract-replay-verification-gate`（新增回放资产最小格式）
+4. `product-delivery/prd-epic-issue-pr-pattern-closure`（新增自动闭环规则）
 
-## 必选信源执行结果
+## 必选信源执行确认
 
-- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML（Gist，92 feeds，最近活跃时间为 2026-02-28）。
-- HN `top/show/new`：已抓取当日首页快照，Agent 与开发自动化仍是高频方向。
-- 官方证据链补齐：
-  - OpenAI Background mode（长任务异步执行）
-  - GitHub deployment reviewers + audit log（守门与审计）
-  - W3C Design Tokens format + Storybook docs（设计系统执行底座）
-  - OpenAPI spec + Pact docs（契约优先与验证）
-  - GitHub Issue forms / PR 关联 Issue / Projects 自定义字段（PRD 闭环结构化）
+- OPML 种子：`https://t.co/dwAiIjlXet`（重定向至 HN Popular Blogs OPML）。
+- HN 快照：`top/show/new` 持续作为短周期信号源。
+- 官方证据链：OpenAI / GitHub / W3C / OpenAPI / Pact 已用于本轮字段化落地。
 
-## 本轮结论
+## 本轮强化结果
 
-### A. 24h 无人 AI 推进
-- 可持续的关键是“双车道”：探索车道（无副作用）+ 变更车道（受控副作用）。
-- 守门和审计要内建在流程中，不是次日补日志。
+### 1) 24h 无人 AI 推进
+- 从“概念守门”升级为“可落 CI 的守门字段”：`run_id/actor/scope/risk_level/reviewer`。
 
-### B. 前端设计系统（明天可实战）
-- 直接采用 `Token -> Storybook -> Page` 三段式。
-- 页面层禁止新增局部视觉规则，避免系统失真。
+### 2) 前端设计系统
+- 从“结构建议”升级为“明日 6 小时执行卡”，可直接排班推进。
 
-### C. 后端契约优先 + 回放验证
-- 契约不是文档附件，应成为 CI 闸门入口。
-- `contract verify -> replay verify` 连续通过才允许合并。
+### 3) 后端契约与回放
+- 明确回放资产字段，避免“有回放口号、无回放数据结构”。
 
-### D. PRD 闭环
-- 闭环不止到 PR，必须到 Pattern 回灌。
-- 通过 Issue Form 与 PR 关联字段将执行轨迹结构化。
+### 4) PRD 闭环
+- 增加自动闭环规则（Issue 字段、PR 关联、Pattern 回写时限）形成硬约束。
 
-## Cycle 3 预载任务
+## Cycle 4 预载任务
 
-1. 从 OPML 中筛选 12 个优先作者，建立 `priority-watchlist` 候选池。
-2. 从 HN Show HN 中提取“可复制实现路径”并生成组件级执行卡。
-3. 把回放失败样本格式化为通用回归资产模板。
+1. 产出 `priority-watchlist`（OPML 中 12 位优先作者）并落盘为 pattern。
+2. 解析 HN Show HN 的 3 个可复制工程样式，沉淀成“执行卡模板”。
+3. 把 replay 失败样本归并为可共享的回归资产索引。
 
 ---
 
-> 历史：Cycle 1 输出已归并进 `references/patterns/_master_index.md`。
+> 历史：Cycle 2 的新增模式已保留在 `references/patterns/_master_index.md`。
