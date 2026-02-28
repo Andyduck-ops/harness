@@ -1,3 +1,52 @@
+# Morning Brief（Nightshift Cycle 48）
+
+> 更新时间：2026-02-28 21:39 UTC  
+> 本轮目标：为 browser-contained agent 建立“运行边界声明 + 会话链同构 + 晋级硬门禁”最小协议，阻断跨 runtime 的静默误晋级。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/runtime-governance/browser-runtime-boundary-manifest-gate.md`
+2. `references/patterns/runtime-governance/_index.md`（新建 topic 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 48）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `浏览器内代理运行边界治理（browser-contained agent runtime boundary gate）` 为：
+  - `浏览器会话边界声明治理（browser runtime-boundary manifest gate）`
+  - `浏览器工具权限同构治理（browser tool-scope parity gate）`
+  - reason: 运行边界声明与工具权限同构属于不同校验面，拆分后可独立定义 required checks。
+- `expand`：新增方向 `自驱代码库晋级证明治理（self-driving codebase promotion proof gate）`
+  - 触发依据：HN newest 出现 `The Self-Driving Codebase: Introducing GitHub Spark and Spark CLI`，说明从生成到交付链路更短，需新增晋级证明控制面。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证 301 重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:40:03Z）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`): `Stop Burning Your Context Window: How We Cut MCP Token Usage by 98%`
+  - show (`show`): `Show HN: Now I get it, this is what all the fuss over LLMs is about`
+  - new (`newest`): `The Self-Driving Codebase: Introducing GitHub Spark and Spark CLI`
+- 官方文档证据链（本轮重点）
+  - OpenAI Background mode（异步状态机与取消状态）
+  - OpenAI Conversation state（`previous_response_id` / `conversation` 链路）
+  - GitHub Protected Branches（required checks 晋级门禁）
+  - Hacker News API（统一 API 前缀与 item 读取）
+
+### 本轮结论
+
+- 浏览器内执行不是“换壳”，而是新的风险边界；必须显式写入 runtime 边界声明。
+- `completed` 不是晋级条件，必须叠加会话链连续性和权限摘要同构校验。
+- `runtime_boundary_pass` / `conversation_chain_pass` 应与现有门禁同级，进入 required checks。
+
+### Cycle 49 预载任务
+
+1. 为 `runtime_boundary_manifest.json` 增加 `boundary_epoch_id`，支持跨轮重放定位。
+2. 把 `scope_parity_pass` 接入 candidate->issue 晋级检查，不仅用于 PR 合并前。
+3. 在 browser runtime 引入最小 `tool_scope_digest` 版本策略，避免静默字段扩展。
+
+---
+
 # Morning Brief（Nightshift Cycle 47）
 
 > 更新时间：2026-02-28 21:35 UTC  

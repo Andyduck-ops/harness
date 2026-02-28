@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T21:35:53Z",
-  "cycle": 47,
+  "updated_at": "2026-02-28T21:39:48Z",
+  "cycle": 48,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -51,25 +51,27 @@
     "队列重排重建验签治理（queue reorder rebuild attestation gate）",
     "工具输出占比分层阈值治理（lane-tiered tool-output ratio threshold gate）",
     "工具输出占比触发冻结治理（tool-output-ratio freeze trigger gate）",
-    "浏览器内代理运行边界治理（browser-contained agent runtime boundary gate）"
+    "浏览器会话边界声明治理（browser runtime-boundary manifest gate）",
+    "浏览器工具权限同构治理（browser tool-scope parity gate）",
+    "自驱代码库晋级证明治理（self-driving codebase promotion proof gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 47,
+    "last_cycle": 48,
     "actions": [
       {
         "type": "split",
-        "from": "工具输出占比预算治理（tool-output ratio budget gate）",
+        "from": "浏览器内代理运行边界治理（browser-contained agent runtime boundary gate）",
         "into": [
-          "工具输出占比分层阈值治理（lane-tiered tool-output ratio threshold gate）",
-          "工具输出占比触发冻结治理（tool-output-ratio freeze trigger gate）"
+          "浏览器会话边界声明治理（browser runtime-boundary manifest gate）",
+          "浏览器工具权限同构治理（browser tool-scope parity gate）"
         ],
-        "reason": "将“观测阈值”与“晋级冻结触发”拆分，避免同一方向同时承担监控与决策执行导致字段耦合。"
+        "reason": "将执行边界声明与工具权限同构拆分为两个独立方向，避免边界校验与权限校验字段耦合。"
       },
       {
         "type": "expand",
-        "added": "浏览器内代理运行边界治理（browser-contained agent runtime boundary gate）",
-        "reason": "HN newest 出现浏览器内 Agent 提案，执行边界从本地CLI扩展到浏览器沙箱，需要提前建立边界与审计约束。"
+        "added": "自驱代码库晋级证明治理（self-driving codebase promotion proof gate）",
+        "reason": "HN newest 出现 The Self-Driving Codebase 话题，代码生成到交付链路更短，需要新增晋级证明方向。"
       }
     ]
   },
@@ -96,6 +98,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/state-governance/background-cursor-freshness-gate.md",
-  "last_cycle_commit": "pending-cycle-47"
+  "last_pattern": "references/patterns/runtime-governance/browser-runtime-boundary-manifest-gate.md",
+  "last_cycle_commit": "pending-cycle-48"
 }
