@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T21:09:22Z",
-  "cycle": 42,
+  "updated_at": "2026-02-28T21:15:38Z",
+  "cycle": 43,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -39,41 +39,42 @@
     "墓碑晋级冻结门禁（tombstone promotion freeze gate）",
     "晋级双时点重放治理（capture+promotion replay dual-phase gate）",
     "队列预检-部署连续性双门禁（queue preflight-deploy continuity dual gate）",
-    "队列容错模式验签（tail-green mode attestation gate）",
-    "队列尾绿掩蔽预算治理（tail-green masking budget gate）",
     "环境等待计时上限治理（environment wait-timer ceiling gate）",
     "审批-绕过双轨时效治理（approval-bypass dual-track freshness gate）",
     "分支规则禁绕约束治理（branch-rule no-bypass enforcement gate）",
     "旁路理由分类治理（bypass reason taxonomy gate）",
     "旁路授权-理由同一治理（bypass authorization-reason parity gate）",
-    "规则集旁路名单漂移治理（ruleset bypass-list drift gate）"
+    "旁路名单主体漂移治理（bypass actor-set drift gate）",
+    "旁路模式升级漂移治理（bypass_mode escalation drift gate）",
+    "队列尾绿容错预算联动治理（tail-green attestation-budget parity gate）",
+    "规则集导出盲区补偿治理（ruleset export blind-spot compensation gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 42,
+    "last_cycle": 43,
     "actions": [
       {
         "type": "split",
-        "from": "旁路理由枚举注册治理（bypass reason registry gate）",
+        "from": "规则集旁路名单漂移治理（ruleset bypass-list drift gate）",
         "into": [
-          "旁路理由分类治理（bypass reason taxonomy gate）",
-          "旁路理由证据绑定治理（bypass reason evidence-binding gate）"
+          "旁路名单主体漂移治理（bypass actor-set drift gate）",
+          "旁路模式升级漂移治理（bypass_mode escalation drift gate）"
         ],
-        "reason": "原方向同时覆盖理由词表与证据约束，拆分后可分别沉淀枚举设计与校验规则。"
+        "reason": "把主体集合变化与 bypass_mode 升级拆分，便于独立门禁与责任归因。"
       },
       {
         "type": "merge",
         "from": [
-          "旁路授权-禁绕策略同一治理（bypass authorization and no-bypass parity gate）",
-          "旁路理由证据绑定治理（bypass reason evidence-binding gate）"
+          "队列容错模式验签（tail-green mode attestation gate）",
+          "队列尾绿掩蔽预算治理（tail-green masking budget gate）"
         ],
-        "into": "旁路授权-理由同一治理（bypass authorization-reason parity gate）",
-        "reason": "旁路授权与理由证据本质上同属准入同一性判定，合并后避免“有权限但无合规理由”的裂缝。"
+        "into": "队列尾绿容错预算联动治理（tail-green attestation-budget parity gate）",
+        "reason": "两方向都治理 tail-green 风险接受边界，合并后统一预算与验签口径。"
       },
       {
         "type": "expand",
-        "added": "规则集旁路名单漂移治理（ruleset bypass-list drift gate）",
-        "reason": "GitHub rulesets 提供 bypass list，名单变更会直接影响放行边界，需单独纳入漂移审计。"
+        "added": "规则集导出盲区补偿治理（ruleset export blind-spot compensation gate）",
+        "reason": "ruleset history 导出不含 bypass actor 细节，需新增 API 快照补偿方向。"
       }
     ]
   },
@@ -100,6 +101,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/release-governance/bypass-reason-registry-gate.md",
-  "last_cycle_commit": "pending-cycle-42"
+  "last_pattern": "references/patterns/release-governance/ruleset-bypass-list-drift-gate.md",
+  "last_cycle_commit": "pending-cycle-43"
 }

@@ -30,6 +30,7 @@
 | 3 | [environment-bypass-audit-quarantine-gate](./release-governance/environment-bypass-audit-quarantine-gate.md) | release-governance | 0.78 | OPML + HN + GitHub Review Deployments + Protected Branches |
 | 3 | [branch-environment-no-bypass-parity-gate](./release-governance/branch-environment-no-bypass-parity-gate.md) | release-governance | 0.78 | OPML + HN + GitHub Deployments + Protected Branches + Merge Queue |
 | 3 | [bypass-reason-registry-gate](./release-governance/bypass-reason-registry-gate.md) | release-governance | 0.77 | OPML + HN + GitHub Review Deployments + GitHub Rulesets |
+| 3 | [ruleset-bypass-list-drift-gate](./release-governance/ruleset-bypass-list-drift-gate.md) | release-governance | 0.78 | OPML + HN + GitHub Rulesets + Rules API + Merge Queue |
 | 3 | [execution-proof-bundle](./product-delivery/execution-proof-bundle.md) | product-delivery | 0.78 | OPML + HN + OpenAI + GitHub + OpenAPI + Pact + Storybook |
 | 3 | [workspace-recovery-envelope](./recovery-governance/workspace-recovery-envelope.md) | recovery-governance | 0.78 | OPML + HN + OpenAI + GitHub + git-reflog |
 | 3 | [agent-design-export-contract](./fullstack-engineering/agent-design-export-contract.md) | fullstack-engineering | 0.78 | OPML + HN + Design Tokens + Storybook + GitHub |
@@ -78,7 +79,7 @@
 | [autonomous-ops/](./autonomous-ops/) | 4 | 24h 无人巡航与守门机制 |
 | [fullstack-engineering/](./fullstack-engineering/) | 6 | 前后端工程化执行模式 |
 | [product-delivery/](./product-delivery/) | 7 | PRD 到执行闭环 |
-| [release-governance/](./release-governance/) | 7 | 夜间产出与白天晋级的发布治理 |
+| [release-governance/](./release-governance/) | 8 | 夜间产出与白天晋级的发布治理 |
 | [recovery-governance/](./recovery-governance/) | 1 | 长时自治执行中的可恢复性治理 |
 | [context-governance/](./context-governance/) | 1 | 上下文预算与压缩交接契约治理 |
 | [state-governance/](./state-governance/) | 1 | 每 agent 状态隔离与回放信封治理 |
@@ -94,7 +95,7 @@
 
 ## 统计
 
-- 总计：58 patterns
+- 总计：59 patterns
 - 平均 confidence：0.79
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：42 patterns
+- 待验证（<0.80）：43 patterns
