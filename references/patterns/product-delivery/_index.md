@@ -5,3 +5,4 @@
 - [dual-gate-execution-card](./dual-gate-execution-card.md) — 前端设计系统 + 后端契约回放的双闸门执行卡
 - [execution-proof-bundle](./execution-proof-bundle.md) — 面向无人值守流程的执行证据包闭环
 - [proof-bundle-issue-form-gate](./proof-bundle-issue-form-gate.md) — 用 Issue Form 前置约束执行证据包
+- [issue-pr-artifact-lineage-manifest](./issue-pr-artifact-lineage-manifest.md) — 用统一血缘清单打通 Issue/PR/Artifact 审计链
