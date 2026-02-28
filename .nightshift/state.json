@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T17:57:20Z",
-  "cycle": 5,
+  "updated_at": "2026-02-28T18:02:09Z",
+  "cycle": 6,
   "status": "active",
   "active_directions": [
     "24h 无人 AI 推进（可控守门 + 可审计）",
@@ -19,8 +19,9 @@
     "https://docs.github.com/",
     "https://spec.openapis.org/oas/latest.html",
     "https://docs.pact.io/",
-    "https://www.designtokens.org/tr/drafts/format/"
+    "https://www.designtokens.org/tr/drafts/format/",
+    "https://storybook.js.org/docs/"
   ],
   "last_brief": "morning-brief.md",
-  "last_cycle_commit": "pending-cycle-5"
+  "last_cycle_commit": "pending-cycle-6"
 }

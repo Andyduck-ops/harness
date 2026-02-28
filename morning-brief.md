@@ -1,30 +1,30 @@
-# Morning Brief（Nightshift Cycle 5）
+# Morning Brief（Nightshift Cycle 6）
 
-> 更新时间：2026-02-28 17:57 UTC  
-> 本轮目标：把“前端设计系统 + 后端契约回放 + PR 回链”合并为可直接执行的单卡模式。
+> 更新时间：2026-02-28 18:02 UTC  
+> 本轮目标：把“可控守门 + 可审计 + 次日可复盘”固化为执行证据包。
 
 ## 本轮新增（已落盘）
 
-1. `product-delivery/dual-gate-execution-card`
+1. `product-delivery/execution-proof-bundle`
 
 ## 必选信源执行确认
 
-- `https://t.co/dwAiIjlXet`：已作为 OPML 长周期稳定信源。
-- HN `top/show/new`：已用于当日增量信号采样。
-- 官方文档证据链已补充：OpenAI Background mode、GitHub PR 关联 Issue、OpenAPI、Pact、Design Tokens 规范。
+- `https://t.co/dwAiIjlXet`：已确认重定向并纳入 HN Popular Blogs OPML 长周期信号池。
+- HN `top/show/new`：已采样；同日仍有 “Spec-Driven Development”“不要盲信 AI agents” 等信号。
+- 官方证据链已补齐：OpenAI Background mode、GitHub PR-issue linking、OpenAPI、Pact、Storybook。
 
 ## 本轮结论
 
-- 仅有 PRD->Issue->PR 链接还不够，必须增加“前端闸门 + 后端闸门”。
-- 双闸门字段可直接作为 Issue Form 输入，避免执行阶段信息缺失。
-- 夜间 runner 应坚持“后台异步执行 + 本地可审计落盘”，不引入生产副作用。
+- 双闸门本身还不够，必须再加“证据包”层，保证次日可重放与可追责。
+- 证据包把前端（token + storybook）、后端（contract + replay）、交付（issue + prd/epic）一次打通。
+- 夜间执行仍坚持 “commit but never push”，把审计权保留给白天人工。
 
-## Cycle 6 预载任务
+## Cycle 7 预载任务
 
-1. 产出双闸门执行卡的 GitHub Issue Form 模板字段草案。
-2. 补充 `design-gate -> contract-gate -> pr-link-gate` 的最小 CI 样例。
-3. 为回放失败资产定义统一命名与归档规则。
+1. 给 `execution-proof-bundle` 产出可直接复用的 Issue Form 字段模板。
+2. 定义 `proof-bundle-check` 的 CI 最小脚本（缺关键字段即阻断）。
+3. 补一份回放失败样本归档命名规范（含 case_id 与 contract_version）。
 
 ---
 
-> 历史：Cycle 4 的 `opml-hn-priority-watchlist` 已保留在 `autonomous-ops` 主题。
+> 历史：Cycle 5 的 `dual-gate-execution-card` 已保留在 `product-delivery` 主题。

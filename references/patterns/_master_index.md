@@ -23,6 +23,7 @@
 | 2 | [token-storybook-readiness](./fullstack-engineering/token-storybook-readiness.md) | fullstack-engineering | 0.80 | W3C Tokens + Storybook + HN |
 | 2 | [observation-masking](./context-injection/observation-masking.md) | context-injection | 0.80 | Agent-Skills-CE, BrowseComp |
 | 3 | [dual-gate-execution-card](./product-delivery/dual-gate-execution-card.md) | product-delivery | 0.79 | OPML + HN + OpenAPI + Pact + GitHub Docs |
+| 3 | [execution-proof-bundle](./product-delivery/execution-proof-bundle.md) | product-delivery | 0.78 | OPML + HN + OpenAI + GitHub + OpenAPI + Pact + Storybook |
 | 3 | [opml-hn-priority-watchlist](./autonomous-ops/opml-hn-priority-watchlist.md) | autonomous-ops | 0.77 | OPML + HN + GitHub Docs |
 | 3 | [24h-unattended-ai-loop](./autonomous-ops/24h-unattended-ai-loop.md) | autonomous-ops | 0.72 | OpenAI + HN |
 | 3 | [prd-to-issue-execution-loop](./product-delivery/prd-to-issue-execution-loop.md) | product-delivery | 0.70 | Harness + GitHub + HN |
@@ -40,11 +41,11 @@
 | [meta-framework/](./meta-framework/) | 1 | 元框架自身的模式 |
 | [autonomous-ops/](./autonomous-ops/) | 3 | 24h 无人巡航与守门机制 |
 | [fullstack-engineering/](./fullstack-engineering/) | 4 | 前后端工程化执行模式 |
-| [product-delivery/](./product-delivery/) | 3 | PRD 到执行闭环 |
+| [product-delivery/](./product-delivery/) | 4 | PRD 到执行闭环 |
 
 ## 统计
 
-- 总计：21 patterns
-- 平均 confidence：0.82
+- 总计：22 patterns
+- 平均 confidence：0.81
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：7 patterns
+- 待验证（<0.80）：8 patterns
