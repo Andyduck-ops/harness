@@ -50,6 +50,7 @@
 | 3 | [artifact-digest-mismatch-escalation-gate](./artifact-governance/artifact-digest-mismatch-escalation-gate.md) | artifact-governance | 0.79 | OPML + HN + HN API + GitHub Attestations + GitHub Rules |
 | 3 | [candidate-to-issue-promotion-contract](./backlog-governance/candidate-to-issue-promotion-contract.md) | backlog-governance | 0.74 | OPML + HN + GitHub Projects + Issue Forms + Actions |
 | 3 | [triangulated-evidence-ratification-gate](./source-governance/triangulated-evidence-ratification-gate.md) | source-governance | 0.74 | OPML + HN + HN API + GitHub Docs |
+| 3 | [opml-outline-tri-key-drift-gate](./source-governance/opml-outline-tri-key-drift-gate.md) | source-governance | 0.78 | OPML + HN + HN API + GitHub Gists + GitHub Attestations |
 | 3 | [24h-unattended-ai-loop](./autonomous-ops/24h-unattended-ai-loop.md) | autonomous-ops | 0.72 | OpenAI + HN |
 | 3 | [prd-to-issue-execution-loop](./product-delivery/prd-to-issue-execution-loop.md) | product-delivery | 0.70 | Harness + GitHub + HN |
 | 3 | [frontend-system-first](./fullstack-engineering/frontend-system-first.md) | fullstack-engineering | 0.68 | HN blogs + web.dev |
@@ -77,12 +78,12 @@
 | [trust-governance/](./trust-governance/) | 1 | 离线验签根信任时效、轮换与隔离升级治理 |
 | [backlog-governance/](./backlog-governance/) | 1 | 夜间发现到可执行 Issue 的结构化入库治理 |
 | [evidence-governance/](./evidence-governance/) | 2 | 外部证据时效闸门与可回放锚点治理 |
-| [source-governance/](./source-governance/) | 1 | 社区信号与官方规范的三角校验与晋级仲裁治理 |
+| [source-governance/](./source-governance/) | 2 | 社区信号与官方规范的三角校验、订阅体身份约束与晋级仲裁治理 |
 | [feed-governance/](./feed-governance/) | 4 | 短链入口、同窗预算与车道身份一致性治理 |
 
 ## 统计
 
-- 总计：47 patterns
+- 总计：48 patterns
 - 平均 confidence：0.80
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：31 patterns
+- 待验证（<0.80）：32 patterns

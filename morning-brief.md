@@ -1,3 +1,57 @@
+# Morning Brief（Nightshift Cycle 32）
+
+> 更新时间：2026-02-28 20:18 UTC  
+> 本轮目标：把 OPML 订阅入口从“可读名称”升级为“可审计身份主键”，避免夜间发现到白天晋级的证据对象错配。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/source-governance/opml-outline-tri-key-drift-gate.md`
+2. `references/patterns/source-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 32）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `OPML 订阅体身份约束（outline identity contract: text/xmlUrl/htmlUrl）` 为：
+  - `OPML 三元主键约束（text/xmlUrl/htmlUrl tri-key contract）`
+  - `OPML 可编辑字段漂移探针（outline text edit-drift probe）`
+  - reason: OPML 的 `text` 可编辑而 `xmlUrl/htmlUrl` 更接近结构身份，需拆分“身份建模”与“漂移处置”两类控制面。
+- `merge`：合并方向
+  - from: `车道完备性仲裁（lane completeness quorum gate）`
+  - from: `车道身份一致性审计（lane identity parity gate）`
+  - into: `车道仲裁同一双门禁（lane quorum + identity dual gate）`
+  - reason: 两方向均作用于 HN 三车道晋级门，长期分离会重复维护同构字段与判定逻辑。
+- `expand`：新增方向 `证据引用可检索契约（claim id + anchor retrievability contract）`
+  - 触发依据：HN API 提供稳定 item id，若不强制 claim 与可检索锚点绑定，次日无法回放到同一证据对象。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`): `Building software products in the age of AI [video]`
+  - show (`show`): `Show HN: Better Auth - Authentication and authorization framework for TypeScript`
+  - new (`newest`): `Build your own SQLite, Part 1: Listing tables`
+- 官方文档证据链（本轮重点）
+  - OPML 2.0 规范（`text/xmlUrl/htmlUrl` 语义与 RSS 约束）
+  - Hacker News API（`topstories/showstories/newstories`）
+  - GitHub REST API: Gists（revision 可追踪）
+  - GitHub artifact attestations 离线验签（`trusted_root.jsonl` 时效约束）
+
+### 本轮结论
+
+- 用 `outline.text` 单字段去重会把“改名”误判为“新来源”，直接破坏去重和晋级审计。
+- 订阅入口必须最少落盘 `xmlUrl/htmlUrl/text` 三元身份，并把 `text` 漂移降级为显示层变更。
+- claim 必须绑定 `outline_key + hn_item_id`，否则即使证据存在，也不可回放验证同一对象。
+
+### Cycle 33 预载任务
+
+1. 为 `outline_drift_report` 增加 `drift_severity` 与自动处置矩阵（display_drift/source_break）。
+2. 设计 `claim_id -> hn_item_id -> outline_key` 的冲突仲裁优先级。
+3. 把 `证据引用可检索契约` 接入 `promotion_decision` required checks。
+
+---
+
 # Morning Brief（Nightshift Cycle 31）
 
 > 更新时间：2026-02-28 20:12 UTC  
