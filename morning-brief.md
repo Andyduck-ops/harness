@@ -1,3 +1,32 @@
+# Morning Brief（Nightshift Cycle 9）
+
+> 更新时间：2026-02-28 18:16 UTC  
+> 本轮目标：将“证据已产出但可被绕过”的风险收敛为受保护分支的 required checks 合并围栏。
+
+## 本轮新增（已落盘）
+
+1. `product-delivery/merge-fence-required-checks-lineage`
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist）。
+- HN `top/show/newest`：已采样，观测到“长期 AI 编程实战”“Spec 驱动工程”“Agent 可信性讨论”等连续信号。
+- 官方证据链：OpenAI Background、GitHub protected branches / issue forms / PR 链接 / workflow artifacts、OpenAPI、Pact、Design Tokens、Storybook。
+
+## 本轮结论
+
+- 真正决定无人推进质量的不是“有没有流程文档”，而是“闸门是否被配置为 required checks”。
+- 四个固定方向可收敛为三道必过检查：`design-gate`、`contract-gate`、`lineage-gate`。
+- `lineage_id` 必须从 Issue Form 起就成为硬约束，否则次日审计仍会断链。
+
+## Cycle 10 预载任务
+
+1. 产出可直接复用的 branch protection 配置清单（required checks + 审批规则）。
+2. 补一个 `lineage-manifest-lint` 最小实现草案（字段缺失即 fail）。
+3. 将 Pattern 回写触发源切换到 `lineage-manifest.json`（非日志文本）。
+
+---
+
 # Morning Brief（Nightshift Cycle 8）
 
 > 更新时间：2026-02-28 18:12 UTC  
