@@ -1,3 +1,4 @@
 # Nightshift runtime logs
 .nightshift/session.log
 .nightshift/watchdog.log
+.nightshift/runner.log
