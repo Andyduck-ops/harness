@@ -1,3 +1,57 @@
+# Morning Brief（Nightshift Cycle 39）
+
+> 更新时间：2026-02-28 20:55 UTC  
+> 本轮目标：把 environment wait timer 从“被动等待”升级为“主动重验触发器”，阻断等待期间证据过窗后直接晋级。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/release-governance/environment-wait-timer-reverify-gate.md`
+2. `references/patterns/release-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 39）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `环境等待计时预算治理（environment wait-timer budget gate）` 为：
+  - `环境等待计时上限治理（environment wait-timer ceiling gate）`
+  - `环境等待到期重验闸门（wait-timer expiry reverify gate）`
+  - reason: 原方向同时混合“等待预算定义”和“到期重验动作”，可执行粒度过粗。
+- `merge`：合并方向
+  - from: `审批前重验闸门（pre-approval reverify gate）`
+  - from: `环境等待到期重验闸门（wait-timer expiry reverify gate）`
+  - into: `审批-等待双触发重验治理（approval+wait dual-trigger reverify gate）`
+  - reason: 两者都指向同一控制面（重验触发），合并后统一门禁契约并减少同构 pattern。
+- `expand`：新增方向 `环境保护绕过审计门禁（environment protection bypass audit gate）`
+  - 触发依据：GitHub Review deployments 文档明确存在 bypass 入口，需要独立审计门禁防止“强制放行不可追责”。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T20:55:06Z）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`): `Open source and self host your own private Telegram using Telegram API`
+  - show (`show`): `A framework to agentify your software and orchestrate dynamic LLMs`
+  - new (`newest`): `I got OpenAI Agent to make me 100k while I slept`
+- 官方文档证据链（本轮重点）
+  - GitHub deployments/environments（wait timer + required reviewers）
+  - GitHub review deployments（审批/拒绝与 bypass 机制）
+  - GitHub merge queue + `merge_group`（队列校验独立上下文）
+  - GitHub protected branches（required checks 与最新 SHA / 时效约束）
+
+### 本轮结论
+
+- wait timer 不是中性延时，而是“重验触发器”；等待越久，继承旧绿灯风险越高。
+- 审批与等待必须使用同一 `lineage_id` 记录双触发重验（approval age / wait elapsed）。
+- bypass 行为必须结构化审计并触发 `quarantine_review`，否则无法完成可追责发布。
+
+### Cycle 40 预载任务
+
+1. 为 `approval+wait dual-trigger reverify gate` 增加分支分层阈值模板（main/release/hotfix）。
+2. 把 `bypass_override_audit.json` 纳入 required checks 与晋级阻断。
+3. 增加“等待超窗 + 审批变更人”组合场景的回放字段规范。
+
+---
+
 # Morning Brief（Nightshift Cycle 38）
 
 > 更新时间：2026-02-28 20:50 UTC  

@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T20:50:30Z",
-  "cycle": 38,
+  "updated_at": "2026-02-28T20:55:06Z",
+  "cycle": 39,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -41,35 +41,36 @@
     "队列预检-部署连续性双门禁（queue preflight-deploy continuity dual gate）",
     "队列容错模式验签（tail-green mode attestation gate）",
     "队列尾绿掩蔽预算治理（tail-green masking budget gate）",
-    "审批前重验闸门（pre-approval reverify gate）",
-    "环境等待计时预算治理（environment wait-timer budget gate）"
+    "环境等待计时上限治理（environment wait-timer ceiling gate）",
+    "审批-等待双触发重验治理（approval+wait dual-trigger reverify gate）",
+    "环境保护绕过审计门禁（environment protection bypass audit gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 38,
+    "last_cycle": 39,
     "actions": [
       {
         "type": "split",
-        "from": "审批时效预算治理（approval freshness budget gate）",
+        "from": "环境等待计时预算治理（environment wait-timer budget gate）",
         "into": [
-          "审批签发时效预算治理（approval-sign freshness budget gate）",
-          "审批前重验闸门（pre-approval reverify gate）"
+          "环境等待计时上限治理（environment wait-timer ceiling gate）",
+          "环境等待到期重验闸门（wait-timer expiry reverify gate）"
         ],
-        "reason": "原方向同时覆盖审批时滞预算与超窗补救动作，拆分后可分别验收“预算”和“重验”两个控制面。"
+        "reason": "原方向同时混合“等待预算定义”和“到期重验动作”，拆分后分别治理窗口阈值与重验执行。"
       },
       {
         "type": "merge",
         "from": [
-          "同窗时序预算治理（window alignment + skew budget gate）",
-          "审批签发时效预算治理（approval-sign freshness budget gate）"
+          "审批前重验闸门（pre-approval reverify gate）",
+          "环境等待到期重验闸门（wait-timer expiry reverify gate）"
         ],
-        "into": "跨阶段时序预算治理（cross-stage window freshness budget gate）",
-        "reason": "两方向都在约束时间窗偏斜，合并后统一 queue->approval->promotion 的预算口径并减少重复 pattern。"
+        "into": "审批-等待双触发重验治理（approval+wait dual-trigger reverify gate）",
+        "reason": "两方向都属于重验触发控制面，合并后形成统一双触发策略，避免同构 pattern 重复。"
       },
       {
         "type": "expand",
-        "added": "环境等待计时预算治理（environment wait-timer budget gate）",
-        "reason": "GitHub environment 明确提供 wait timer 控制面，说明审批链路可被时间预算化并纳入晋级门禁。"
+        "added": "环境保护绕过审计门禁（environment protection bypass audit gate）",
+        "reason": "GitHub Review deployments 提供 bypass 入口，若无独立审计门禁会形成不可追责的强制晋级路径。"
       }
     ]
   },
@@ -96,6 +97,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/release-governance/approval-freshness-budget-gate.md",
-  "last_cycle_commit": "pending-cycle-38"
+  "last_pattern": "references/patterns/release-governance/environment-wait-timer-reverify-gate.md",
+  "last_cycle_commit": "pending-cycle-39"
 }
