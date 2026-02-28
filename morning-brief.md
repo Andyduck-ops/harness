@@ -1,3 +1,57 @@
+# Morning Brief（Nightshift Cycle 31）
+
+> 更新时间：2026-02-28 20:12 UTC  
+> 本轮目标：把“离线验签通过”升级为“根信任新鲜且可追责”，避免 trusted root 过期导致的伪安全晋级。
+
+## 本轮新增（已落盘）
+
+1. `references/patterns/trust-governance/trusted-root-freshness-quarantine-gate.md`
+2. `references/patterns/trust-governance/_index.md`（新 topic 自动创建）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 行与统计更新）
+4. `morning-brief.md`（新增 Cycle 31）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+## 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `验签根信任新鲜度治理（trusted-root freshness gate）` 为：
+  - `根信任轮换门禁（trusted-root rotation gate）`
+  - `离线验签实例漂移探针（offline verification instance drift probe）`
+  - reason: 根信任“时效轮换”与“验签执行环境漂移”是两类失效面，必须拆分治理。
+- `merge`：合并方向
+  - from: `构建摘要同一性闸门（build subject digest parity gate）`
+  - from: `摘要失配隔离升级（digest mismatch quarantine escalation）`
+  - into: `摘要同一-隔离闭环治理（digest parity + quarantine closed loop）`
+  - reason: 一条负责检测、一条负责处置，长期分离会重复产出同构策略与字段。
+- `expand`：新增方向 `OPML 订阅体身份约束（outline identity contract: text/xmlUrl/htmlUrl）`
+  - 触发依据：OPML 2.0 明确 outline 的 `text/xmlUrl/htmlUrl` 语义，适合用于入口身份与证据来源约束。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已实测重定向到 HN Popular Blogs OPML Gist（checked 2026-02-28T20:12:13Z）。
+- HN `top/show/new`：已采样并写入证据链（示例）：
+  - top (`news`): `A New Law of Thermodynamics: The Law of Disorder`
+  - show (`show`): `Show HN: Milestone, a desktop app to mark student work with AI`
+  - new (`newest`): `GitHub Issues Search now supports nested queries and boolean operators`
+- 官方文档证据链（本轮重点）
+  - Hacker News API（`topstories/showstories/newstories`）
+  - GitHub artifact attestations（生成与验证）
+  - GitHub offline verification（`trusted_root.jsonl` 更新与验签）
+  - OPML 2.0 规范（outline 身份字段）
+
+## 本轮结论
+
+- “验签通过”不是终点；trusted root 时效失控会把通过结果降级为不可审计结论。
+- 夜间无人流程必须把 `root_fresh_pass` 升级为 required check，而非仅记录日志。
+- 根信任轮换与摘要同一性应并联校验，否则会出现“对象正确但信任根过期”的隐性风险。
+
+## Cycle 32 预载任务
+
+1. 设计 `root_age_budget` 的分支分层阈值（`main/release/hotfix`）。
+2. 为 `offline verification instance drift` 增加 `runner_image_digest` 对账字段。
+3. 把 `outline identity contract` 接入 source-governance 的三角校验清单。
+
+---
+
 # Morning Brief（Nightshift Cycle 30）
 
 > 更新时间：2026-02-28 20:10 UTC  

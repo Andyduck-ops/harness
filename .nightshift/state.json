@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T20:10:00Z",
-  "cycle": 30,
+  "updated_at": "2026-02-28T20:12:13Z",
+  "cycle": 31,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -28,38 +28,39 @@
     "跨车道去重预算一体化治理（dedupe key + duplicate ratio gate）",
     "车道完备性仲裁（lane completeness quorum gate）",
     "车道身份一致性审计（lane identity parity gate）",
-    "构建摘要同一性闸门（build subject digest parity gate）",
-    "摘要失配隔离升级（digest mismatch quarantine escalation）",
+    "摘要同一-隔离闭环治理（digest parity + quarantine closed loop）",
     "工件保留期分层策略（branch-tier artifact retention policy）",
-    "验签根信任新鲜度治理（trusted-root freshness gate）",
-    "归档保留-验签对账流水（retention-attestation reconciliation ledger）"
+    "根信任轮换门禁（trusted-root rotation gate）",
+    "离线验签实例漂移探针（offline verification instance drift probe）",
+    "归档保留-验签对账流水（retention-attestation reconciliation ledger）",
+    "OPML 订阅体身份约束（outline identity contract: text/xmlUrl/htmlUrl）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 30,
+    "last_cycle": 31,
     "actions": [
       {
         "type": "split",
-        "from": "工件保留期-验签窗口协同（artifact retention-verification window alignment）",
+        "from": "验签根信任新鲜度治理（trusted-root freshness gate）",
         "into": [
-          "工件保留期分层策略（branch-tier artifact retention policy）",
-          "验签根信任新鲜度治理（trusted-root freshness gate）"
+          "根信任轮换门禁（trusted-root rotation gate）",
+          "离线验签实例漂移探针（offline verification instance drift probe）"
         ],
-        "reason": "保留期预算与根信任时效对应不同失效面，拆分后可分别挂接 retention policy 与 root freshness gate。"
+        "reason": "离线验签可信性同时受根信任时效和执行环境漂移影响，拆分后可分别设置 root_age 与 runner_drift 闸门。"
       },
       {
         "type": "merge",
         "from": [
-          "信源仲裁验签（triangulation + provenance attestation）",
-          "时序证据抑制治理（freshness SLA + stale suppression）"
+          "构建摘要同一性闸门（build subject digest parity gate）",
+          "摘要失配隔离升级（digest mismatch quarantine escalation）"
         ],
-        "into": "证据时效验签一体化（freshness + provenance ratification gate）",
-        "reason": "两条方向都在约束证据可信生命周期，合并后避免同构门禁并提升审计一致性。"
+        "into": "摘要同一-隔离闭环治理（digest parity + quarantine closed loop）",
+        "reason": "同一性检测与隔离处置是前后闭环，合并后避免重复定义字段并提升晋级审计一致性。"
       },
       {
         "type": "expand",
-        "added": "归档保留-验签对账流水（retention-attestation reconciliation ledger）",
-        "reason": "GitHub artifacts retention 与离线验签 trusted root 新鲜度来自不同机制，需要新增对账方向避免次日复验断链。"
+        "added": "OPML 订阅体身份约束（outline identity contract: text/xmlUrl/htmlUrl）",
+        "reason": "OPML 2.0 明确 outline 的 text/xmlUrl/htmlUrl 语义，可直接用于订阅入口身份与证据来源约束。"
       }
     ]
   },
@@ -84,6 +85,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/artifact-governance/artifact-retention-verification-window-gate.md",
-  "last_cycle_commit": "pending-cycle-30"
+  "last_pattern": "references/patterns/trust-governance/trusted-root-freshness-quarantine-gate.md",
+  "last_cycle_commit": "pending-cycle-31"
 }
