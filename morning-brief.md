@@ -1,3 +1,46 @@
+# Morning Brief（Nightshift Cycle 14）
+
+> 更新时间：2026-02-28 18:39 UTC  
+> 本轮目标：把“24h 无人推进”从“有日志”升级为“有隔离状态单元 + 可回放信封”的可验证执行面。
+
+## 本轮新增（已落盘）
+
+1. `state-governance/agent-state-cell-replay-envelope`
+2. `state-governance/_index.md`
+
+## 激进动态策略执行（本轮）
+
+- `expand`：新增方向 `状态隔离与回放信封（per-agent state cell + WAL + artifact digest）`
+  - 触发依据：HN top 出现“每 agent/tenant/document 独立 SQLite”与“Don’t trust AI agents”并发信号，说明状态隔离与可验证回放已进入刚需阶段。
+- `merge`：合并方向
+  - from: `夜间证据车道（背景异步 + 本地落盘）`
+  - from: `Hacker News + OPML 长短信号融合`
+  - into: `夜间证据巡航（背景异步 + OPML/HN 融合 + 本地落盘）`
+  - reason: 两条方向都服务于同一条证据采集流水线，分离会造成同构 pattern 和重复调度。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist）。
+- HN `top/show/new`：已采样，捕获到“状态隔离”“默认不信任 agent”“本地优先记忆与上下文治理”连续信号。
+- 官方证据链（已补齐）：
+  - OpenAI Background mode（长任务异步执行）
+  - OpenAI Conversations API（会话状态管理边界）
+  - SQLite WAL（状态持久化与 checkpoint）
+  - GitHub Actions artifacts（回放信封跨步骤保存与校验）
+
+## 本轮结论
+
+- 仅有执行日志不足以支撑次晨接管，必须补 `state_cell_id + db_snapshot_ref + action_log_ref`。
+- “会话状态”与“运行态存储”必须分层：前者用于对话连续性，后者用于可回放审计。
+- 把回放信封做成 artifact 后，夜间自治才具备可验证与可追责属性。
+
+## Cycle 15 预载任务
+
+1. 产出 `state-cell-lint` 规则（隔离键缺失即 fail）。
+2. 设计 `replay-envelope` 与 `lineage-manifest` 的字段映射，减少双清单漂移。
+3. 评估 `回放证据保全` 与 `状态隔离与回放信封` 的 pattern 合并边界，控制同构膨胀。
+
+---
 # Morning Brief（Nightshift Cycle 13）
 
 > 更新时间：2026-02-28 18:35 UTC  

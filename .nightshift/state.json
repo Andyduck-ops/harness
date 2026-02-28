@@ -1,11 +1,11 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T18:35:12Z",
-  "cycle": 13,
+  "updated_at": "2026-02-28T18:39:19Z",
+  "cycle": 14,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
-    "夜间证据车道（背景异步 + 本地落盘）",
+    "夜间证据巡航（背景异步 + OPML/HN 融合 + 本地落盘）",
     "白天晋级车道（分支保护 + 环境审批）",
     "设计令牌治理（schema + drift lint）",
     "组件验收治理（story + a11y + visual gate）",
@@ -13,27 +13,27 @@
     "契约变更门禁（OpenAPI/Pact）",
     "回放证据保全（Replay/Artifact）",
     "PRD -> Epic -> Issue -> PR -> Pattern 执行闭环",
-    "Hacker News + OPML 长短信号融合",
     "工作区可恢复性治理（checkpoint + artifact + reflog）",
-    "上下文预算治理（compaction contract + checkpoint handoff）"
+    "上下文预算治理（compaction contract + checkpoint handoff）",
+    "状态隔离与回放信封（per-agent state cell + WAL + artifact digest）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 13,
+    "last_cycle": 14,
     "actions": [
       {
-        "type": "split",
-        "from": "前端设计系统（可次日直接实战）",
-        "to": [
-          "设计令牌治理（schema + drift lint）",
-          "组件验收治理（story + a11y + visual gate）"
-        ],
-        "reason": "原方向过宽，执行时将设计语义与验收闸门混在同一层，导致产物可展示但不可验证"
+        "type": "expand",
+        "added": "状态隔离与回放信封（per-agent state cell + WAL + artifact digest）",
+        "reason": "HN top 同时出现“每 agent 独立 SQLite”与“Don’t trust AI agents”信号，说明可验证状态隔离已经从优化项升级为自治系统刚需"
       },
       {
-        "type": "expand",
-        "added": "AI 设计导出契约（design-export + required-checks）",
-        "reason": "HN show 出现 Mowgli 设计导出工具，HN new 同步出现 VSDD 规格驱动交付，说明设计到代码交接契约化已成为高价值新方向"
+        "type": "merge",
+        "from": [
+          "夜间证据车道（背景异步 + 本地落盘）",
+          "Hacker News + OPML 长短信号融合"
+        ],
+        "into": "夜间证据巡航（背景异步 + OPML/HN 融合 + 本地落盘）",
+        "reason": "两条方向都属于同一证据采集链路，分离会导致同构 pattern 与重复调度成本"
       }
     ]
   },
@@ -53,6 +53,6 @@
     "https://storybook.js.org/docs/"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/fullstack-engineering/agent-design-export-contract.md",
-  "last_cycle_commit": "pending-cycle-13"
+  "last_pattern": "references/patterns/state-governance/agent-state-cell-replay-envelope.md",
+  "last_cycle_commit": "pending-cycle-14"
 }
