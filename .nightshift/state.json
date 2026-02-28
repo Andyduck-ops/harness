@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "updated_at": "2026-02-28T15:40:00Z",
+  "cycle": 1,
+  "status": "active",
+  "active_directions": [
+    "24h 无人 AI 推进",
+    "前端设计系统化",
+    "后端契约优先",
+    "PRD -> Issue -> PR 闭环",
+    "Hacker News 前沿信号"
+  ],
+  "sources_seed": [
+    "https://t.co/dwAiIjlXet",
+    "https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b",
+    "https://hacker-news.firebaseio.com/v0/"
+  ],
+  "last_brief": "morning-brief.md"
+}

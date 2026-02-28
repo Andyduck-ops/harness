@@ -101,3 +101,32 @@ sources:
     score: 0.70
     last_checked: 2026-02-28
     keywords: [harness, skill, agent, prompt]
+
+  - name: HN Popular Blogs 2025 OPML
+    url: https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b
+    type: community
+    score: 0.78
+    last_checked: 2026-02-28
+    keywords: [hacker-news, rss, blogs, long-term-sources]
+    notes: "来自 t.co/dwAiIjlXet，2026-02-28 更新"
+
+  - name: Hacker News Firebase API
+    url: https://hacker-news.firebaseio.com/v0/
+    type: community
+    score: 0.80
+    last_checked: 2026-02-28
+    keywords: [hacker-news, topstories, showstories, realtime]
+
+  - name: overreacted.io
+    url: https://overreacted.io/
+    type: practitioner
+    score: 0.82
+    last_checked: 2026-02-28
+    keywords: [frontend, react, design-system]
+
+  - name: simonwillison.net
+    url: https://simonwillison.net/
+    type: practitioner
+    score: 0.88
+    last_checked: 2026-02-28
+    keywords: [ai, llm, agent, tooling]
