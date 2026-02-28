@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T22:59:04Z",
-  "cycle": 63,
+  "updated_at": "2026-02-28T23:02:21Z",
+  "cycle": 64,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -27,8 +27,8 @@
     "Claim-ID 强绑定治理（claim_id -> hn_item_id -> outline_key binding）",
     "墓碑晋级冻结门禁（tombstone promotion freeze gate）",
     "晋级双时点重放治理（capture+promotion replay dual-phase gate）",
-    "队列预检-部署连续性双门禁（queue preflight-deploy continuity dual gate）",
-    "环境等待计时上限治理（environment wait-timer ceiling gate）",
+    "队列构建并发容量预算治理（queue build-concurrency capacity budget gate）",
+    "部署审批处理能力预算治理（deployment reviewer throughput budget gate）",
     "分支规则禁绕约束治理（branch-rule no-bypass enforcement gate）",
     "旁路理由授权一致性治理（bypass reason-authorization coherence gate）",
     "旁路模式升级漂移治理（bypass_mode escalation drift gate）",
@@ -64,40 +64,41 @@
     "OPML 规范锚点存活治理（canonical redirect + retrievability gate）",
     "队列降级恢复门槛治理（queue fallback recovery-threshold gate）",
     "浏览器边界-权限同构协同治理（browser boundary-scope parity co-gate）",
-    "队列重排吞吐损耗预算治理（queue reorder throughput-loss budget gate）",
     "队列模式滞回冷却治理（queue mode hysteresis cooldown gate）",
+    "队列-部署容量耦合治理（queue-deploy capacity coupling gate）",
     "队列恢复清洁窗口治理（queue recovery clean-window gate）",
     "队列恢复回退冷却治理（queue recovery rollback-cooldown gate）",
-    "队列降级触发双失效面预算治理（queue fallback dual-failure-surface budget gate）"
+    "队列降级触发双失效面预算治理（queue fallback dual-failure-surface budget gate）",
+    "构建并发-审批容量压差治理（build-concurrency review-capacity pressure gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 63,
+    "last_cycle": 64,
     "actions": [
       {
         "type": "expand",
-        "added": "队列模式滞回冷却治理（queue mode hysteresis cooldown gate）",
-        "reason": "fallback 恢复后仍可能因短窗噪声立刻回退；需用滞回阈值+冷却窗抑制 strict/fallback 高频振荡。"
+        "added": "构建并发-审批容量压差治理（build-concurrency review-capacity pressure gate）",
+        "reason": "merge queue 的 build concurrency 可提升并发验证吞吐，但 deploy 审批吞吐是慢变量；需新增压差预算方向避免“提速即过载”。"
       },
       {
         "type": "split",
         "from": [
-          "队列容错恢复确认窗口治理（queue fallback recovery confirmation-window gate）"
+          "队列预检-部署连续性双门禁（queue preflight-deploy continuity dual gate）"
         ],
         "into": [
-          "队列恢复清洁窗口治理（queue recovery clean-window gate）",
-          "队列恢复回退冷却治理（queue recovery rollback-cooldown gate）"
+          "队列构建并发容量预算治理（queue build-concurrency capacity budget gate）",
+          "部署审批处理能力预算治理（deployment reviewer throughput budget gate）"
         ],
-        "reason": "恢复判定中的“连续清洁窗口”与“恢复后冷却窗口”属于独立失效面，拆分后可分别设置 required checks。"
+        "reason": "预检-部署连续性方向过宽，拆为“入队并发预算”和“出队审批预算”两个可执行子方向，分别绑定 queue/deploy 指标。"
       },
       {
         "type": "merge",
         "from": [
-          "队列降级触发失败密度预算治理（queue fallback failure-density budget gate）",
-          "队列降级触发冲突密度预算治理（queue fallback conflict-density budget gate）"
+          "环境等待计时上限治理（environment wait-timer ceiling gate）",
+          "队列重排吞吐损耗预算治理（queue reorder throughput-loss budget gate）"
         ],
-        "into": "队列降级触发双失效面预算治理（queue fallback dual-failure-surface budget gate）",
-        "reason": "两方向都服务于 fallback 触发判定，合并后统一预算口径并减少同构 pattern 重复。"
+        "into": "队列-部署容量耦合治理（queue-deploy capacity coupling gate）",
+        "reason": "两方向都在治理“队列侧吞吐变化引发部署端容量失衡”，合并后统一为单一容量耦合预算口径。"
       }
     ]
   },
@@ -125,6 +126,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/queue-governance/queue-fallback-hysteresis-cooldown-gate.md",
-  "last_cycle_commit": "pending-cycle-63"
+  "last_pattern": "references/patterns/capacity-governance/queue-build-concurrency-environment-capacity-gate.md",
+  "last_cycle_commit": "pending-cycle-64"
 }

@@ -1,3 +1,59 @@
+# Morning Brief（Nightshift Cycle 64）
+
+> 更新时间：2026-02-28 23:02 UTC  
+> 本轮目标：把 merge queue 的构建并发提速与 deployment 审批容量做耦合预算门禁，阻断“队列提速但发布端过载”的隐性降级。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/capacity-governance/queue-build-concurrency-environment-capacity-gate.md`
+2. `references/patterns/capacity-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `构建并发-审批容量压差治理（build-concurrency review-capacity pressure gate）`
+  - reason: merge queue 可提高并发验证吞吐，但 deployment reviewer 吞吐是慢变量，需单独治理压差预算。
+- `split`：拆分方向
+  - from: `队列预检-部署连续性双门禁（queue preflight-deploy continuity dual gate）`
+  - into: `队列构建并发容量预算治理（queue build-concurrency capacity budget gate）`
+  - into: `部署审批处理能力预算治理（deployment reviewer throughput budget gate）`
+  - reason: 入队并发与出队审批属于独立失效面，拆分后可分别绑定指标与 required checks。
+- `merge`：合并方向
+  - from: `环境等待计时上限治理（environment wait-timer ceiling gate）`
+  - from: `队列重排吞吐损耗预算治理（queue reorder throughput-loss budget gate）`
+  - into: `队列-部署容量耦合治理（queue-deploy capacity coupling gate）`
+  - reason: 两方向共同约束“queue 吞吐变化导致 deploy 容量失衡”，合并后统一预算口径。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已解析并重定向到 HN Popular Blogs OPML Gist（checked 2026-02-28）。
+- HN 三车道页面快照（2026-02-28）
+  - news: `Signal says it’s pulling feature users exploited to protect privacy`
+  - show: `Show HN: Better Auth – Authentication and authorization framework for TypeScript`
+  - newest: `Ask HN: How to think about and design LLM apps?`
+- 官方文档证据链（本轮重点）
+  - GitHub Merge Queue：`Build concurrency`、`Status check timeout`、`Minimum pull requests to merge`
+  - GitHub Actions：required checks 需监听 `merge_group`
+  - GitHub Deployments/Environments：required reviewers、wait timer（1 分钟到 30 天）
+  - GitHub Review Deployments：prevent self-reviews 与 bypass 行为边界
+
+### 本轮结论
+
+- queue 提速（build concurrency）必须与 deploy 审批容量联立建模，否则会把系统推入“高吞吐 + 高等待 + 高频旁路”的不可审计状态。
+- `merge_group` 同构校验只能解决“验证面一致”，不能单独解决“发布端容量失衡”。
+- 容量压差应作为晋级前置 gate，而不是 incident 后补救指标。
+
+### Cycle 65 预载任务
+
+1. 输出 `queue_capacity_budget.json` 与 `deploy_capacity_snapshot.json` 的最小 schema 与 lint 规则。
+2. 新增 `pressure_ratio` 与 `queue_wait_minutes_p95` 的阈值策略，并定义自动降档逻辑。
+3. 将容量压差 gate 接入 candidate->issue 晋级表单，阻断无容量预算的提速请求。
+
+---
+
 # Morning Brief（Nightshift Cycle 63）
 
 > 更新时间：2026-02-28 23:10 UTC  
