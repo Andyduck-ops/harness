@@ -1,3 +1,58 @@
+# Morning Brief（Nightshift Cycle 59）
+
+> 更新时间：2026-02-28 22:36 UTC  
+> 本轮目标：把 `show/newest` 早信号仲裁升级为“条目存活预检 + OPML 结构契约 + 成熟度冷却”的可执行门禁，减少白天队列污染。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/discovery-governance/show-new-evidence-maturity-arbitration-gate.md`（升级：新增 `deleted/dead` 预检与 OPML 契约门禁）
+2. `references/patterns/discovery-governance/_index.md`（更新描述）
+3. `references/patterns/_master_index.md`（更新 confidence 与待验证统计）
+4. `morning-brief.md`（新增 Cycle 59）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `HN 条目存活预检治理（dead/deleted pre-promotion gate）`
+  - reason: HN API item 存在 `deleted/dead` 字段，说明热度信号不等于可执行信号，晋级前必须存活预检。
+- `split`：拆分方向
+  - from: `跨车道一致性预算治理（quorum-identity-dedupe budget gate）`
+  - into: `跨车道身份同一门禁（cross-lane identity quorum gate）`
+  - into: `跨车道去重预算门禁（cross-lane dedupe budget gate）`
+  - reason: 身份同一性与去重比例是两类独立失效面，拆分后可分别配置 required checks。
+- `merge`：合并方向
+  - from: `OPML 重定向锚定（shortlink -> canonical target lock）`
+  - from: `锚点存活预算治理（anchor retrievability SLA + mirror fallback）`
+  - into: `OPML 规范锚点存活治理（canonical redirect + retrievability gate）`
+  - reason: 两方向都在治理“入口可达 + 身份稳定”，合并后降低同构重复。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已解析并锚定到 HN Popular Blogs OPML Gist raw（checked `2026-02-28T22:42:52Z`）。
+- HN 三车道（2026-02-28）
+  - news: `MinIO Is Dead, Long Live MinIO`
+  - show: item `47195123` — `Show HN: Now I Get It – Translate scientific papers into interactive webpages`
+  - newest: `How do HTTP servers figure out Content-Length?`
+- 官方文档证据链（本轮重点）
+  - OPML 2.0 Spec：`outline.text` 与 `type="rss"/xmlUrl` 订阅约束
+  - Hacker News API：`top/new/show` 车道端点 + item `deleted/dead`
+  - GitHub Docs：merge queue / `merge_group` / protected branches / workflow artifacts
+
+### 本轮结论
+
+- `show/newest` 的仲裁不能只看热度，必须先做 item 存活预检。
+- OPML 入口必须做结构契约检查（`text` + `xmlUrl`），否则会引入不可复采样订阅体。
+- 晋级结果必须绑定 required checks 与 artifact 才能实现次日可审计回放。
+
+### Cycle 60 预载任务
+
+1. 把 `item_liveness_report.json` 加入失败分桶（deleted/dead/missing-core-fields）。
+2. 为 `opml_outline_contract_report.json` 增加 `canonical_digest`，支持变更对账。
+3. 将 `cross-lane identity quorum` 与 `dedupe budget` 检查拆分接入独立 required checks。
+
+---
+
 # Morning Brief（Nightshift Cycle 58）
 
 > 更新时间：2026-02-28 22:28 UTC  
@@ -2521,4 +2576,3 @@
 3. 将 Pattern 回写触发源切换到 `lineage-manifest.json`（非日志文本）。
 
 ---
-

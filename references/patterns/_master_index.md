@@ -58,7 +58,7 @@
 | 3 | [hn-lane-identity-parity-gate](./feed-governance/hn-lane-identity-parity-gate.md) | feed-governance | 0.80 | OPML + HN + HN API + GitHub Docs |
 | 3 | [hn-window-skew-budget-gate](./feed-governance/hn-window-skew-budget-gate.md) | feed-governance | 0.79 | OPML + HN + HN API + GitHub Docs |
 | 3 | [hn-lane-watermark-replay-contract](./feed-governance/hn-lane-watermark-replay-contract.md) | feed-governance | 0.78 | OPML + HN + HN API + GitHub Docs |
-| 3 | [show-new-evidence-maturity-arbitration-gate](./discovery-governance/show-new-evidence-maturity-arbitration-gate.md) | discovery-governance | 0.77 | OPML + HN + Merge Queue + merge_group + Protected Branches |
+| 3 | [show-new-evidence-maturity-arbitration-gate](./discovery-governance/show-new-evidence-maturity-arbitration-gate.md) | discovery-governance | 0.80 | OPML + OPML Spec + HN(news/show/new + API) + Merge Queue + merge_group |
 | 3 | [cancel-budget-stale-run-gate](./autonomous-ops/cancel-budget-stale-run-gate.md) | autonomous-ops | 0.78 | OPML + HN + OpenAI + GitHub |
 | 3 | [artifact-retention-verification-window-gate](./artifact-governance/artifact-retention-verification-window-gate.md) | artifact-governance | 0.78 | OPML + HN + HN API + GitHub Artifacts + GitHub Attestations |
 | 3 | [trusted-root-freshness-quarantine-gate](./trust-governance/trusted-root-freshness-quarantine-gate.md) | trust-governance | 0.79 | OPML + HN + HN API + GitHub Attestations |
@@ -119,4 +119,4 @@
 - 总计：74 patterns
 - 平均 confidence：0.79
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：58 patterns
+- 待验证（<0.80）：57 patterns

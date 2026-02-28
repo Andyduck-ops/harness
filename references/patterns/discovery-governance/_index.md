@@ -1,3 +1,3 @@
 # discovery-governance
 
-- [show-new-evidence-maturity-arbitration-gate](./show-new-evidence-maturity-arbitration-gate.md) — 用车道意图标签、成熟度冷却预算与 required checks，把 show/newest 早信号仲裁成可执行候选
+- [show-new-evidence-maturity-arbitration-gate](./show-new-evidence-maturity-arbitration-gate.md) — 增加 item 存活预检（deleted/dead）与 OPML 结构契约，把 show/newest 早信号仲裁为可执行且可回放候选

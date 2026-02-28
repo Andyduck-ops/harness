@@ -1,11 +1,10 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T22:30:51Z",
-  "cycle": 58,
+  "updated_at": "2026-02-28T22:36:04Z",
+  "cycle": 59,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
-    "OPML 重定向锚定（shortlink -> canonical target lock）",
     "OPML 修订漂移监控（gist revision + digest diff）",
     "热度锚定采样（HN top anchor lane）",
     "部署审批身份门禁（deployment reviewer identity gate）",
@@ -27,7 +26,6 @@
     "离线验签实例漂移探针（offline verification instance drift probe）",
     "归档保留-验签对账流水（retention-attestation reconciliation ledger）",
     "Claim-ID 强绑定治理（claim_id -> hn_item_id -> outline_key binding）",
-    "锚点存活预算治理（anchor retrievability SLA + mirror fallback）",
     "墓碑晋级冻结门禁（tombstone promotion freeze gate）",
     "晋级双时点重放治理（capture+promotion replay dual-phase gate）",
     "队列预检-部署连续性双门禁（queue preflight-deploy continuity dual gate）",
@@ -63,36 +61,39 @@
     "merge_group 回放锚定治理（merge_group replay anchoring gate）",
     "Show 车道可执行性门禁（show-lane executability gate）",
     "Newest 车道冷却晋级门禁（newest-lane cooldown promotion gate）",
-    "跨车道一致性预算治理（quorum-identity-dedupe budget gate）"
+    "HN 条目存活预检治理（dead/deleted pre-promotion gate）",
+    "跨车道身份同一门禁（cross-lane identity quorum gate）",
+    "跨车道去重预算门禁（cross-lane dedupe budget gate）",
+    "OPML 规范锚点存活治理（canonical redirect + retrievability gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 58,
+    "last_cycle": 59,
     "actions": [
       {
         "type": "expand",
-        "added": "merge_group 回放锚定治理（merge_group replay anchoring gate）",
-        "reason": "GitHub merge queue 的 merge_group 事件可把探索结论与晋级检查绑定到同一回放锚点，降低夜间信号无法复盘的风险。"
+        "added": "HN 条目存活预检治理（dead/deleted pre-promotion gate）",
+        "reason": "HN API item 包含 deleted/dead 字段，热度样本可能在晋级前失效，需要独立存活预检门禁。"
       },
       {
         "type": "split",
         "from": [
-          "原型-早信号双车道仲裁治理（show-new dual-lane arbitration gate）"
+          "跨车道一致性预算治理（quorum-identity-dedupe budget gate）"
         ],
         "into": [
-          "Show 车道可执行性门禁（show-lane executability gate）",
-          "Newest 车道冷却晋级门禁（newest-lane cooldown promotion gate）"
+          "跨车道身份同一门禁（cross-lane identity quorum gate）",
+          "跨车道去重预算门禁（cross-lane dedupe budget gate）"
         ],
-        "reason": "show 与 newest 的失效面不同：前者需要可执行证据，后者需要冷却复采样；拆分后可分别设置 required checks。"
+        "reason": "身份同一性与去重预算是不同失效面，拆分后可独立绑定 required checks。"
       },
       {
         "type": "merge",
         "from": [
-          "车道仲裁同一双门禁（lane quorum + identity dual gate）",
-          "跨车道去重预算一体化治理（dedupe key + duplicate ratio gate）"
+          "OPML 重定向锚定（shortlink -> canonical target lock）",
+          "锚点存活预算治理（anchor retrievability SLA + mirror fallback）"
         ],
-        "into": "跨车道一致性预算治理（quorum-identity-dedupe budget gate）",
-        "reason": "两条方向都在治理三车道一致性预算，合并后减少同构重复并统一仲裁阈值。"
+        "into": "OPML 规范锚点存活治理（canonical redirect + retrievability gate）",
+        "reason": "两条方向都在约束入口可达与身份稳定，合并后减少同构重复并统一锚点策略。"
       }
     ]
   },
@@ -121,5 +122,5 @@
   ],
   "last_brief": "morning-brief.md",
   "last_pattern": "references/patterns/discovery-governance/show-new-evidence-maturity-arbitration-gate.md",
-  "last_cycle_commit": "pending-cycle-58"
+  "last_cycle_commit": "pending-cycle-59"
 }
