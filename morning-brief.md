@@ -1,3 +1,55 @@
+# Morning Brief（Nightshift Cycle 27）
+
+> 更新时间：2026-02-28 19:58 UTC  
+> 本轮目标：把 HN `top/show/new` 从“同窗可比”升级为“偏斜预算 + 重复率预算 + 车道配额”的可审计晋级闸门。
+
+## 本轮新增（已落盘）
+
+1. `feed-governance/hn-window-skew-budget-gate`
+2. `feed-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+## 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `跨来源榜单回放仲裁（HN lane replay arbitration）` 为：
+  - `同窗偏斜预算治理（sampling skew budget gate）`
+  - `跨车道重复率预算治理（cross-lane duplicate ratio budget）`
+  - reason: “同窗可比”与“重复率异常”是两类不同失真，需要独立闸门字段。
+- `merge`：合并方向
+  - from: `运行取消预算治理（cancel SLA + concurrency group）`
+  - from: `取消后晋级防抖治理（cancel-to-promote debounce gate）`
+  - into: `取消-晋级时序治理（cancel-to-promote sequencing gate）`
+  - reason: 两条方向都在处理取消后的晋级时序，分离维护会反复生成同构检查项。
+- `expand`：新增方向 `HN lane quorum 仲裁（top/show/new quorum promotion gate）`
+  - 触发依据：三车道任一缺失都可能导致偏差决策，需要独立的 quorum 晋级门禁。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：确认重定向到 HN Popular Blogs OPML Gist（redirect checked 2026-02-28T19:50:04Z）。
+- HN `top/show/new`：已采样并写入证据链（示例）：
+  - top (`news`): `A framework for helping students learn from productive struggle`（`id=47196582`）
+  - show (`show`): `Show HN: Now I Get It`（`id=47195123`）
+  - new (`newest`): `Who Is Building at Berkeley?`（`id=47199282`）
+- 官方文档证据链（本轮重点）
+  - Hacker News API（`topstories/showstories/newstories`）
+  - GitHub required status checks 文档
+  - GitHub workflow artifacts 文档
+  - OPML 2.0 规范
+
+## 本轮结论
+
+- 仅有 `window_id` 仍不足以抑制伪增量，必须增加 `sampling_skew_ms` 预算门禁。
+- 去重必须预算化（`cross_lane_duplicate_ratio`），否则“重复膨胀”与“清洗过度”都无法审计。
+- 三车道 quorum 需要独立成为 required check，避免缺车道时误晋级。
+
+## Cycle 28 预载任务
+
+1. 为 `sampling_skew_ms` 引入按时段动态阈值（高峰/低峰分段预算）。
+2. 为 `cross_lane_duplicate_ratio` 增加历史基线偏离告警（z-score 或分位阈值）。
+3. 评估 `hn-window-skew-budget-gate` 与 `triangulated-evidence-ratification-gate` 的串并联顺序模板。
+
+---
 # Morning Brief（Nightshift Cycle 26）
 
 > 更新时间：2026-02-28 19:46 UTC  

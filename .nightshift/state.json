@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T19:46:56Z",
-  "cycle": 26,
+  "updated_at": "2026-02-28T19:58:00Z",
+  "cycle": 27,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -24,38 +24,39 @@
     "候选晋级表单治理（candidate intake + issue form gate）",
     "时序证据抑制治理（freshness SLA + stale suppression）",
     "信源仲裁验签（triangulation + provenance attestation）",
-    "运行取消预算治理（cancel SLA + concurrency group）",
-    "取消后晋级防抖治理（cancel-to-promote debounce gate）",
+    "取消-晋级时序治理（cancel-to-promote sequencing gate）",
     "三榜同窗采样契约（window-aligned lane sampling contract）",
     "跨车道去重主键治理（lane-cross dedupe key governance）",
-    "跨来源榜单回放仲裁（HN lane replay arbitration）"
+    "同窗偏斜预算治理（sampling skew budget gate）",
+    "跨车道重复率预算治理（cross-lane duplicate ratio budget）",
+    "HN lane quorum 仲裁（top/show/new quorum promotion gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 26,
+    "last_cycle": 27,
     "actions": [
       {
         "type": "split",
-        "from": "HN 三榜水位线治理（top/show/new watermark replay）",
+        "from": "跨来源榜单回放仲裁（HN lane replay arbitration）",
         "into": [
-          "三榜同窗采样契约（window-aligned lane sampling contract）",
-          "跨车道去重主键治理（lane-cross dedupe key governance）"
+          "同窗偏斜预算治理（sampling skew budget gate）",
+          "跨车道重复率预算治理（cross-lane duplicate ratio budget）"
         ],
-        "reason": "同窗采样与跨车道去重属于两层控制面，拆分后才能分别挂接 sampling skew gate 与 dedupe audit gate。"
+        "reason": "跨来源可比性与重复率异常是两类不同失真，拆分后才能分别挂接 skew gate 与 duplicate-ratio gate。"
       },
       {
         "type": "merge",
         "from": [
-          "证据时效治理（freshness SLA + snapshot ledger pinning）",
-          "过期结论抑制治理（stale-run suppression + replay pin）"
+          "运行取消预算治理（cancel SLA + concurrency group）",
+          "取消后晋级防抖治理（cancel-to-promote debounce gate）"
         ],
-        "into": "时序证据抑制治理（freshness SLA + stale suppression）",
-        "reason": "两条方向都在控制旧证据失效与重采样触发，合并后可统一 freshness 与 stale-run 判定口径。"
+        "into": "取消-晋级时序治理（cancel-to-promote sequencing gate）",
+        "reason": "两条方向都在控制取消后的晋级顺序，合并后可统一 cancel trace 与 promotion debounce 的判定口径。"
       },
       {
         "type": "expand",
-        "added": "跨来源榜单回放仲裁（HN lane replay arbitration）",
-        "reason": "top/show/new 采样节奏差异会制造伪新增，需要新增跨车道回放仲裁方向约束 promotion 决策。"
+        "added": "HN lane quorum 仲裁（top/show/new quorum promotion gate）",
+        "reason": "三车道任一缺失都会破坏比较有效性，需要新增 quorum 方向约束 promotion 决策。"
       }
     ]
   },
@@ -80,6 +81,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/feed-governance/hn-lane-watermark-replay-contract.md",
-  "last_cycle_commit": "pending-cycle-26"
+  "last_pattern": "references/patterns/feed-governance/hn-window-skew-budget-gate.md",
+  "last_cycle_commit": "pending-cycle-27"
 }
