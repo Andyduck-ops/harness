@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T23:17:48Z",
-  "cycle": 67,
+  "updated_at": "2026-02-28T23:33:00Z",
+  "cycle": 68,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -72,36 +72,38 @@
     "跨阶段评审身份多样性门禁治理（cross-stage reviewer diversity gate）",
     "跨阶段评审身份重叠预算治理（cross-stage reviewer overlap budget gate）",
     "部署批量审批隔离审计治理（deployment batch-approval quarantine gate）",
-    "审批波次配额治理（approval wave-quota gate）"
+    "审批波次配额治理（approval wave-quota gate）",
+    "Show 复现证据签名治理（show-repro attestation gate）",
+    "Show 可执行预检门禁（show executability preflight gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 67,
+    "last_cycle": 68,
     "actions": [
       {
         "type": "expand",
-        "added": "跨阶段评审身份多样性门禁治理（cross-stage reviewer diversity gate）",
-        "reason": "GitHub Deployments 的 required reviewers 场景可由单人批准且支持批量 start all waiting jobs，需要新增跨阶段身份独立性方向。"
+        "added": "Show 复现证据签名治理（show-repro attestation gate）",
+        "reason": "Show 条目会在 newest/show/news 之间快速迁移，需把可复现证据签名独立成门禁方向。"
       },
       {
         "type": "split",
         "from": [
-          "审批-旁路双轨时效同构治理（approval-bypass dual-track freshness parity gate）"
+          "Show 车道可执行性门禁（show-lane executability gate）"
         ],
         "into": [
-          "跨阶段评审身份重叠预算治理（cross-stage reviewer overlap budget gate）",
-          "部署批量审批隔离审计治理（deployment batch-approval quarantine gate）"
+          "Show 演示可达性门禁（show-demo reachability gate）",
+          "Show 复现工件验签门禁（show-repro artifact attestation gate）"
         ],
-        "reason": "身份重叠预算与旁路隔离审计属于独立失效面，拆分后可分别绑定阈值、角色与追责字段。"
+        "reason": "演示可达与复现可验证是不同失效面，需要独立阈值与阻断条件。"
       },
       {
         "type": "merge",
         "from": [
-          "审批批次上限治理（approval batch-size cap gate）",
-          "审批冷却窗口治理（approval cooldown window gate）"
+          "Show 演示可达性门禁（show-demo reachability gate）",
+          "HN 条目存活预检治理（dead/deleted pre-promotion gate）"
         ],
-        "into": "审批波次配额治理（approval wave-quota gate）",
-        "reason": "两方向都约束批量审批波次，合并为统一配额治理可减少同构重复并简化执行口径。"
+        "into": "Show 可执行预检门禁（show executability preflight gate）",
+        "reason": "两方向都服务于晋级前过滤无效条目，合并后统一预检口径并减少同构重复。"
       }
     ]
   },
@@ -129,6 +131,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/release-governance/cross-stage-reviewer-diversity-gate.md",
-  "last_cycle_commit": "pending-cycle-67"
+  "last_pattern": "references/patterns/discovery-governance/show-lane-executability-gate.md",
+  "last_cycle_commit": "pending-cycle-68"
 }

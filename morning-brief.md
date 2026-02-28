@@ -1,3 +1,59 @@
+# Morning Brief（Nightshift Cycle 68）
+
+> 更新时间：2026-02-28 23:33 UTC  
+> 本轮目标：把 Show 热度信号从“可看”升级为“可执行”，阻断 demo 驱动的伪晋级。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/discovery-governance/show-lane-executability-gate.md`
+2. `references/patterns/discovery-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `Show 复现证据签名治理（show-repro attestation gate）`
+  - reason: HN `show` 条目可快速进入 `news`，需要将“可演示”与“可复现”分离并纳入可审计签名证据。
+- `split`：拆分方向
+  - from: `Show 车道可执行性门禁（show-lane executability gate）`
+  - into: `Show 演示可达性门禁（show-demo reachability gate）`
+  - into: `Show 复现工件验签门禁（show-repro artifact attestation gate）`
+  - reason: URL 可达与复现可验证是两个独立失效面，需要独立阈值和阻断条件。
+- `merge`：合并方向
+  - from: `Show 演示可达性门禁（show-demo reachability gate）`
+  - from: `HN 条目存活预检治理（dead/deleted pre-promotion gate）`
+  - into: `Show 可执行预检门禁（show executability preflight gate）`
+  - reason: 两者都用于“晋级前过滤无效条目”，合并后减少同构重复并统一预检口径。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已作为入口验证并落到 HN Popular Blogs OPML Gist（2026-02-28）。
+- HN 三车道页面同窗快照（2026-02-28）
+  - news: item `47218423` — `Show HN: Mowgli - Figma for the agent era...`
+  - show: item `47218423` — `Show HN: Mowgli...`，item `47216687` — `Show HN: A2A Coder`
+  - newest: item `47219335` — `Show HN: Solcoder...`
+- 官方文档证据链（本轮重点）
+  - GitHub Merge Queue（required checks 约束）
+  - GitHub Actions `merge_group`（队列场景检查触发）
+  - Protected Branches required status checks（不可绕过门禁）
+  - Workflow artifacts（回放证据落盘）
+
+### 本轮结论
+
+- Show 的“热度跨车道迁移”不是可执行性证明；必须先过预检合同。
+- candidate->issue 晋级应至少绑定 `capture + preflight + required-check + replay bundle` 四类证据。
+- 没有 required checks 的“手工判断”会在队列场景下失效。
+
+### Cycle 69 预载任务
+
+1. 把 `show_executability_preflight.json` 变成 issue 表单必填工件。
+2. 对 `newest` 的 Show 候选增加冷却复采样阈值。
+3. 给 `merge_group` 增补 Show 证据门禁检查模板。
+
+---
+
 # Morning Brief（Nightshift Cycle 67）
 
 > 更新时间：2026-02-28 23:17 UTC  
