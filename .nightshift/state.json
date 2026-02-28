@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T19:39:00Z",
-  "cycle": 25,
+  "updated_at": "2026-02-28T19:46:56Z",
+  "cycle": 26,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -22,39 +22,40 @@
     "认知负债冻结治理（comprehension debt + freeze gate）",
     "信号债务路由（exploit/explore + debt ratchet）",
     "候选晋级表单治理（candidate intake + issue form gate）",
-    "证据时效治理（freshness SLA + snapshot ledger pinning）",
+    "时序证据抑制治理（freshness SLA + stale suppression）",
     "信源仲裁验签（triangulation + provenance attestation）",
     "运行取消预算治理（cancel SLA + concurrency group）",
-    "过期结论抑制治理（stale-run suppression + replay pin）",
     "取消后晋级防抖治理（cancel-to-promote debounce gate）",
-    "HN 三榜水位线治理（top/show/new watermark replay）"
+    "三榜同窗采样契约（window-aligned lane sampling contract）",
+    "跨车道去重主键治理（lane-cross dedupe key governance）",
+    "跨来源榜单回放仲裁（HN lane replay arbitration）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 25,
+    "last_cycle": 26,
     "actions": [
       {
         "type": "split",
-        "from": "契约变更门禁（OpenAPI/Pact）",
+        "from": "HN 三榜水位线治理（top/show/new watermark replay）",
         "into": [
-          "破坏性变更预算治理（breaking-change budget + semantic diff）",
-          "消费者回放覆盖治理（consumer replay coverage + provider verification）"
+          "三榜同窗采样契约（window-aligned lane sampling contract）",
+          "跨车道去重主键治理（lane-cross dedupe key governance）"
         ],
-        "reason": "契约差异预算与消费者可用性验证是两套不同门禁，拆分后才能分别挂接 budget gate 与 provider replay gate。"
+        "reason": "同窗采样与跨车道去重属于两层控制面，拆分后才能分别挂接 sampling skew gate 与 dedupe audit gate。"
       },
       {
         "type": "merge",
         "from": [
-          "需求计划闭环（PRD -> Epic -> Issue）",
-          "交付证据账本闭环（digest-bound PR->Pattern lineage）"
+          "证据时效治理（freshness SLA + snapshot ledger pinning）",
+          "过期结论抑制治理（stale-run suppression + replay pin）"
         ],
-        "into": "需求到证据闭环治理（PRD->Pattern lineage control plane）",
-        "reason": "两条方向都在维护同一交付链路账本，合并可消除同构字段与重复 pattern 产出。"
+        "into": "时序证据抑制治理（freshness SLA + stale suppression）",
+        "reason": "两条方向都在控制旧证据失效与重采样触发，合并后可统一 freshness 与 stale-run 判定口径。"
       },
       {
         "type": "expand",
-        "added": "前端视觉基线守门（design tokens + visual regression budget）",
-        "reason": "HN show/newest 的快速发布样本说明仅有 token 与组件契约不足，需要新增视觉回归预算方向保证次日可战。"
+        "added": "跨来源榜单回放仲裁（HN lane replay arbitration）",
+        "reason": "top/show/new 采样节奏差异会制造伪新增，需要新增跨车道回放仲裁方向约束 promotion 决策。"
       }
     ]
   },
@@ -79,6 +80,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/fullstack-engineering/contract-breaking-budget-replay-gate.md",
-  "last_cycle_commit": "pending-cycle-25"
+  "last_pattern": "references/patterns/feed-governance/hn-lane-watermark-replay-contract.md",
+  "last_cycle_commit": "pending-cycle-26"
 }

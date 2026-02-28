@@ -1,3 +1,55 @@
+# Morning Brief（Nightshift Cycle 26）
+
+> 更新时间：2026-02-28 19:46 UTC  
+> 本轮目标：把 HN `top/show/new` 从“分车道观察”升级为“同窗采样 + 回放仲裁”的可晋级合同。
+
+## 本轮新增（已落盘）
+
+1. `feed-governance/hn-lane-watermark-replay-contract`
+2. `feed-governance/_index.md`（新增 pattern 索引）
+3. `_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+## 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `HN 三榜水位线治理（top/show/new watermark replay）` 为：
+  - `三榜同窗采样契约（window-aligned lane sampling contract）`
+  - `跨车道去重主键治理（lane-cross dedupe key governance）`
+  - reason: 水位线采样与去重主键是两类不同控制面，混合会导致审计字段不可解释。
+- `merge`：合并方向
+  - from: `证据时效治理（freshness SLA + snapshot ledger pinning）`
+  - from: `过期结论抑制治理（stale-run suppression + replay pin）`
+  - into: `时序证据抑制治理（freshness SLA + stale suppression）`
+  - reason: 两条方向都在控制“旧结论何时失效”，独立维护会持续产出同构 pattern。
+- `expand`：新增方向 `跨来源榜单回放仲裁（HN lane replay arbitration）`
+  - 触发依据：同日 top/show/new 头部条目节奏差异明显，必须新增“跨车道可比性”闸门。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：确认重定向到 HN Popular Blogs OPML Gist（redirect checked 2026-02-28T19:42:28Z）。
+- HN `top/show/new`：已采样并写入证据链（示例）：
+  - top: `Postgres IDE in your browser`（`id=47197677`）
+  - show: `Show HN: fix errors before coding`（`id=47197466`）
+  - new: `latest lane` 采样样本（`id=47141119`）
+- 官方文档证据链（本轮重点）
+  - Hacker News API（`topstories/showstories/newstories`）
+  - GitHub required status checks 文档
+  - GitHub workflow artifacts 文档
+  - OPML 2.0 规范
+
+## 本轮结论
+
+- 只做三榜观测但不共享 `window_id`，会稳定制造“伪新增”。
+- `window_aligned + lane_dedupe + replay_manifest` 必须同时作为 required checks，才能让无人推进可审计。
+- 本轮新增 pattern 完成了从“信号采样”到“晋级仲裁”的合同化升级。
+
+## Cycle 27 预载任务
+
+1. 为 `lane_sampling_window` 增加 `sampling_skew_ms` 阈值，避免弱对齐误判。
+2. 在 `lane_diff_report` 增加 `cross_lane_duplicate_ratio`，约束重复发现膨胀。
+3. 评估 `hn-lane-watermark-replay-contract` 与 `triangulated-evidence-ratification-gate` 的串并联顺序模板。
+
+---
 # Morning Brief（Nightshift Cycle 25）
 
 > 更新时间：2026-02-28 19:39 UTC  
