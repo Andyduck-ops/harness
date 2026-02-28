@@ -1,3 +1,50 @@
+# Morning Brief（Nightshift Cycle 19）
+
+> 更新时间：2026-02-28 19:07 UTC  
+> 本轮目标：把“证据可回放”升级为“证据可验签”，补齐夜间发现到白天晋级之间的防篡改断点。
+
+## 本轮新增（已落盘）
+
+1. `evidence-governance/attested-evidence-provenance-gate`
+2. `evidence-governance/_index.md`
+3. `_master_index.md`（新增 pattern 索引与统计）
+
+## 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `外部证据时序锁（HN snapshot ledger + doc version pin）` 为：
+  - `外部证据时间锚定（HN snapshot ledger + freshness window）`
+  - `外部证据溯源验签（artifact attestation + verify）`
+  - reason: 原方向同时承担“时间漂移治理”和“完整性验真”，失败归因不可操作。
+- `merge`：合并方向
+  - from: `外部证据时间锚定（HN snapshot ledger + freshness window）`
+  - from: `证据时效治理（freshness SLA + snapshot pinning）`
+  - into: `证据时效治理（freshness SLA + snapshot ledger pinning）`
+  - reason: 两条方向本质同构，统一后可减少重复字段与双账本漂移。
+- `expand`：新增方向 `证据-任务绑定账本（digest-bound promotion manifest）`
+  - 触发依据：官方 attestation 文档明确支持产物溯源与离线验证，适合把 `candidate -> issue -> pr -> pattern` 绑定到同一 digest 证据主键。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist，active 2026-02-28）。
+- HN `top/show/new`：已采样，持续呈现高时变信号，证明“仅时间锚定”不足以防篡改。
+- 官方证据链（本轮重点补齐）：
+  - Hacker News API（故事 ID 与时间字段作为可回放主键）
+  - GitHub artifact attestations（构建 provenance 与离线验签）
+  - GitHub protected branches required checks（把验签门禁变为不可绕过硬约束）
+
+## 本轮结论
+
+- “能回放”不等于“能验真”，外部证据必须引入 attestation verify。
+- freshness gate 解决的是“是否过期”，attestation gate 解决的是“是否被替换”；两者必须并联。
+- 若 digest 不与 `candidate/issue/pr/pattern` 绑定，审计链仍可被拼接伪造。
+
+## Cycle 20 预载任务
+
+1. 为 `promotion_report` 增加 `subject_digest` 与 `attestation_verified` 强校验字段。
+2. 设计 `digest-bound lineage manifest` lint（digest 不一致直接 fail）。
+3. 评估 `attested-evidence-provenance-gate` 与 `issue-pr-artifact-lineage-manifest` 的合并边界，压缩同构 pattern。
+
+---
 # Morning Brief（Nightshift Cycle 18）
 
 > 更新时间：2026-02-28 19:03 UTC  

@@ -36,6 +36,7 @@
 | 3 | [proof-bundle-issue-form-gate](./product-delivery/proof-bundle-issue-form-gate.md) | product-delivery | 0.76 | OPML + HN + GitHub Docs + OpenAPI + Pact |
 | 3 | [exploit-explore-evidence-router](./signal-governance/exploit-explore-evidence-router.md) | signal-governance | 0.75 | OPML + HN + OpenAI + GitHub |
 | 3 | [temporal-evidence-freshness-gate](./evidence-governance/temporal-evidence-freshness-gate.md) | evidence-governance | 0.75 | OPML + HN + HN API + GitHub |
+| 3 | [attested-evidence-provenance-gate](./evidence-governance/attested-evidence-provenance-gate.md) | evidence-governance | 0.76 | OPML + HN + HN API + GitHub Attestations |
 | 3 | [candidate-to-issue-promotion-contract](./backlog-governance/candidate-to-issue-promotion-contract.md) | backlog-governance | 0.74 | OPML + HN + GitHub Projects + Issue Forms + Actions |
 | 3 | [24h-unattended-ai-loop](./autonomous-ops/24h-unattended-ai-loop.md) | autonomous-ops | 0.72 | OpenAI + HN |
 | 3 | [prd-to-issue-execution-loop](./product-delivery/prd-to-issue-execution-loop.md) | product-delivery | 0.70 | Harness + GitHub + HN |
@@ -61,11 +62,11 @@
 | [comprehension-governance/](./comprehension-governance/) | 1 | 速度超过理解时的预算治理与解释闸门 |
 | [signal-governance/](./signal-governance/) | 1 | 稳定增量与新颖发现并行的证据路由守门 |
 | [backlog-governance/](./backlog-governance/) | 1 | 夜间发现到可执行 Issue 的结构化入库治理 |
-| [evidence-governance/](./evidence-governance/) | 1 | 外部证据时效闸门与可回放锚点治理 |
+| [evidence-governance/](./evidence-governance/) | 2 | 外部证据时效闸门与可回放锚点治理 |
 
 ## 统计
 
-- 总计：34 patterns
+- 总计：35 patterns
 - 平均 confidence：0.81
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：19 patterns
+- 待验证（<0.80）：20 patterns
