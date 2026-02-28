@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T22:18:54Z",
-  "cycle": 56,
+  "updated_at": "2026-02-28T22:23:20Z",
+  "cycle": 57,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -41,8 +41,6 @@
     "旁路主体可见性漂移治理（bypass actor-visibility drift gate）",
     "队列容错预算降级一体化治理（merge-queue fallback-budget parity gate）",
     "队列重排重建验签治理（queue reorder rebuild attestation gate）",
-    "工具输出占比分层阈值治理（lane-tiered tool-output ratio threshold gate）",
-    "工具输出占比触发冻结治理（tool-output-ratio freeze trigger gate）",
     "浏览器会话边界声明治理（browser runtime-boundary manifest gate）",
     "浏览器工具权限同构治理（browser tool-scope parity gate）",
     "自驱代码生成证据账本治理（self-driving code generation evidence ledger gate）",
@@ -57,40 +55,43 @@
     "OPML 订阅体身份漂移治理（outline identity + edit-drift governance）",
     "文本对比预算治理（text contrast budget gate）",
     "非文本对比预算治理（non-text contrast budget gate）",
-    "主题语义回放治理（theme semantic replay governance）",
     "主题对比回退斜率治理（theme contrast regression slope gate）",
     "高对比主题压测治理（high-contrast theme stress gate）",
     "色觉仿真回放治理（color-vision simulation replay gate）",
-    "原型-早信号双车道仲裁治理（show-new dual-lane arbitration gate）"
+    "原型-早信号双车道仲裁治理（show-new dual-lane arbitration gate）",
+    "色觉仿真失败证据签名治理（color-vision replay attestation gate）",
+    "主题语义别名映射治理（theme semantic alias mapping gate）",
+    "主题语义色觉回放治理（theme semantic color-vision replay gate）",
+    "工具输出占比预算冻结一体治理（tool-output-ratio budget-freeze unified gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 56,
+    "last_cycle": 57,
     "actions": [
       {
         "type": "expand",
-        "added": "主题对比回退斜率治理（theme contrast regression slope gate）",
-        "reason": "HN newstories 出现 Theming and Color Naming 新证据，WCAG 绝对阈值之外需要补充相对回退斜率门禁。"
+        "added": "色觉仿真失败证据签名治理（color-vision replay attestation gate）",
+        "reason": "HN news/show/newest 持续出现 AI 驱动前端产出信号；为避免色觉仿真失败在晋级链路中丢失，需要新增失败证据签名方向。"
       },
       {
         "type": "split",
         "from": [
-          "色觉可达性安全调色治理（color-vision accessibility palette gate）"
+          "主题语义回放治理（theme semantic replay governance）"
         ],
         "into": [
-          "高对比主题压测治理（high-contrast theme stress gate）",
-          "色觉仿真回放治理（color-vision simulation replay gate）"
+          "主题语义别名映射治理（theme semantic alias mapping gate）",
+          "主题语义色觉回放治理（theme semantic color-vision replay gate）"
         ],
-        "reason": "高对比压测与色觉仿真属于不同失效面，拆分后可独立设置阻断阈值。"
+        "reason": "主题语义一致性与色觉可辨识属于不同失效面，拆分后可分别设置门禁与验收指标。"
       },
       {
         "type": "merge",
         "from": [
-          "show 讨论原型车道（HN show + builder chatter）",
-          "new 早信号车道（HN newest + freshness spike）"
+          "工具输出占比分层阈值治理（lane-tiered tool-output ratio threshold gate）",
+          "工具输出占比触发冻结治理（tool-output-ratio freeze trigger gate）"
         ],
-        "into": "原型-早信号双车道仲裁治理（show-new dual-lane arbitration gate）",
-        "reason": "两方向都服务早期发现仲裁，合并可降低同构 pattern 重复与仲裁分叉。"
+        "into": "工具输出占比预算冻结一体治理（tool-output-ratio budget-freeze unified gate）",
+        "reason": "两条方向都在治理 tool-output ratio 触发冻结，合并后可消除同构策略重复并统一预算阈值。"
       }
     ]
   },
@@ -118,6 +119,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/accessibility-governance/theme-contrast-regression-slope-gate.md",
-  "last_cycle_commit": "pending-cycle-56"
+  "last_pattern": "references/patterns/accessibility-governance/color-vision-simulation-replay-gate.md",
+  "last_cycle_commit": "pending-cycle-57"
 }
