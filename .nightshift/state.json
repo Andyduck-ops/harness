@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T23:46:53Z",
-  "cycle": 72,
+  "updated_at": "2026-02-28T23:58:00Z",
+  "cycle": 73,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -16,7 +16,6 @@
     "上下文燃烧-回放冻结协同治理（context burn replay-freeze governance）",
     "信号债务路由（exploit/explore + debt ratchet）",
     "候选晋级表单治理（candidate intake + issue form gate）",
-    "证据时效验签一体化（freshness + provenance ratification gate）",
     "取消-晋级时序治理（cancel-to-promote sequencing gate）",
     "跨阶段重排新鲜度预算治理（cross-stage reorder freshness budget gate）",
     "摘要同一-隔离闭环治理（digest parity + quarantine closed loop）",
@@ -24,8 +23,6 @@
     "根信任轮换门禁（trusted-root rotation gate）",
     "离线验签实例漂移探针（offline verification instance drift probe）",
     "归档保留-验签对账流水（retention-attestation reconciliation ledger）",
-    "Claim-ID 强绑定治理（claim_id -> hn_item_id -> outline_key binding）",
-    "墓碑晋级冻结门禁（tombstone promotion freeze gate）",
     "晋级双时点重放治理（capture+promotion replay dual-phase gate）",
     "队列构建并发容量预算治理（queue build-concurrency capacity budget gate）",
     "部署审批处理能力预算治理（deployment reviewer throughput budget gate）",
@@ -79,36 +76,40 @@
     "Shownew->Top 证据半衰期预算治理（shownew-top evidence half-life budget gate）",
     "Shownew 首现时滞下限门禁（shownew-min-lag gate）",
     "Shownew 跨车道复采样时滞门禁（shownew-cross-lane-lag-reverify gate）",
-    "Shownew->Top 时滞复采样一体门禁（shownew-top lag-reverify unified gate）"
+    "Shownew->Top 时滞复采样一体门禁（shownew-top lag-reverify unified gate）",
+    "冲突账本冻结门禁（contradiction-ledger freeze gate）",
+    "证据冲突账本门禁（evidence contradiction ledger gate）",
+    "冲突解决复批门禁（conflict-resolution reapproval gate）",
+    "Claim 生命周期冻结治理（claim lifecycle freeze governance）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 72,
+    "last_cycle": 73,
     "actions": [
       {
         "type": "expand",
-        "added": "Shownew->Top 证据半衰期预算治理（shownew-top evidence half-life budget gate）",
-        "reason": "shownew 首现证据在短窗口快速衰减，必须引入半衰期预算防止过期快照晋级。"
+        "added": "冲突账本冻结门禁（contradiction-ledger freeze gate）",
+        "reason": "社区热度与官方规则冲突时，若不冻结晋级会导致错误决策跨 cycle 扩散。"
       },
       {
         "type": "split",
         "from": [
-          "Shownew 首现-晋级时滞基线门禁（shownew-promotion-lag-baseline gate）"
+          "证据时效验签一体化（freshness + provenance ratification gate）"
         ],
         "into": [
-          "Shownew 首现时滞下限门禁（shownew-min-lag gate）",
-          "Shownew 跨车道复采样时滞门禁（shownew-cross-lane-lag-reverify gate）"
+          "证据冲突账本门禁（evidence contradiction ledger gate）",
+          "冲突解决复批门禁（conflict-resolution reapproval gate）"
         ],
-        "reason": "时滞下限与复采样窗口是独立失效面，拆分后可分别绑定阈值与阻断动作。"
+        "reason": "冲突识别与冲突解锁批准是独立失效面，需要独立阈值与阻断动作。"
       },
       {
         "type": "merge",
         "from": [
-          "Shownew->Top 跨车道时滞预算治理（shownew-to-top lag-budget gate）",
-          "Shownew 衰减前复采样门禁（shownew-pre-decay-reverify gate）"
+          "Claim-ID 强绑定治理（claim_id -> hn_item_id -> outline_key binding）",
+          "墓碑晋级冻结门禁（tombstone promotion freeze gate）"
         ],
-        "into": "Shownew->Top 时滞复采样一体门禁（shownew-top lag-reverify unified gate）",
-        "reason": "两者同属晋级前二次证据确认，合并可统一口径并减少同构重复。"
+        "into": "Claim 生命周期冻结治理（claim lifecycle freeze governance）",
+        "reason": "两者都在治理 claim 的可追溯与失效冻结，合并可统一治理口径并减少同构重复。"
       }
     ]
   },
@@ -136,6 +137,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/discovery-governance/shownew-top-lag-reverify-gate.md",
-  "last_cycle_commit": "pending-cycle-72"
+  "last_pattern": "references/patterns/control-plane-governance/contradiction-ledger-freeze-gate.md",
+  "last_cycle_commit": "pending-cycle-73"
 }

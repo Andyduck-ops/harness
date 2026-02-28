@@ -77,6 +77,7 @@
 | 3 | [exploit-explore-evidence-router](./signal-governance/exploit-explore-evidence-router.md) | signal-governance | 0.75 | OPML + HN + OpenAI + GitHub |
 | 3 | [temporal-evidence-freshness-gate](./evidence-governance/temporal-evidence-freshness-gate.md) | evidence-governance | 0.75 | OPML + HN + HN API + GitHub |
 | 3 | [attested-evidence-provenance-gate](./evidence-governance/attested-evidence-provenance-gate.md) | evidence-governance | 0.76 | OPML + HN + HN API + GitHub Attestations |
+| 3 | [contradiction-ledger-freeze-gate](./control-plane-governance/contradiction-ledger-freeze-gate.md) | control-plane-governance | 0.76 | OPML + HN + HN API + GitHub Required Checks + Artifacts + merge_group |
 | 3 | [claim-anchor-retrievability-gate](./evidence-governance/claim-anchor-retrievability-gate.md) | evidence-governance | 0.77 | OPML + HN + HN API + GitHub Gists API |
 | 3 | [tombstone-replay-promotion-gate](./evidence-governance/tombstone-replay-promotion-gate.md) | evidence-governance | 0.79 | OPML + HN + HN API + GitHub Rules |
 | 3 | [artifact-digest-mismatch-escalation-gate](./artifact-governance/artifact-digest-mismatch-escalation-gate.md) | artifact-governance | 0.79 | OPML + HN + HN API + GitHub Attestations + GitHub Rules |
@@ -110,6 +111,7 @@
 | [accessibility-governance/](./accessibility-governance/) | 3 | 文本/非文本对比预算、回退斜率门禁与多主题回放冻结治理 |
 | [product-delivery/](./product-delivery/) | 7 | PRD 到执行闭环 |
 | [release-governance/](./release-governance/) | 10 | 夜间产出与白天晋级的发布治理 |
+| [control-plane-governance/](./control-plane-governance/) | 1 | 社区信号与官方规则冲突的冻结、复验与复批控制面治理 |
 | [capacity-governance/](./capacity-governance/) | 3 | merge queue 构建并发、部署审批吞吐与批量放行冲击吸收的耦合预算治理 |
 | [recovery-governance/](./recovery-governance/) | 1 | 长时自治执行中的可恢复性治理 |
 | [context-governance/](./context-governance/) | 2 | 上下文预算、压缩交接与回放冻结治理 |
@@ -130,7 +132,7 @@
 
 ## 统计
 
-- 总计：87 patterns
+- 总计：88 patterns
 - 平均 confidence：0.79
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：66 patterns
+- 待验证（<0.80）：67 patterns
