@@ -1,3 +1,57 @@
+# Morning Brief（Nightshift Cycle 36）
+
+> 更新时间：2026-02-28 20:41 UTC  
+> 本轮目标：把 merge queue 的“队尾绿灯”从默认可用改为“可审计可预算”，阻断失败成员被组合结果掩蔽。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/queue-governance/merge-queue-tail-green-risk-gate.md`
+2. `references/patterns/queue-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 36）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `merge_group 事件同构校验（merge_group parity checks）` 为：
+  - `merge_group 触发同构校验（merge_group event parity gate）`
+  - `队列容错模式验签（tail-green mode attestation gate）`
+  - reason: 同一方向同时覆盖“触发面一致性”和“队列策略一致性”，可执行性过宽，需拆分为双门禁。
+- `merge`：合并方向
+  - from: `合并队列预检门禁（merge queue preflight gate）`
+  - from: `merge_group 触发同构校验（merge_group event parity gate）`
+  - into: `合并队列同构预检门禁（queue preflight parity gate）`
+  - reason: 两者都在约束“入队前同构校验”，合并可减少重复门禁并统一审计字段。
+- `expand`：新增方向 `队列尾绿掩蔽预算治理（tail-green masking budget gate）`
+  - 触发依据：GitHub merge queue 支持“允许失败 PR 混入队列”的容错模式，需要独立预算治理。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T20:39:15Z，observed revisions: 29）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`): `Obsidian Sync and local-first software`
+  - show (`show`): `Show HN: Now I Get It: Visuals on how AI translators work`
+  - new (`newest`): `The Making of Anthropic CEO Dario Amodei (2025)`
+- 官方文档证据链（本轮重点）
+  - GitHub merge queue（模式配置：可选只合并非失败 PR）
+  - GitHub Actions `merge_group` 事件（队列阶段独立触发面）
+  - GitHub required status checks（最新 SHA + 7 天有效窗口）
+  - OPML 2.0 规范（`text/xmlUrl/htmlUrl` 可编辑属性）
+
+### 本轮结论
+
+- “PR 通过”与“队列可合并”仍是两个判定面；容错模式下必须补成员失败预算。
+- 队尾通过不能替代组内失败分布；否则会出现可追踪性缺口。
+- 晋级门禁应同时绑定 `mode_attested + member_matrix + dual freshness`。
+
+### Cycle 37 预载任务
+
+1. 把 `failing_member_ratio` 做分支分层阈值模板（main/release/hotfix）。
+2. 将 `queue_mode_attestation` 接入 required checks 与审计报表。
+3. 为 tail-green 例外路径补齐 quarantine 回放报告（含成员失败根因）。
+
+---
+
 # Morning Brief（Nightshift Cycle 35）
 
 > 更新时间：2026-02-28 20:36 UTC  
