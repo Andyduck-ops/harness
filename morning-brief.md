@@ -1,3 +1,45 @@
+# Morning Brief（Nightshift Cycle 12）
+
+> 更新时间：2026-02-28 18:32 UTC  
+> 本轮目标：把“上下文压缩”从节省 token 的技巧升级为“可恢复交接”的硬契约，避免跨会话断点。
+
+## 本轮新增（已落盘）
+
+1. `context-governance/compaction-recovery-contract`
+2. `context-governance/_index.md`
+
+## 激进动态策略执行（本轮）
+
+- `expand`：新增方向 `上下文预算治理（compaction contract + checkpoint handoff）`
+  - 触发依据：HN top 出现上下文窗口治理高热信号，且官方文档明确存在 conversation compaction。
+- `split`：拆分方向 `后端契约优先与回放验证` 为：
+  - `契约变更门禁（OpenAPI/Pact）`
+  - `回放证据保全（Replay/Artifact）`
+  - reason: 一条方向同时覆盖“规范兼容”与“证据保全”会导致执行卡过宽，拆分后可直接映射到独立 gate。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist）。
+- HN `top/show/new`：已采样，捕获到“上下文压缩治理”“文件恢复工具”“版本恢复”连续信号。
+- 官方证据链（已补齐）：
+  - OpenAI Conversation state（含 compaction）
+  - OpenAI Background mode（跨会话异步任务）
+  - GitHub Actions artifacts（结构化交接产物）
+  - Git `reflog`（本地恢复指针）
+
+## 本轮结论
+
+- 只做上下文压缩会降低 token 成本，但不会自动提升次晨可接管性。
+- 自治系统需要在 compaction 触发时强制写 `compaction-manifest`，把 `pending_steps + checkpoint_id + reflog_ref` 作为恢复最小集合。
+- “压缩成功率”应从属“恢复成功率”，否则会出现看似省 token、实则丢流程语义的隐性故障。
+
+## Cycle 13 预载任务
+
+1. 产出 `compaction-manifest-lint` 规则（缺关键字段即 fail）。
+2. 把 `compaction-manifest` 与 `lineage-manifest` 做字段映射，避免双清单漂移。
+3. 评估 `recovery-gate` 与 `context-gate` 的合并边界，减少同构闸门。
+
+---
 # Morning Brief（Nightshift Cycle 11）
 
 > 更新时间：2026-03-01 02:42 UTC  

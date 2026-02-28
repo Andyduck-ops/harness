@@ -1,35 +1,37 @@
 {
   "version": "1.0",
-  "updated_at": "2026-03-01T02:42:00Z",
-  "cycle": 11,
+  "updated_at": "2026-02-28T18:32:14Z",
+  "cycle": 12,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
     "夜间证据车道（背景异步 + 本地落盘）",
     "白天晋级车道（分支保护 + 环境审批）",
     "前端设计系统（可次日直接实战）",
-    "后端契约优先与回放验证",
+    "契约变更门禁（OpenAPI/Pact）",
+    "回放证据保全（Replay/Artifact）",
     "PRD -> Epic -> Issue -> PR -> Pattern 执行闭环",
     "Hacker News + OPML 长短信号融合",
-    "工作区可恢复性治理（checkpoint + artifact + reflog）"
+    "工作区可恢复性治理（checkpoint + artifact + reflog）",
+    "上下文预算治理（compaction contract + checkpoint handoff）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 11,
+    "last_cycle": 12,
     "actions": [
       {
         "type": "expand",
-        "added": "工作区可恢复性治理（checkpoint + artifact + reflog）",
-        "reason": "HN show/newest 出现恢复工具密集信号，指向“恢复成功率”成为自治系统新瓶颈"
+        "added": "上下文预算治理（compaction contract + checkpoint handoff）",
+        "reason": "HN top 出现上下文窗口治理强信号，且官方文档已出现 conversation compaction，说明需将预算控制升级为恢复契约"
       },
       {
-        "type": "merge",
-        "from": [
-          "发布晋级治理（required reviewers + prevent self-reviews + deployment success gate）",
-          "白天晋级车道（分支保护 + 环境审批）"
+        "type": "split",
+        "from": "后端契约优先与回放验证",
+        "to": [
+          "契约变更门禁（OpenAPI/Pact）",
+          "回放证据保全（Replay/Artifact）"
         ],
-        "to": "白天晋级车道（分支保护 + 环境审批）",
-        "reason": "两者同构且目标一致，合并可减少重复 pattern 与方向膨胀"
+        "reason": "原方向过宽导致执行与验收耦合，拆分后可分别映射 contract-gate 与 replay-gate"
       }
     ]
   },
@@ -39,6 +41,7 @@
     "https://news.ycombinator.com/show",
     "https://news.ycombinator.com/newest",
     "https://platform.openai.com/docs/guides/background",
+    "https://platform.openai.com/docs/guides/conversation-state",
     "https://docs.github.com/",
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow",
     "https://git-scm.com/docs/git-reflog",
@@ -48,6 +51,6 @@
     "https://storybook.js.org/docs/"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/recovery-governance/workspace-recovery-envelope.md",
-  "last_cycle_commit": "pending-cycle-11"
+  "last_pattern": "references/patterns/context-governance/compaction-recovery-contract.md",
+  "last_cycle_commit": "pending-cycle-12"
 }
