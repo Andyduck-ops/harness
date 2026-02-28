@@ -1,3 +1,55 @@
+# Morning Brief（Nightshift Cycle 25）
+
+> 更新时间：2026-02-28 19:39 UTC  
+> 本轮目标：把“后端契约优先”从二值门禁升级为“破坏预算 + 消费者回放覆盖”的可审计晋级闸门。
+
+## 本轮新增（已落盘）
+
+1. `fullstack-engineering/contract-breaking-budget-replay-gate`
+2. `fullstack-engineering/_index.md`（新增 pattern 索引）
+3. `_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+## 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `契约变更门禁（OpenAPI/Pact）` 为：
+  - `破坏性变更预算治理（breaking-change budget + semantic diff）`
+  - `消费者回放覆盖治理（consumer replay coverage + provider verification）`
+  - reason: 契约差异预算与消费者可用性验证是两套独立门禁，必须解耦建模。
+- `merge`：合并方向
+  - from: `需求计划闭环（PRD -> Epic -> Issue）`
+  - from: `交付证据账本闭环（digest-bound PR->Pattern lineage）`
+  - into: `需求到证据闭环治理（PRD->Pattern lineage control plane）`
+  - reason: 两条方向都在处理同一条交付链路，分开维护会持续产生同构字段与重复 pattern。
+- `expand`：新增方向 `前端视觉基线守门（design tokens + visual regression budget）`
+  - 触发依据：HN `show/newest` 中 AI 工具与快速发布项目持续涌现，次日实战场景需要将视觉回归预算独立治理。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：确认重定向到 HN Popular Blogs OPML Gist（active 2026-02-28，revisions=6）。
+- HN `top/show/new`：已采样并写入证据链（示例）：
+  - top: `Cognitive Debt and AI Coding`（`id=47196582`）
+  - show: `Show HN: Now I Get It`（`id=47195123`）
+  - newest: 分钟级刷新样本（`id=47198926`、`id=47198676`）
+- 官方文档证据链（本轮重点）
+  - Hacker News API（`topstories/showstories/newstories`）
+  - OpenAPI v3.1.2 规范
+  - Pact provider verification 文档
+  - GitHub required status checks 文档
+
+## 本轮结论
+
+- 契约治理若只做 pass/fail，会在高频变更时出现“过严停摆”与“过松破坏”双失效。
+- `breaking_budget + provider_verify + replay_coverage` 必须并联成 required checks 才能在无人时段稳定推进。
+- 本轮新增 pattern 将“契约优先”升级为“预算化、可回放、可追责”的执行闸门。
+
+## Cycle 26 预载任务
+
+1. 为 `breaking_budget` 增加按服务/消费者分层阈值（避免单阈值失真）。
+2. 为 `replay_coverage` 增加 `critical_path_weight`，防止覆盖率数字好看但关键路径缺失。
+3. 评估 `contract-breaking-budget-replay-gate` 与 `cancel-budget-stale-run-gate` 的联动顺序模板。
+
+---
 # Morning Brief（Nightshift Cycle 24）
 
 > 更新时间：2026-02-28 19:44 UTC  

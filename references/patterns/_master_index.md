@@ -27,6 +27,7 @@
 | 3 | [execution-proof-bundle](./product-delivery/execution-proof-bundle.md) | product-delivery | 0.78 | OPML + HN + OpenAI + GitHub + OpenAPI + Pact + Storybook |
 | 3 | [workspace-recovery-envelope](./recovery-governance/workspace-recovery-envelope.md) | recovery-governance | 0.78 | OPML + HN + OpenAI + GitHub + git-reflog |
 | 3 | [agent-design-export-contract](./fullstack-engineering/agent-design-export-contract.md) | fullstack-engineering | 0.78 | OPML + HN + Design Tokens + Storybook + GitHub |
+| 3 | [contract-breaking-budget-replay-gate](./fullstack-engineering/contract-breaking-budget-replay-gate.md) | fullstack-engineering | 0.77 | OPML + HN + HN API + OpenAPI + Pact + GitHub |
 | 3 | [compaction-recovery-contract](./context-governance/compaction-recovery-contract.md) | context-governance | 0.77 | OPML + HN + OpenAI + GitHub + git-reflog |
 | 3 | [agent-state-cell-replay-envelope](./state-governance/agent-state-cell-replay-envelope.md) | state-governance | 0.77 | OPML + HN + OpenAI + SQLite + GitHub |
 | 3 | [comprehension-budget-gate](./comprehension-governance/comprehension-budget-gate.md) | comprehension-governance | 0.76 | OPML + HN + OpenAI + GitHub |
@@ -58,7 +59,7 @@
 | [knowledge-evolution/](./knowledge-evolution/) | 3 | 知识进化机制 |
 | [meta-framework/](./meta-framework/) | 1 | 元框架自身的模式 |
 | [autonomous-ops/](./autonomous-ops/) | 4 | 24h 无人巡航与守门机制 |
-| [fullstack-engineering/](./fullstack-engineering/) | 5 | 前后端工程化执行模式 |
+| [fullstack-engineering/](./fullstack-engineering/) | 6 | 前后端工程化执行模式 |
 | [product-delivery/](./product-delivery/) | 7 | PRD 到执行闭环 |
 | [release-governance/](./release-governance/) | 1 | 夜间产出与白天晋级的发布治理 |
 | [recovery-governance/](./recovery-governance/) | 1 | 长时自治执行中的可恢复性治理 |
@@ -73,7 +74,7 @@
 
 ## 统计
 
-- 总计：40 patterns
+- 总计：41 patterns
 - 平均 confidence：0.80
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：25 patterns
+- 待验证（<0.80）：26 patterns

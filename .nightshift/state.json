@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T19:44:00Z",
-  "cycle": 24,
+  "updated_at": "2026-02-28T19:39:00Z",
+  "cycle": 25,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -14,9 +14,10 @@
     "设计令牌治理（schema + drift lint）",
     "组件验收治理（story + a11y + visual gate）",
     "AI 设计导出契约（design-export + required-checks）",
-    "契约变更门禁（OpenAPI/Pact）",
-    "需求计划闭环（PRD -> Epic -> Issue）",
-    "交付证据账本闭环（digest-bound PR->Pattern lineage）",
+    "前端视觉基线守门（design tokens + visual regression budget）",
+    "破坏性变更预算治理（breaking-change budget + semantic diff）",
+    "消费者回放覆盖治理（consumer replay coverage + provider verification）",
+    "需求到证据闭环治理（PRD->Pattern lineage control plane）",
     "恢复回放账本治理（checkpoint + replay + compaction）",
     "认知负债冻结治理（comprehension debt + freeze gate）",
     "信号债务路由（exploit/explore + debt ratchet）",
@@ -30,30 +31,30 @@
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 24,
+    "last_cycle": 25,
     "actions": [
       {
         "type": "split",
-        "from": "长周期作者基座（OPML canonical pool）",
+        "from": "契约变更门禁（OpenAPI/Pact）",
         "into": [
-          "OPML 重定向锚定（shortlink -> canonical target lock）",
-          "OPML 修订漂移监控（gist revision + digest diff）"
+          "破坏性变更预算治理（breaking-change budget + semantic diff）",
+          "消费者回放覆盖治理（consumer replay coverage + provider verification）"
         ],
-        "reason": "短链入口稳定和 OPML 内容稳定是两套独立约束，拆分后才能分别挂接 redirect pin 与 revision lock。"
+        "reason": "契约差异预算与消费者可用性验证是两套不同门禁，拆分后才能分别挂接 budget gate 与 provider replay gate。"
       },
       {
         "type": "merge",
         "from": [
-          "外部证据溯源验签（artifact attestation + verify）",
-          "信源三角校验（OPML/HN/Official ratification）"
+          "需求计划闭环（PRD -> Epic -> Issue）",
+          "交付证据账本闭环（digest-bound PR->Pattern lineage）"
         ],
-        "into": "信源仲裁验签（triangulation + provenance attestation）",
-        "reason": "两条方向都在处理社区信号与官方约束的晋级仲裁，合并可减少同构 pattern 与重复门禁字段。"
+        "into": "需求到证据闭环治理（PRD->Pattern lineage control plane）",
+        "reason": "两条方向都在维护同一交付链路账本，合并可消除同构字段与重复 pattern 产出。"
       },
       {
         "type": "expand",
-        "added": "HN 三榜水位线治理（top/show/new watermark replay）",
-        "reason": "HN news/show/newest 头部条目在同一时窗高频变化，必须新增水位线方向防止跨窗口比较产生伪新增。"
+        "added": "前端视觉基线守门（design tokens + visual regression budget）",
+        "reason": "HN show/newest 的快速发布样本说明仅有 token 与组件契约不足，需要新增视觉回归预算方向保证次日可战。"
       }
     ]
   },
@@ -78,6 +79,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/feed-governance/canonical-feed-drift-gate.md",
-  "last_cycle_commit": "pending-cycle-24"
+  "last_pattern": "references/patterns/fullstack-engineering/contract-breaking-budget-replay-gate.md",
+  "last_cycle_commit": "pending-cycle-25"
 }
