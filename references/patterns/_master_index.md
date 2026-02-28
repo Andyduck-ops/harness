@@ -65,6 +65,7 @@
 | 3 | [show-new-evidence-maturity-arbitration-gate](./discovery-governance/show-new-evidence-maturity-arbitration-gate.md) | discovery-governance | 0.80 | OPML + OPML Spec + HN(news/show/new + API) + Merge Queue + merge_group |
 | 3 | [show-lane-executability-gate](./discovery-governance/show-lane-executability-gate.md) | discovery-governance | 0.79 | OPML + HN(news/show/newest) + GitHub Merge Queue + merge_group + Protected Branches |
 | 3 | [show-repro-attestation-gate](./discovery-governance/show-repro-attestation-gate.md) | discovery-governance | 0.80 | OPML + HN(top/show/new + API) + HN Show Rules + GitHub Required Checks + Artifact Attestations |
+| 3 | [show-top-resonance-cooldown-gate](./discovery-governance/show-top-resonance-cooldown-gate.md) | discovery-governance | 0.79 | OPML + HN(news/show/newest) + HN API + merge_group + Protected Branches |
 | 3 | [cancel-budget-stale-run-gate](./autonomous-ops/cancel-budget-stale-run-gate.md) | autonomous-ops | 0.78 | OPML + HN + OpenAI + GitHub |
 | 3 | [artifact-retention-verification-window-gate](./artifact-governance/artifact-retention-verification-window-gate.md) | artifact-governance | 0.78 | OPML + HN + HN API + GitHub Artifacts + GitHub Attestations |
 | 3 | [trusted-root-freshness-quarantine-gate](./trust-governance/trusted-root-freshness-quarantine-gate.md) | trust-governance | 0.79 | OPML + HN + HN API + GitHub Attestations |
@@ -122,12 +123,12 @@
 | [evidence-governance/](./evidence-governance/) | 4 | 外部证据时效闸门、可回放锚点与可检索契约治理 |
 | [source-governance/](./source-governance/) | 2 | 社区信号与官方规范的三角校验、订阅体身份约束与晋级仲裁治理 |
 | [feed-governance/](./feed-governance/) | 4 | 短链入口、同窗预算与车道身份一致性治理 |
-| [discovery-governance/](./discovery-governance/) | 3 | show/newest 发现信号的成熟度仲裁、可执行预检与复现验签晋级治理 |
+| [discovery-governance/](./discovery-governance/) | 4 | show/newest/top 共振信号的成熟度仲裁、可执行预检、冷却复采样与复现验签晋级治理 |
 | [queue-governance/](./queue-governance/) | 7 | merge queue 同构校验、队尾绿灯风险预算与重排重建/证据纪元失效及模式振荡抑制门禁治理 |
 
 ## 统计
 
-- 总计：84 patterns
+- 总计：85 patterns
 - 平均 confidence：0.79
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：65 patterns
+- 待验证（<0.80）：66 patterns

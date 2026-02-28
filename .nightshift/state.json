@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T23:39:00Z",
-  "cycle": 69,
+  "updated_at": "2026-03-01T00:05:00Z",
+  "cycle": 70,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -57,7 +57,7 @@
     "merge_group 回放锚定治理（merge_group replay anchoring gate）",
     "Show 车道可执行性门禁（show-lane executability gate）",
     "Newest 车道冷却晋级门禁（newest-lane cooldown promotion gate）",
-    "HN 条目存活预检治理（dead/deleted pre-promotion gate）",
+    "Show 可达-存活预检门禁（show reachability-liveness preflight gate）",
     "跨车道身份同一门禁（cross-lane identity quorum gate）",
     "跨车道去重预算门禁（cross-lane dedupe budget gate）",
     "OPML 规范锚点存活治理（canonical redirect + retrievability gate）",
@@ -74,38 +74,39 @@
     "部署批量审批隔离审计治理（deployment batch-approval quarantine gate）",
     "审批波次配额治理（approval wave-quota gate）",
     "Show 可执行预检门禁（show executability preflight gate）",
-    "Show URL 可达门禁（show-url reachability gate）",
+    "Shownew 晋级延迟采样治理（shownew-promotion-latency gate）",
     "Show 复现验签门禁（show-repro attestation gate）",
-    "Show-Top 共振冷却晋级治理（show-top resonance cooldown gate）"
+    "Show-Top 共振窗口门禁（show-top resonance-window gate）",
+    "Show-Top 冷却预算门禁（show-top cooldown-budget gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 69,
+    "last_cycle": 70,
     "actions": [
       {
         "type": "expand",
-        "added": "Show-Top 共振冷却晋级治理（show-top resonance cooldown gate）",
-        "reason": "top 与 show 同窗共振会放大晋级冲动，需要独立冷却晋级预算。"
+        "added": "Shownew 晋级延迟采样治理（shownew-promotion-latency gate）",
+        "reason": "shownew 到 show/news 的迁移速度差异需要独立采样，避免把瞬时热度当作成熟信号。"
       },
       {
         "type": "split",
         "from": [
-          "Show 可执行预检门禁（show executability preflight gate）"
+          "Show-Top 共振冷却晋级治理（show-top resonance cooldown gate）"
         ],
         "into": [
-          "Show URL 可达门禁（show-url reachability gate）",
-          "Show 复现验签门禁（show-repro attestation gate）"
+          "Show-Top 共振窗口门禁（show-top resonance-window gate）",
+          "Show-Top 冷却预算门禁（show-top cooldown-budget gate）"
         ],
-        "reason": "可达性与可复现验签属于不同失效面，必须拆分独立门禁。"
+        "reason": "共振判定与冷却预算是不同控制面，拆分后可分别设置阈值与回退动作。"
       },
       {
         "type": "merge",
         "from": [
-          "Show 复现证据签名治理（show-repro attestation gate）",
-          "Show 复现工件验签门禁（show-repro artifact attestation gate）"
+          "Show URL 可达门禁（show-url reachability gate）",
+          "HN 条目存活预检治理（dead/deleted pre-promotion gate）"
         ],
-        "into": "Show 复现验签门禁（show-repro attestation gate）",
-        "reason": "两方向语义同构，合并后统一 schema 与 required checks，减少重复维护。"
+        "into": "Show 可达-存活预检门禁（show reachability-liveness preflight gate）",
+        "reason": "两方向都在过滤无效候选，合并后统一 preflight contract，减少同构重复。"
       }
     ]
   },
@@ -133,6 +134,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/discovery-governance/show-repro-attestation-gate.md",
-  "last_cycle_commit": "pending-cycle-69"
+  "last_pattern": "references/patterns/discovery-governance/show-top-resonance-cooldown-gate.md",
+  "last_cycle_commit": "pending-cycle-70"
 }
