@@ -1,3 +1,57 @@
+# Morning Brief（Nightshift Cycle 41）
+
+> 更新时间：2026-02-28 21:04 UTC  
+> 本轮目标：把“分支禁绕”与“环境旁路”从并列配置升级为同一闸门，阻断策略口径冲突导致的隐式放行。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/release-governance/branch-environment-no-bypass-parity-gate.md`
+2. `references/patterns/release-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 41）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `分支保护禁绕策略一致性治理（branch no-bypass policy parity gate）` 为：
+  - `分支规则禁绕约束治理（branch-rule no-bypass enforcement gate）`
+  - `环境旁路策略对齐治理（environment bypass parity gate）`
+  - reason: 原方向把“分支硬门禁”和“环境例外旁路”耦合在一个动作里，执行边界过宽。
+- `merge`：合并方向
+  - from: `绕过执行身份约束治理（bypass actor authorization gate）`
+  - from: `环境旁路策略对齐治理（environment bypass parity gate）`
+  - into: `旁路授权-禁绕策略同一治理（bypass authorization and no-bypass parity gate）`
+  - reason: 两方向都在管控“谁可旁路 + 旁路是否违背禁绕策略”，合并后可避免同构 pattern 重复。
+- `expand`：新增方向 `旁路理由枚举注册治理（bypass reason registry gate）`
+  - 触发依据：GitHub review deployments 存在 bypass 入口；若不把 bypass reason 结构化枚举化，次日无法稳定追责。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:04:41Z）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`): `Open source and self host your own private Telegram using Telegram API`
+  - show (`show`): `Show HN: Aider Polyglot - One command install and launch all your coding agents`
+  - new (`newest`): `Making software for all is hard. Here's why`
+- 官方文档证据链（本轮重点）
+  - GitHub protected branches（`Do not allow bypassing the above settings`）
+  - GitHub deployments/environments（required reviewers / wait timer / prevent self-reviews）
+  - GitHub review deployments（bypass deployment protection rules）
+  - GitHub merge queue + Actions `merge_group`（队列校验独立触发上下文）
+
+### 本轮结论
+
+- “分支禁绕”与“环境可旁路”不是二选一配置，而是同一闸门的冲突裁决问题。
+- bypass 一旦发生，必须重算策略同一性并触发重验，不能继承旧绿灯。
+- 没有 `bypass_policy_parity_report.json` 的发布，默认视为不可审计放行。
+
+### Cycle 42 预载任务
+
+1. 固化 `bypass_reason_code` 注册表与最小字段 lint（缺失即 fail）。
+2. 增加 `policy_parity_state` 的分支分层阈值模板（main/release/hotfix）。
+3. 把 `parity_gate_pass` 接入 required checks 与晋级阻断。
+
+---
+
 # Morning Brief（Nightshift Cycle 40）
 
 > 更新时间：2026-02-28 20:59 UTC  

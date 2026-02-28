@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T20:59:56Z",
-  "cycle": 40,
+  "updated_at": "2026-02-28T21:04:41Z",
+  "cycle": 41,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -42,36 +42,37 @@
     "队列容错模式验签（tail-green mode attestation gate）",
     "队列尾绿掩蔽预算治理（tail-green masking budget gate）",
     "环境等待计时上限治理（environment wait-timer ceiling gate）",
-    "绕过执行身份约束治理（bypass actor authorization gate）",
     "审批-绕过双轨时效治理（approval-bypass dual-track freshness gate）",
-    "分支保护禁绕策略一致性治理（branch no-bypass policy parity gate）"
+    "分支规则禁绕约束治理（branch-rule no-bypass enforcement gate）",
+    "旁路授权-禁绕策略同一治理（bypass authorization and no-bypass parity gate）",
+    "旁路理由枚举注册治理（bypass reason registry gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 40,
+    "last_cycle": 41,
     "actions": [
       {
         "type": "split",
-        "from": "环境保护绕过审计门禁（environment protection bypass audit gate）",
+        "from": "分支保护禁绕策略一致性治理（branch no-bypass policy parity gate）",
         "into": [
-          "绕过执行身份约束治理（bypass actor authorization gate）",
-          "绕过审计隔离治理（bypass audit quarantine gate）"
+          "分支规则禁绕约束治理（branch-rule no-bypass enforcement gate）",
+          "环境旁路策略对齐治理（environment bypass parity gate）"
         ],
-        "reason": "原方向同时覆盖绕过身份授权与绕过后追责隔离，拆分后分别治理准入和审计恢复。"
+        "reason": "原方向同时覆盖分支硬门禁与环境例外旁路，拆分后分别治理策略定义与执行对齐。"
       },
       {
         "type": "merge",
         "from": [
-          "绕过审计隔离治理（bypass audit quarantine gate）",
-          "审批-等待双触发重验治理（approval+wait dual-trigger reverify gate）"
+          "绕过执行身份约束治理（bypass actor authorization gate）",
+          "环境旁路策略对齐治理（environment bypass parity gate）"
         ],
-        "into": "审批-绕过双轨时效治理（approval-bypass dual-track freshness gate）",
-        "reason": "两方向都在管控晋级前重验时效与例外放行，合并为统一双轨控制面可降低同构重复。"
+        "into": "旁路授权-禁绕策略同一治理（bypass authorization and no-bypass parity gate）",
+        "reason": "两方向都在约束 bypass 的准入身份与策略冲突裁决，合并后形成单一同一性控制面。"
       },
       {
         "type": "expand",
-        "added": "分支保护禁绕策略一致性治理（branch no-bypass policy parity gate）",
-        "reason": "GitHub protected branches 提供 do-not-allow-bypass 策略面，需要与 environment bypass 审计门禁形成一致口径。"
+        "added": "旁路理由枚举注册治理（bypass reason registry gate）",
+        "reason": "GitHub review deployments 明确存在 bypass 入口，需要把 bypass reason 枚举化并纳入可审计注册表。"
       }
     ]
   },
@@ -98,6 +99,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/release-governance/environment-bypass-audit-quarantine-gate.md",
-  "last_cycle_commit": "pending-cycle-40"
+  "last_pattern": "references/patterns/release-governance/branch-environment-no-bypass-parity-gate.md",
+  "last_cycle_commit": "pending-cycle-41"
 }
