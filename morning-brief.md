@@ -1,3 +1,57 @@
+# Morning Brief（Nightshift Cycle 35）
+
+> 更新时间：2026-02-28 20:36 UTC  
+> 本轮目标：把“PR 阶段通过”升级为“merge queue 出队时仍可证”，避免排队等待造成的静默失效晋级。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/queue-governance/merge-group-parity-freshness-gate.md`
+2. `references/patterns/queue-governance/_index.md`（新 topic 自动创建）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 行与统计更新）
+4. `morning-brief.md`（新增 Cycle 35）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `白天晋级车道（分支保护 + 环境审批）` 为：
+  - `合并队列预检门禁（merge queue preflight gate）`
+  - `环境审批发布门禁（environment approval release gate）`
+  - reason: “队列验证”与“环境审批”是两个独立失效面，必须拆开验收。
+- `merge`：合并方向
+  - from: `墓碑检测回放治理（deleted/dead replay detector）`
+  - from: `晋级前重放窗口契约（pre-promotion replay window contract）`
+  - into: `晋级双时点重放治理（capture+promotion replay dual-phase gate）`
+  - reason: 两方向都在解决“采样与晋级之间的失真窗口”，合并后可统一门禁字段。
+- `expand`：新增方向 `merge_group 事件同构校验（merge_group parity checks）`
+  - 触发依据：GitHub merge queue 与 workflow `merge_group` 事件是独立触发面，需新增同构校验方向。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T20:35:58Z）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`): `Japan's Buddhist temples turn to AI chatbots amid monk shortage`
+  - show (`show`): `Show HN: Open-Source Note Taking App with Spatial Keyboard Navigation`
+  - new (`newest`): `I made a stupidly simple app to stop my household from losing things`
+- 官方文档证据链（本轮重点）
+  - GitHub merge queue（合并前队列验证）
+  - GitHub Actions `merge_group` 事件（队列阶段独立触发面）
+  - GitHub required checks 规则（状态检查 7 天时效约束）
+  - OPML 2.0 规范（入口身份字段语义）
+
+### 本轮结论
+
+- PR 阶段绿灯不等于 queue 出队绿灯，`merge_group` 必须有同构验证。
+- 排队时滞必须入账，否则会出现“采样时有效、出队时过期”的隐性失败。
+- 证据门禁应采用 `入队前 + 出队前` 双时点校验，禁止继承旧检查结果直接晋级。
+
+### Cycle 36 预载任务
+
+1. 把 `queue_wait_minutes` 接入分支分层阈值模板（main/release/hotfix）。
+2. 将 `queue_exit_fresh_pass` 接入 `promotion_decision` required checks。
+3. 为 `merge_group` 失败补齐 quarantine 回放报告字段（含 tombstone 与 retrievability）。
+
+---
+
 # Morning Brief（Nightshift Cycle 34）
 
 > 更新时间：2026-02-28 20:28 UTC  

@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T20:28:15Z",
-  "cycle": 34,
+  "updated_at": "2026-02-28T20:36:15Z",
+  "cycle": 35,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -10,7 +10,8 @@
     "热度锚定采样（HN top anchor lane）",
     "show 讨论原型车道（HN show + builder chatter）",
     "new 早信号车道（HN newest + freshness spike）",
-    "白天晋级车道（分支保护 + 环境审批）",
+    "合并队列预检门禁（merge queue preflight gate）",
+    "环境审批发布门禁（environment approval release gate）",
     "设计令牌治理（schema + drift lint）",
     "组件验收治理（story + a11y + visual gate）",
     "AI 设计导出契约（design-export + required-checks）",
@@ -36,27 +37,36 @@
     "OPML 可编辑字段漂移探针（outline text edit-drift probe）",
     "Claim-ID 强绑定治理（claim_id -> hn_item_id -> outline_key binding）",
     "锚点存活预算治理（anchor retrievability SLA + mirror fallback）",
-    "墓碑检测回放治理（deleted/dead replay detector）",
     "墓碑晋级冻结门禁（tombstone promotion freeze gate）",
-    "晋级前重放窗口契约（pre-promotion replay window contract）"
+    "晋级双时点重放治理（capture+promotion replay dual-phase gate）",
+    "merge_group 事件同构校验（merge_group parity checks）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 34,
+    "last_cycle": 35,
     "actions": [
       {
         "type": "split",
-        "from": "HN Item 墓碑漂移治理（deleted/dead item tombstone policy）",
+        "from": "白天晋级车道（分支保护 + 环境审批）",
         "into": [
-          "墓碑检测回放治理（deleted/dead replay detector）",
-          "墓碑晋级冻结门禁（tombstone promotion freeze gate）"
+          "合并队列预检门禁（merge queue preflight gate）",
+          "环境审批发布门禁（environment approval release gate）"
         ],
-        "reason": "墓碑问题需拆分为“检测失效对象”和“冻结晋级路径”两条独立控制面，便于 required checks 精确落地。"
+        "reason": "merge queue 预检与环境审批发布属于两条独立晋级路径，拆分后才能分别设定时滞预算与审批策略。"
+      },
+      {
+        "type": "merge",
+        "from": [
+          "墓碑检测回放治理（deleted/dead replay detector）",
+          "晋级前重放窗口契约（pre-promotion replay window contract）"
+        ],
+        "into": "晋级双时点重放治理（capture+promotion replay dual-phase gate）",
+        "reason": "两方向都在约束“采样到晋级”的失真窗口，合并可统一 capture/promotion 双时点字段并减少同构规则重复。"
       },
       {
         "type": "expand",
-        "added": "晋级前重放窗口契约（pre-promotion replay window contract）",
-        "reason": "GitHub required checks 存在时效窗口，新增方向用于把晋级前重放从建议升级为硬门禁。"
+        "added": "merge_group 事件同构校验（merge_group parity checks）",
+        "reason": "GitHub merge queue 与 merge_group 事件是独立触发面，需新增同构校验方向以避免 PR 绿灯直接继承为出队绿灯。"
       }
     ]
   },
@@ -73,6 +83,8 @@
     "https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/about-artifact-attestations",
     "https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds",
     "https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/verifying-attestations-offline",
+    "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue",
+    "https://docs.github.com/en/actions/reference/events-that-trigger-workflows#merge_group",
     "https://git-scm.com/docs/git-reflog",
     "https://spec.openapis.org/oas/latest.html",
     "https://docs.pact.io/",
@@ -81,6 +93,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/evidence-governance/tombstone-replay-promotion-gate.md",
-  "last_cycle_commit": "pending-cycle-34"
+  "last_pattern": "references/patterns/queue-governance/merge-group-parity-freshness-gate.md",
+  "last_cycle_commit": "pending-cycle-35"
 }
