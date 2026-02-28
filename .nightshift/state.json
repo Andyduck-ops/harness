@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T18:49:31Z",
-  "cycle": 16,
+  "updated_at": "2026-02-28T18:57:04Z",
+  "cycle": 17,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -15,37 +15,38 @@
     "回放证据保全（Replay/Artifact）",
     "需求计划闭环（PRD -> Epic -> Issue）",
     "交付证据闭环（PR -> Pattern + lineage attestation）",
-    "工作区可恢复性治理（checkpoint + artifact + reflog）",
-    "状态隔离与回放信封（per-agent state cell + WAL + artifact digest）",
     "双预算接管治理（compaction + comprehension gate）",
-    "证据路由守门（exploit/explore quota + promotion gate）"
+    "信号配额路由（exploit/explore quota）",
+    "发现入库晋级（candidate -> issue promotion gate）",
+    "结构化需求入口（issue form required evidence fields）",
+    "运行态恢复治理（state cell + checkpoint + reflog + artifact digest）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 16,
+    "last_cycle": 17,
     "actions": [
       {
         "type": "split",
-        "from": "夜间证据巡航（背景异步 + OPML/HN 融合 + 本地落盘）",
+        "from": "证据路由守门（exploit/explore quota + promotion gate）",
         "into": [
-          "稳定信号车道（OPML + HN top + 官方文档）",
-          "新颖信号车道（HN show/new + serendipity）"
+          "信号配额路由（exploit/explore quota）",
+          "发现入库晋级（candidate -> issue promotion gate）"
         ],
-        "reason": "同一方向同时承担稳定增量与新颖发现，导致调度冲突；拆分后可独立配额并提升可审计性"
+        "reason": "原方向耦合了信号分流与任务入库，失败归因困难；拆分后可分别审计配额与晋级质量"
       },
       {
         "type": "merge",
         "from": [
-          "上下文预算治理（compaction contract + checkpoint handoff）",
-          "认知债务闸门（comprehension budget + explainability bundle）"
+          "工作区可恢复性治理（checkpoint + artifact + reflog）",
+          "状态隔离与回放信封（per-agent state cell + WAL + artifact digest）"
         ],
-        "into": "双预算接管治理（compaction + comprehension gate）",
-        "reason": "两条方向都服务于次日接管能力，保留双轨会产生同构闸门与重复清单"
+        "into": "运行态恢复治理（state cell + checkpoint + reflog + artifact digest）",
+        "reason": "两条方向都服务于次日恢复接管，合并后可统一 state/replay/recovery 字段标准"
       },
       {
         "type": "expand",
-        "added": "证据路由守门（exploit/explore quota + promotion gate）",
-        "reason": "HN top/show/new 与 OPML 同轮显示双峰信号结构，需要新增路由守门方向避免单车道失真"
+        "added": "结构化需求入口（issue form required evidence fields）",
+        "reason": "HN top/show/new 高吞吐发现需要硬门晋级；Issue Forms 的 required 字段可直接承载入库约束"
       }
     ]
   },
@@ -65,6 +66,6 @@
     "https://storybook.js.org/docs/"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/signal-governance/exploit-explore-evidence-router.md",
-  "last_cycle_commit": "pending-cycle-16"
+  "last_pattern": "references/patterns/backlog-governance/candidate-to-issue-promotion-contract.md",
+  "last_cycle_commit": "pending-cycle-17"
 }

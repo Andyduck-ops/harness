@@ -1,3 +1,51 @@
+# Morning Brief（Nightshift Cycle 17）
+
+> 更新时间：2026-02-28 18:57 UTC  
+> 本轮目标：把“发现信号”与“执行任务”之间的断层，收敛成可审计的候选晋级合同。
+
+## 本轮新增（已落盘）
+
+1. `backlog-governance/candidate-to-issue-promotion-contract`
+2. `backlog-governance/_index.md`
+3. `_master_index.md`（新增 topic 与 pattern 索引）
+
+## 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `证据路由守门（exploit/explore quota + promotion gate）` 为：
+  - `信号配额路由（exploit/explore quota）`
+  - `发现入库晋级（candidate -> issue promotion gate）`
+  - reason: 原方向把“信号分流”与“任务入库”耦合在同一闸门，导致失败归因不清。
+- `merge`：合并方向
+  - from: `工作区可恢复性治理（checkpoint + artifact + reflog）`
+  - from: `状态隔离与回放信封（per-agent state cell + WAL + artifact digest）`
+  - into: `运行态恢复治理（state cell + checkpoint + reflog + artifact digest）`
+  - reason: 两条方向都在解决“次日可恢复接管”，并行维护产生同构字段与重复审计。
+- `expand`：新增方向 `结构化需求入口（issue form required evidence fields）`
+  - 触发依据：HN top/show/new 持续提供高吞吐候选信号，而 GitHub Issue Forms 支持 required 字段，适合做晋级硬门。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist，active 2026-02-28）。
+- HN `top/show/new`：已采样，观察到稳定趋势信号与高频新奇信号并存，直接入库会放大 backlog 噪声。
+- 官方证据链（已补齐）：
+  - GitHub Projects（项目视图与自动化流转）
+  - GitHub Issue Forms（结构化必填字段）
+  - GitHub protected branches required checks（晋级硬门）
+  - GitHub Actions artifacts（证据包持久化）
+
+## 本轮结论
+
+- “发现很多”不等于“可执行很多”，必须先做 candidate 入池再晋级 Issue。
+- 发现到执行的主闸门应该是结构化 Issue Form，而不是人工口头约定。
+- 只有把 `candidate_id -> issue_id -> pr_id -> pattern_id` 落成 artifact，次日接管才可追责。
+
+## Cycle 18 预载任务
+
+1. 产出 `candidate_queue` 与 `issue_form` 字段对齐 lint（字段缺失即 fail）。
+2. 将 `promotion_report` 与 `lineage_manifest` 的 ID 规范合并，减少双账本漂移。
+3. 评估 `candidate-to-issue-promotion-contract` 与 `merge-fence-required-checks-lineage` 的边界，避免同构 pattern 膨胀。
+
+---
 # Morning Brief（Nightshift Cycle 16）
 
 > 更新时间：2026-02-28 19:00 UTC  
