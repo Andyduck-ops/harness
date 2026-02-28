@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T18:39:19Z",
-  "cycle": 14,
+  "updated_at": "2026-02-28T18:43:32Z",
+  "cycle": 15,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -12,28 +12,30 @@
     "AI 设计导出契约（design-export + required-checks）",
     "契约变更门禁（OpenAPI/Pact）",
     "回放证据保全（Replay/Artifact）",
-    "PRD -> Epic -> Issue -> PR -> Pattern 执行闭环",
+    "需求计划闭环（PRD -> Epic -> Issue）",
+    "交付证据闭环（PR -> Pattern + lineage attestation）",
     "工作区可恢复性治理（checkpoint + artifact + reflog）",
     "上下文预算治理（compaction contract + checkpoint handoff）",
-    "状态隔离与回放信封（per-agent state cell + WAL + artifact digest）"
+    "状态隔离与回放信封（per-agent state cell + WAL + artifact digest）",
+    "认知债务闸门（comprehension budget + explainability bundle）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 14,
+    "last_cycle": 15,
     "actions": [
       {
         "type": "expand",
-        "added": "状态隔离与回放信封（per-agent state cell + WAL + artifact digest）",
-        "reason": "HN top 同时出现“每 agent 独立 SQLite”与“Don’t trust AI agents”信号，说明可验证状态隔离已经从优化项升级为自治系统刚需"
+        "added": "认知债务闸门（comprehension budget + explainability bundle）",
+        "reason": "HN top 同轮出现 Cognitive Debt、VSDD、747s and coding agents，显示自治系统瓶颈从生成速度转向可理解与可接管"
       },
       {
-        "type": "merge",
-        "from": [
-          "夜间证据车道（背景异步 + 本地落盘）",
-          "Hacker News + OPML 长短信号融合"
+        "type": "split",
+        "from": "PRD -> Epic -> Issue -> PR -> Pattern 执行闭环",
+        "into": [
+          "需求计划闭环（PRD -> Epic -> Issue）",
+          "交付证据闭环（PR -> Pattern + lineage attestation）"
         ],
-        "into": "夜间证据巡航（背景异步 + OPML/HN 融合 + 本地落盘）",
-        "reason": "两条方向都属于同一证据采集链路，分离会导致同构 pattern 与重复调度成本"
+        "reason": "计划映射与证据审计属于不同执行面，拆分后可分别定义验收闸门，降低同构失败"
       }
     ]
   },
@@ -53,6 +55,6 @@
     "https://storybook.js.org/docs/"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/state-governance/agent-state-cell-replay-envelope.md",
-  "last_cycle_commit": "pending-cycle-14"
+  "last_pattern": "references/patterns/comprehension-governance/comprehension-budget-gate.md",
+  "last_cycle_commit": "pending-cycle-15"
 }

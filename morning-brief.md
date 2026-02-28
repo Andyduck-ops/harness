@@ -1,3 +1,44 @@
+# Morning Brief（Nightshift Cycle 15）
+
+> 更新时间：2026-02-28 18:43 UTC  
+> 本轮目标：把“夜间高吞吐”升级为“可理解、可接管、可审计”的认知闸门机制。
+
+## 本轮新增（已落盘）
+
+1. `comprehension-governance/comprehension-budget-gate`
+2. `comprehension-governance/_index.md`
+
+## 激进动态策略执行（本轮）
+
+- `expand`：新增方向 `认知债务闸门（comprehension budget + explainability bundle）`
+  - 触发依据：HN top 同轮出现 `Cognitive Debt`、`VSDD`、`747s and coding agents`，共同指向“速度超过理解”的系统性风险。
+- `split`：拆分方向 `PRD -> Epic -> Issue -> PR -> Pattern 执行闭环` 为：
+  - `需求计划闭环（PRD -> Epic -> Issue）`
+  - `交付证据闭环（PR -> Pattern + lineage attestation）`
+  - reason: 原方向过宽，执行时容易把“计划映射”与“证据审计”混成单闸门，导致验收标准失焦。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist）。
+- HN `top/show/new`：已采样并记录高价值信号（`Cognitive Debt`、`VSDD`、`747s and coding agents`）。
+- 官方证据链（已补齐）：
+  - OpenAI Conversation state（状态分层边界）
+  - GitHub protected branches（required checks）
+  - GitHub Actions artifacts（解释包持久化）
+
+## 本轮结论
+
+- AI 流程的主风险正在从“做不出来”转向“做太快但无法验证理解”。
+- 合并闸门必须同时校验 `预算约束 + 解释包完整性 + 可复现命令`，否则次晨接管不可控。
+- “会话连续性”不应替代“工程证据连续性”，二者必须分层治理。
+
+## Cycle 16 预载任务
+
+1. 产出 `comprehension-gate` 的机器校验规则（预算超阈值直接 fail）。
+2. 对齐 `lineage-manifest` 与 `comprehension_report` 字段，消除双清单漂移。
+3. 评估 `comprehension-budget-gate` 与 `execution-proof-bundle` 的合并边界，避免同构 pattern 膨胀。
+
+---
 # Morning Brief（Nightshift Cycle 14）
 
 > 更新时间：2026-02-28 18:39 UTC  

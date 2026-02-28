@@ -29,6 +29,7 @@
 | 3 | [agent-design-export-contract](./fullstack-engineering/agent-design-export-contract.md) | fullstack-engineering | 0.78 | OPML + HN + Design Tokens + Storybook + GitHub |
 | 3 | [compaction-recovery-contract](./context-governance/compaction-recovery-contract.md) | context-governance | 0.77 | OPML + HN + OpenAI + GitHub + git-reflog |
 | 3 | [agent-state-cell-replay-envelope](./state-governance/agent-state-cell-replay-envelope.md) | state-governance | 0.77 | OPML + HN + OpenAI + SQLite + GitHub |
+| 3 | [comprehension-budget-gate](./comprehension-governance/comprehension-budget-gate.md) | comprehension-governance | 0.76 | OPML + HN + OpenAI + GitHub |
 | 3 | [issue-pr-artifact-lineage-manifest](./product-delivery/issue-pr-artifact-lineage-manifest.md) | product-delivery | 0.78 | OPML + HN + GitHub Docs + OpenAPI + Pact + Storybook |
 | 3 | [merge-fence-required-checks-lineage](./product-delivery/merge-fence-required-checks-lineage.md) | product-delivery | 0.79 | OPML + HN + OpenAI + GitHub + OpenAPI + Pact + Tokens + Storybook |
 | 3 | [opml-hn-priority-watchlist](./autonomous-ops/opml-hn-priority-watchlist.md) | autonomous-ops | 0.77 | OPML + HN + GitHub Docs |
@@ -54,10 +55,11 @@
 | [recovery-governance/](./recovery-governance/) | 1 | 长时自治执行中的可恢复性治理 |
 | [context-governance/](./context-governance/) | 1 | 上下文预算与压缩交接契约治理 |
 | [state-governance/](./state-governance/) | 1 | 每 agent 状态隔离与回放信封治理 |
+| [comprehension-governance/](./comprehension-governance/) | 1 | 速度超过理解时的预算治理与解释闸门 |
 
 ## 统计
 
-- 总计：30 patterns
+- 总计：31 patterns
 - 平均 confidence：0.81
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：15 patterns
+- 待验证（<0.80）：16 patterns
