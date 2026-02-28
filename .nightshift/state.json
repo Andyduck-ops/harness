@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T23:13:08Z",
-  "cycle": 66,
+  "updated_at": "2026-02-28T23:17:48Z",
+  "cycle": 67,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -39,7 +39,6 @@
     "自驱代码生成证据账本治理（self-driving code generation evidence ledger gate）",
     "自驱代码人审触发门禁治理（self-driving code human-review trigger gate）",
     "代理最小权限分级预算治理（agent least-privilege drift budget gate）",
-    "审批-旁路双轨时效同构治理（approval-bypass dual-track freshness parity gate）",
     "需求到实现血缘治理（PRD->Epic->Issue->PR lineage governance）",
     "证据到模式回放治理（evidence->pattern replay governance）",
     "代理记忆分区闭环治理（agent memory partition closure gate）",
@@ -69,38 +68,40 @@
     "队列降级触发双失效面预算治理（queue fallback dual-failure-surface budget gate）",
     "队列恢复稳态窗口治理（queue recovery stability-window gate）",
     "审批冲击吸收门禁治理（approval shock-absorber gate）",
-    "审批批次上限治理（approval batch-size cap gate）",
-    "审批冷却窗口治理（approval cooldown window gate）",
-    "队列-审批吞吐同频治理（queue-review throughput parity gate）"
+    "队列-审批吞吐同频治理（queue-review throughput parity gate）",
+    "跨阶段评审身份多样性门禁治理（cross-stage reviewer diversity gate）",
+    "跨阶段评审身份重叠预算治理（cross-stage reviewer overlap budget gate）",
+    "部署批量审批隔离审计治理（deployment batch-approval quarantine gate）",
+    "审批波次配额治理（approval wave-quota gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 66,
+    "last_cycle": 67,
     "actions": [
       {
         "type": "expand",
-        "added": "审批冲击吸收门禁治理（approval shock-absorber gate）",
-        "reason": "GitHub review deployments 支持 approve and deploy all waiting jobs；需新增冲击吸收方向，避免批量放行跨窗透支证据新鲜度。"
+        "added": "跨阶段评审身份多样性门禁治理（cross-stage reviewer diversity gate）",
+        "reason": "GitHub Deployments 的 required reviewers 场景可由单人批准且支持批量 start all waiting jobs，需要新增跨阶段身份独立性方向。"
       },
       {
         "type": "split",
         "from": [
-          "部署审批批次节流治理（deployment review batch-throttle gate）"
+          "审批-旁路双轨时效同构治理（approval-bypass dual-track freshness parity gate）"
         ],
         "into": [
-          "审批批次上限治理（approval batch-size cap gate）",
-          "审批冷却窗口治理（approval cooldown window gate）"
+          "跨阶段评审身份重叠预算治理（cross-stage reviewer overlap budget gate）",
+          "部署批量审批隔离审计治理（deployment batch-approval quarantine gate）"
         ],
-        "reason": "批次规模上限与批次间冷却属于独立失效面，拆分后可分别绑定阈值与审计字段。"
+        "reason": "身份重叠预算与旁路隔离审计属于独立失效面，拆分后可分别绑定阈值、角色与追责字段。"
       },
       {
         "type": "merge",
         "from": [
-          "队列侧构建吞吐预算治理（queue-side build-throughput budget gate）",
-          "审批侧批次吞吐预算治理（review-side batch-throughput budget gate）"
+          "审批批次上限治理（approval batch-size cap gate）",
+          "审批冷却窗口治理（approval cooldown window gate）"
         ],
-        "into": "队列-审批吞吐同频治理（queue-review throughput parity gate）",
-        "reason": "入队吞吐与审批吞吐共同决定系统压差，合并为同频治理可减少同构重复并统一验收口径。"
+        "into": "审批波次配额治理（approval wave-quota gate）",
+        "reason": "两方向都约束批量审批波次，合并为统一配额治理可减少同构重复并简化执行口径。"
       }
     ]
   },
@@ -128,6 +129,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/capacity-governance/approval-batch-shock-absorber-gate.md",
-  "last_cycle_commit": "pending-cycle-66"
+  "last_pattern": "references/patterns/release-governance/cross-stage-reviewer-diversity-gate.md",
+  "last_cycle_commit": "pending-cycle-67"
 }

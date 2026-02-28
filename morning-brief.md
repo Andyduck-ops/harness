@@ -1,3 +1,58 @@
+# Morning Brief（Nightshift Cycle 67）
+
+> 更新时间：2026-02-28 23:17 UTC  
+> 本轮目标：把“代码评审”和“部署审批”从形式双门禁升级为“身份独立性门禁”，阻断同一批评审人跨阶段重复放行。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/release-governance/cross-stage-reviewer-diversity-gate.md`
+2. `references/patterns/release-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `跨阶段评审身份多样性门禁治理（cross-stage reviewer diversity gate）`
+  - reason: GitHub Deployments 在 required reviewers 场景中仅需 1 人可批准，且支持批量 `Start all waiting jobs`，需要补齐跨阶段身份独立性约束。
+- `split`：拆分方向
+  - from: `审批-旁路双轨时效同构治理（approval-bypass dual-track freshness parity gate）`
+  - into: `跨阶段评审身份重叠预算治理（cross-stage reviewer overlap budget gate）`
+  - into: `部署批量审批隔离审计治理（deployment batch-approval quarantine gate）`
+  - reason: 身份重叠与旁路隔离是两个独立失效面，拆分后可分别绑定阈值和追责字段。
+- `merge`：合并方向
+  - from: `审批批次上限治理（approval batch-size cap gate）`
+  - from: `审批冷却窗口治理（approval cooldown window gate）`
+  - into: `审批波次配额治理（approval wave-quota gate）`
+  - reason: 两者同属批量审批波次治理，合并可减少同构重复并统一策略落点。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已解析并重定向到 HN Popular Blogs OPML Gist（checked 2026-02-28）。
+- HN 三车道快照（2026-02-28）
+  - news: item `47213443` — `Show HN: ShipAny - Open source engine for customer support teams`
+  - show: item `47197088` — `Show HN: PydanticAI-Bandit, game benchmark for coding agents`
+  - newest: item `47200919` — `Show HN: A2A Coder`（同窗抓取）
+- 官方文档证据链（本轮重点）
+  - GitHub Review Deployments：required reviewers 只需一人可批准；支持 `Start all waiting jobs`；支持 `Prevent self-reviews`
+  - GitHub Rulesets：支持 required approvals、dismiss stale approvals、approval from someone other than last pusher
+  - GitHub Merge Queue + Actions `merge_group`：并发/跳队会改变验证批次，晋级前需同构重验
+
+### 本轮结论
+
+- “双阶段审批”不等于“独立审查”；当评审身份重叠过高，双门禁会退化为单点判断。
+- 需要把 `overlap_ratio`、`distinct_deploy_reviewers` 与批量批准动作绑定为硬门禁。
+- 当 `high_overlap + batch_approve + bypass` 同时出现，应自动降级到 quarantine 波次而不是继续提速。
+
+### Cycle 68 预载任务
+
+1. 输出 `reviewer_diversity_policy.json` 与 `promotion_identity_report.json` 的 schema + lint。
+2. 将 `overlap_ratio` 接入 candidate->issue 晋级表单，缺失即阻断。
+3. 给 `Start all waiting jobs` 增加最小独立审批人数和 incident 绑定模板。
+
+---
+
 # Morning Brief（Nightshift Cycle 66）
 
 > 更新时间：2026-02-28 23:11 UTC  

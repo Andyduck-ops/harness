@@ -9,3 +9,4 @@
 - [bypass-reason-registry-gate](./bypass-reason-registry-gate.md) — 把旁路理由从自由文本升级为枚举注册表与证据绑定门禁，阻断“可绕过但不可归因”的灰放行
 - [ruleset-bypass-list-drift-gate](./ruleset-bypass-list-drift-gate.md) — 把 ruleset bypass 名单漂移从“配置变更”升级为“队列重验 + 晋级阻断”的硬门禁
 - [ruleset-bypass-visibility-attestation-gate](./ruleset-bypass-visibility-attestation-gate.md) — 把“旁路名单不可见”从软告警升级为硬阻断，防止低权限快照把未知误判为空
+- [cross-stage-reviewer-diversity-gate](./cross-stage-reviewer-diversity-gate.md) — 把 PR 评审人与部署审批人的身份重叠纳入预算门禁，阻断“同一批人跨阶段重复放行”导致的盲区共振
