@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T21:59:14Z",
-  "cycle": 52,
+  "updated_at": "2026-02-28T22:03:20Z",
+  "cycle": 53,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -17,7 +17,6 @@
     "前端视觉基线守门（design tokens + visual regression budget）",
     "破坏性变更预算治理（breaking-change budget + semantic diff）",
     "消费者回放覆盖治理（consumer replay coverage + provider verification）",
-    "需求到证据闭环治理（PRD->Pattern lineage control plane）",
     "上下文燃烧-回放冻结协同治理（context burn replay-freeze governance）",
     "信号债务路由（exploit/explore + debt ratchet）",
     "候选晋级表单治理（candidate intake + issue form gate）",
@@ -54,27 +53,40 @@
     "自驱代码生成证据账本治理（self-driving code generation evidence ledger gate）",
     "自驱代码人审触发门禁治理（self-driving code human-review trigger gate）",
     "代理最小权限分级预算治理（agent least-privilege drift budget gate）",
-    "代理记忆持久化权限分区治理（agent memory persistence scope partition gate）",
     "审批-旁路双轨时效同构治理（approval-bypass dual-track freshness parity gate）",
-    "代理记忆分区最小权限治理（agent memory partition least-privilege gate）"
+    "需求到实现血缘治理（PRD->Epic->Issue->PR lineage governance）",
+    "证据到模式回放治理（evidence->pattern replay governance）",
+    "代理记忆分区闭环治理（agent memory partition closure gate）",
+    "外部身份租约回放治理（external identity lease replay gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 52,
+    "last_cycle": 53,
     "actions": [
+      {
+        "type": "expand",
+        "added": "外部身份租约回放治理（external identity lease replay gate）",
+        "reason": "HN newest 出现 AgentMailr 与 Be Careful with LLM Agents，外部身份凭证在无人值守链路中的复用风险上升。"
+      },
+      {
+        "type": "split",
+        "from": [
+          "需求到证据闭环治理（PRD->Pattern lineage control plane）"
+        ],
+        "into": [
+          "需求到实现血缘治理（PRD->Epic->Issue->PR lineage governance）",
+          "证据到模式回放治理（evidence->pattern replay governance）"
+        ],
+        "reason": "需求交付与证据回放属于不同失效面，拆分后可分别治理晋级门禁与回放审计。"
+      },
       {
         "type": "merge",
         "from": [
-          "审批时效预算治理（approval freshness budget gate）",
-          "绕过时效预算治理（bypass freshness budget gate）"
+          "代理记忆持久化权限分区治理（agent memory persistence scope partition gate）",
+          "代理记忆分区最小权限治理（agent memory partition least-privilege gate）"
         ],
-        "into": "审批-旁路双轨时效同构治理（approval-bypass dual-track freshness parity gate）",
-        "reason": "审批与旁路在晋级面共享同一身份与时效约束，长期分离维护会产生策略漂移，合并为双轨同构门禁以减少重复。"
-      },
-      {
-        "type": "expand",
-        "added": "代理记忆分区最小权限治理（agent memory partition least-privilege gate）",
-        "reason": "HN show/new 出现 AgentMailr 与 Be Careful with LLM Agents，持久化记忆与外部系统写入边界风险上升，需要新增方向。"
+        "into": "代理记忆分区闭环治理（agent memory partition closure gate）",
+        "reason": "两个方向同构且重复，合并为闭环治理以降低重复 pattern 演化成本。"
       }
     ]
   },
@@ -102,6 +114,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/permission-governance/agent-memory-partition-least-privilege-gate.md",
-  "last_cycle_commit": "pending-cycle-52"
+  "last_pattern": "references/patterns/identity-governance/external-identity-lease-replay-gate.md",
+  "last_cycle_commit": "pending-cycle-53"
 }

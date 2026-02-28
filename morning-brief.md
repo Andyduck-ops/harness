@@ -1,3 +1,60 @@
+# Morning Brief（Nightshift Cycle 53）
+
+> 更新时间：2026-02-28 22:03 UTC  
+> 本轮目标：把“外部身份凭证”从运行时配置项升级为“租约-回放-晋级”硬门禁，避免低权限会话静默复用高权限身份。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/identity-governance/external-identity-lease-replay-gate.md`
+2. `references/patterns/identity-governance/_index.md`（新建 topic 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 行与统计更新）
+4. `morning-brief.md`（新增 Cycle 53）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `外部身份租约回放治理（external identity lease replay gate）`
+  - reason: HN `newest` 出现 `AgentMailr` 与 `Be Careful with LLM Agents`，外部身份调用边界风险上升。
+- `split`：拆分方向
+  - from: `需求到证据闭环治理（PRD->Pattern lineage control plane）`
+  - into: `需求到实现血缘治理（PRD->Epic->Issue->PR lineage governance）`
+  - into: `证据到模式回放治理（evidence->pattern replay governance）`
+  - reason: 需求交付闭环与证据回放闭环属于不同失效面，拆分后可分别设 gate。
+- `merge`：合并方向
+  - from: `代理记忆持久化权限分区治理（agent memory persistence scope partition gate）`
+  - from: `代理记忆分区最小权限治理（agent memory partition least-privilege gate）`
+  - into: `代理记忆分区闭环治理（agent memory partition closure gate）`
+  - reason: 两者元问题同构，统一后减少重复 pattern 演化成本。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T22:03:20Z）。
+- HN `top/show/new`：已采样（2026-02-28）
+  - top (`news`): `Obsidian Sync now has a headless client`
+  - show (`show`): `Show HN: Now I Get It - Translate scientific papers into interactive webpages`
+  - new (`newest`): 包含 `Show HN: AgentMailr, an MCP server that can read and write emails` 与 `Be Careful with LLM Agents`
+- 官方文档证据链（本轮重点）
+  - OpenAI Background mode（异步任务状态不可直接等价“可晋级”）
+  - OpenAI Conversation state（`previous_response_id` 会话链可用于身份回放绑定）
+  - GitHub `GITHUB_TOKEN` permissions（最小权限显式声明）
+  - GitHub protected branches required checks（可承载 `identity_lease_replay_pass`）
+  - Hacker News API（`topstories/showstories/newstories` 车道输入）
+
+### 本轮结论
+
+- 仅做 `scope` 与 `memory` gate 仍不足以覆盖“外部身份租约泄漏”。
+- 需要新增 `identity_lease_replay_pass` 并与现有门禁并列 required checks。
+- 若租约过期、scope 变化或会话绑定链断裂，必须 quarantine，禁止晋级。
+
+### Cycle 54 预载任务
+
+1. 增加 `identity_lease_manifest.json` 的 issuer 可信根轮换检测。
+2. 把 `identity_lease_replay_pass` 接入 candidate -> issue -> PR 全链路。
+3. 为多工具并发场景补“租约冲突仲裁”策略（同 run 多租约写冲突）。
+
+---
+
 # Morning Brief（Nightshift Cycle 52）
 
 > 更新时间：2026-02-28 21:59 UTC  
