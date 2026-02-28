@@ -1,3 +1,59 @@
+# Morning Brief（Nightshift Cycle 58）
+
+> 更新时间：2026-02-28 22:28 UTC  
+> 本轮目标：把 `show/newest` 的高噪声早信号改造成“可执行证据 + 冷却预算 + required checks”三联仲裁，避免夜间误晋级。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/discovery-governance/show-new-evidence-maturity-arbitration-gate.md`
+2. `references/patterns/discovery-governance/_index.md`（新建 topic 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 行与统计更新）
+4. `morning-brief.md`（新增 Cycle 58，并执行 50 条滚动窗口）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `merge_group 回放锚定治理（merge_group replay anchoring gate）`
+  - reason: 官方 `merge_group` 事件可承载晋级检查回放，适合把探索信号和分支门禁绑定到同一审计主键。
+- `split`：拆分方向
+  - from: `原型-早信号双车道仲裁治理（show-new dual-lane arbitration gate）`
+  - into: `Show 车道可执行性门禁（show-lane executability gate）`
+  - into: `Newest 车道冷却晋级门禁（newest-lane cooldown promotion gate）`
+  - reason: 两条车道失败机理不同，拆分后才能分别设定“最小可运行证据”与“冷却复采样”门禁。
+- `merge`：合并方向
+  - from: `车道仲裁同一双门禁（lane quorum + identity dual gate）`
+  - from: `跨车道去重预算一体化治理（dedupe key + duplicate ratio gate）`
+  - into: `跨车道一致性预算治理（quorum-identity-dedupe budget gate）`
+  - reason: 两方向都在治理三车道一致性，合并后避免同构 pattern 重复并统一预算判定。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist，并锁定 raw 版本 `ba6f711.../hn-popular-blogs-2025.opml`（checked `2026-02-28T22:28:30Z`）。
+- HN 三车道（2026-02-28）
+  - news: item `47203527` — `drafts by murat`
+  - show: item `47200167` — `Show HN: A promptless way to create editable SVGs`
+  - newest: item `47203487` — `What happened when I built a daily coding challenge platform with AI`
+- 官方文档证据链（本轮重点）
+  - GitHub Docs: `Managing a merge queue`
+  - GitHub Docs: `events that trigger workflows#merge_group`
+  - GitHub Docs: `About protected branches`
+  - GitHub Docs: `storing and sharing data from a workflow`
+
+### 本轮结论
+
+- `show` 与 `newest` 不应共用同一晋级阈值，必须区分“可执行原型”与“早信号冷却”。
+- 早信号未通过冷却复采样时，只能进入观察池，不能进入白天执行队列。
+- 仲裁结果必须落盘为 artifact 并绑定 required checks，否则次日无法审计“为什么晋级”。
+
+### Cycle 59 预载任务
+
+1. 为 `fresh_signal_cooldown_report.json` 增加失败分桶（insufficient-window / unstable-resample / missing-evidence）。
+2. 把 `discovery_promotion_packet.json` 接入 candidate->issue 入库模板，减少人工补证。
+3. 将 `merge_group replay anchoring` 与 `lineage` 主键合并，形成跨队列统一回放协议。
+
+---
+
 # Morning Brief（Nightshift Cycle 57）
 
 > 更新时间：2026-02-28 22:23 UTC  
@@ -2466,36 +2522,3 @@
 
 ---
 
-# Morning Brief（Nightshift Cycle 8）
-
-> 更新时间：2026-02-28 18:12 UTC  
-> 本轮目标：把 `Issue -> PR -> Artifact` 统一为可审计的 lineage 主键，避免次日无法快速验收。
-
-## 本轮新增（已落盘）
-
-1. `product-delivery/issue-pr-artifact-lineage-manifest`
-
-## 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：本轮确认重定向到 HN Popular Blogs OPML（Gist）。
-- HN `top/show/newest`：已采样，核心信号包括：
-  - top: `I tried using Claude Code for a month. Here's what I learned`
-  - show: `SQLite for Rivet Actors: One database per agent, tenant, or document`
-  - newest: `A lot of us are using Cursor AI to do coding ...`
-- 官方证据链已补齐：GitHub Issue Forms、PR-issue linking、Actions Artifacts、OpenAPI、Pact、Design Tokens、Storybook。
-
-## 本轮结论
-
-- 无人流程里“有日志但不可审计”的核心原因是缺少统一主键，不是缺少更多测试步骤。
-- 应把 `lineage_id` 在 Issue 阶段定义，并贯穿到 PR 与 artifacts 命名。
-- 回放与证据命名必须标准化：`{case_id}_{contract_version}_{commit_sha}.json`。
-
-## Cycle 9 预载任务
-
-1. 增加 `lineage-manifest-check`（缺字段直接 fail）。
-2. 产出 `.github/ISSUE_TEMPLATE` 可复制片段（含 `lineage_id` 与双闸门字段）。
-3. 将 `lineage-manifest.json` 接入 Pattern 回写流程，作为唯一入参。
-
----
-
-> 历史：Cycle 7 的 `proof-bundle-issue-form-gate` 已保留在 `product-delivery` 主题。

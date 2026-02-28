@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T22:23:20Z",
-  "cycle": 57,
+  "updated_at": "2026-02-28T22:30:51Z",
+  "cycle": 58,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -21,8 +21,6 @@
     "取消-晋级时序治理（cancel-to-promote sequencing gate）",
     "队列重排时序预算治理（queue reorder freshness budget gate）",
     "审批跨阶段时序预算治理（approval cross-stage freshness budget gate）",
-    "跨车道去重预算一体化治理（dedupe key + duplicate ratio gate）",
-    "车道仲裁同一双门禁（lane quorum + identity dual gate）",
     "摘要同一-隔离闭环治理（digest parity + quarantine closed loop）",
     "工件保留期分层策略（branch-tier artifact retention policy）",
     "根信任轮换门禁（trusted-root rotation gate）",
@@ -58,40 +56,43 @@
     "主题对比回退斜率治理（theme contrast regression slope gate）",
     "高对比主题压测治理（high-contrast theme stress gate）",
     "色觉仿真回放治理（color-vision simulation replay gate）",
-    "原型-早信号双车道仲裁治理（show-new dual-lane arbitration gate）",
     "色觉仿真失败证据签名治理（color-vision replay attestation gate）",
     "主题语义别名映射治理（theme semantic alias mapping gate）",
     "主题语义色觉回放治理（theme semantic color-vision replay gate）",
-    "工具输出占比预算冻结一体治理（tool-output-ratio budget-freeze unified gate）"
+    "工具输出占比预算冻结一体治理（tool-output-ratio budget-freeze unified gate）",
+    "merge_group 回放锚定治理（merge_group replay anchoring gate）",
+    "Show 车道可执行性门禁（show-lane executability gate）",
+    "Newest 车道冷却晋级门禁（newest-lane cooldown promotion gate）",
+    "跨车道一致性预算治理（quorum-identity-dedupe budget gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 57,
+    "last_cycle": 58,
     "actions": [
       {
         "type": "expand",
-        "added": "色觉仿真失败证据签名治理（color-vision replay attestation gate）",
-        "reason": "HN news/show/newest 持续出现 AI 驱动前端产出信号；为避免色觉仿真失败在晋级链路中丢失，需要新增失败证据签名方向。"
+        "added": "merge_group 回放锚定治理（merge_group replay anchoring gate）",
+        "reason": "GitHub merge queue 的 merge_group 事件可把探索结论与晋级检查绑定到同一回放锚点，降低夜间信号无法复盘的风险。"
       },
       {
         "type": "split",
         "from": [
-          "主题语义回放治理（theme semantic replay governance）"
+          "原型-早信号双车道仲裁治理（show-new dual-lane arbitration gate）"
         ],
         "into": [
-          "主题语义别名映射治理（theme semantic alias mapping gate）",
-          "主题语义色觉回放治理（theme semantic color-vision replay gate）"
+          "Show 车道可执行性门禁（show-lane executability gate）",
+          "Newest 车道冷却晋级门禁（newest-lane cooldown promotion gate）"
         ],
-        "reason": "主题语义一致性与色觉可辨识属于不同失效面，拆分后可分别设置门禁与验收指标。"
+        "reason": "show 与 newest 的失效面不同：前者需要可执行证据，后者需要冷却复采样；拆分后可分别设置 required checks。"
       },
       {
         "type": "merge",
         "from": [
-          "工具输出占比分层阈值治理（lane-tiered tool-output ratio threshold gate）",
-          "工具输出占比触发冻结治理（tool-output-ratio freeze trigger gate）"
+          "车道仲裁同一双门禁（lane quorum + identity dual gate）",
+          "跨车道去重预算一体化治理（dedupe key + duplicate ratio gate）"
         ],
-        "into": "工具输出占比预算冻结一体治理（tool-output-ratio budget-freeze unified gate）",
-        "reason": "两条方向都在治理 tool-output ratio 触发冻结，合并后可消除同构策略重复并统一预算阈值。"
+        "into": "跨车道一致性预算治理（quorum-identity-dedupe budget gate）",
+        "reason": "两条方向都在治理三车道一致性预算，合并后减少同构重复并统一仲裁阈值。"
       }
     ]
   },
@@ -119,6 +120,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/accessibility-governance/color-vision-simulation-replay-gate.md",
-  "last_cycle_commit": "pending-cycle-57"
+  "last_pattern": "references/patterns/discovery-governance/show-new-evidence-maturity-arbitration-gate.md",
+  "last_cycle_commit": "pending-cycle-58"
 }
