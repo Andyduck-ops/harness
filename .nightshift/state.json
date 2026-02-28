@@ -1,11 +1,12 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T19:28:04Z",
-  "cycle": 23,
+  "updated_at": "2026-02-28T19:44:00Z",
+  "cycle": 24,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
-    "长周期作者基座（OPML canonical pool）",
+    "OPML 重定向锚定（shortlink -> canonical target lock）",
+    "OPML 修订漂移监控（gist revision + digest diff）",
     "热度锚定采样（HN top anchor lane）",
     "show 讨论原型车道（HN show + builder chatter）",
     "new 早信号车道（HN newest + freshness spike）",
@@ -21,38 +22,38 @@
     "信号债务路由（exploit/explore + debt ratchet）",
     "候选晋级表单治理（candidate intake + issue form gate）",
     "证据时效治理（freshness SLA + snapshot ledger pinning）",
-    "外部证据溯源验签（artifact attestation + verify）",
-    "信源三角校验（OPML/HN/Official ratification）",
+    "信源仲裁验签（triangulation + provenance attestation）",
     "运行取消预算治理（cancel SLA + concurrency group）",
     "过期结论抑制治理（stale-run suppression + replay pin）",
-    "取消后晋级防抖治理（cancel-to-promote debounce gate）"
+    "取消后晋级防抖治理（cancel-to-promote debounce gate）",
+    "HN 三榜水位线治理（top/show/new watermark replay）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 23,
+    "last_cycle": 24,
     "actions": [
       {
         "type": "split",
-        "from": "异步执行取消SLA治理（background run + cancel budget）",
+        "from": "长周期作者基座（OPML canonical pool）",
         "into": [
-          "运行取消预算治理（cancel SLA + concurrency group）",
-          "过期结论抑制治理（stale-run suppression + replay pin）"
+          "OPML 重定向锚定（shortlink -> canonical target lock）",
+          "OPML 修订漂移监控（gist revision + digest diff）"
         ],
-        "reason": "取消时限与过期判定在运行时是两类独立门禁，拆分后才能分别挂接 cancel trace 与 stale gate 报告"
+        "reason": "短链入口稳定和 OPML 内容稳定是两套独立约束，拆分后才能分别挂接 redirect pin 与 revision lock。"
       },
       {
         "type": "merge",
         "from": [
-          "压缩恢复预算治理（compaction budget + recovery envelope）",
-          "恢复回放一体治理（state cell + checkpoint + artifact replay digest）"
+          "外部证据溯源验签（artifact attestation + verify）",
+          "信源三角校验（OPML/HN/Official ratification）"
         ],
-        "into": "恢复回放账本治理（checkpoint + replay + compaction）",
-        "reason": "两条方向都要求 checkpoint 与 artifact 回放，合并后可统一 recovery ledger 字段并减少同构 pattern 重复"
+        "into": "信源仲裁验签（triangulation + provenance attestation）",
+        "reason": "两条方向都在处理社区信号与官方约束的晋级仲裁，合并可减少同构 pattern 与重复门禁字段。"
       },
       {
         "type": "expand",
-        "added": "取消后晋级防抖治理（cancel-to-promote debounce gate）",
-        "reason": "HN top/show/new 在同一时窗热度抖动明显，单次取消不足以避免误晋级，需要防抖窗口确认最新锚点"
+        "added": "HN 三榜水位线治理（top/show/new watermark replay）",
+        "reason": "HN news/show/newest 头部条目在同一时窗高频变化，必须新增水位线方向防止跨窗口比较产生伪新增。"
       }
     ]
   },
@@ -64,6 +65,7 @@
     "https://platform.openai.com/docs/guides/background",
     "https://platform.openai.com/docs/guides/conversation-state",
     "https://docs.github.com/",
+    "https://docs.github.com/en/rest/gists/gists",
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow",
     "https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/about-artifact-attestations",
     "https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds",
@@ -72,9 +74,10 @@
     "https://spec.openapis.org/oas/latest.html",
     "https://docs.pact.io/",
     "https://www.designtokens.org/tr/drafts/format/",
-    "https://storybook.js.org/docs/"
+    "https://storybook.js.org/docs/",
+    "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/autonomous-ops/cancel-budget-stale-run-gate.md",
-  "last_cycle_commit": "pending-cycle-23"
+  "last_pattern": "references/patterns/feed-governance/canonical-feed-drift-gate.md",
+  "last_cycle_commit": "pending-cycle-24"
 }

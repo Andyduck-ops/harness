@@ -1,3 +1,54 @@
+# Morning Brief（Nightshift Cycle 24）
+
+> 更新时间：2026-02-28 19:44 UTC  
+> 本轮目标：把“稳定信源”从 URL 假设升级为可验证的短链入口/OPML修订/HN水位线三重锁定。
+
+## 本轮新增（已落盘）
+
+1. `feed-governance/canonical-feed-drift-gate`
+2. `feed-governance/_index.md`（新 topic 自动创建）
+3. `_master_index.md`（新增 pattern 行、topic 行与统计更新）
+4. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+## 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `长周期作者基座（OPML canonical pool）` 为：
+  - `OPML 重定向锚定（shortlink -> canonical target lock）`
+  - `OPML 修订漂移监控（gist revision + digest diff）`
+  - reason: 入口稳定与内容稳定是两层独立门禁，必须拆分建模。
+- `merge`：合并方向
+  - from: `外部证据溯源验签（artifact attestation + verify）`
+  - from: `信源三角校验（OPML/HN/Official ratification）`
+  - into: `信源仲裁验签（triangulation + provenance attestation）`
+  - reason: 两条方向都在做“社区信号 -> 官方约束 -> 可审计晋级”的仲裁，长期并行会导致同构 pattern。
+- `expand`：新增方向 `HN 三榜水位线治理（top/show/new watermark replay）`
+  - 触发依据：`news/show/newest` 头部条目高频换代，跨窗口拼接会制造伪新增。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：本轮确认重定向到 HN Popular Blogs OPML（Gist，active 2026-02-28）。
+- HN `top/show/new`：已采样并记录样本锚点：
+  - top: `How to Build an Agent`（`id=45809487`）
+  - show: `Show HN: SQL Noir`（`id=45809980`）
+  - newest: `Voyage of the Aye-Aye`（`id=45810980`）
+- 官方文档证据链（本轮重点）
+  - Hacker News API（`topstories/showstories/newstories`）
+  - GitHub REST API: Gists（`List gist commits` / `Get a gist revision`）
+  - OPML 2.0 规范（目录交换语义）
+
+## 本轮结论
+
+- 仅锁定 URL 不能保证“长周期基座”稳定，必须锁定到可回放 revision。
+- HN 三榜比较若不共享同一采样窗口，会把时间差误当新增洞察。
+- 新增 `canonical-feed-drift-gate` 后，源漂移可在晋级前被 `hold`，减少重复 pattern 噪声。
+
+## Cycle 25 预载任务
+
+1. 给 `canonical_feed_pin.json` 增加 `http_status_chain` 与 `cache_control` 字段。
+2. 将 `opml_revision_lock` 与 `promotion_packet` 的 `lineage_id` 强绑定，防止跨修订复用结论。
+3. 评估 `canonical-feed-drift-gate` 与 `temporal-evidence-freshness-gate` 的并联顺序，输出统一 gate 顺序模板。
+
+---
 # Morning Brief（Nightshift Cycle 23）
 
 > 更新时间：2026-02-28 19:28 UTC  
