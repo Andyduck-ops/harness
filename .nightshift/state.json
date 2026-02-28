@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-03-01T02:31:00Z",
-  "cycle": 10,
+  "updated_at": "2026-03-01T02:42:00Z",
+  "cycle": 11,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -11,25 +11,25 @@
     "后端契约优先与回放验证",
     "PRD -> Epic -> Issue -> PR -> Pattern 执行闭环",
     "Hacker News + OPML 长短信号融合",
-    "发布晋级治理（required reviewers + prevent self-reviews + deployment success gate）"
+    "工作区可恢复性治理（checkpoint + artifact + reflog）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 10,
+    "last_cycle": 11,
     "actions": [
       {
-        "type": "split",
-        "from": "24h 无人 AI 推进（可控守门 + 可审计）",
-        "to": [
-          "夜间证据车道（背景异步 + 本地落盘）",
-          "白天晋级车道（分支保护 + 环境审批）"
-        ],
-        "reason": "把无人执行与环境副作用隔离，降低高风险动作误触发"
+        "type": "expand",
+        "added": "工作区可恢复性治理（checkpoint + artifact + reflog）",
+        "reason": "HN show/newest 出现恢复工具密集信号，指向“恢复成功率”成为自治系统新瓶颈"
       },
       {
-        "type": "expand",
-        "added": "发布晋级治理（required reviewers + prevent self-reviews + deployment success gate）",
-        "reason": "HN + 官方文档共同指向“晋级安全”是无人推进后的瓶颈"
+        "type": "merge",
+        "from": [
+          "发布晋级治理（required reviewers + prevent self-reviews + deployment success gate）",
+          "白天晋级车道（分支保护 + 环境审批）"
+        ],
+        "to": "白天晋级车道（分支保护 + 环境审批）",
+        "reason": "两者同构且目标一致，合并可减少重复 pattern 与方向膨胀"
       }
     ]
   },
@@ -40,12 +40,14 @@
     "https://news.ycombinator.com/newest",
     "https://platform.openai.com/docs/guides/background",
     "https://docs.github.com/",
+    "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow",
+    "https://git-scm.com/docs/git-reflog",
     "https://spec.openapis.org/oas/latest.html",
     "https://docs.pact.io/",
     "https://www.designtokens.org/tr/drafts/format/",
     "https://storybook.js.org/docs/"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/release-governance/staged-promotion-gate.md",
-  "last_cycle_commit": "pending-cycle-10"
+  "last_pattern": "references/patterns/recovery-governance/workspace-recovery-envelope.md",
+  "last_cycle_commit": "pending-cycle-11"
 }

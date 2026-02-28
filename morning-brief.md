@@ -1,3 +1,45 @@
+# Morning Brief（Nightshift Cycle 11）
+
+> 更新时间：2026-03-01 02:42 UTC  
+> 本轮目标：将“无人推进的可审计”继续前移到“可恢复”，降低长会话断裂后的接管成本。
+
+## 本轮新增（已落盘）
+
+1. `recovery-governance/workspace-recovery-envelope`
+2. `recovery-governance/_index.md`
+
+## 激进动态策略执行（本轮）
+
+- `expand`：新增方向 `工作区可恢复性治理（checkpoint + artifact + reflog）`
+  - 触发依据：HN show/newest 出现 `Claude-File-Recovery`、`Unfucked` 等“恢复工具”密集信号。
+- `merge`：合并方向
+  - from: `发布晋级治理（required reviewers + prevent self-reviews + deployment success gate）`
+  - into: `白天晋级车道（分支保护 + 环境审批）`
+  - reason: 两者同构，均服务于“白天受控晋级”，拆开会导致 pattern 重复膨胀。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist）。
+- HN `top/show/newest`：已采样，show/newest 出现恢复与版本化相关项目（`Claude-File-Recovery`、`Unfucked`、`MemoryKit`）。
+- 官方证据链（已补齐）：
+  - OpenAI Background mode（跨会话异步任务）
+  - GitHub Actions artifacts（结构化产物留存）
+  - Git `reflog`（本地历史恢复指针）
+
+## 本轮结论
+
+- 长时自治的关键指标应从“执行成功率”升级为“恢复成功率”。
+- 仅有 merge gate 不足以保障次晨接管，必须补 `checkpoint_id + pending_steps + reflog_ref`。
+- `recovery-manifest` 应成为夜间落盘的一级产物，而不是日志附注。
+
+## Cycle 12 预载任务
+
+1. 设计 `recovery-manifest-lint`（字段缺失即 fail）。
+2. 给 `lineage_id` 增加 `checkpoint_span` 指标，量化恢复粒度。
+3. 评估 `recovery-gate` 与 `lineage-gate` 的合并边界，防止新一轮同构闸门膨胀。
+
+---
+
 # Morning Brief（Nightshift Cycle 10）
 
 > 更新时间：2026-03-01 02:31 UTC  
