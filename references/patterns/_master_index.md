@@ -34,6 +34,7 @@
 | 3 | [merge-fence-required-checks-lineage](./product-delivery/merge-fence-required-checks-lineage.md) | product-delivery | 0.79 | OPML + HN + OpenAI + GitHub + OpenAPI + Pact + Tokens + Storybook |
 | 3 | [comprehension-debt-ratchet-freeze-gate](./comprehension-governance/comprehension-debt-ratchet-freeze-gate.md) | comprehension-governance | 0.79 | OPML + HN + HN API + OpenAI + GitHub |
 | 3 | [lane-debt-ratchet-gate](./signal-governance/lane-debt-ratchet-gate.md) | signal-governance | 0.78 | OPML + HN + HN API + GitHub Docs |
+| 3 | [cancel-budget-stale-run-gate](./autonomous-ops/cancel-budget-stale-run-gate.md) | autonomous-ops | 0.78 | OPML + HN + OpenAI + GitHub |
 | 3 | [opml-hn-priority-watchlist](./autonomous-ops/opml-hn-priority-watchlist.md) | autonomous-ops | 0.77 | OPML + HN + GitHub Docs |
 | 3 | [proof-bundle-issue-form-gate](./product-delivery/proof-bundle-issue-form-gate.md) | product-delivery | 0.76 | OPML + HN + GitHub Docs + OpenAPI + Pact |
 | 3 | [exploit-explore-evidence-router](./signal-governance/exploit-explore-evidence-router.md) | signal-governance | 0.75 | OPML + HN + OpenAI + GitHub |
@@ -55,7 +56,7 @@
 | [agent-lifecycle/](./agent-lifecycle/) | 3 | Agent 生命周期管理 |
 | [knowledge-evolution/](./knowledge-evolution/) | 3 | 知识进化机制 |
 | [meta-framework/](./meta-framework/) | 1 | 元框架自身的模式 |
-| [autonomous-ops/](./autonomous-ops/) | 3 | 24h 无人巡航与守门机制 |
+| [autonomous-ops/](./autonomous-ops/) | 4 | 24h 无人巡航与守门机制 |
 | [fullstack-engineering/](./fullstack-engineering/) | 5 | 前后端工程化执行模式 |
 | [product-delivery/](./product-delivery/) | 7 | PRD 到执行闭环 |
 | [release-governance/](./release-governance/) | 1 | 夜间产出与白天晋级的发布治理 |
@@ -70,7 +71,7 @@
 
 ## 统计
 
-- 总计：38 patterns
+- 总计：39 patterns
 - 平均 confidence：0.80
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：23 patterns
+- 待验证（<0.80）：24 patterns

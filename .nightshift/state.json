@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T19:23:02Z",
-  "cycle": 22,
+  "updated_at": "2026-02-28T19:28:04Z",
+  "cycle": 23,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -16,42 +16,43 @@
     "契约变更门禁（OpenAPI/Pact）",
     "需求计划闭环（PRD -> Epic -> Issue）",
     "交付证据账本闭环（digest-bound PR->Pattern lineage）",
-    "压缩恢复预算治理（compaction budget + recovery envelope）",
+    "恢复回放账本治理（checkpoint + replay + compaction）",
     "认知负债冻结治理（comprehension debt + freeze gate）",
     "信号债务路由（exploit/explore + debt ratchet）",
     "候选晋级表单治理（candidate intake + issue form gate）",
     "证据时效治理（freshness SLA + snapshot ledger pinning）",
-    "恢复回放一体治理（state cell + checkpoint + artifact replay digest）",
     "外部证据溯源验签（artifact attestation + verify）",
     "信源三角校验（OPML/HN/Official ratification）",
-    "异步执行取消SLA治理（background run + cancel budget）"
+    "运行取消预算治理（cancel SLA + concurrency group）",
+    "过期结论抑制治理（stale-run suppression + replay pin）",
+    "取消后晋级防抖治理（cancel-to-promote debounce gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 22,
+    "last_cycle": 23,
     "actions": [
       {
         "type": "split",
-        "from": "双预算接管治理（compaction + comprehension gate）",
+        "from": "异步执行取消SLA治理（background run + cancel budget）",
         "into": [
-          "压缩恢复预算治理（compaction budget + recovery envelope）",
-          "认知负债冻结治理（comprehension debt + freeze gate）"
+          "运行取消预算治理（cancel SLA + concurrency group）",
+          "过期结论抑制治理（stale-run suppression + replay pin）"
         ],
-        "reason": "压缩预算和接管预算在自治流程中触发条件不同，拆分后才能对 freeze 与 recovery 各自设定可审计门槛"
+        "reason": "取消时限与过期判定在运行时是两类独立门禁，拆分后才能分别挂接 cancel trace 与 stale gate 报告"
       },
       {
         "type": "merge",
         "from": [
-          "信号配额路由（exploit/explore quota）",
-          "方向债务回收（lane debt + carry-over ratchet）"
+          "压缩恢复预算治理（compaction budget + recovery envelope）",
+          "恢复回放一体治理（state cell + checkpoint + artifact replay digest）"
         ],
-        "into": "信号债务路由（exploit/explore + debt ratchet）",
-        "reason": "两条方向都在描述按积压动态调配车道配额，合并后可统一 debt ledger 字段并减少同构 pattern 重复"
+        "into": "恢复回放账本治理（checkpoint + replay + compaction）",
+        "reason": "两条方向都要求 checkpoint 与 artifact 回放，合并后可统一 recovery ledger 字段并减少同构 pattern 重复"
       },
       {
         "type": "expand",
-        "added": "异步执行取消SLA治理（background run + cancel budget）",
-        "reason": "OpenAI Background mode 具备明确状态机与轮询语义，可扩展出可中断自治的取消SLA和恢复审计链"
+        "added": "取消后晋级防抖治理（cancel-to-promote debounce gate）",
+        "reason": "HN top/show/new 在同一时窗热度抖动明显，单次取消不足以避免误晋级，需要防抖窗口确认最新锚点"
       }
     ]
   },
@@ -74,6 +75,6 @@
     "https://storybook.js.org/docs/"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/comprehension-governance/comprehension-debt-ratchet-freeze-gate.md",
-  "last_cycle_commit": "pending-cycle-22"
+  "last_pattern": "references/patterns/autonomous-ops/cancel-budget-stale-run-gate.md",
+  "last_cycle_commit": "pending-cycle-23"
 }

@@ -1,3 +1,56 @@
+# Morning Brief（Nightshift Cycle 23）
+
+> 更新时间：2026-02-28 19:28 UTC  
+> 本轮目标：把“异步执行可用”升级为“异步执行可取消 + 过期结论可抑制”，避免旧 run 在次晨误晋级。
+
+## 本轮新增（已落盘）
+
+1. `autonomous-ops/cancel-budget-stale-run-gate`
+2. `autonomous-ops/_index.md`（新增 pattern 索引）
+3. `_master_index.md`（新增 pattern 行与 topic/统计更新）
+4. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+## 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `异步执行取消SLA治理（background run + cancel budget）` 为：
+  - `运行取消预算治理（cancel SLA + concurrency group）`
+  - `过期结论抑制治理（stale-run suppression + replay pin）`
+  - reason: 取消时限与过期判定是两类不同门禁，混用会导致审计字段不可解释。
+- `merge`：合并方向
+  - from: `压缩恢复预算治理（compaction budget + recovery envelope）`
+  - from: `恢复回放一体治理（state cell + checkpoint + artifact replay digest）`
+  - into: `恢复回放账本治理（checkpoint + replay + compaction）`
+  - reason: 两条方向都落到 checkpoint + artifact 回放，分开维护造成 ledger 字段同构重复。
+- `expand`：新增方向 `取消后晋级防抖治理（cancel-to-promote debounce gate）`
+  - 触发依据：HN 同时窗 `top/show/newest` 热点快速换代，单次取消不足以防止旧结论误晋级。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist，active 2026-02-28）。
+- HN `top/show/new`：已采样并写入证据链（示例）：
+  - top: `Show HN: Vibe Kanban`（`id=45809110`）
+  - show: `Prompt Armor`（`id=45807945`）
+  - newest: `Open-Source AI Learning Platform`（`id=45809835`）
+- 官方文档证据链（本轮重点）
+  - OpenAI Background mode（异步任务状态机）
+  - OpenAI Responses cancel endpoint（显式取消语义）
+  - OpenAI Conversation state（状态续接与运行账本分层）
+  - GitHub Actions concurrency（`cancel-in-progress`）
+  - GitHub Actions artifacts（回放证据包持久化）
+
+## 本轮结论
+
+- 异步能力若不绑定取消预算，会让“最后完成”覆盖“最新有效”。
+- `cancel trace + stale gate + debounce window` 需要成组落盘，否则白天接管无法判断是否应晋级。
+- 本轮 pattern 将“取消”从执行细节提升为晋级前硬门禁。
+
+## Cycle 24 预载任务
+
+1. 为 `cancel_budget` 增加按方向动态阈值（top/show/new 分车道）。
+2. 在 `promotion_packet` 增加 `superseded_chain` 字段，支持完整替代链回放。
+3. 评估 `cancel-budget-stale-run-gate` 与 `comprehension-debt-ratchet-freeze-gate` 的协同门禁顺序。
+
+---
 # Morning Brief（Nightshift Cycle 22）
 
 > 更新时间：2026-02-28 19:23 UTC  
