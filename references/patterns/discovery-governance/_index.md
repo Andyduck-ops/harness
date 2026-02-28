@@ -5,3 +5,4 @@
 - [show-repro-attestation-gate](./show-repro-attestation-gate.md) — 将 Show 热度共振与复现验签拆轨治理，强制 artifact attestation 通过后再允许 candidate->issue 晋级
 - [show-top-resonance-cooldown-gate](./show-top-resonance-cooldown-gate.md) — 将 top/show/newest 同窗共振与晋级动作解耦，强制冷却窗口与复采样 required checks 后再晋级
 - [shownew-promotion-latency-gate](./shownew-promotion-latency-gate.md) — 将 newest 首现信号与晋级动作解耦，强制最小时滞预算与跨车道复采样后再允许 candidate->issue
+- [shownew-top-lag-reverify-gate](./shownew-top-lag-reverify-gate.md) — 将 shownew 首现与 top 扩散拆轨治理，强制时滞预算 + 跨车道复采样 + required checks 合同后再晋级

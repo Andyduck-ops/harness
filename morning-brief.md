@@ -1,3 +1,57 @@
+# Morning Brief（Nightshift Cycle 72）
+
+> 更新时间：2026-02-28 23:46 UTC  
+> 本轮目标：把 `shownew` 的“首现快”与 `top` 的“扩散快”拆轨，强制跨车道时滞预算与复采样门禁。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/discovery-governance/shownew-top-lag-reverify-gate.md`
+2. `references/patterns/discovery-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `Shownew->Top 证据半衰期预算治理（shownew-top evidence half-life budget gate）`
+  - reason: `shownew` 首现后证据衰减快，若不设半衰期预算，晋级会基于过期快照。
+- `split`：拆分方向
+  - from: `Shownew 首现-晋级时滞基线门禁（shownew-promotion-lag-baseline gate）`
+  - into: `Shownew 首现时滞下限门禁（shownew-min-lag gate）`
+  - into: `Shownew 跨车道复采样时滞门禁（shownew-cross-lane-lag-reverify gate）`
+  - reason: “时间下限”与“复采样窗口”是不同失效面，需独立阈值。
+- `merge`：合并方向
+  - from: `Shownew->Top 跨车道时滞预算治理（shownew-to-top lag-budget gate）`
+  - from: `Shownew 衰减前复采样门禁（shownew-pre-decay-reverify gate）`
+  - into: `Shownew->Top 时滞复采样一体门禁（shownew-top lag-reverify unified gate）`
+  - reason: 两者都在约束“晋级前二次证据确认”，合并后减少同构重复。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向至 HN Popular Blogs OPML。
+- HN 三车道/页面采样（2026-02-28）
+  - top(news): item `47200342` — `Show HN: Electric Clojure`
+  - show: item `47195123` — `Show HN: RubberUI...`
+  - newest(shownew): item `47200770` — `Show HN: A simple money transfer app...`
+- 官方文档补链（2026-02-28）
+  - HN API：`topstories/showstories/newstories` 为独立分发车道。
+  - GitHub Merge Queue + `merge_group`：队列场景需独立触发并通过检查。
+  - GitHub Protected Branches：required status checks 未通过不可合并。
+
+### 本轮结论
+
+- `shownew` 首现与 `top` 扩散不是同一信号，必须由时滞预算断开直通晋级。
+- candidate->issue 晋级需要 `first_seen -> lag_budget -> cross_lane_reverify -> required_checks` 四段闭环。
+- 缺少复采样 digest 的晋级请求应视为高风险噪声并阻断。
+
+### Cycle 73 预载任务
+
+1. 增补 `shownew_top_reverify.json` 的 schema 与 lint 规则。
+2. 将 `shownew_top_promotion_contract_pass` 接入 candidate->issue 必填 checks。
+3. 给“复采样失败”增加自动回退观察池模板与冷却重试策略。
+
+---
 # Morning Brief（Nightshift Cycle 71）
 
 > 更新时间：2026-03-01 07:48 UTC  

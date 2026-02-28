@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-03-01T07:48:00Z",
-  "cycle": 71,
+  "updated_at": "2026-02-28T23:46:53Z",
+  "cycle": 72,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -75,39 +75,40 @@
     "Show 复现验签门禁（show-repro attestation gate）",
     "Show-Top 共振窗口门禁（show-top resonance-window gate）",
     "Show-Top 冷却预算门禁（show-top cooldown-budget gate）",
-    "Shownew->Top 跨车道时滞预算治理（shownew-to-top lag-budget gate）",
-    "Shownew 首现-晋级时滞基线门禁（shownew-promotion-lag-baseline gate）",
-    "Shownew 衰减前复采样门禁（shownew-pre-decay-reverify gate）",
-    "Show 预检统一合同门禁（show unified preflight contract gate）"
+    "Show 预检统一合同门禁（show unified preflight contract gate）",
+    "Shownew->Top 证据半衰期预算治理（shownew-top evidence half-life budget gate）",
+    "Shownew 首现时滞下限门禁（shownew-min-lag gate）",
+    "Shownew 跨车道复采样时滞门禁（shownew-cross-lane-lag-reverify gate）",
+    "Shownew->Top 时滞复采样一体门禁（shownew-top lag-reverify unified gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 71,
+    "last_cycle": 72,
     "actions": [
       {
         "type": "expand",
-        "added": "Shownew->Top 跨车道时滞预算治理（shownew-to-top lag-budget gate）",
-        "reason": "newest 首现速度显著快于可执行证据成形，必须引入跨车道时滞预算防止热度抢跑。"
+        "added": "Shownew->Top 证据半衰期预算治理（shownew-top evidence half-life budget gate）",
+        "reason": "shownew 首现证据在短窗口快速衰减，必须引入半衰期预算防止过期快照晋级。"
       },
       {
         "type": "split",
         "from": [
-          "Shownew 晋级延迟采样治理（shownew-promotion-latency gate）"
+          "Shownew 首现-晋级时滞基线门禁（shownew-promotion-lag-baseline gate）"
         ],
         "into": [
-          "Shownew 首现-晋级时滞基线门禁（shownew-promotion-lag-baseline gate）",
-          "Shownew 衰减前复采样门禁（shownew-pre-decay-reverify gate）"
+          "Shownew 首现时滞下限门禁（shownew-min-lag gate）",
+          "Shownew 跨车道复采样时滞门禁（shownew-cross-lane-lag-reverify gate）"
         ],
-        "reason": "时滞阈值与复采样稳定性是独立失效面，拆分后可分别绑定预算和阻断动作。"
+        "reason": "时滞下限与复采样窗口是独立失效面，拆分后可分别绑定阈值与阻断动作。"
       },
       {
         "type": "merge",
         "from": [
-          "Show 可执行预检门禁（show executability preflight gate）",
-          "Show 可达-存活预检门禁（show reachability-liveness preflight gate）"
+          "Shownew->Top 跨车道时滞预算治理（shownew-to-top lag-budget gate）",
+          "Shownew 衰减前复采样门禁（shownew-pre-decay-reverify gate）"
         ],
-        "into": "Show 预检统一合同门禁（show unified preflight contract gate）",
-        "reason": "两方向同属晋级前预检合同，合并可消除同构重复并统一字段口径。"
+        "into": "Shownew->Top 时滞复采样一体门禁（shownew-top lag-reverify unified gate）",
+        "reason": "两者同属晋级前二次证据确认，合并可统一口径并减少同构重复。"
       }
     ]
   },
@@ -135,6 +136,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/discovery-governance/shownew-promotion-latency-gate.md",
-  "last_cycle_commit": "pending-cycle-71"
+  "last_pattern": "references/patterns/discovery-governance/shownew-top-lag-reverify-gate.md",
+  "last_cycle_commit": "pending-cycle-72"
 }
