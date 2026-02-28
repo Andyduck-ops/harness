@@ -1,3 +1,57 @@
+# Morning Brief（Nightshift Cycle 29）
+
+> 更新时间：2026-02-28 20:02 UTC  
+> 本轮目标：把“有 attestation”升级为“attestation subject 与晋级工件 digest 同一且可审计升级”，避免 required checks 全绿但晋级对象漂移。
+
+## 本轮新增（已落盘）
+
+1. `references/patterns/artifact-governance/artifact-digest-mismatch-escalation-gate.md`
+2. `references/patterns/artifact-governance/_index.md`（新 topic 自动创建）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 行与统计更新）
+4. `morning-brief.md`（新增 Cycle 29）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+## 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `Artifact 摘要一致性告警（artifact digest mismatch escalation）` 为：
+  - `构建摘要同一性闸门（build subject digest parity gate）`
+  - `摘要失配隔离升级（digest mismatch quarantine escalation）`
+  - reason: 失配检测与失配处置是两类控制面，拆分后可分别治理 parity 与 quarantine。
+- `merge`：合并方向
+  - from: `跨车道去重主键治理（lane-cross dedupe key governance）`
+  - from: `跨车道重复率预算治理（cross-lane duplicate ratio budget）`
+  - into: `跨车道去重预算一体化治理（dedupe key + duplicate ratio gate）`
+  - reason: 两条方向均围绕同一去重控制面，长期并行会重复产出同构字段。
+- `expand`：新增方向 `工件保留期-验签窗口协同（artifact retention-verification window alignment）`
+  - 触发依据：GitHub artifact 文档提供 retention 机制，必须把“保留期”与“可验签窗口”绑定，否则会出现过期后伪补验签。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：确认重定向到 HN Popular Blogs OPML Gist（redirect checked 2026-02-28T19:57:00Z）。
+- HN `top/show/new`：已采样并写入证据链（示例）：
+  - top (`news`): `id=47196582`
+  - show (`show`): `id=47195123`
+  - new (`newest`): `id=47199259`
+- 官方文档证据链（本轮重点）
+  - Hacker News API（`topstories/showstories/newstories`）
+  - GitHub artifact attestations（生成与离线验签）
+  - GitHub required checks/rules
+  - GitHub workflow artifacts（retention）
+
+## 本轮结论
+
+- “有 attestation”不足以防止误晋级，必须强制 `subject_digest == artifact_digest`。
+- 失配应升级为 `quarantine`，而不是警告后继续 promotion。
+- retention 与验签窗口不协同会制造“证据失效窗口”，是夜间无人推进的隐蔽高风险点。
+
+## Cycle 30 预载任务
+
+1. 在 `digest_parity_report` 中加入 `mismatch_stage`（build/upload/promote）定位责任面。
+2. 为 `artifact retention-verification window` 建立分支策略映射（main/release/hotfix 不同阈值）。
+3. 评估 `artifact-digest-mismatch-escalation-gate` 与 `attested-evidence-provenance-gate` 的串并联 required checks 顺序模板。
+
+---
+
 # Morning Brief（Nightshift Cycle 28）
 
 > 更新时间：2026-02-28 20:06 UTC  

@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T20:06:00Z",
-  "cycle": 28,
+  "updated_at": "2026-02-28T20:02:39Z",
+  "cycle": 29,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -26,38 +26,39 @@
     "信源仲裁验签（triangulation + provenance attestation）",
     "取消-晋级时序治理（cancel-to-promote sequencing gate）",
     "同窗时序预算治理（window alignment + skew budget gate）",
-    "跨车道去重主键治理（lane-cross dedupe key governance）",
-    "跨车道重复率预算治理（cross-lane duplicate ratio budget）",
+    "跨车道去重预算一体化治理（dedupe key + duplicate ratio gate）",
     "车道完备性仲裁（lane completeness quorum gate）",
     "车道身份一致性审计（lane identity parity gate）",
-    "Artifact 摘要一致性告警（artifact digest mismatch escalation）"
+    "构建摘要同一性闸门（build subject digest parity gate）",
+    "摘要失配隔离升级（digest mismatch quarantine escalation）",
+    "工件保留期-验签窗口协同（artifact retention-verification window alignment）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 28,
+    "last_cycle": 29,
     "actions": [
+      {
+        "type": "split",
+        "from": "Artifact 摘要一致性告警（artifact digest mismatch escalation）",
+        "into": [
+          "构建摘要同一性闸门（build subject digest parity gate）",
+          "摘要失配隔离升级（digest mismatch quarantine escalation）"
+        ],
+        "reason": "“发现失配”与“处理失配”是两套不同控制面，拆分后可分别挂接 parity check 与 quarantine policy。"
+      },
       {
         "type": "merge",
         "from": [
-          "三榜同窗采样契约（window-aligned lane sampling contract）",
-          "同窗偏斜预算治理（sampling skew budget gate）"
+          "跨车道去重主键治理（lane-cross dedupe key governance）",
+          "跨车道重复率预算治理（cross-lane duplicate ratio budget）"
         ],
-        "into": "同窗时序预算治理（window alignment + skew budget gate）",
-        "reason": "两条方向都在控制时间对齐，合并后可减少重复预算字段并统一 skew 判定口径。"
-      },
-      {
-        "type": "split",
-        "from": "HN lane quorum 仲裁（top/show/new quorum promotion gate）",
-        "into": [
-          "车道完备性仲裁（lane completeness quorum gate）",
-          "车道身份一致性审计（lane identity parity gate）"
-        ],
-        "reason": "车道存在性与车道同一性是两类不同风险，拆分后可分别挂接 quorum check 与 identity parity check。"
+        "into": "跨车道去重预算一体化治理（dedupe key + duplicate ratio gate）",
+        "reason": "两条方向都在同一去重控制面，合并后可避免重复维护 key 与 ratio 的同构字段。"
       },
       {
         "type": "expand",
-        "added": "Artifact 摘要一致性告警（artifact digest mismatch escalation）",
-        "reason": "官方 artifact 工作流支持 digest 校验，新增方向用于把回放包一致性异常升级为可审计告警。"
+        "added": "工件保留期-验签窗口协同（artifact retention-verification window alignment）",
+        "reason": "官方 artifact 文档存在 retention 语义，新增方向用于约束“可验签窗口”与“工件保留期”协同，避免过期后伪补验签。"
       }
     ]
   },
@@ -82,6 +83,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/feed-governance/hn-lane-identity-parity-gate.md",
-  "last_cycle_commit": "pending-cycle-28"
+  "last_pattern": "references/patterns/artifact-governance/artifact-digest-mismatch-escalation-gate.md",
+  "last_cycle_commit": "pending-cycle-29"
 }
