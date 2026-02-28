@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T18:57:04Z",
-  "cycle": 17,
+  "updated_at": "2026-02-28T19:03:00Z",
+  "cycle": 18,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -12,41 +12,42 @@
     "组件验收治理（story + a11y + visual gate）",
     "AI 设计导出契约（design-export + required-checks）",
     "契约变更门禁（OpenAPI/Pact）",
-    "回放证据保全（Replay/Artifact）",
     "需求计划闭环（PRD -> Epic -> Issue）",
     "交付证据闭环（PR -> Pattern + lineage attestation）",
     "双预算接管治理（compaction + comprehension gate）",
     "信号配额路由（exploit/explore quota）",
     "发现入库晋级（candidate -> issue promotion gate）",
     "结构化需求入口（issue form required evidence fields）",
-    "运行态恢复治理（state cell + checkpoint + reflog + artifact digest）"
+    "证据时效治理（freshness SLA + snapshot pinning）",
+    "恢复回放一体治理（state cell + checkpoint + artifact replay digest）",
+    "外部证据时序锁（HN snapshot ledger + doc version pin）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 17,
+    "last_cycle": 18,
     "actions": [
       {
         "type": "split",
-        "from": "证据路由守门（exploit/explore quota + promotion gate）",
+        "from": "回放证据保全（Replay/Artifact）",
         "into": [
-          "信号配额路由（exploit/explore quota）",
-          "发现入库晋级（candidate -> issue promotion gate）"
+          "证据时效治理（freshness SLA + snapshot pinning）",
+          "回放完整性治理（artifact replay + checksum）"
         ],
-        "reason": "原方向耦合了信号分流与任务入库，失败归因困难；拆分后可分别审计配额与晋级质量"
+        "reason": "原方向同时承担“证据新鲜度”与“回放完整性”，执行中难以定位失败根因，先拆为时效与完整性两条子方向"
       },
       {
         "type": "merge",
         "from": [
-          "工作区可恢复性治理（checkpoint + artifact + reflog）",
-          "状态隔离与回放信封（per-agent state cell + WAL + artifact digest）"
+          "运行态恢复治理（state cell + checkpoint + reflog + artifact digest）",
+          "回放完整性治理（artifact replay + checksum）"
         ],
-        "into": "运行态恢复治理（state cell + checkpoint + reflog + artifact digest）",
-        "reason": "两条方向都服务于次日恢复接管，合并后可统一 state/replay/recovery 字段标准"
+        "into": "恢复回放一体治理（state cell + checkpoint + artifact replay digest）",
+        "reason": "两条方向在次日接管场景下高度同构，合并后可统一恢复/回放字段标准与审计口径"
       },
       {
         "type": "expand",
-        "added": "结构化需求入口（issue form required evidence fields）",
-        "reason": "HN top/show/new 高吞吐发现需要硬门晋级；Issue Forms 的 required 字段可直接承载入库约束"
+        "added": "外部证据时序锁（HN snapshot ledger + doc version pin）",
+        "reason": "HN top/show/new 与 OPML 信号时变明显，新增方向用于把“采样时刻 + 摘要哈希 + 回放锚点”落为硬门"
       }
     ]
   },
@@ -66,6 +67,6 @@
     "https://storybook.js.org/docs/"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/backlog-governance/candidate-to-issue-promotion-contract.md",
-  "last_cycle_commit": "pending-cycle-17"
+  "last_pattern": "references/patterns/evidence-governance/temporal-evidence-freshness-gate.md",
+  "last_cycle_commit": "pending-cycle-18"
 }

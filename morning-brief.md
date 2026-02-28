@@ -1,3 +1,50 @@
+# Morning Brief（Nightshift Cycle 18）
+
+> 更新时间：2026-02-28 19:03 UTC  
+> 本轮目标：把“链接可见”升级为“证据可回放”，解决外部信号时变导致的次日不可复盘问题。
+
+## 本轮新增（已落盘）
+
+1. `evidence-governance/temporal-evidence-freshness-gate`
+2. `evidence-governance/_index.md`
+3. `_master_index.md`（新增 topic 与 pattern 索引）
+
+## 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `回放证据保全（Replay/Artifact）` 为：
+  - `证据时效治理（freshness SLA + snapshot pinning）`
+  - `回放完整性治理（artifact replay + checksum）`
+  - reason: 原方向同时覆盖“时效”和“完整性”，执行时无法区分是过期失败还是回放失败。
+- `merge`：合并方向
+  - from: `运行态恢复治理（state cell + checkpoint + reflog + artifact digest）`
+  - from: `回放完整性治理（artifact replay + checksum）`
+  - into: `恢复回放一体治理（state cell + checkpoint + artifact replay digest）`
+  - reason: 两条方向都服务于次日接管，字段与闸门高度同构，拆开维护造成重复审计。
+- `expand`：新增方向 `外部证据时序锁（HN snapshot ledger + doc version pin）`
+  - 触发依据：HN top/show/new 在短窗口内高频变化，若无时序锁，结论无法稳定回放。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist，active 2026-02-28）。
+- HN `top/show/new`：已采样，页面内容在同日内显著漂移，证明“只存链接”不足以支撑复盘。
+- 官方证据链（已补齐）：
+  - Hacker News API（`topstories/newstories/showstories` 与 item 时间字段）
+  - GitHub Actions artifacts（证据快照与摘要清单持久化）
+  - GitHub protected branches required checks（freshness/replay 门禁硬约束）
+
+## 本轮结论
+
+- “抓到信号”不等于“保住证据”，夜间自治必须强制记录采样时刻与摘要哈希。
+- 候选晋级前应先通过 freshness gate，超时证据必须重采样而非直接执行。
+- 将回放清单纳入 required checks 后，次日接管才能做到可验证、可追责。
+
+## Cycle 19 预载任务
+
+1. 产出 `evidence_snapshot` 字段 lint（缺 `sampled_at_utc` 或 `digest` 直接 fail）。
+2. 对齐 `freshness_gate` 与 `promotion_report` 字段，避免双账本漂移。
+3. 评估 `temporal-evidence-freshness-gate` 与 `candidate-to-issue-promotion-contract` 的合并边界，控制同构膨胀。
+
+---
 # Morning Brief（Nightshift Cycle 17）
 
 > 更新时间：2026-02-28 18:57 UTC  
