@@ -1,3 +1,51 @@
+# Morning Brief（Nightshift Cycle 33）
+
+> 更新时间：2026-02-28 20:24 UTC  
+> 本轮目标：把“有证据”升级为“证据可检索可回放”，避免次日无法定位同一 claim 对象。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/evidence-governance/claim-anchor-retrievability-gate.md`
+2. `references/patterns/evidence-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 33）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `证据引用可检索契约（claim id + anchor retrievability contract）` 为：
+  - `Claim-ID 强绑定治理（claim_id -> hn_item_id -> outline_key binding）`
+  - `锚点存活预算治理（anchor retrievability SLA + mirror fallback）`
+  - reason: 原方向过宽，需把“身份绑定”与“锚点存活”拆为独立控制面，便于执行与验收。
+- `expand`：新增方向 `HN Item 墓碑漂移治理（deleted/dead item tombstone policy）`
+  - 触发依据：HN API item 存在 `deleted/dead` 语义，需新增失效证据处置方向，避免把墓碑对象继续作为晋级证据。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T20:22:12Z）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`, item `45871445`): `ChatGPT’s confidence can mislead users, study finds`
+  - show (`show`, item `45871193`): `Show HN: Open-Source Cursor Alternative`
+  - new (`newest`, item `45871883`): `Version 4.2.0`
+- 官方文档证据链（本轮重点）
+  - OPML 2.0 规范（`text/xmlUrl/htmlUrl` 字段语义）
+  - Hacker News API（`topstories/showstories/newstories` + `item`）
+  - GitHub REST API: Gist revision（可回溯入口版本）
+
+### 本轮结论
+
+- 只记录标题或 URL 的 claim 本质上不可审计，次日无法稳定回放同一对象。
+- claim 必须绑定 `hn_item_id + outline_key`，并带重放时间戳。
+- OPML revision 变化后若不触发批量重放，会产生“证据仍存在但已不可检索”的静默故障。
+
+### Cycle 34 预载任务
+
+1. 为 `claim_replay_report` 增加 `tombstone_reason` 与自动隔离策略。
+2. 建立 `retrievability_sla_hours` 的分支分层阈值模板（main/release/hotfix）。
+3. 将 `retrievable_pass` 接入 `promotion_decision` required checks。
+
+---
+
 # Morning Brief（Nightshift Cycle 32）
 
 > 更新时间：2026-02-28 20:18 UTC  

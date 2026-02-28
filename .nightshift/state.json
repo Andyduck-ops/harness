@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T20:18:25Z",
-  "cycle": 32,
+  "updated_at": "2026-02-28T20:24:10Z",
+  "cycle": 33,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -34,34 +34,27 @@
     "归档保留-验签对账流水（retention-attestation reconciliation ledger）",
     "OPML 三元主键约束（text/xmlUrl/htmlUrl tri-key contract）",
     "OPML 可编辑字段漂移探针（outline text edit-drift probe）",
-    "证据引用可检索契约（claim id + anchor retrievability contract）"
+    "Claim-ID 强绑定治理（claim_id -> hn_item_id -> outline_key binding）",
+    "锚点存活预算治理（anchor retrievability SLA + mirror fallback）",
+    "HN Item 墓碑漂移治理（deleted/dead item tombstone policy）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 32,
+    "last_cycle": 33,
     "actions": [
       {
         "type": "split",
-        "from": "OPML 订阅体身份约束（outline identity contract: text/xmlUrl/htmlUrl）",
+        "from": "证据引用可检索契约（claim id + anchor retrievability contract）",
         "into": [
-          "OPML 三元主键约束（text/xmlUrl/htmlUrl tri-key contract）",
-          "OPML 可编辑字段漂移探针（outline text edit-drift probe）"
+          "Claim-ID 强绑定治理（claim_id -> hn_item_id -> outline_key binding）",
+          "锚点存活预算治理（anchor retrievability SLA + mirror fallback）"
         ],
-        "reason": "OPML 的 text 可编辑且高漂移，必须与 xmlUrl/htmlUrl 的结构身份分层治理，避免将改名误判为新信源。"
-      },
-      {
-        "type": "merge",
-        "from": [
-          "车道完备性仲裁（lane completeness quorum gate）",
-          "车道身份一致性审计（lane identity parity gate）"
-        ],
-        "into": "车道仲裁同一双门禁（lane quorum + identity dual gate）",
-        "reason": "两方向共同作用于 HN 三车道晋级门，合并后可统一判定字段并降低同构维护成本。"
+        "reason": "单一方向过宽，已拆分为“强绑定约束”和“回放可存活预算”两条可执行子方向，分别治理身份一致性与证据存活性。"
       },
       {
         "type": "expand",
-        "added": "证据引用可检索契约（claim id + anchor retrievability contract）",
-        "reason": "HN API 提供稳定 item id，新增方向用于约束 claim 与可检索锚点绑定，保证次日可回放同一证据对象。"
+        "added": "HN Item 墓碑漂移治理（deleted/dead item tombstone policy）",
+        "reason": "HN API item 支持 deleted/dead 语义；新增方向用于在夜间重放时识别失效证据并阻断错误晋级。"
       }
     ]
   },
@@ -86,6 +79,6 @@
     "https://2005.opml.org/spec2.html"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/source-governance/opml-outline-tri-key-drift-gate.md",
-  "last_cycle_commit": "pending-cycle-32"
+  "last_pattern": "references/patterns/evidence-governance/claim-anchor-retrievability-gate.md",
+  "last_cycle_commit": "pending-cycle-33"
 }
