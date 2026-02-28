@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T23:02:21Z",
-  "cycle": 64,
+  "updated_at": "2026-02-28T23:07:39Z",
+  "cycle": 65,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -66,39 +66,40 @@
     "浏览器边界-权限同构协同治理（browser boundary-scope parity co-gate）",
     "队列模式滞回冷却治理（queue mode hysteresis cooldown gate）",
     "队列-部署容量耦合治理（queue-deploy capacity coupling gate）",
-    "队列恢复清洁窗口治理（queue recovery clean-window gate）",
-    "队列恢复回退冷却治理（queue recovery rollback-cooldown gate）",
     "队列降级触发双失效面预算治理（queue fallback dual-failure-surface budget gate）",
-    "构建并发-审批容量压差治理（build-concurrency review-capacity pressure gate）"
+    "部署审批批次节流治理（deployment review batch-throttle gate）",
+    "队列侧构建吞吐预算治理（queue-side build-throughput budget gate）",
+    "审批侧批次吞吐预算治理（review-side batch-throughput budget gate）",
+    "队列恢复稳态窗口治理（queue recovery stability-window gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 64,
+    "last_cycle": 65,
     "actions": [
       {
         "type": "expand",
-        "added": "构建并发-审批容量压差治理（build-concurrency review-capacity pressure gate）",
-        "reason": "merge queue 的 build concurrency 可提升并发验证吞吐，但 deploy 审批吞吐是慢变量；需新增压差预算方向避免“提速即过载”。"
+        "added": "部署审批批次节流治理（deployment review batch-throttle gate）",
+        "reason": "GitHub review deployments 支持批量批准 waiting jobs；需新增批次节流方向，避免同窗证据失真与审计漂移。"
       },
       {
         "type": "split",
         "from": [
-          "队列预检-部署连续性双门禁（queue preflight-deploy continuity dual gate）"
+          "构建并发-审批容量压差治理（build-concurrency review-capacity pressure gate）"
         ],
         "into": [
-          "队列构建并发容量预算治理（queue build-concurrency capacity budget gate）",
-          "部署审批处理能力预算治理（deployment reviewer throughput budget gate）"
+          "队列侧构建吞吐预算治理（queue-side build-throughput budget gate）",
+          "审批侧批次吞吐预算治理（review-side batch-throughput budget gate）"
         ],
-        "reason": "预检-部署连续性方向过宽，拆为“入队并发预算”和“出队审批预算”两个可执行子方向，分别绑定 queue/deploy 指标。"
+        "reason": "入队提速与出队审批是独立失效面，拆分后可分别绑定 queue/deploy 预算阈值与回退策略。"
       },
       {
         "type": "merge",
         "from": [
-          "环境等待计时上限治理（environment wait-timer ceiling gate）",
-          "队列重排吞吐损耗预算治理（queue reorder throughput-loss budget gate）"
+          "队列恢复清洁窗口治理（queue recovery clean-window gate）",
+          "队列恢复回退冷却治理（queue recovery rollback-cooldown gate）"
         ],
-        "into": "队列-部署容量耦合治理（queue-deploy capacity coupling gate）",
-        "reason": "两方向都在治理“队列侧吞吐变化引发部署端容量失衡”，合并后统一为单一容量耦合预算口径。"
+        "into": "队列恢复稳态窗口治理（queue recovery stability-window gate）",
+        "reason": "两方向均治理 fallback 恢复稳定性，合并后统一验收口径并减少同构重复。"
       }
     ]
   },
@@ -126,6 +127,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/capacity-governance/queue-build-concurrency-environment-capacity-gate.md",
-  "last_cycle_commit": "pending-cycle-64"
+  "last_pattern": "references/patterns/capacity-governance/deployment-reviewer-throughput-budget-gate.md",
+  "last_cycle_commit": "pending-cycle-65"
 }

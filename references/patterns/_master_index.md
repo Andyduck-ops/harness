@@ -26,6 +26,7 @@
 | 3 | [dual-gate-execution-card](./product-delivery/dual-gate-execution-card.md) | product-delivery | 0.79 | OPML + HN + OpenAPI + Pact + GitHub Docs |
 | 3 | [queue-deploy-continuity-dual-gate](./release-governance/queue-deploy-continuity-dual-gate.md) | release-governance | 0.79 | OPML + HN + GitHub Merge Queue + Deployments |
 | 3 | [queue-build-concurrency-environment-capacity-gate](./capacity-governance/queue-build-concurrency-environment-capacity-gate.md) | capacity-governance | 0.78 | OPML + HN + GitHub Merge Queue + Environments + Review Deployments |
+| 3 | [deployment-reviewer-throughput-budget-gate](./capacity-governance/deployment-reviewer-throughput-budget-gate.md) | capacity-governance | 0.77 | OPML + HN + GitHub Environments + Review Deployments + merge_group |
 | 3 | [approval-freshness-budget-gate](./release-governance/approval-freshness-budget-gate.md) | release-governance | 0.78 | OPML + HN + GitHub Merge Queue + Deployments + Protected Branches |
 | 3 | [environment-wait-timer-reverify-gate](./release-governance/environment-wait-timer-reverify-gate.md) | release-governance | 0.77 | OPML + HN + GitHub Deployments + Merge Queue + Protected Branches |
 | 3 | [environment-bypass-audit-quarantine-gate](./release-governance/environment-bypass-audit-quarantine-gate.md) | release-governance | 0.78 | OPML + HN + GitHub Review Deployments + Protected Branches |
@@ -102,7 +103,7 @@
 | [accessibility-governance/](./accessibility-governance/) | 3 | 文本/非文本对比预算、回退斜率门禁与多主题回放冻结治理 |
 | [product-delivery/](./product-delivery/) | 7 | PRD 到执行闭环 |
 | [release-governance/](./release-governance/) | 9 | 夜间产出与白天晋级的发布治理 |
-| [capacity-governance/](./capacity-governance/) | 1 | merge queue 构建并发与部署审批容量的耦合预算治理 |
+| [capacity-governance/](./capacity-governance/) | 2 | merge queue 构建并发与部署审批容量的耦合预算治理 |
 | [recovery-governance/](./recovery-governance/) | 1 | 长时自治执行中的可恢复性治理 |
 | [context-governance/](./context-governance/) | 2 | 上下文预算、压缩交接与回放冻结治理 |
 | [state-governance/](./state-governance/) | 2 | 每 agent 状态隔离、回放信封与游标时效治理 |
@@ -122,7 +123,7 @@
 
 ## 统计
 
-- 总计：79 patterns
+- 总计：80 patterns
 - 平均 confidence：0.79
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：61 patterns
+- 待验证（<0.80）：62 patterns

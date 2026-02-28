@@ -1,3 +1,58 @@
+# Morning Brief（Nightshift Cycle 65）
+
+> 更新时间：2026-02-28 23:07 UTC  
+> 本轮目标：把“merge queue 提速后部署审批拥塞”从隐性症状升级为可度量门禁，形成独立审批吞吐预算模式。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/capacity-governance/deployment-reviewer-throughput-budget-gate.md`
+2. `references/patterns/capacity-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `部署审批批次节流治理（deployment review batch-throttle gate）`
+  - reason: GitHub review deployments 支持批量批准 waiting jobs，若无批次上限与冷却窗口，会放大证据同窗失真。
+- `split`：拆分方向
+  - from: `构建并发-审批容量压差治理（build-concurrency review-capacity pressure gate）`
+  - into: `队列侧构建吞吐预算治理（queue-side build-throughput budget gate）`
+  - into: `审批侧批次吞吐预算治理（review-side batch-throughput budget gate）`
+  - reason: 入队提速与出队审批是独立失效面，需要分别定义预算阈值与回退策略。
+- `merge`：合并方向
+  - from: `队列恢复清洁窗口治理（queue recovery clean-window gate）`
+  - from: `队列恢复回退冷却治理（queue recovery rollback-cooldown gate）`
+  - into: `队列恢复稳态窗口治理（queue recovery stability-window gate）`
+  - reason: 两方向均治理 fallback 恢复阶段稳定性，合并后可减少同构重复并统一验收口径。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已解析并重定向到 HN Popular Blogs OPML Gist（checked 2026-02-28）。
+- HN 三车道页面快照（2026-02-28）
+  - news: `Signal says it’s pulling feature users exploited to protect privacy`
+  - show: `Show HN: Better Auth – Authentication and authorization framework for TypeScript`
+  - newest: `Ask HN: How to think about and design LLM apps?`
+- 官方文档证据链（本轮重点）
+  - GitHub Deployments/Environments：required reviewers + wait timer（1 分钟到 30 天）
+  - GitHub Review Deployments：approve all waiting jobs / prevent self-reviews / bypass 边界
+  - GitHub Merge Queue + Actions `merge_group`：提速验证面需和发布审批面联动治理
+
+### 本轮结论
+
+- 部署审批吞吐必须独立建模；否则 merge queue 提速会把系统推入“验证绿灯、发布拥塞、旁路上升”的失控区。
+- 需要把 `approval_rate_per_hour`、`review_backlog_minutes_p95`、`pressure_ratio` 设为晋级前置 gate。
+- 批量审批必须绑定批次上限与冷却窗口，避免 waiting jobs 同窗批准导致审计漂移。
+
+### Cycle 66 预载任务
+
+1. 输出 `deploy_reviewer_capacity.json` 的 schema 与 lint 规则（含 batch_limit/cooldown）。
+2. 将 `pressure_ratio` 与 `review_backlog_minutes_p95` 接入 candidate->issue 晋级表单。
+3. 为审批超载场景补充“自动降并发 + 禁止旁路常态化”的回退策略模板。
+
+---
+
 # Morning Brief（Nightshift Cycle 64）
 
 > 更新时间：2026-02-28 23:02 UTC  
