@@ -1,3 +1,57 @@
+# Morning Brief（Nightshift Cycle 38）
+
+> 更新时间：2026-02-28 20:50 UTC  
+> 本轮目标：把“queue 通过”与“deployment 审批”之间的时间窗显式预算化，阻断过期绿灯继承。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/release-governance/approval-freshness-budget-gate.md`
+2. `references/patterns/release-governance/_index.md`（新增 pattern 索引）
+3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
+4. `morning-brief.md`（新增 Cycle 38）
+5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+### 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `审批时效预算治理（approval freshness budget gate）` 为：
+  - `审批签发时效预算治理（approval-sign freshness budget gate）`
+  - `审批前重验闸门（pre-approval reverify gate）`
+  - reason: 原方向把“审批时间预算”和“超窗重验动作”耦合在一起，执行颗粒度过粗。
+- `merge`：合并方向
+  - from: `同窗时序预算治理（window alignment + skew budget gate）`
+  - from: `审批签发时效预算治理（approval-sign freshness budget gate）`
+  - into: `跨阶段时序预算治理（cross-stage window freshness budget gate）`
+  - reason: 两者都在管控时间窗偏斜，合并后可统一 queue->approval->promotion 的预算口径。
+- `expand`：新增方向 `环境等待计时预算治理（environment wait-timer budget gate）`
+  - 触发依据：GitHub environment 支持 wait timer，说明审批/发布链路存在显式时间控制面，可独立建模为预算门禁。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T20:50:30Z）。
+- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
+  - top (`news`): `Tell HN: Looking for data points where coding assistants caused incidents`
+  - show (`show`): `Show HN: WeatherMCP: Access weather data from your AI tool`
+  - new (`newest`): `How to stop overcomplicating your product`
+- 官方文档证据链（本轮重点）
+  - GitHub merge queue（队列验证是独立合并上下文）
+  - GitHub Actions `merge_group` 事件（队列阶段独立触发面）
+  - GitHub deployments/environments + review deployments（审批规则、required reviewers、prevent self-reviews、wait timer）
+  - GitHub protected branches（required checks 需匹配最新 SHA，且有时效窗口）
+
+### 本轮结论
+
+- queue 绿灯不能直接继承到 deploy 审批，必须核对“通过时间”是否仍在预算内。
+- 审批卡片必须绑定 `lineage_id + merge_group_sha + checks_passed_at_utc + deploy_sha`，否则无法证明审批基于有效证据。
+- 超窗审批必须触发 `reverify_before_approval`，而不是沿用旧检查结果。
+
+### Cycle 39 预载任务
+
+1. 将 `approval_freshness_budget.json` 接入 required checks 与晋级决策。
+2. 按分支等级输出默认阈值模板（main/release/hotfix）。
+3. 给超窗重验失败场景补 `quarantine_replay_report` 字段规范。
+
+---
+
 # Morning Brief（Nightshift Cycle 37）
 
 > 更新时间：2026-02-28 20:45 UTC  
