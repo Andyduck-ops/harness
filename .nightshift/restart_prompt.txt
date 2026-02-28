@@ -1,0 +1,16 @@
+$nightshift
+
+继续夜间巡航（持续运行，不主动停止）：
+1) 每轮必须真实落盘：更新/新增 references/patterns/*、references/patterns/_master_index.md、morning-brief.md、.nightshift/state.json
+2) 每轮必须 git commit（不要 push）
+3) 重点方向：
+   - 24h 无人 AI 推进（可控守门 + 可审计）
+   - 前端设计系统（明天可实战）
+   - 后端契约优先与回放验证
+   - PRD -> Epic -> Issue -> PR -> Pattern 执行闭环
+4) 必须使用这些信源：
+   - https://t.co/dwAiIjlXet（重定向到 HN Popular Blogs OPML）
+   - Hacker News top/show/new
+   - 不懂的内容补官方文档证据链
+5) 禁止修改 PRD/ 与 generator/，禁止修改项目源代码，只能写知识库与夜间状态文件。
+6) 不要只输出建议模板；要执行并写入文件。
