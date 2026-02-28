@@ -1,3 +1,54 @@
+# Morning Brief（Nightshift Cycle 21）
+
+> 更新时间：2026-02-28 19:16 UTC  
+> 本轮目标：把“固定配额路由”升级为“证据债务驱动路由”，防止 show/new 波动期出现晋级积压与审计盲区。
+
+## 本轮新增（已落盘）
+
+1. `signal-governance/lane-debt-ratchet-gate`
+2. `signal-governance/_index.md`（新增 pattern 索引）
+3. `_master_index.md`（新增 pattern 行与 topic/统计更新）
+4. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
+
+## 激进动态策略执行（本轮）
+
+- `split`：拆分方向 `新颖信号车道（HN show/new + serendipity）` 为：
+  - `show 讨论原型车道（HN show + builder chatter）`
+  - `new 早信号车道（HN newest + freshness spike）`
+  - reason: `show` 与 `newest` 的时效和噪声结构不同，混在同一车道会让配额策略失真。
+- `merge`：合并方向
+  - from: `交付证据闭环（PR -> Pattern + lineage attestation）`
+  - from: `证据-任务绑定账本（digest-bound promotion manifest）`
+  - into: `交付证据账本闭环（digest-bound PR->Pattern lineage）`
+  - reason: 两条方向都在定义同一条交付链路账本，分开维护导致字段重复和审计口径不一致。
+- `expand`：新增方向 `方向债务回收（lane debt + carry-over ratchet）`
+  - 触发依据：固定配额无法解释“为何某车道长期积压”，需要独立方向沉淀债务账本与棘轮调参策略。
+
+## 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已确认重定向到 HN Popular Blogs OPML（Gist，active 2026-02-28）。
+- HN `top/show/new`：已采样并观察到显著分层：
+  - top 存在高分热点（本轮采样可见 300+ 分级别条目）；
+  - show/new 以早期低分信号为主，适合作为探索输入而非直接晋级。
+- 官方证据链（本轮）：
+  - Hacker News API（`topstories/showstories/newstories` + item 主键）
+  - GitHub Issue Forms required 字段（晋级输入结构化）
+  - GitHub protected branches required checks（不可绕过门禁）
+  - GitHub Actions artifacts（账本与决策留痕）
+
+## 本轮结论
+
+- 配额本身不是治理，只有“债务账本 + 动态棘轮”才是可操作治理。
+- `show/new` 的发现价值必须通过 ratification lane 消化，否则会形成“发现繁荣、晋级停滞”。
+- 若不记录 `carry_over_debt` 与 `oldest_age_hours`，次日接管无法判断路由是否真实有效。
+
+## Cycle 22 预载任务
+
+1. 在 `lane_ledger` 增加 `debt_half_life` 规则，限制历史债务无限累积。
+2. 为 `ratchet_decision` 增加可解释字段模板（`trigger_metric`、`fallback_rule`）。
+3. 评估 `lane-debt-ratchet-gate` 与 `exploit-explore-evidence-router` 的边界，避免策略重复描述。
+
+---
 # Morning Brief（Nightshift Cycle 20）
 
 > 更新时间：2026-02-28 19:12 UTC  
