@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T22:07:41Z",
-  "cycle": 54,
+  "updated_at": "2026-02-28T22:13:06Z",
+  "cycle": 55,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -55,41 +55,41 @@
     "证据到模式回放治理（evidence->pattern replay governance）",
     "代理记忆分区闭环治理（agent memory partition closure gate）",
     "外部身份租约回放治理（external identity lease replay gate）",
-    "语义色名规范化治理（semantic color naming canonicalization gate）",
     "视觉回归预算分层治理（visual regression tiered budget gate）",
-    "主题切换回放门禁（theme-switch replay gate）",
     "OPML 订阅体身份漂移治理（outline identity + edit-drift governance）",
-    "主题对比可读性预算治理（theme contrast readability budget gate）"
+    "文本对比预算治理（text contrast budget gate）",
+    "非文本对比预算治理（non-text contrast budget gate）",
+    "主题语义回放治理（theme semantic replay governance）",
+    "色觉可达性安全调色治理（color-vision accessibility palette gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 54,
+    "last_cycle": 55,
     "actions": [
       {
         "type": "expand",
-        "added": "主题对比可读性预算治理（theme contrast readability budget gate）",
-        "reason": "HN newest 出现 Thinking deeply about Theming and Color Naming，主题命名与对比可读性风险上升。"
+        "added": "色觉可达性安全调色治理（color-vision accessibility palette gate）",
+        "reason": "WCAG 2.2 对比规则与 HN newest 的产品化反思同向，提示可读性预算需扩展到色觉可达性。"
       },
       {
         "type": "split",
         "from": [
-          "前端视觉基线守门（design tokens + visual regression budget）"
+          "主题对比可读性预算治理（theme contrast readability budget gate）"
         ],
         "into": [
-          "语义色名规范化治理（semantic color naming canonicalization gate）",
-          "视觉回归预算分层治理（visual regression tiered budget gate）",
-          "主题切换回放门禁（theme-switch replay gate）"
+          "文本对比预算治理（text contrast budget gate）",
+          "非文本对比预算治理（non-text contrast budget gate）"
         ],
-        "reason": "命名规范、视觉预算、主题回放属于不同失效面，拆分后可独立设 gate。"
+        "reason": "文本与非文本对比失效面的检测规则和阈值不同，拆分后可独立设 gate。"
       },
       {
         "type": "merge",
         "from": [
-          "OPML 三元主键约束（text/xmlUrl/htmlUrl tri-key contract）",
-          "OPML 可编辑字段漂移探针（outline text edit-drift probe）"
+          "语义色名规范化治理（semantic color naming canonicalization gate）",
+          "主题切换回放门禁（theme-switch replay gate）"
         ],
-        "into": "OPML 订阅体身份漂移治理（outline identity + edit-drift governance）",
-        "reason": "两方向都治理订阅体身份稳定性，合并后减少同构 pattern 重复。"
+        "into": "主题语义回放治理（theme semantic replay governance）",
+        "reason": "语义命名与主题回放服务同一元问题，合并后减少同构 pattern 重复。"
       }
     ]
   },
@@ -117,6 +117,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/design-governance/semantic-color-role-canonicalization-gate.md",
-  "last_cycle_commit": "pending-cycle-54"
+  "last_pattern": "references/patterns/accessibility-governance/theme-contrast-readability-budget-gate.md",
+  "last_cycle_commit": "pending-cycle-55"
 }
