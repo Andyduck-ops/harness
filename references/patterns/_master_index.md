@@ -9,27 +9,29 @@
 |------|---------|-------|-----------|----------|
 | 1 | [progressive-disclosure](./context-injection/progressive-disclosure.md) | context-injection | 0.95 | OpenAI, Agent-Skills-CE, Trellis |
 | 1 | [hook-based-enforcement](./quality-enforcement/hook-based-enforcement.md) | quality-enforcement | 0.90 | OpenAI, Trellis, SKILL.md |
+| 1 | [failure-budget](./agent-lifecycle/failure-budget.md) | agent-lifecycle | 0.90 | SPARV, Trellis, Code Factory, OpenAI |
+| 1 | [compound-learning](./knowledge-evolution/compound-learning.md) | knowledge-evolution | 0.90 | Compound Eng, OpenAI, Trellis, Code Factory |
+| 1 | [anchor-shape-decode-escape](./knowledge-evolution/anchor-shape-decode-escape.md) | knowledge-evolution | 0.90 | Trellis 16th-round, Agent-Skills-CE, OpenAI |
+| 1 | [scout-distill-analyze-rank-merge](./meta-framework/scout-distill-analyze-rank-merge.md) | meta-framework | 0.75 | Harness PRD, Compound+OpenAI synthesis |
+| 2 | [permission-ladder](./agent-lifecycle/permission-ladder.md) | agent-lifecycle | 0.85 | SKILL.md, SPARV, OpenAI |
+| 2 | [structured-escalation](./agent-lifecycle/structured-escalation.md) | agent-lifecycle | 0.85 | SKILL.md, Trellis, OpenAI |
+| 2 | [staleness-detection](./knowledge-evolution/staleness-detection.md) | knowledge-evolution | 0.85 | Trellis, OpenAI, Compound Eng |
+| 2 | [custom-linter-messages](./quality-enforcement/custom-linter-messages.md) | quality-enforcement | 0.85 | OpenAI, Trellis, Code Factory |
+| 2 | [observation-masking](./context-injection/observation-masking.md) | context-injection | 0.80 | Agent-Skills-CE, BrowseComp |
 
 ## Topics
 
 | Topic | Patterns | 说明 |
 |-------|----------|------|
-| [context-injection/](./context-injection/) | 1 | 上下文注入策略 |
-| [quality-enforcement/](./quality-enforcement/) | 1 | 质量强制机制 |
-| [agent-lifecycle/](./agent-lifecycle/) | 0 | Agent 生命周期管理 |
-| [knowledge-evolution/](./knowledge-evolution/) | 0 | 知识进化机制 |
-| [meta-framework/](./meta-framework/) | 0 | 元框架自身的模式 |
+| [context-injection/](./context-injection/) | 2 | 上下文注入策略 |
+| [quality-enforcement/](./quality-enforcement/) | 2 | 质量强制机制 |
+| [agent-lifecycle/](./agent-lifecycle/) | 3 | Agent 生命周期管理 |
+| [knowledge-evolution/](./knowledge-evolution/) | 3 | 知识进化机制 |
+| [meta-framework/](./meta-framework/) | 1 | 元框架自身的模式 |
 
-## 待填充
+## 统计
 
-以下 pattern 已在 PRD 中定义但尚未蒸馏为独立文件：
-
-- `agent-lifecycle/failure-budget` — 3-Failure Protocol
-- `agent-lifecycle/permission-ladder` — 4 级权限阶梯
-- `agent-lifecycle/structured-escalation` — 选项型求助
-- `knowledge-evolution/compound-learning` — 内循环知识复利
-- `knowledge-evolution/anchor-shape-decode-escape` — 运行时补丁框架
-- `knowledge-evolution/staleness-detection` — 零 LLM 腐化检测
-- `context-injection/observation-masking` — 工具输出压缩
-- `quality-enforcement/custom-linter-messages` — Linter error = 修复指令
-- `meta-framework/scout-distill-analyze-rank-merge` — 5 模块元能力
+- 总计：11 patterns
+- 平均 confidence：0.87
+- 高置信度（≥0.90）：5 patterns
+- 待验证（<0.80）：1 pattern

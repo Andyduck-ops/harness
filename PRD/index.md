@@ -20,6 +20,7 @@ Harness 是一个 **自进化 AI Agent 执行环境工程系统**（Self-Evolvin
 | [validation/](./validation/) | 质量门、成功标准、验证闭环 | 实现完成后 |
 | [intent/](./intent/) | 原子化意图条目（Intent ID 体系） | 按需查阅 |
 | [../references/](../references/) | 知识资产：信源、蒸馏文章、可复用模式 | 校准/生成时 |
+| [../generator/](../generator/) | 项目环境生成器（init / calibrate / nightshift） | 新项目初始化时 |
 
 ## Quick Navigation
 

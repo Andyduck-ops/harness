@@ -14,6 +14,12 @@ Harness 是一个 **自进化 AI Agent 执行环境工程系统**。
 - **Living Knowledge**: 知识必须流动，世界是运动与变化的
 - **Self-Evolving**: 方法论固定，实现动态适配，系统可以改进自己
 
+## Quick Start
+
+
+
+See [generator/init.md](./generator/init.md) for the full initialization workflow.
+
 ## 文档入口
 
 从 [PRD/index.md](./PRD/index.md) 开始阅读。
@@ -25,7 +31,8 @@ Harness 是一个 **自进化 AI Agent 执行环境工程系统**。
 | [PRD/architecture/](./PRD/architecture/) | 四层架构、执行模型、知识系统、元能力、夜间学习 |
 | [PRD/validation/](./PRD/validation/) | 质量门、成功标准 |
 | [PRD/boundaries/](./PRD/boundaries/) | 范围、安全边界、跨平台策略 |
-| [references/](./references/) | 知识资产：信源、蒸馏文章、可复用模式 |
+| [references/](./references/) | 知识资产：11 patterns、13 信源、第一性原理 |
+| [generator/](./generator/) | 项目环境生成器（init / calibrate / nightshift） |
 
 ## Architecture
 
