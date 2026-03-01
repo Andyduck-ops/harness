@@ -1,3 +1,60 @@
+# Morning Brief（Nightshift Cycle 85）
+
+> 更新时间：2026-03-01 10:15 UTC  
+> 本轮目标：把 PRD/Epic 交付血缘与后端契约回放绑定为不可绕过的同一门禁。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md`
+2. `references/patterns/product-delivery/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `PRD->Epic 契约回放闭环门禁（prd-epic contract-replay closure gate）`
+  - reason: 现有闭环偏重血缘映射，缺少对 contract epoch 回放通过的硬约束。
+- `split`：拆分方向
+  - from: `PRD->Epic 血缘守恒门禁（prd-epic lineage conservation gate）`
+  - into: `PRD->Epic 字段守恒门禁（prd-epic field conservation gate）`
+  - into: `PRD->Epic 契约回放映射门禁（prd-epic contract-replay mapping gate）`
+  - reason: 字段完整与回放可验证是不同失效面，必须分治。
+- `merge`：合并方向
+  - from: `契约纪元同构回放门禁（contract-epoch parity replay gate）`
+  - from: `PRD->Epic 契约回放映射门禁（prd-epic contract-replay mapping gate）`
+  - into: `PRD->Epic 契约回放闭环门禁（prd-epic contract-replay closure gate）`
+  - reason: contract epoch 一致性与血缘映射不可拆开审核，拆开会导致“关单但不可回放”。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML Gist  
+  - 最终 URL: `https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道样本（2026-03-01）
+  - news lane: `https://news.ycombinator.com/item?id=47202032`
+  - show lane: `https://news.ycombinator.com/item?id=47195530`
+  - newest lane: `https://news.ycombinator.com/newest`
+- 官方文档补链（2026-03-01）
+  - Issue Forms: `https://docs.github.com/en/enterprise-server@3.16/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms`
+  - PR 关联 Issue: `https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue`
+  - required checks: `https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches`
+  - OpenAPI: `https://spec.openapis.org/oas/latest.html`
+  - Pact Provider Verification: `https://docs.pact.io/provider`
+
+### 本轮结论
+
+- 新 pattern `prd-epic-contract-replay-closure-gate` 聚焦非重复元问题：
+  `需求血缘已闭合` 与 `契约回放已通过` 在实践中常被拆分为两个弱检查，导致夜间自动推进可“形式完成、实质断链”。
+- 必须将 `lineage_mapping_pass + contract_provider_verify_pass + contract_replay_closure_pass` 绑定为同一组合并围栏。
+
+### Cycle 86 预载任务
+
+1. 定义 `contract_epoch` 不兼容升级矩阵（字段删除、语义收窄、默认值漂移）。
+2. 给 `promotion_closure.json` 增加 `required_checks_snapshot`，防止规则集漂移误放行。
+3. 在 `candidate->issue` 晋级合同中前置 `contract_replay_closure_pass`。
+
+---
 # Morning Brief（Nightshift Cycle 84）
 
 > 更新时间：2026-03-01 09:45 UTC  

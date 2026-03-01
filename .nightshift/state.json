@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-03-01T00:55:10Z",
-  "cycle": 84,
+  "updated_at": "2026-03-01T00:59:43Z",
+  "cycle": 85,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -13,7 +13,6 @@
     "OPML 修订漂移监控（gist revision + digest diff）",
     "OPML 规范锚点存活治理（canonical redirect + retrievability gate）",
     "OPML 订阅体身份漂移治理（outline identity + edit-drift governance）",
-    "PRD->Epic 血缘守恒门禁（prd-epic lineage conservation gate）",
     "Show 晋级双相合同门禁（show promotion dual-phase contract gate）",
     "Show 车道可执行性门禁（show-lane executability gate）",
     "Shownew 跨车道复采样时滞门禁（shownew-cross-lane-lag-reverify gate）",
@@ -76,7 +75,6 @@
     "冲突恢复双相合同门禁（arbitration reverify-reapprove gate）",
     "冲突仲裁包版本漂移门禁（conflict arbitration-packet version drift gate）",
     "Shownew->Top 时滞半衰期一体门禁（shownew-top lag-half-life unified gate）",
-    "契约纪元同构回放门禁（contract-epoch parity replay gate）",
     "候选元问题摘要门禁（candidate meta-problem summary gate）",
     "候选证据链完整性门禁（candidate evidence-chain completeness gate）",
     "契约破坏预算-消费者回放协同门禁（breaking-budget replay-coverage co-gate）",
@@ -95,38 +93,40 @@
     "前端交付证据同构治理（token-schema + storybook attestation gate）",
     "Token 规范版本钉住门禁（token-spec pinning gate）",
     "组件三测并联门禁（storybook tri-check parallel gate）",
-    "Token-验收包同源验签门禁（token-bundle provenance attestation gate）"
+    "Token-验收包同源验签门禁（token-bundle provenance attestation gate）",
+    "PRD->Epic 字段守恒门禁（prd-epic field conservation gate）",
+    "PRD->Epic 契约回放闭环门禁（prd-epic contract-replay closure gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 84,
+    "last_cycle": 85,
     "actions": [
       {
         "type": "expand",
-        "added": "Token 规范版本钉住门禁（token-spec pinning gate）",
-        "reason": "Design Tokens 草案与正式版并存，必须将 schema 版本声明前置为硬门禁。"
+        "added": "PRD->Epic 契约回放闭环门禁（prd-epic contract-replay closure gate）",
+        "reason": "PRD/Epic 血缘已对齐仍可能在契约回放断链，需要把 contract epoch 闭环作为独立方向推进。"
       },
       {
         "type": "split",
         "from": [
-          "前端交付证据同构治理（token-schema + storybook attestation gate）"
+          "PRD->Epic 血缘守恒门禁（prd-epic lineage conservation gate）"
         ],
         "into": [
-          "Token 规范版本钉住门禁（token-spec pinning gate）",
-          "组件三测并联门禁（storybook tri-check parallel gate）"
+          "PRD->Epic 字段守恒门禁（prd-epic field conservation gate）",
+          "PRD->Epic 契约回放映射门禁（prd-epic contract-replay mapping gate）"
         ],
-        "reason": "规范版本正确与测试覆盖充分属于不同失效面，拆分后可独立阻断和审计。"
+        "reason": "字段守恒与回放可验证属于不同失效面，拆分后才能分别设置阻断条件。"
       },
       {
         "type": "merge",
         "from": [
-          "Token 规范版本钉住门禁（token-spec pinning gate）",
-          "色觉仿真失败证据签名治理（color-vision replay attestation gate）"
+          "契约纪元同构回放门禁（contract-epoch parity replay gate）",
+          "PRD->Epic 契约回放映射门禁（prd-epic contract-replay mapping gate）"
         ],
         "into": [
-          "Token-验收包同源验签门禁（token-bundle provenance attestation gate）"
+          "PRD->Epic 契约回放闭环门禁（prd-epic contract-replay closure gate）"
         ],
-        "reason": "仅测通过不足以证明交付同一性，需用 provenance 绑定 token 与验收包。"
+        "reason": "contract epoch 一致性与 PRD/Epic 映射必须共同审核，分离会产生“关单但不可回放”的假闭环。"
       }
     ]
   },
@@ -154,6 +154,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/token-governance/token-spec-pinning-attestation-gate.md",
-  "last_cycle_commit": "pending-cycle-84"
+  "last_pattern": "references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md",
+  "last_cycle_commit": "pending-cycle-85"
 }
