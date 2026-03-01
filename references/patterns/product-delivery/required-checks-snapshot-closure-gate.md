@@ -2,7 +2,7 @@
 name: required-checks-snapshot-closure-gate
 topic: product-delivery
 confidence: 0.79
-verified_count: 7
+verified_count: 8
 sources:
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet -> https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b (redirect checked 2026-03-01)
   - HN news lane snapshot (https://news.ycombinator.com/news, checked 2026-03-01, top title: "Stop Burning Your Context Window: How We Cut MCP Token Usage by 98%")
@@ -14,13 +14,19 @@ sources:
   - HN news lane snapshot (https://news.ycombinator.com/news, checked 2026-03-01, top title: "Microgpt")
   - HN show lane snapshot (https://news.ycombinator.com/show, checked 2026-03-01, top title: "Show HN: Xmloxide – an agent made rust replacement for libxml2")
   - HN newest lane snapshot (https://news.ycombinator.com/newest, checked 2026-03-01, top title: "Ask HN: What did you find out or explore today?")
+  - HN news lane snapshot (https://news.ycombinator.com/news, checked 2026-03-01, top item id: 47202708, top title: "747s and Coding Agents")
+  - HN show lane snapshot (https://news.ycombinator.com/show, checked 2026-03-01, top item id: 47201816, top title: "Show HN: DreamBOMB")
+  - HN newest lane snapshot (https://news.ycombinator.com/newest, checked 2026-03-01, top item id: 47203831, top title: "A Transition Experiment by reaching back in internet history")
   - GitHub Docs: About protected branches (required status checks) (https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
   - GitHub Docs: Events that trigger workflows (`merge_group`) (https://docs.github.com/en/actions/reference/events-that-trigger-workflows#merge_group)
   - GitHub Docs: Troubleshooting required status checks (https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/troubleshooting-rules#troubleshooting-required-status-checks)
+  - GitHub Docs: Troubleshooting required status checks (required source / 7-day freshness / skipped semantics) (https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/troubleshooting-rules#troubleshooting-required-status-checks)
   - GitHub Docs: About rulesets (https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)
   - GitHub Docs: Available rules for rulesets (`workflows do not use branch/path/tag filters`) (https://docs.github.com/en/enterprise-cloud@latest/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets)
+  - GitHub Docs: Troubleshooting rulesets (`required status checks` naming format / exact name / source) (https://docs.github.com/en/enterprise-server@3.19/repositories/configuring-branches-and-merges-in-your-repository/troubleshooting-rules)
   - GitHub Docs: Troubleshooting required workflows (new ruleset workflow won't run on existing open PRs unless branch updates/reopen) (https://docs.github.com/en/enterprise-cloud@latest/repositories/configuring-branches-and-merges-in-your-repository/troubleshooting-rules#troubleshooting-required-workflows)
   - GitHub Docs: Managing a merge queue (`Require all queue entries to pass required checks`, `Status check timeout` 5-60 mins) (https://docs.github.com/en/enterprise-cloud@latest/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue)
+  - GitHub Docs: Skipping workflow runs (workflow-level skip leaves checks pending) (https://docs.github.com/en/actions/how-tos/manage-workflow-runs/skip-workflow-runs)
   - GitHub Docs: Syntax for issue forms (https://docs.github.com/en/enterprise-server@3.16/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms)
   - GitHub Docs: Creating issue templates for your repository (https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-issue-templates-for-your-repository)
   - GitHub Docs: Linking a pull request to an issue (https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue)
@@ -137,3 +143,30 @@ rank: 3
 - `required workflows do not use branches paths tags filters`
 - `required workflow added to ruleset existing open pull request not run`
 - `merge queue require all queue entries pass required checks timeout`
+
+## Cycle 113 同化增量：检查身份漂移（Name / Source / Freshness）
+
+目标：解决“checks 列表看起来一致，但合并时身份并不一致”的隐性失真。
+
+1. check 名称格式要做类型化标准化
+   - GitHub ruleset 故障排查文档给出 required status checks 的三种名称格式：`workflow_job_name`、`workflow_name / job_name`（reusable workflow）、`other_checks_name`。
+   - 同文档明确：required checks 判定不区分 workflow、matrix、event trigger type；只看最终 check 名称与来源。
+   - 动作：新增 `required_checks_identity_manifest.json`，字段至少包含 `check_name`、`check_kind`、`source_app`、`event_surface`。
+2. source pinning 必须入闸
+   - GitHub protected branches 文档允许 required status checks 绑定 expected source（GitHub App）。
+   - 动作：对关键 checks 启用 expected source，防止同名 check 被非预期 app 伪通过。
+3. freshness 窗口与 skipped 语义要单独治理
+   - GitHub 文档要求 required checks 需在近 7 天内在仓库成功完成才可作为晋级依据。
+   - 同文档指出：workflow 被 path/branch/commit-message 规则整体跳过会保持 Pending；而 job 级 `if` 跳过通常报告 Success。
+   - 动作：drift 报告新增 `freshness_pass` 与 `skip_semantics_pass`，Pending-by-skip 直接阻断。
+4. 同化结论（L2）
+   - 新证据仍是同一元问题：`需求声明 checks` 与 `合并时真实 checks` 的一致性对账。
+   - 判定：同化到本 pattern，不新建 pattern/topic。
+
+## Cycle 113 检索锚点（L5）
+
+- `required status checks naming format workflow job reusable workflow`
+- `required status checks do not take workflow matrix event trigger into account`
+- `required status checks expected source github app`
+- `required checks must have completed successfully in last seven days`
+- `workflow skipped due to path filtering pending`

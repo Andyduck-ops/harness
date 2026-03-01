@@ -1,3 +1,64 @@
+# Morning Brief（Nightshift Cycle 113）
+
+> 更新时间：2026-03-01 13:40 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/product-delivery/required-checks-snapshot-closure-gate.md`（同化更新）
+2. `references/patterns/product-delivery/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. required checks 名称在 reusable workflow / 普通 workflow / 外部 check 间格式不一致，导致同名误判
+  2. required checks 只对比名称时，被非预期 GitHub App 的同名 check“伪通过”
+  3. workflow 级 skip 与 job 级 skip 语义不同，前者 Pending 阻塞、后者 Success 放行，容易造成晋级误读
+- 已有 pattern 覆盖检查：
+  - `references/patterns/product-delivery/required-checks-snapshot-closure-gate.md` 已覆盖同一元问题（声明 checks 与运行 checks 一致性）
+- 判定：**同化**（补强 name/source/freshness/skip-semantics 身份治理，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+- HN 三车道（2026-03-01）
+  - `news/top`: item `47202708` — `747s and Coding Agents`
+  - `show`: item `47201816` — `Show HN: DreamBOMB`
+  - `newest`: item `47203831` — `A Transition Experiment by reaching back in internet history`
+
+### 官方证据链（不确定点补链）
+
+- GitHub rulesets troubleshooting：required checks 名称格式区分 workflow/reusable/other check，且 required checks 不区分 workflow/matrix/event trigger，仅按名称+来源判定
+- GitHub protected branches / troubleshooting required checks：可配置 expected source（GitHub App）；required checks 需在近 7 天成功执行
+- GitHub skip workflow runs：workflow 级 skip 会让 checks 保持 Pending（阻塞）
+- GitHub troubleshooting required checks：job 级条件跳过通常可报 Success，不应与 workflow 级 skip 混淆
+
+### 检索测试（L5，写后执行）
+
+- Query A：`required status checks naming format reusable workflow job`
+  - 命中：`references/patterns/product-delivery/required-checks-snapshot-closure-gate.md`（1/1）
+  - 动作：建立 `required_checks_identity_manifest.json`，标注 `check_kind`
+- Query B：`required status checks expected source github app`
+  - 命中：`references/patterns/product-delivery/required-checks-snapshot-closure-gate.md`（1/1）
+  - 动作：关键 checks 启用 expected source pinning
+- Query C：`required checks completed successfully in the past seven days`
+  - 命中：`references/patterns/product-delivery/required-checks-snapshot-closure-gate.md`（1/1）
+  - 动作：drift 报告增加 `freshness_pass`
+- Query D：`workflow skipped due to path filtering pending`
+  - 命中：`references/patterns/product-delivery/required-checks-snapshot-closure-gate.md`（1/1）
+  - 动作：区分 workflow skip 与 job skip，Pending-by-skip 直接阻断
+
+### 约束检查
+
+- per-topic <= 5：通过（product-delivery=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：本轮 cycle=113（下一强制压缩点=115）
+
+---
 # Morning Brief（Nightshift Cycle 112）
 
 > 更新时间：2026-03-01 05:11 UTC  

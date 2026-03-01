@@ -1,7 +1,7 @@
 # Pattern Master Index
 
 > 合并收敛版索引（Harvest Consolidation）。
-> 最后更新：2026-03-01（cycle 112）
+> 最后更新：2026-03-01（cycle 113）
 
 ## Top Patterns
 
@@ -27,7 +27,7 @@
 | 3 | [dual-gate-execution-card](./product-delivery/dual-gate-execution-card.md) | product-delivery | 0.79 | 24 |
 | 3 | [evidence-provenance-freshness-trust-governance](./evidence-governance/evidence-provenance-freshness-trust-governance.md) | evidence-governance | 0.79 | 7 |
 | 3 | [merge-queue-failure-surface-budget](./pipeline-governance/merge-queue-failure-surface-budget.md) | pipeline-governance | 0.79 | 8 |
-| 3 | [required-checks-snapshot-closure-gate](./product-delivery/required-checks-snapshot-closure-gate.md) | product-delivery | 0.79 | 39 |
+| 3 | [required-checks-snapshot-closure-gate](./product-delivery/required-checks-snapshot-closure-gate.md) | product-delivery | 0.79 | 46 |
 | 3 | [artifact-retention-reconciliation-governance](./evidence-governance/artifact-retention-reconciliation-governance.md) | evidence-governance | 0.78 | 10 |
 | 3 | [context-compaction-replay-governance](./runtime-governance/context-compaction-replay-governance.md) | runtime-governance | 0.82 | 17 |
 | 3 | [deployment-review-throughput-governance](./pipeline-governance/deployment-review-throughput-governance.md) | pipeline-governance | 0.78 | 6 |
