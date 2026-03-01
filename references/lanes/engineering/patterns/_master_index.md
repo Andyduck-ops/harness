@@ -1,7 +1,7 @@
 # Pattern Master Index
 
 > 合并收敛版索引（Harvest Consolidation）。
-> 最后更新：2026-03-01（cycle 127）
+> 最后更新：2026-03-01（cycle 128）
 
 ## Top Patterns
 
@@ -30,6 +30,10 @@
 | 3 | [required-checks-snapshot-closure-gate](./product-delivery/required-checks-snapshot-closure-gate.md) | product-delivery | medium | 51 |
 | 3 | [artifact-retention-reconciliation-governance](./evidence-governance/artifact-retention-reconciliation-governance.md) | evidence-governance | medium | 13 |
 | 3 | [context-compaction-replay-governance](./runtime-governance/context-compaction-replay-governance.md) | runtime-governance | medium-high | 32 |
+| 3 | [long-context-index-sharding-recall-rollback-contract](./runtime-governance/long-context-index-sharding-recall-rollback-contract.md) | runtime-governance | medium | 4 |
+| 3 | [background-agent-runplane-lease-heartbeat-dlq-backpressure](./autonomous-ops/background-agent-runplane-lease-heartbeat-dlq-backpressure.md) | autonomous-ops | medium | 4 |
+| 3 | [requirement-assertion-semantic-conformance-score-gate](./product-delivery/requirement-assertion-semantic-conformance-score-gate.md) | product-delivery | medium | 4 |
+| 3 | [ai-generated-code-prodlike-e2e-closure-gate](./fullstack-engineering/ai-generated-code-prodlike-e2e-closure-gate.md) | fullstack-engineering | medium | 4 |
 | 3 | [deployment-review-throughput-governance](./pipeline-governance/deployment-review-throughput-governance.md) | pipeline-governance | medium | 6 |
 | 3 | [multi-lane-discovery-arbitration](./discovery-governance/multi-lane-discovery-arbitration.md) | discovery-governance | medium | 10 |
 | 3 | [control-plane-conflict-governance](./runtime-governance/control-plane-conflict-governance.md) | runtime-governance | medium-high | 17 |
@@ -48,31 +52,31 @@
 | [agent-lifecycle/](./agent-lifecycle/) | 3 | Agent 生命周期与故障预算 |
 | [knowledge-evolution/](./knowledge-evolution/) | 3 | 知识进化与衰减治理 |
 | [meta-framework/](./meta-framework/) | 1 | Scout→Distill→Analyze→Merge 元框架 |
-| [autonomous-ops/](./autonomous-ops/) | 3 | 24h 无人推进与审计闭环 |
-| [fullstack-engineering/](./fullstack-engineering/) | 4 | 前后端契约 + 设计系统执行 |
-| [product-delivery/](./product-delivery/) | 3 | PRD→Issue→PR→Pattern 闭环交付 |
+| [autonomous-ops/](./autonomous-ops/) | 4 | 24h 无人推进与审计闭环 |
+| [fullstack-engineering/](./fullstack-engineering/) | 5 | 前后端契约 + 设计系统执行 |
+| [product-delivery/](./product-delivery/) | 4 | PRD→Issue→PR→Pattern 闭环交付 |
 | [pipeline-governance/](./pipeline-governance/) | 3 | CI/Release/Queue 一体化门禁治理 |
 | [discovery-governance/](./discovery-governance/) | 2 | 多信号车道发现与晋级治理 |
-| [runtime-governance/](./runtime-governance/) | 3 | 运行时权限/状态/冲突控制治理 |
+| [runtime-governance/](./runtime-governance/) | 4 | 运行时权限/状态/冲突控制治理 |
 | [evidence-governance/](./evidence-governance/) | 2 | 证据来源、时效、信任与对账治理 |
 
 ## 统计
 
-- 总计：31 patterns
+- 总计：35 patterns
 - evidence_band=high：5 patterns
 - evidence_band=medium-high：13 patterns
-- evidence_band=medium：11 patterns
+- evidence_band=medium：15 patterns
 - evidence_band=low-medium：2 patterns
 - evidence_band=low：0 patterns
 
-## 空白区域（Cycle 127 Scout Map）
+## 空白区域（Cycle 128 Scout Map）
 
 | Priority | Blank Area | 推荐落点 |
 |----------|------------|----------|
-| P0 | 仓库级 long-context 索引分片/召回/版本回滚合同缺失 | runtime-governance |
-| P0 | background agents 编排运行面（lease/heartbeat/dead-letter/backpressure）缺失 | autonomous-ops |
-| P0 | requirement→assertion 自动映射与语义符合性评分缺失 | product-delivery |
-| P0 | AI generated code 的 prod-like E2E 场景验证闭环缺失 | fullstack-engineering |
+| P0 | 仓库级 long-context 索引分片/召回/版本回滚合同缺失 | ✅ 已补齐：`runtime-governance/long-context-index-sharding-recall-rollback-contract.md` |
+| P0 | background agents 编排运行面（lease/heartbeat/dead-letter/backpressure）缺失 | ✅ 已补齐：`autonomous-ops/background-agent-runplane-lease-heartbeat-dlq-backpressure.md` |
+| P0 | requirement→assertion 自动映射与语义符合性评分缺失 | ✅ 已补齐：`product-delivery/requirement-assertion-semantic-conformance-score-gate.md` |
+| P0 | AI generated code 的 prod-like E2E 场景验证闭环缺失 | ✅ 已补齐：`fullstack-engineering/ai-generated-code-prodlike-e2e-closure-gate.md` |
 
 ## 合并归档
 
