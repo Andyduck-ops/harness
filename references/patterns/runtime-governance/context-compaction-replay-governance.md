@@ -2,7 +2,7 @@
 name: context-compaction-replay-governance
 topic: runtime-governance
 confidence: 0.83
-verified_count: 16
+verified_count: 17
 sources:
   - OpenAI API Conversation state docs (`store=true`, conversation id continuity) (2026-03-01)
   - OpenAI API Conversation state docs（`previous_response_id` 与 `conversation` 互斥；response 对象默认 30 天保留）(2026-03-01)
@@ -28,6 +28,12 @@ sources:
   - HN news lane snapshot (https://news.ycombinator.com/news, checked 2026-03-01, top item id: 47202730, title: "Ask HN: What kind of product should OpenAI release next?")
   - HN show lane snapshot (https://news.ycombinator.com/show, checked 2026-03-01, top item id: 47201816, title: "Show HN: DreamBOMB")
   - HN newest lane snapshot (https://news.ycombinator.com/newest, checked 2026-03-01, top item id: 47203831, title: "A Transition Experiment by reaching back in internet history")
+  - OpenAI Agents SDK JS Sessions docs（streaming 会先写入 user input，完成后再写 assistant outputs；`runCompaction` 为 best-effort）(2026-03-01)
+  - Anthropic Context Windows docs（compaction block 必须在后续请求原样回传；compact 前旧块将被忽略）(2026-03-01)
+  - Anthropic Context Windows docs（compaction beta header `context-1m-2025-08-07`；文档声明支持 ZDR arrangement）(2026-03-01)
+  - HN news lane snapshot (https://news.ycombinator.com/news, checked 2026-03-01, top item id: 47206745, title: "MCP server that reduces Claude Code context consumption by 98%")
+  - HN show lane snapshot (https://news.ycombinator.com/show, checked 2026-03-01, top item id: 47203334, title: "Show HN: Memctl v0.1: Persistent memory and context management for coding agents")
+  - HN newest lane snapshot (https://news.ycombinator.com/newest, checked 2026-03-01, top item id: 47207987, title: "How to split your context window in two")
   - context-governance cluster (cycles 45-80)
   - comprehension-governance cluster (cycles 45-80)
 last_verified: 2026-03-01
@@ -129,6 +135,24 @@ rank: 3
   - `https://t.co/dwAiIjlXet` 重定向到 HN Popular Blogs OPML Gist；
   - HN `news/show/newest` 当窗条目继续聚焦 agent 生产化与长跑实践，支持本轮“同化不新建”判定。
 
+## Cycle 121 同化增量（流式双阶段写入 + compaction 回传合同）
+
+- **流式会话写入是双阶段，不是单事务**：
+  - OpenAI Agents SDK JS Sessions 文档明确：streaming 过程中会先把 user input 写入 session，待流式完成后再写 assistant outputs；
+  - 结论：恢复合同必须增加 `orphan_input_check`（输入已写入但输出未落盘）检测，避免重放时出现“半轮次”错判。
+- **Compaction 执行语义是 best-effort，不应与主流程原子绑定**：
+  - 同文档说明 `runCompaction` 可能因瞬时错误失败；
+  - 结论：应将 compaction 失败记为 `compaction_debt` 并延后重试，而不是让主对话链路直接失败。
+- **Claude 的 compaction 是“语义回传协议”，不是“自动黑箱”**：
+  - Anthropic context windows 文档要求：收到 compaction block 后，后续请求必须原样回传该 block；compact 前旧上下文块会被忽略；
+  - 结论：回放验收需新增 `compaction_block_echo_pass`，缺失即判定语义链断裂。
+- **ZDR 与 compaction 的文档状态需版本化跟踪**：
+  - 当前 Anthropic 文档注明 compaction 仍是 beta，同时声明可用于 ZDR arrangement；
+  - 结论：治理层需记录 `docs_version + beta_header`，并在升级时强制重跑合规回放，防止沿用旧结论。
+- **强制信源侧证（本轮）**：
+  - `https://t.co/dwAiIjlXet` 仍重定向至 HN Popular Blogs OPML；
+  - HN 当窗：`news=47206745`、`show=47203334`、`newest=47207987`，社区焦点继续聚集在“上下文预算与持久记忆治理”。
+
 ## 合并来源
 
 - compaction recovery contract
@@ -183,3 +207,12 @@ rank: 3
 - 查询：`if no input_filter and no handoff_history_mapper default_handoff_input_filter`
   - 命中：本 pattern
   - 动作：执行 `effective filter layer snapshot` 并写入 replay artifact
+- 查询：`streaming writes user input first then assistant outputs session`
+  - 命中：本 pattern
+  - 动作：执行 `orphan_input_check + half-turn replay guard`
+- 查询：`runCompaction is best-effort transient errors`
+  - 命中：本 pattern
+  - 动作：执行 `compaction_debt queue + delayed retry`
+- 查询：`must pass compaction block back in subsequent requests`
+  - 命中：本 pattern
+  - 动作：执行 `compaction_block_echo_pass + continuity fail-fast`

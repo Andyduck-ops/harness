@@ -1,3 +1,62 @@
+# Morning Brief（Nightshift Cycle 121）
+
+> 更新时间：2026-03-01 06:12 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/context-compaction-replay-governance.md`
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 流式执行在异常中断后只写入 user input，导致会话出现“半轮次”状态，回放时误判为完整成功
+  2. compaction 临时失败被当作主流程失败处理，导致长跑链路可用性下降
+  3. Claude compaction block 未被后续请求原样回传，语义连续性悄然断裂
+- 覆盖检查：
+  - 归属同一元问题：`context compaction + continuity replay`
+  - 判定：**同化**到 `context-compaction-replay-governance`（不新建）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news/top`: id=47206745 — MCP server that reduces Claude Code context consumption by 98%
+  - `show`: id=47203334 — Show HN: Memctl v0.1: Persistent memory and context management for coding agents
+  - `newest`: id=47207987 — How to split your context window in two
+
+### 官方证据链（本轮新增）
+
+- OpenAI Agents SDK JS Sessions：streaming 先写 user input，流式完成后再写 assistant outputs；`runCompaction` 为 best-effort
+  - `https://openai.github.io/openai-agents-js/guides/sessions/`
+- Anthropic Context Windows：compaction block 必须在后续请求原样回传；compact 前历史块会被忽略；当前文档标注 compaction beta 且可用于 ZDR arrangement
+  - `https://docs.anthropic.com/en/docs/build-with-claude/context-windows`
+
+### 检索测试（L5，写后执行）
+
+- Query A：`streaming writes user input first then assistant outputs session`
+  - 命中：`references/patterns/runtime-governance/context-compaction-replay-governance.md:210`
+  - 动作：强制 `orphan_input_check + half-turn replay guard`
+- Query B：`runCompaction is best-effort transient errors`
+  - 命中：`references/patterns/runtime-governance/context-compaction-replay-governance.md:213`
+  - 动作：强制 `compaction_debt queue + delayed retry`
+- Query C：`must pass compaction block back in subsequent requests`
+  - 命中：`references/patterns/runtime-governance/context-compaction-replay-governance.md:216`
+  - 动作：强制 `compaction_block_echo_pass + continuity fail-fast`
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：下一次窗口为 cycle=125（本轮非压缩窗口）
+
+---
 # Morning Brief（Nightshift Cycle 120）
 
 > 更新时间：2026-03-01 06:06 UTC  
@@ -2966,120 +3025,6 @@
 1. 补 `contradiction_ledger.json` 与 `conflict_resolution_report.json` 的 schema + lint。
 2. 将 `conflict_freeze_pass`、`conflict_resolution_pass` 接入 candidate->issue 与 merge queue 双门禁。
 3. 给冲突 `open > 24h` 增加自动升级到人工裁决队列的处置模板。
-
-
----
-# Morning Brief（Nightshift Cycle 72）
-
-> 更新时间：2026-02-28 23:46 UTC  
-> 本轮目标：把 `shownew` 的“首现快”与 `top` 的“扩散快”拆轨，强制跨车道时滞预算与复采样门禁。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/discovery-governance/shownew-top-lag-reverify-gate.md`
-2. `references/patterns/discovery-governance/_index.md`
-3. `references/patterns/_master_index.md`
-4. `morning-brief.md`
-5. `.nightshift/state.json`
-
-### 激进动态策略执行（本轮）
-
-- `expand`：新增方向
-  - `Shownew->Top 证据半衰期预算治理（shownew-top evidence half-life budget gate）`
-  - reason: `shownew` 首现后证据衰减快，若不设半衰期预算，晋级会基于过期快照。
-- `split`：拆分方向
-  - from: `Shownew 首现-晋级时滞基线门禁（shownew-promotion-lag-baseline gate）`
-  - into: `Shownew 首现时滞下限门禁（shownew-min-lag gate）`
-  - into: `Shownew 跨车道复采样时滞门禁（shownew-cross-lane-lag-reverify gate）`
-  - reason: “时间下限”与“复采样窗口”是不同失效面，需独立阈值。
-- `merge`：合并方向
-  - from: `Shownew->Top 跨车道时滞预算治理（shownew-to-top lag-budget gate）`
-  - from: `Shownew 衰减前复采样门禁（shownew-pre-decay-reverify gate）`
-  - into: `Shownew->Top 时滞复采样一体门禁（shownew-top lag-reverify unified gate）`
-  - reason: 两者都在约束“晋级前二次证据确认”，合并后减少同构重复。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向至 HN Popular Blogs OPML。
-- HN 三车道/页面采样（2026-02-28）
-  - top(news): item `47200342` — `Show HN: Electric Clojure`
-  - show: item `47195123` — `Show HN: RubberUI...`
-  - newest(shownew): item `47200770` — `Show HN: A simple money transfer app...`
-- 官方文档补链（2026-02-28）
-  - HN API：`topstories/showstories/newstories` 为独立分发车道。
-  - GitHub Merge Queue + `merge_group`：队列场景需独立触发并通过检查。
-  - GitHub Protected Branches：required status checks 未通过不可合并。
-
-### 本轮结论
-
-- `shownew` 首现与 `top` 扩散不是同一信号，必须由时滞预算断开直通晋级。
-- candidate->issue 晋级需要 `first_seen -> lag_budget -> cross_lane_reverify -> required_checks` 四段闭环。
-- 缺少复采样 digest 的晋级请求应视为高风险噪声并阻断。
-
-### Cycle 73 预载任务
-
-1. 增补 `shownew_top_reverify.json` 的 schema 与 lint 规则。
-2. 将 `shownew_top_promotion_contract_pass` 接入 candidate->issue 必填 checks。
-3. 给“复采样失败”增加自动回退观察池模板与冷却重试策略。
-
-
----
-# Morning Brief（Nightshift Cycle 71）
-
-> 更新时间：2026-03-01 07:48 UTC  
-> 本轮目标：把 `newest` 首现热度从“可立即晋级”降级为“必须经过时滞预算 + 复采样”的信号。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/discovery-governance/shownew-promotion-latency-gate.md`
-2. `references/patterns/discovery-governance/_index.md`
-3. `references/patterns/_master_index.md`
-4. `morning-brief.md`
-5. `.nightshift/state.json`
-
-### 激进动态策略执行（本轮）
-
-- `expand`：新增方向
-  - `Shownew->Top 跨车道时滞预算治理（shownew-to-top lag-budget gate）`
-  - reason: newest 首现经常先于可执行证据形成，必须把“发现时刻”与“晋级时刻”拆开治理。
-- `split`：拆分方向
-  - from: `Shownew 晋级延迟采样治理（shownew-promotion-latency gate）`
-  - into: `Shownew 首现-晋级时滞基线门禁（shownew-promotion-lag-baseline gate）`
-  - into: `Shownew 衰减前复采样门禁（shownew-pre-decay-reverify gate）`
-  - reason: 时滞阈值与复采样稳定性是两个独立失效面，需独立阈值和阻断动作。
-- `merge`：合并方向
-  - from: `Show 可执行预检门禁（show executability preflight gate）`
-  - from: `Show 可达-存活预检门禁（show reachability-liveness preflight gate）`
-  - into: `Show 预检统一合同门禁（show unified preflight contract gate）`
-  - reason: 两方向同属 preflight 合同，合并后可避免同构 pattern 漂移。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML（Gist Last active 2026-02-28）。
-- HN 三车道页面同窗采样（2026-03-01）
-  - news: item `47221127` — `Show HN: Browser Use CLI...`
-  - show: item `47220379` — `Show HN: Fine Structure Preserving Transformations`
-  - newest: item `47221464` — `Show HN: Honey Route AI...`
-- HN API 端点锚点（2026-03-01）
-  - `topstories[0] = 47221159`
-  - `showstories[0] = 47220379`
-  - `newstories[0] = 47221464`
-- 官方文档补链
-  - HN API：`topstories/showstories/newstories` 为独立分发车道。
-  - GitHub Merge Queue + `merge_group`：队列内变更需独立触发检查。
-  - GitHub Protected Branches：required status checks 不通过不可合并。
-
-### 本轮结论
-
-- `newest` 的“首现快”不等于“可执行成熟快”。
-- candidate->issue 晋级必须引入 `first_seen -> lag_budget -> cross_lane_recheck` 三步闭环。
-- 没有时滞预算与复采样证据的晋级，应被视为高噪声晋级并阻断。
-
-### Cycle 72 预载任务
-
-1. 输出 `shownew_lag_budget.json` 与 `shownew_cross_lane_recheck.json` 的 schema + lint。
-2. 将 `shownew_lag_budget_pass` 接入 candidate->issue 晋级必填 checks。
-3. 给“复采样失败”场景补充自动回退到观察池的处置模板。
 
 
 ---
