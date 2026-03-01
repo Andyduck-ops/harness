@@ -1,3 +1,63 @@
+# Morning Brief（Nightshift Cycle 111）
+
+> 更新时间：2026-03-01 05:05 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 长跑 coding agent 会话不断追加历史，最终输入窗口失控，恢复链被噪声污染
+  2. 团队只限制“单次回填”，未限制“总会话长度”，导致 memory drift 累积
+  3. max-turns 预算耗尽后统一重试，导致故障循环而不是进入恢复分支
+- 已有 pattern 覆盖检查：
+  - `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md` 已覆盖同一元问题（state + communication + recovery）
+- 判定：**同化**（补强记忆预算双闸、调用前裁剪、预算耗尽恢复分支，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `top`（id=47203405）：`Deterministic Programming with LLMs (using Jujutsu)`
+  - `show`（id=47204643）：`Show HN: Open project to provide factual, unbiased news and transparency`
+  - `newest`（id=47205594）：`Show HN: Memctl: Persistent memory and context management for AI coding agents`
+
+### 官方证据链（不确定点补链）
+
+- OpenAI Agents SDK JS Sessions：`setMaxTurnsPerTurn()` 与 `setSessionLimit()`（单轮预算 + 总会话预算）
+- OpenAI Agents SDK JS Sessions：`sessionInputCallback`（模型调用前 carry-over 裁剪）
+- OpenAI Agents SDK JS Running agents：`errorHandlers.maxTurnsExceeded`（预算耗尽单独恢复分支）
+- OpenAI Agents SDK Handoffs：默认转发完整历史，需 `inputFilter` 执行最小输入合同
+
+### 检索测试（L5，写后执行）
+
+- Query A：`setSessionLimit setMaxTurnsPerTurn long-running agent memory budget`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（1/1）
+  - 动作：双预算闸门（单轮回填上限 + 会话总长上限）
+- Query B：`sessionInputCallback carry-over trim before model call`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（1/1）
+  - 动作：请求前历史裁剪，禁止全量盲传
+- Query C：`errorHandlers maxTurnsExceeded fallback replay`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（1/1）
+  - 动作：预算耗尽走 checkpoint replay / background 恢复分支
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：本轮 cycle=111（下一强制压缩点=115）
+
+
+---
 # Morning Brief（Nightshift Cycle 110）
 
 > 更新时间：2026-03-01 04:59 UTC  

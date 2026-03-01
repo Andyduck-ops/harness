@@ -2,7 +2,7 @@
 name: agent-scope-identity-memory-governance
 topic: runtime-governance
 confidence: 0.87
-verified_count: 23
+verified_count: 24
 sources:
   - OpenAI Agent Platform docs (Python/TypeScript/Go support) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (2026-03-01)
@@ -38,7 +38,12 @@ sources:
   - Kode Agent SDK README（stateful sessions / retry / multi-agent traceability）(2026-03-01)
   - Kode Agent SDK architecture README（7-stage checkpoint + stateless API/stateful worker）(2026-03-01)
   - nlpodyssey/openai-agents-go README（session stores/hook callbacks/retry & telemetry）(2026-03-01)
+  - OpenAI Agents SDK JS Sessions docs（setMaxTurnsPerTurn / setSessionLimit memory budget policy）(2026-03-01)
+  - OpenAI Agents SDK JS Sessions docs（sessionInputCallback pre-send carry-over trimming）(2026-03-01)
+  - OpenAI Agents SDK JS running agents docs（errorHandlers.maxTurnsExceeded fallback strategy）(2026-03-01)
   - HN top/show/new snapshots (2026-03-01)
+  - HN top item: Deterministic Programming with LLMs (using Jujutsu)（id=47203405, 2026-03-01）
+  - HN newest item: Show HN: Memctl: Persistent memory and context management for AI coding agents（id=47205594, 2026-03-01）
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (redirect verified 2026-03-01)
 last_verified: 2026-03-01
 rank: 3
@@ -167,6 +172,13 @@ Demo 能跑不等于 production 能跑。
 - **状态持久化要上升到流程默认**：CrewAI Flows 文档的 `@persist`（类级/方法级）和“automatic state recovery after failures/restarts”说明，恢复能力应是默认机制而不是补丁；同时保持事务化更新，避免半写入状态破坏 replay。
 - **强制信源侧证保持一致**：HN 当前窗口 `top`（Ask HN: Did quality of Google Search decrease?）、`show`（Show HN: Webree – 200 free 20-second game challenge）、`newest`（How to increase the speed at which your software system can evolve?）与 OPML 锚点（`https://t.co/dwAiIjlXet` -> HN popular blogs OPML）继续指向“稳态执行链路”优先级高于功能膨胀。
 
+## Cycle 111 同化增量（记忆预算闸门 + 会话老化治理）
+
+- **会话不能无限增长，必须有运行级预算闸门**：OpenAI Agents SDK JS Sessions 提供 `setMaxTurnsPerTurn()` 与 `setSessionLimit()`；生产上应把“单轮最大回填”与“总会话上限”拆成两个策略位，避免长跑会话隐式膨胀。
+- **输入裁剪要在模型调用前发生，不是失败后补救**：`sessionInputCallback` 可在每次请求前裁剪 carry-over 历史；应将其作为默认入口，禁止全量历史盲传导致 memory drift。
+- **失败恢复要绑定预算耗尽类型，而不是统一重试**：JS `errorHandlers.maxTurnsExceeded` 可把“预算耗尽”与普通异常分开处理；推荐降级到 checkpoint replay 或 background 恢复链路。
+- **社区热区继续收敛到“持久记忆 + 可预测执行”**：HN `top`（Deterministic Programming with LLMs）与 `newest`（Memctl persistent memory）共同提示：production 断裂点仍是记忆治理与可恢复性，而不是 agent 数量扩张。
+
 ## 合并来源
 
 - agent scope drift severity budget
@@ -179,6 +191,8 @@ Demo 能跑不等于 production 能跑。
 - OpenAI 与 CrewAI 官方文档提供运行级配置、事务边界和条件路由证据；HN 仅作为热区侧证
 - OpenAI Python Sessions/Lifecycle + Anthropic context editing 文档补强了“状态后端分层 + 上下文编辑防漂移”证据链
 - OpenAI JS running agents + Python handoffs + Anthropic hooks/subagents + CrewAI @persist 共同补强了“错误分层恢复 + 停机防递归 + 持久子代理隔离”证据链
+- OpenAI JS Sessions（`setMaxTurnsPerTurn`/`setSessionLimit`/`sessionInputCallback`）与 JS running agents（`errorHandlers.maxTurnsExceeded`）补强了“记忆预算闸门 + 预算耗尽恢复”执行合同
+- HN `top/newest`（Deterministic Programming with LLMs / Memctl）作为“可预测执行 + 持久记忆”社区热区侧证
 
 ## 检索测试
 
@@ -239,3 +253,12 @@ Demo 能跑不等于 production 能跑。
 - 查询：`stop_hook_active SubagentStop`  
   命中：本 pattern  
   动作：收敛到 `stop hook recursion guard + graceful shutdown protocol`
+- 查询：`setSessionLimit setMaxTurnsPerTurn long-running agent memory budget`  
+  命中：本 pattern  
+  动作：收敛到 `dual memory budget gates + session aging policy`
+- 查询：`sessionInputCallback carry-over trim before model call`  
+  命中：本 pattern  
+  动作：收敛到 `pre-send history trimming contract`
+- 查询：`errorHandlers maxTurnsExceeded fallback replay`  
+  命中：本 pattern  
+  动作：收敛到 `budget-exhausted recovery branch + checkpoint resume`
