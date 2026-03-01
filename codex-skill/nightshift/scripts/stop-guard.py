@@ -53,6 +53,18 @@ def main():
             if state.get("status") == "exhausted":
                 print(json.dumps({"decision": "allow"}))
                 return
+
+            # L4 压缩检查：退出前确保已执行压缩
+            current_cycle = state.get("current_cycle", 0)
+            last_compression = state.get("last_compression_cycle", 0)
+            if current_cycle - last_compression >= 5:
+                compress_reason = (
+                    "[L4 压缩周期] 距上次压缩已超 5 cycles，退出前必须先执行压缩。"
+                    "检查所有 topics，merge 可合并的 patterns，"
+                    "更新 state.json 的 last_compression_cycle 后再退出。"
+                )
+                print(json.dumps({"decision": "block", "reason": compress_reason}))
+                sys.exit(2)
         except (json.JSONDecodeError, IOError):
             pass
 

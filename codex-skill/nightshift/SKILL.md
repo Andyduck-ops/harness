@@ -12,6 +12,14 @@ hooks:
     - hooks:
       - type: command
         command: "python3 $HOME/.codex/skills/nightshift/scripts/stop-guard.py"
+  pre_tool_use:
+    - hooks:
+      - type: command
+        command: "python3 $HOME/.codex/skills/nightshift/scripts/saturation-guard.py"
+  pre_compact:
+    - hooks:
+      - type: command
+        command: "python3 $HOME/.codex/skills/nightshift/scripts/pre-compact-compress.py"
 ---
 
 # Nightshift — 持续自主学习守护进程
