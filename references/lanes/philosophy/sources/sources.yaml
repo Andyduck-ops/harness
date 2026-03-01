@@ -79,3 +79,103 @@ sources:
     trust_band: medium-high
     last_checked: 2026-03-01
     notes: "拓扑方法计算化的标准教材"
+
+  - name: Karl Marx - Theses on Feuerbach
+    author: Karl Marx
+    year: 1845
+    url: https://www.marxists.org/archive/marx/works/1845/theses/index.htm
+    type: primary-text
+    topic: 实践论
+    trust_band: medium-high
+    last_checked: 2026-03-01
+    notes: "实践作为真理检验标准的经典文本"
+
+  - name: Mao Zedong - On Practice
+    author: Mao Zedong
+    year: 1937
+    url: https://www.marxists.org/reference/archive/mao/selected-works/volume-1/mswv1_16.htm
+    type: primary-paper
+    topic: 实践论
+    trust_band: medium-high
+    last_checked: 2026-03-01
+    notes: "实践-认识-再实践循环的原始阐述"
+
+  - name: C. S. Peirce - The Fixation of Belief
+    author: Charles Sanders Peirce
+    year: 1877
+    url: https://peirce.org/writings/p107.html
+    type: primary-paper
+    topic: 实践论
+    trust_band: medium-high
+    last_checked: 2026-03-01
+    notes: "探究中的自校正机制与信念收敛"
+
+  - name: John Dewey - Logic: The Theory of Inquiry
+    author: John Dewey
+    year: 1938
+    url: https://philpapers.org/rec/DEULTT
+    type: primary-book
+    topic: 实践论
+    trust_band: medium-high
+    last_checked: 2026-03-01
+    notes: "探究过程的行动-验证闭环"
+
+  - name: Kurt Lewin - Action Research and Minority Problems
+    author: Kurt Lewin
+    year: 1946
+    url: https://doi.org/10.1111/j.1540-4560.1946.tb02295.x
+    type: primary-paper
+    topic: 实践论
+    trust_band: high
+    last_checked: 2026-03-01
+    notes: "行动研究闭环：行动、观察、再行动"
+
+  - name: Norbert Wiener - Cybernetics
+    author: Norbert Wiener
+    year: 1948
+    url: https://direct.mit.edu/books/book/2208/CyberneticsOr-Control-and-Communication
+    type: primary-book
+    topic: 实践论
+    trust_band: high
+    last_checked: 2026-03-01
+    notes: "反馈控制的跨领域基础"
+
+  - name: W. Ross Ashby - An Introduction to Cybernetics
+    author: W. Ross Ashby
+    year: 1956
+    url: https://search.worldcat.org/title/2457581
+    type: primary-book
+    topic: 实践论
+    trust_band: medium-high
+    last_checked: 2026-03-01
+    notes: "稳态、调节与必要多样性"
+
+  - name: Jay W. Forrester - Industrial Dynamics
+    author: Jay W. Forrester
+    year: 1968
+    url: https://pubsonline.informs.org/doi/10.1287/mnsc.14.7.398
+    type: primary-paper
+    topic: 实践论
+    trust_band: high
+    last_checked: 2026-03-01
+    notes: "管理决策中的反馈结构与时滞"
+
+  - name: Jay W. Forrester - Counterintuitive Behavior of Social Systems
+    author: Jay W. Forrester
+    year: 1971
+    url: https://doi.org/10.1007/BF00148991
+    type: primary-paper
+    topic: 实践论
+    trust_band: high
+    last_checked: 2026-03-01
+    notes: "社会系统中反馈回路导致的反直觉行为"
+
+  - name: Argyris & Schon - Theory in Practice
+    author: Chris Argyris; Donald A. Schon
+    year: 1974
+    url: https://agris.fao.org/search/en/providers/122535/records/64777191fe5b933c7f1a0e04
+    type: primary-book
+    topic: 实践论
+    trust_band: medium-high
+    last_checked: 2026-03-01
+    notes: "单环/双环学习框架的原始著作"

@@ -25,3 +25,25 @@
 - side_b: 假设约束与目标持续变形
 - status: unresolved
 
+## Cycle 129
+
+### conflict-004
+- topic: 实践论
+- tension: 先验最优规划 vs 实践先行迭代
+- side_a: 通过完备分析先确定最优方案，再执行
+- side_b: 通过小步实践获取反馈，再更新方案与问题定义
+- status: unresolved
+
+### conflict-005
+- topic: 实践论
+- tension: 单环纠偏（目标不变） vs 双环学习（目标与假设可变）
+- side_a: 偏差来自执行，修动作即可
+- side_b: 偏差也可能来自目标设定与认知模型，需改假设与判据
+- status: unresolved
+
+### conflict-006
+- topic: 实践论
+- tension: 稳态控制优先 vs 探索性扰动优先
+- side_a: 优先压低波动，维持系统稳定
+- side_b: 在环境突变期主动引入受控扰动以发现新可行解
+- status: unresolved
