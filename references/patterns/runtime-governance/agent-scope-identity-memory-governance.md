@@ -2,7 +2,7 @@
 name: agent-scope-identity-memory-governance
 topic: runtime-governance
 confidence: 0.87
-verified_count: 27
+verified_count: 28
 sources:
   - OpenAI Agent Platform docs (Python/TypeScript/Go support) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (2026-03-01)
@@ -50,12 +50,17 @@ sources:
   - Anthropic MCP connector docs（默认 `MAX_MCP_OUTPUT_TOKENS=25000` + 超限文件附件 + compatibility mode 限制）(2026-03-01)
   - CrewAI Agents docs（max_iter / max_retry_limit）(2026-03-01)
   - CrewAI Tasks docs（guardrail_max_retries + max_retries deprecation）(2026-03-01)
+  - OpenAI Agents SDK JS Agent docs（`asTool` 可把子 agent 降格为受控工具，并支持 `toolName`/`toolDescription`/`customOutputExtractor`）(2026-03-01)
+  - OpenAI Agents SDK Python Agent API docs（`as_tool` 支持 `tool_name`/`tool_description`/`custom_output_extractor`，底层可指定 `run_agent`）(2026-03-01)
+  - OpenAI Agents SDK Handoffs docs（handoff 在模型侧表现为工具调用，默认转发完整消息历史）(2026-03-01)
+  - CrewAI Tasks docs（`output_json`/`output_pydantic` 作为任务间结构化通信合同）(2026-03-01)
   - nlpodyssey/openai-agents-go README（tool loop exit conditions / max turns）(2026-03-01)
   - HN top/show/new snapshots (2026-03-01)
   - HN top item: Deterministic Programming with LLMs (using Jujutsu)（id=47203405, 2026-03-01）
   - HN newest item: Show HN: Memctl: Persistent memory and context management for AI coding agents（id=47205594, 2026-03-01）
   - HN lanes snapshot（news: id=47202708 "Microgpt", show: id=47201816 "Xmloxide", newest sampled: id=47203804 "Welcome to the future of software development"）(2026-03-01)
   - HN lanes snapshot（news: id=47206745 "MCP server that reduces Claude Code context consumption by 98%", show: id=47203334 "Memctl v0.1", newest: id=47207396 "SpecLock: AI Constraint Engine..."）(2026-03-01)
+  - HN lanes snapshot（news: id=47227757 "The hidden cost of AI coding assistants", show: id=47227735 "Show HN: memory", newest: id=47227820 "Why AI slop is a tragedy, not just an annoyance"）(2026-03-01)
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (redirect verified 2026-03-01)
 last_verified: 2026-03-01
 rank: 3
@@ -227,6 +232,17 @@ Demo 能跑不等于 production 能跑。
 - **重试预算必须拆层**：CrewAI Agent 侧 `max_iter`/`max_retry_limit` 与 Task 侧 `guardrail_max_retries`（`max_retries` 已弃用）表达的是不同失败面；应拆分为“推理循环预算”和“校验重试预算”，防止单一重试参数掩盖状态泄漏。
 - **Cycle 120 压缩结论（L4）**：新增证据仍落在同一元问题 `scope + communication + recovery`，执行同化，不新建 pattern/topic。
 
+## Cycle 123 同化增量（多 Agent 通信模式分层：Handoff 与 Toolized Subagent）
+
+- **handoff 默认是“主体切换 + 历史透传”语义**：OpenAI Handoffs 文档明确 handoff 在模型侧表现为工具调用，且默认会把完整消息历史转给下一个 agent；这在 production 中容易放大上下文噪声。
+- **asTool/as_tool 是“受控委托”语义**：OpenAI JS `asTool` 与 Python `as_tool` 都支持自定义工具名、描述与 `customOutputExtractor`，可把子 agent 输出压缩为结构化结果，避免把整段执行历史泄漏到主链路。
+- **任务间中间产物要强制结构化**：CrewAI Tasks 文档中的 `output_json`/`output_pydantic` 提供了天然 schema 通道，可作为多 agent 通信层的 typed contract，降低 PRD/spec/tasks/code 链路中的语义漂移。
+- **治理动作从“统一交接”升级为“双通道选择”**：
+  - ownership transfer 用 `handoff`（保留主体切换语义与审计轨迹）
+  - bounded delegation 用 `as_tool`（保留主 agent 主体，最小化输出面）
+  - 两类通道都必须落地 schema-locked 输出与 replay 证据。
+- **强制信源侧证（本轮）**：`https://t.co/dwAiIjlXet` 持续作为 OPML 锚点；HN `news/show/newest` 当窗条目继续集中在 AI coding assistant 的成本与记忆治理，支持“通信模式分层优先于 agent 扩张”的同化判断。
+
 ## 合并来源
 
 - agent scope drift severity budget
@@ -245,6 +261,7 @@ Demo 能跑不等于 production 能跑。
 - OpenAI JS MCP（部分连接失败可观测 + 工具清单缓存失效）与 Anthropic MCP（输出 token 预算 + transport/compatibility 边界）补强了“连接健康 + 输出预算 + 能力对账”执行合同
 - OpenAI JS/Python Agents 文档（`resetToolChoice`/`toolUseBehavior`/`StopAtTools`）+ openai-agents-go 运行循环退出条件补强了“工具循环终止合同 + 回合预算断路器”
 - CrewAI Agents/Tasks 文档（`max_iter`、`max_retry_limit`、`guardrail_max_retries`）补强了“推理循环预算与校验重试预算拆层”治理动作
+- OpenAI handoff/tool 双通道文档（JS `asTool` + Python `as_tool` + Handoffs 默认历史透传）与 CrewAI 结构化任务输出共同补强了“通信模式分层 + 中间产物 schema 锁定”治理动作
 
 ## 检索测试
 
@@ -341,3 +358,15 @@ Demo 能跑不等于 production 能跑。
 - 查询：`CrewAI guardrail_max_retries max_retry_limit max_iter`  
   命中：本 pattern  
   动作：收敛到 `reasoning budget vs validation-retry budget split`
+- 查询：`OpenAI handoff represented as tool default full message history`  
+  命中：本 pattern  
+  动作：收敛到 `ownership transfer channel + history forwarding risk budget`
+- 查询：`OpenAI asTool customOutputExtractor`  
+  命中：本 pattern  
+  动作：收敛到 `bounded delegation channel + structured output envelope`
+- 查询：`OpenAI Python as_tool run_agent custom_output_extractor`  
+  命中：本 pattern  
+  动作：收敛到 `cross-sdk communication contract parity`
+- 查询：`CrewAI output_json output_pydantic task contract`  
+  命中：本 pattern  
+  动作：收敛到 `typed intermediate artifact for multi-agent communication`

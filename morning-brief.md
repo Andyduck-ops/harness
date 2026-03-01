@@ -1,3 +1,68 @@
+# Morning Brief（Nightshift Cycle 123）
+
+> 更新时间：2026-03-01 06:30 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 多 agent 编排里默认 handoff 把完整历史透传给下游，导致上下文噪声和身份漂移
+  2. 子 agent 只需返回结构化结论，但主链路被迫承载完整执行轨迹，回放与审计成本陡增
+  3. 任务链缺少 typed 中间产物，PRD/spec/tasks/code 语义在跨 agent 传递时持续损耗
+- 覆盖检查：
+  - 归属同一元问题：`scope + communication + recovery`
+  - 判定：**同化**到 `agent-scope-identity-memory-governance`（不新建）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+- HN 三车道（2026-03-01）
+  - `news/top`: id=47227757 — The hidden cost of AI coding assistants
+  - `show`: id=47227735 — Show HN: memory
+  - `newest`: id=47227820 — Why AI slop is a tragedy, not just an annoyance
+
+### 官方证据链（本轮新增）
+
+- OpenAI Agents SDK Handoffs：handoff 在模型侧表现为工具调用，默认转发完整消息历史
+  - `https://openai.github.io/openai-agents-js/guides/handoffs/`
+- OpenAI Agents SDK JS Agent：`asTool` 支持 `toolName` / `toolDescription` / `customOutputExtractor`
+  - `https://openai.github.io/openai-agents-js/ref/classes/agent/#astool`
+- OpenAI Agents SDK Python Agent：`as_tool` 支持 `tool_name` / `tool_description` / `custom_output_extractor`，可指定 `run_agent`
+  - `https://openai.github.io/openai-agents-python/ref/agent/#agents.agent.Agent.as_tool`
+- CrewAI Tasks：`output_json` / `output_pydantic` 作为任务间结构化通信合同
+  - `https://docs.crewai.com/concepts/tasks`
+
+### 检索测试（L5，写后执行）
+
+- Query A：`OpenAI handoff represented as tool default full message history`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:361`
+  - 动作：切换到 `ownership transfer` 通道并启用历史透传风险预算
+- Query B：`OpenAI asTool customOutputExtractor`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:364`
+  - 动作：切换到 `bounded delegation` 通道并强制结构化结果封装
+- Query C：`OpenAI Python as_tool run_agent custom_output_extractor`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:367`
+  - 动作：对齐 JS/Python 通信合同，避免跨 SDK 通道语义漂移
+- Query D：`CrewAI output_json output_pydantic task contract`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:370`
+  - 动作：强制 typed 中间产物落盘，降低 PRD->code 信息损耗
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：下一次窗口为 cycle=125（本轮非压缩窗口）
+
+---
 # Morning Brief（Nightshift Cycle 122）
 
 > 更新时间：2026-03-01 06:17 UTC  

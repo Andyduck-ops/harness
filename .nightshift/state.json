@@ -1,8 +1,8 @@
 {
   "version": "1.1",
-  "updated_at": "2026-03-01T06:17:19Z",
-  "cycle": 122,
-  "status": "paused",
+  "updated_at": "2026-03-01T06:32:09Z",
+  "cycle": 123,
+  "status": "idle",
   "mode": "CONSTRAINED_EXPANSION",
   "active_directions": [
     "Agent SDK 落地实战（demo->production 断裂点）",
@@ -14,7 +14,7 @@
   "dormant_directions": [],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 122,
+    "last_cycle": 123,
     "actions": [
       {
         "type": "compress",
@@ -259,6 +259,12 @@
         "reason": "cycle 122：将 AI 代码有效测试新证据（Hypothesis CI profile/fuzz 配置语义边界、fast-check 外部随机源 replay 合同、Stryker break/timeout 阻断策略）同化到 fullstack canonical pattern（不新建）",
         "updated_pattern": "references/patterns/fullstack-engineering/contract-replay-verification-gate.md",
         "new_patterns": 0
+      },
+      {
+        "type": "assimilate",
+        "reason": "cycle 123：将多 agent 通信模式分层新证据（handoff 默认历史透传、asTool/as_tool 受控委托、CrewAI typed task outputs）同化到 runtime-governance canonical pattern（不新建）",
+        "updated_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
+        "new_patterns": 0
       }
     ]
   },
@@ -271,8 +277,8 @@
     "https://platform.openai.com/docs/guides/conversation-state"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/fullstack-engineering/contract-replay-verification-gate.md",
-  "last_cycle_commit": "pending-cycle-122",
+  "last_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
+  "last_cycle_commit": "pending-cycle-123",
   "constraints": {
     "per_topic_max_patterns": 5,
     "active_direction_max": 15,
