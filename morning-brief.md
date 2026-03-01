@@ -1,3 +1,61 @@
+# Morning Brief（Nightshift Cycle 89）
+
+> 更新时间：2026-03-01 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现能解决的场景：
+  1. OpenAI/Claude/CrewAI 在 production 中的状态持久化断裂
+  2. 多 agent 交接时身份与输入边界漂移
+  3. 长任务断线恢复时的重放一致性
+- 与已有 pattern 比较：
+  - `agent-scope-identity-memory-governance` 已覆盖同一元问题，可吸收 SDK 级证据链
+- 判定：**同化**（更新 SDK 对照与治理动作，不新建）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news`: `As We May Compute — Vannevar Bush’s 1945 essay and perspective`
+  - `show`: `Show HN: Jotalea – GraphQL-as-a-Language for composable schema evolution`
+  - `newest`: `Ask HN: What to do about these old books?`
+
+### 官方证据链补全
+
+- OpenAI Agent Platform: `https://openai.github.io/agent-platform/`
+- OpenAI Agents Sessions/Handoffs: `https://openai.github.io/openai-agents-js/guides/sessions/` / `https://openai.github.io/openai-agents-js/guides/handoffs/`
+- OpenAI Background/Conversation State: `https://platform.openai.com/docs/guides/background` / `https://platform.openai.com/docs/guides/conversation-state`
+- Anthropic Agent SDK / Tool Use: `https://docs.anthropic.com/en/docs/claude-code/sdk` / `https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use`
+- CrewAI Flow Persistence: `https://docs.crewai.com/en/guides/flows/mastering-flow-state`
+
+### 检索测试（L5）
+
+- Query A：`agent sdk demo 到 production 状态管理 断裂`  
+  - 命中：`runtime-governance/agent-scope-identity-memory-governance.md`  
+  - 可执行动作：`external session store + replay checkpoint + async job id recovery`
+- Query B：`multi agent handoff 身份漂移 怎么防`  
+  - 命中：`runtime-governance/agent-scope-identity-memory-governance.md`  
+  - 可执行动作：`handoff input filter + identity lease + contractized tool schema`
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 压缩：本轮 cycle=89（下轮 cycle=90 强制压缩）
+
+---
+
 # Morning Brief（Nightshift Cycle 88）
 
 > 更新时间：2026-03-01 UTC  

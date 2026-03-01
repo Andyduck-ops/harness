@@ -1,16 +1,16 @@
 ---
 name: agent-scope-identity-memory-governance
 topic: runtime-governance
-confidence: 0.82
-verified_count: 12
+confidence: 0.84
+verified_count: 13
 sources:
+  - OpenAI Agent Platform docs (Python/TypeScript/Go support) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (2026-03-01)
   - OpenAI Agents SDK Handoffs docs (2026-03-01)
   - OpenAI API Background mode guide (2026-03-01)
   - OpenAI API Conversations / conversation state docs (2026-03-01)
-  - Anthropic tool runner docs (2026-03-01)
+  - Anthropic Agent SDK / tool use docs (2026-03-01)
   - CrewAI Flows persistence docs (2026-03-01)
-  - Google ADK Go quickstart + A2A quickstart (2026-03-01)
   - HN top/show/new snapshots (2026-03-01)
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (redirect verified 2026-03-01)
 last_verified: 2026-03-01
@@ -46,9 +46,16 @@ Demo 能跑不等于 production 能跑。
 | 断裂点 | 文档信号 | 治理动作 |
 |---|---|---|
 | 进程重启后上下文丢失 | OpenAI Agents SDK Sessions、CrewAI `@persist` | 会话后端外置（DB/Conversation API），恢复时强制 replay 关键状态 |
-| 多 agent 交接串台 | OpenAI Handoffs（工具化交接 + input filter）、ADK A2A | 交接包最小化 + 主体签名 + 仅传必要输入 |
+| 多 agent 交接串台 | OpenAI Handoffs（工具化交接 + input filter）、Anthropic Agent SDK tool contract | 交接包最小化 + 主体签名 + 仅传必要输入 |
 | 长任务超时/断连 | OpenAI background mode（queued/in_progress/final + cancel） | 用异步任务 ID 做幂等恢复，禁止“重跑覆盖” |
 | 长跑上下文退化 | Anthropic tool runner 自动状态管理/自动 compaction、OpenAI conversation state | 压缩触发阈值 + 压缩前后不变量校验 + 回放抽检 |
+
+## SDK 落地抽象（本轮同化）
+
+- OpenAI：Agent Platform 明确给出 Python/TypeScript/Go 三栈 SDK，适合作为统一控制面入口；落地时仍需把会话存储与后台任务状态外置化。
+- Claude：Agent SDK 与 tool use 规则强调工具定义和输入约束，落地重点是“交接合同可验证”，而不是只靠提示词约定。
+- CrewAI：Flow `@persist` 将状态持久化变成显式机制，生产上应配合 replay/checkpoint 才能避免恢复漂移。
+- Kode SDK：本轮未检索到稳定的一手官方文档证据链，暂不单列为新 pattern，维持同化待补证据状态。
 
 ## 合并来源
 
