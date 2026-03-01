@@ -1,7 +1,7 @@
 {
   "version": "1.1",
-  "updated_at": "2026-03-01T04:49:13Z",
-  "cycle": 108,
+  "updated_at": "2026-03-01T04:53:40Z",
+  "cycle": 109,
   "status": "paused",
   "mode": "CONSTRAINED_EXPANSION",
   "active_directions": [
@@ -14,7 +14,7 @@
   "dormant_directions": [],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 108,
+    "last_cycle": 109,
     "actions": [
       {
         "type": "compress",
@@ -157,6 +157,12 @@
         "reason": "cycle 108：将控制面冲突新证据（background cancel 幂等、store=true 持久化前置、stream resume 前置条件、handoff 优先级矩阵、stop_hook_active 防递归）同化到 runtime-governance canonical pattern（不新建）",
         "updated_pattern": "references/patterns/runtime-governance/control-plane-conflict-governance.md",
         "new_patterns": 0
+      },
+      {
+        "type": "assimilate",
+        "reason": "cycle 109：将 AI 代码有效测试新证据（Hypothesis 失败重放稳定性边界、ExampleDatabase 共享后端、Stryker incremental 校准机制）同化到 fullstack canonical pattern（不新建）",
+        "updated_pattern": "references/patterns/fullstack-engineering/contract-replay-verification-gate.md",
+        "new_patterns": 0
       }
     ]
   },
@@ -169,8 +175,8 @@
     "https://platform.openai.com/docs/guides/conversation-state"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/runtime-governance/control-plane-conflict-governance.md",
-  "last_cycle_commit": "pending-cycle-108",
+  "last_pattern": "references/patterns/fullstack-engineering/contract-replay-verification-gate.md",
+  "last_cycle_commit": "pending-cycle-109",
   "constraints": {
     "per_topic_max_patterns": 5,
     "active_direction_max": 15,

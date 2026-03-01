@@ -1,6 +1,6 @@
 # fullstack-engineering
 
-> 前后端契约 + 设计系统执行（cycle 105 同化：targeted property + incremental mutation）
+> 前后端契约 + 设计系统执行（cycle 109 同化：失败重放保真 + 增量 mutation 校准）
 
 - [backend-contract-first](./backend-contract-first.md)
 - [contract-replay-verification-gate](./contract-replay-verification-gate.md)

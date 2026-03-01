@@ -1,8 +1,8 @@
 ---
 name: contract-replay-verification-gate
 topic: fullstack-engineering
-confidence: 0.84
-verified_count: 15
+confidence: 0.85
+verified_count: 16
 sources:
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (2026-03-01)
   - Hacker News top/show/new snapshot (2026-03-01)
@@ -15,9 +15,12 @@ sources:
   - fast-check model-based testing docs (replayPath/scheduledModelRun) (2026-03-01)
   - Stryker docs (thresholds + break/fail behavior) (2026-03-01)
   - Stryker docs (incremental testing baseline workflow) (2026-03-01)
+  - StrykerJS Incremental docs（limitations + --force full run）(2026-03-01)
   - PIT docs (mutation testing guidance) (2026-03-01)
   - mutmut docs (mutation workflow) (2026-03-01)
   - Hypothesis docs (targeted property-based testing via target()) (2026-03-01)
+  - Hypothesis replaying failures docs（@reproduce_failure stability caveat + @example workflow）(2026-03-01)
+  - Hypothesis API docs（ExampleDatabase backends: file/redis/github artifact）(2026-03-01)
   - OpenAI Harness engineering (observability + long-run loops) (2026-02-11)
 last_verified: 2026-03-01
 rank: 2
@@ -179,3 +182,31 @@ rank: 2
 
 - `Hypothesis target() targeted property-based testing`
 - `Stryker incremental testing baseline thresholds.break`
+
+## Cycle 109 同化增量：失败重放保真 + 增量 mutation 可信度门禁
+
+目标：解决 AI 代码测试里“本地能复现、CI 复现不了”和“增量提速后门禁悄悄失真”的同一元问题。
+
+1. 失败重放要区分“临时救火”与“可持续资产”
+   - Hypothesis 文档明确 `@reproduce_failure` 主要用于临时重放，升级 Hypothesis 版本后可能失效。
+   - 生产治理动作：把最小失败输入沉淀为 `@example` 或失败样本库，不把 `@reproduce_failure` 当长期资产。
+2. 失败样本库要跨运行单元共享
+   - Hypothesis API 文档给出 `ExampleDatabase` 多后端（目录、Redis、GitHub Artifact）；
+   - 生产治理动作：CI 与本地共用失败样本存储层，保证“CI 红灯 -> 本地一键重放”。
+3. 增量 mutation 需要“定期全量校准”
+   - Stryker Incremental 文档指出：未跟踪运行环境变化时可能误判为“无需重测”，并提供 `--force` 进行全量重跑。
+   - 生产治理动作：增量模式常态运行，但每 N 轮或关键依赖变更后强制 `--force` 全量校准一次。
+
+## Cycle 109 最小执行策略（增量 + 校准）
+
+1. `contract verify`
+2. `property verify`（失败样本入共享 ExampleDatabase）
+3. `mutation verify --incremental`
+4. `mutation verify --force`（周期性校准）
+5. `replay invariant verify`
+
+## Cycle 109 检索锚点（L5）
+
+- `Hypothesis reproduce_failure not guaranteed across versions`
+- `Hypothesis ExampleDatabase GitHubArtifactDatabase RedisExampleDatabase`
+- `Stryker incremental may not detect environment changes --force`

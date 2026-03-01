@@ -1,3 +1,61 @@
+# Morning Brief（Nightshift Cycle 109）
+
+> 更新时间：2026-03-01 04:53 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/fullstack-engineering/contract-replay-verification-gate.md`（同化更新）
+2. `references/patterns/fullstack-engineering/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 团队用 `@reproduce_failure` 固化回归，但升级 Hypothesis 后重放失效，CI 与本地结果分叉
+  2. CI 找到的 property 失败样本无法被开发者本地复现，导致修复周期拉长
+  3. mutation 改成 incremental 后速度提升，但环境变化未被检测，质量门禁出现“假绿”
+- 已有 pattern 覆盖检查：
+  - `references/patterns/fullstack-engineering/contract-replay-verification-gate.md` 已覆盖同一元问题（contract + property + mutation + replay + invariant）
+- 判定：**同化**（补强失败重放稳定性边界 + 样本共享后端 + 增量 mutation 校准机制，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `top`（id=47202708）：`Microgpt`
+  - `show`（id=47201816）：`Show HN: Xmloxide – an agent made rust replacement for libxml2`
+  - `newest`（id=47203831）：`Show HN: I put Claude Code inside a Telegram bot for voice memos`
+
+### 官方证据链（不确定点补链）
+
+- Hypothesis `replaying failures`：`@reproduce_failure` 适合临时重放，不保证跨版本长期稳定；文档建议用 `@example` 固化可复现样本
+- Hypothesis `API`：`ExampleDatabase` 支持目录、Redis、GitHub Artifact 等后端，适合做 CI/本地共享失败样本库
+- StrykerJS `incremental`：文档明确增量模式不一定能检测到环境变化，可用 `--force` 做全量校准
+
+### 检索测试（L5，写后执行）
+
+- Query A：`Hypothesis reproduce_failure not guaranteed across versions`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`（1/1）
+  - 动作：失败样本从 `@reproduce_failure` 升级为 `@example` / 数据库存档
+- Query B：`ExampleDatabase GitHubArtifactDatabase RedisExampleDatabase`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`（1/1）
+  - 动作：CI 与本地共享失败样本后端，缩短回归闭环
+- Query C：`Stryker incremental --force calibration`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`（1/1）
+  - 动作：增量 mutation 常态运行 + 周期 `--force` 全量校准
+
+### 约束检查
+
+- per-topic <= 5：通过（fullstack-engineering=4）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：本轮 cycle=109（下一轮 cycle=110 强制压缩）
+
+---
 # Morning Brief（Nightshift Cycle 108）
 
 > 更新时间：2026-03-01 12:58 UTC  
