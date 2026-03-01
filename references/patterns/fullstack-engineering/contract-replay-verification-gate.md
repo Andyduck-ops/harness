@@ -2,7 +2,7 @@
 name: contract-replay-verification-gate
 topic: fullstack-engineering
 confidence: 0.85
-verified_count: 16
+verified_count: 17
 sources:
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (2026-03-01)
   - Hacker News top/show/new snapshot (2026-03-01)
@@ -21,6 +21,12 @@ sources:
   - Hypothesis docs (targeted property-based testing via target()) (2026-03-01)
   - Hypothesis replaying failures docs（@reproduce_failure stability caveat + @example workflow）(2026-03-01)
   - Hypothesis API docs（ExampleDatabase backends: file/redis/github artifact）(2026-03-01)
+  - Hypothesis settings docs（CI profile defaults: `derandomize=True`, `print_blob=True`, `deadline=None`）(2026-03-01)
+  - Hypothesis API docs（`fuzz_one_input` ignores `max_examples`/`derandomize`/`database`/`deadline` 等设置）(2026-03-01)
+  - fast-check docs（外部 fake data 生成器需支持 seed + replay index 可重放）(2026-03-01)
+  - StrykerJS configuration docs（`thresholds.break` 默认 `null`，未配置不会阻断构建）(2026-03-01)
+  - StrykerJS configuration docs（mutant timeout 判定公式：`timeoutMS + timeoutFactor * test_time`）(2026-03-01)
+  - HN lanes snapshot（news: MCP server context reduction, show: profile picture Chrome extension, newest: split context window）(2026-03-01)
   - OpenAI Harness engineering (observability + long-run loops) (2026-02-11)
 last_verified: 2026-03-01
 rank: 2
@@ -210,3 +216,34 @@ rank: 2
 - `Hypothesis reproduce_failure not guaranteed across versions`
 - `Hypothesis ExampleDatabase GitHubArtifactDatabase RedisExampleDatabase`
 - `Stryker incremental may not detect environment changes --force`
+
+## Cycle 122 同化增量：确定性测试合同（CI/本地一致性）
+
+目标：解决 AI 代码测试里“同一失败在 CI 和本地语义不一致”的同一元问题，避免把偶然稳定误判为质量稳定。
+
+1. Property 运行策略必须显式 profile 化
+   - Hypothesis settings 文档给出 `ci` profile：`derandomize=True`、`print_blob=True`、`deadline=None`，并抑制 `too_slow` 健康检查噪声。
+   - 治理动作：把 CI profile 固化为仓库标准，禁止开发者本地隐式 profile 漂移后直接作为门禁结果。
+2. Fuzz Harness 与 Property Gate 不能混用配置语义
+   - Hypothesis API 文档明确 `fuzz_one_input` 会忽略 `max_examples`、`derandomize`、`database`、`deadline`、`report_multiple_bugs` 等设置。
+   - 治理动作：把 fuzz 模式定位为“补充探测通道”，主门禁仍使用可重放、可沉淀样本的 property 配置。
+3. 外部随机数据源必须满足 replay 合同
+   - fast-check 文档强调外部 fake data 生成器若不能基于 `seed` 与 `replay index` 重放，将破坏 shrinking 和失败复现。
+   - 治理动作：把“可重放随机源”作为 property gate 前置验收项，不合格数据源禁止进入门禁。
+4. Mutation 门禁默认不是阻断态，需显式拉闸
+   - StrykerJS 配置文档给出 `thresholds.break` 默认 `null`；未设阈值时 mutation 分数不会自动阻断构建。
+   - 治理动作：流水线强制声明 `thresholds.break`，并把阈值变更纳入 code review。
+5. Mutant timeout 需按基线时间建模
+   - StrykerJS 以 `timeoutMS + timeoutFactor * test_time` 判定超时；AI 代码引入慢测试后，阈值不当会导致“误杀/漏杀”。
+   - 治理动作：按稳定基线更新 timeout 参数，避免把性能波动当成 mutation 质量结论。
+6. Cycle 122 同化结论（L2）
+   - 新证据仍属于同一元问题：`contract + property + mutation + replay + invariant` 的可执行门禁。
+   - 判定：同化到当前 canonical pattern，不新建 topic/pattern。
+
+## Cycle 122 检索锚点（L5）
+
+- `Hypothesis ci profile derandomize print_blob deadline none`
+- `Hypothesis fuzz_one_input ignores derandomize database deadline`
+- `fast-check fake data seed replay index shrink reproducibility`
+- `Stryker thresholds.break default null`
+- `Stryker timeoutMS timeoutFactor mutant timeout formula`

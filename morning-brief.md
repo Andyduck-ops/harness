@@ -1,3 +1,72 @@
+# Morning Brief（Nightshift Cycle 122）
+
+> 更新时间：2026-03-01 06:17 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/fullstack-engineering/contract-replay-verification-gate.md`（同化更新）
+2. `references/patterns/fullstack-engineering/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 同一 property 失败在 CI 能重放、在本地却不可重放，导致修复动作不可验证
+  2. 团队把 Hypothesis fuzz harness 当成主门禁，忽略其配置语义差异，回归结果漂移
+  3. mutation 流水线未显式配置 `thresholds.break` 或 timeout 基线，导致“看起来跑了”但未形成阻断
+- 覆盖检查：
+  - 归属同一元问题：`contract + property + mutation + replay + invariant`
+  - 判定：**同化**到 `contract-replay-verification-gate`（不新建）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`（HTTP 301）
+- HN 三车道（2026-03-01）
+  - `news/top`: `MCP server that reduces Claude Code context consumption by 98%`
+  - `show`: `Show HN: Zoom in and update your profile picture with this Chrome extension`
+  - `newest`: `How to split your context window in two`
+
+### 官方证据链（本轮新增）
+
+- Hypothesis settings docs：`ci` profile 默认 `derandomize=True`、`print_blob=True`、`deadline=None`
+  - `https://hypothesis.readthedocs.io/en/latest/tutorial/settings.html`
+- Hypothesis API docs：`fuzz_one_input` 会忽略 `max_examples`/`derandomize`/`database`/`deadline` 等设置
+  - `https://hypothesis.readthedocs.io/en/latest/reference/api.html#hypothesis.fuzz_one_input`
+- fast-check docs：外部 fake data 生成器需要满足 `seed + replay index` 可重放
+  - `https://fast-check.dev/docs/tutorials/detect-race-conditions/your-first-race-condition-test/`
+- StrykerJS configuration docs：`thresholds.break` 默认 `null`；超时判定 `timeoutMS + timeoutFactor * test_time`
+  - `https://stryker-mutator.io/docs/stryker-js/configuration/`
+
+### 检索测试（L5，写后执行）
+
+- Query A：`Hypothesis ci profile derandomize print_blob deadline none`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md:245`
+  - 动作：固定 CI profile，禁止本地隐式 profile 漂移直接入闸
+- Query B：`Hypothesis fuzz_one_input ignores derandomize database deadline`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md:246`
+  - 动作：fuzz 通道与主 property gate 分离治理
+- Query C：`fast-check fake data seed replay index shrink reproducibility`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md:247`
+  - 动作：外部随机源必须通过 replay 合同验收
+- Query D：`Stryker thresholds.break default null`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md:248`
+  - 动作：强制设置 mutation break 阈值为阻断态
+- Query E：`Stryker timeoutMS timeoutFactor mutant timeout formula`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md:249`
+  - 动作：按稳定基线维护 timeout 参数，防止门禁失真
+
+### 约束检查
+
+- per-topic <= 5：通过（fullstack-engineering=4）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：下一次窗口为 cycle=125（本轮非压缩窗口）
+
+---
 # Morning Brief（Nightshift Cycle 121）
 
 > 更新时间：2026-03-01 06:12 UTC  
@@ -2962,69 +3031,6 @@
 1. 输出 `contradiction_sla_report.json` 与 `tombstone_registry.json` 的 schema + lint。
 2. 将 `contradiction_sla_pass`、`contradiction_tombstone_clear` 接入 candidate->issue 与 merge queue 双门禁。
 3. 增加 `requalify_packet` 的最小证据要求（new_evidence_digest + new_lane_snapshot + reapprove_ticket）。
-
-
----
-# Morning Brief（Nightshift Cycle 73）
-
-> 更新时间：2026-02-28 23:58 UTC  
-> 本轮目标：把“社区信号与官方规则矛盾”从可忽略日志升级为阻断性控制面门禁。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/control-plane-governance/contradiction-ledger-freeze-gate.md`
-2. `references/patterns/control-plane-governance/_index.md`
-3. `references/patterns/_master_index.md`
-4. `morning-brief.md`
-5. `.nightshift/state.json`
-
-### 激进动态策略执行（本轮）
-
-- `expand`：新增方向
-  - `冲突账本冻结门禁（contradiction-ledger freeze gate）`
-  - reason: 社区热度与官方规则冲突时，缺少结构化冻结会导致错误晋级在下一轮被继续放大。
-- `split`：拆分方向
-  - from: `证据时效验签一体化（freshness + provenance ratification gate）`
-  - into: `证据冲突账本门禁（evidence contradiction ledger gate）`
-  - into: `冲突解决复批门禁（conflict-resolution reapproval gate）`
-  - reason: “冲突识别”与“冲突解锁批准”是两个独立失效面，必须分别设阈值与阻断动作。
-- `merge`：合并方向
-  - from: `Claim-ID 强绑定治理（claim_id -> hn_item_id -> outline_key binding）`
-  - from: `墓碑晋级冻结门禁（tombstone promotion freeze gate）`
-  - into: `Claim 生命周期冻结治理（claim lifecycle freeze governance）`
-  - reason: 两者都在约束 claim 可追溯与失效处置，合并后减少同构 pattern 漂移。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist。
-- OPML 入口版本（2026-02-28）
-  - Gist: `e6d2bf860ccc367fe37ff953ba6de66b`
-  - `updated_at=2026-02-28T19:33:01Z`，`history_count=6`
-- HN 三车道页面采样（2026-02-28T23:51Z）
-  - news/top: item `47200342` — `MinIO Is Dead, Long Live MinIO`
-  - show: item `47195123` — `Show HN: Now I Get It...`
-  - newest: item `47201858` — `As SuperAgers age...`
-- HN API 交叉采样（同窗口）
-  - `topstories[0]=47200342`
-  - `showstories[0]=47195123`
-  - `newstories[0]=47201885`
-- 官方文档补链（2026-02-28）
-  - GitHub Protected Branches + Required checks（不可绕过合并门禁）
-  - GitHub Workflow Artifacts（证据与冲突报告可回放）
-  - GitHub Issue Forms（冲突字段可结构化必填）
-  - GitHub `merge_group`（队列场景需独立触发检查）
-
-### 本轮结论
-
-- 当社区信号与官方规则冲突时，系统必须先 `freeze`，再 `reverify + reapprove`，否则会在自动化里持续误晋级。
-- 冲突治理应成为独立控制面，不应内嵌在普通 freshness/provenance 规则里隐式处理。
-- `merge_group` 若不接冲突门禁，会形成“PR 过检但队列绕过”的审计断点。
-
-### Cycle 74 预载任务
-
-1. 补 `contradiction_ledger.json` 与 `conflict_resolution_report.json` 的 schema + lint。
-2. 将 `conflict_freeze_pass`、`conflict_resolution_pass` 接入 candidate->issue 与 merge queue 双门禁。
-3. 给冲突 `open > 24h` 增加自动升级到人工裁决队列的处置模板。
 
 
 ---
