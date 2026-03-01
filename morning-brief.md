@@ -1,3 +1,60 @@
+# Morning Brief（Nightshift Cycle 77）
+
+> 更新时间：2026-03-01 00:16 UTC  
+> 本轮目标：在“冲突入口必填”之后，补齐“schema 漂移兼容门禁”，阻断可提交但不可回放的冲突恢复链路。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/control-plane-governance/conflict-form-schema-drift-gate.md`
+2. `references/patterns/control-plane-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `冲突字段兼容回放门禁（conflict schema compatibility replay gate）`
+  - reason: required 字段已覆盖“是否有字段”，但未覆盖“字段语义版本兼容”，回放链路仍有失效面。
+- `split`：拆分方向
+  - from: `冲突字段版本漂移门禁（conflict form-schema drift gate）`
+  - into: `冲突入口表单版本漂移门禁（conflict intake form-version drift gate）`
+  - into: `冲突仲裁包版本漂移门禁（conflict arbitration-packet version drift gate）`
+  - reason: intake schema 与 arbitration packet schema 的演进节奏不同，必须独立门禁。
+- `merge`：合并方向
+  - from: `Shownew->Top 时滞复采样一体门禁（shownew-top lag-reverify unified gate）`
+  - from: `Shownew->Top 证据半衰期预算治理（shownew-top evidence half-life budget gate）`
+  - into: `Shownew->Top 时滞半衰期一体门禁（shownew-top lag-half-life unified gate）`
+  - reason: 两方向都在治理 shownew->top 证据时效，合并后减少同构预算漂移。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML Gist  
+  - 最终 URL: `https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+  - 页面状态: 可见 `Revisions 6`，`Last active February 28, 2026`
+- HN 三车道采样（2026-03-01）
+  - top/news: `https://news.ycombinator.com/item?id=47196582`
+  - show: `https://news.ycombinator.com/item?id=47195123`
+  - newest: `https://news.ycombinator.com/item?id=47201858`
+- 官方文档补链（2026-03-01）
+  - issue form 语法与 required 字段：`https://docs.github.com/en/enterprise-server@3.20/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms`
+  - issue form 常见校验错误：`https://docs.github.com/en/enterprise-server@3.20/communities/using-templates-to-encourage-useful-issues-and-pull-requests/common-validation-errors-when-creating-issue-forms`
+  - merge queue 独立触发路径（`merge_group`）：`https://docs.github.com/en/actions/reference/events-that-trigger-workflows#merge_group`
+  - required status checks 硬门禁：`https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks`
+
+### 本轮结论
+
+- `conflict_intake_pass` 解决的是“字段缺失”，`conflict_schema_compat_pass` 解决的是“字段可回放”。
+- 冲突治理从“入口必填”演化到“入口版本兼容”，才能避免夜间自动流程堆积隐性仲裁债务。
+- schema 兼容检查必须在 `pull_request + merge_group` 双路径同构执行，否则队列会成为旧 schema 旁路面。
+
+### Cycle 78 预载任务
+
+1. 产出 `schema_diff_manifest.json` 与 `schema_compat_report.json` 的固定字段规范。
+2. 将 `conflict_schema_compat_pass` 接入 candidate->issue 提升门禁与 merge queue 同构门禁。
+3. 为 `form_schema_version` 定义兼容窗口策略（N, N-1）与淘汰节奏。
+
+---
 # Morning Brief（Nightshift Cycle 76）
 
 > 更新时间：2026-03-01 00:10 UTC  

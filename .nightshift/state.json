@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-03-01T00:10:11Z",
-  "cycle": 76,
+  "updated_at": "2026-03-01T00:16:10Z",
+  "cycle": 77,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -18,8 +18,6 @@
     "Show 车道可执行性门禁（show-lane executability gate）",
     "Shownew 跨车道复采样时滞门禁（shownew-cross-lane-lag-reverify gate）",
     "Shownew 首现时滞下限门禁（shownew-min-lag gate）",
-    "Shownew->Top 时滞复采样一体门禁（shownew-top lag-reverify unified gate）",
-    "Shownew->Top 证据半衰期预算治理（shownew-top evidence half-life budget gate）",
     "merge_group 回放锚定治理（merge_group replay anchoring gate）",
     "上下文燃烧-回放冻结协同治理（context burn replay-freeze governance）",
     "主题对比回退斜率治理（theme contrast regression slope gate）",
@@ -82,36 +80,39 @@
     "高对比主题压测治理（high-contrast theme stress gate）",
     "Show-Top 共振冷却一体门禁（show-top resonance-cooldown unified gate）",
     "冲突恢复双相合同门禁（arbitration reverify-reapprove gate）",
-    "冲突字段版本漂移门禁（conflict form-schema drift gate）"
+    "冲突字段兼容回放门禁（conflict schema compatibility replay gate）",
+    "冲突入口表单版本漂移门禁（conflict intake form-version drift gate）",
+    "冲突仲裁包版本漂移门禁（conflict arbitration-packet version drift gate）",
+    "Shownew->Top 时滞半衰期一体门禁（shownew-top lag-half-life unified gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 76,
+    "last_cycle": 77,
     "actions": [
       {
         "type": "expand",
-        "added": "冲突字段版本漂移门禁（conflict form-schema drift gate）",
-        "reason": "冲突入口结构化后会出现表单 schema 演进失配，需单独门禁保证历史 claim 可复验。"
+        "added": "冲突字段兼容回放门禁（conflict schema compatibility replay gate）",
+        "reason": "required 字段只保证存在性，不保证 schema 语义兼容；需要独立门禁保障回放可执行。"
       },
       {
         "type": "split",
         "from": [
-          "冲突仲裁双相合同治理（conflict arbitration dual-phase contract gate）"
+          "冲突字段版本漂移门禁（conflict form-schema drift gate）"
         ],
         "into": [
-          "冲突恢复双相合同门禁（arbitration reverify-reapprove gate）",
-          "冲突入口结构化必填门禁（conflict-intake required-form gate）"
+          "冲突入口表单版本漂移门禁（conflict intake form-version drift gate）",
+          "冲突仲裁包版本漂移门禁（conflict arbitration-packet version drift gate）"
         ],
-        "reason": "恢复阶段合同与入口字段完备性是两个独立失效面，拆分后可分别阻断。"
+        "reason": "入口表单与仲裁包属于不同演进面，拆分后可按链路分别阻断。"
       },
       {
         "type": "merge",
         "from": [
-          "Show-Top 共振窗口门禁（show-top resonance-window gate）",
-          "Show-Top 冷却预算门禁（show-top cooldown-budget gate）"
+          "Shownew->Top 时滞复采样一体门禁（shownew-top lag-reverify unified gate）",
+          "Shownew->Top 证据半衰期预算治理（shownew-top evidence half-life budget gate）"
         ],
-        "into": "Show-Top 共振冷却一体门禁（show-top resonance-cooldown unified gate）",
-        "reason": "两方向均治理 show/top 晋级节奏，合并可减少同构方向重复并统一预算参数。"
+        "into": "Shownew->Top 时滞半衰期一体门禁（shownew-top lag-half-life unified gate）",
+        "reason": "两方向都在治理 shownew->top 的证据时效预算，合并可减少同构门禁参数漂移。"
       }
     ]
   },
@@ -139,6 +140,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/control-plane-governance/conflict-intake-required-form-gate.md",
-  "last_cycle_commit": "pending-cycle-76"
+  "last_pattern": "references/patterns/control-plane-governance/conflict-form-schema-drift-gate.md",
+  "last_cycle_commit": "pending-cycle-77"
 }
