@@ -2,7 +2,7 @@
 name: contract-replay-verification-gate
 topic: fullstack-engineering
 confidence: 0.85
-verified_count: 17
+verified_count: 18
 sources:
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (2026-03-01)
   - Hacker News top/show/new snapshot (2026-03-01)
@@ -26,6 +26,9 @@ sources:
   - fast-check docs（外部 fake data 生成器需支持 seed + replay index 可重放）(2026-03-01)
   - StrykerJS configuration docs（`thresholds.break` 默认 `null`，未配置不会阻断构建）(2026-03-01)
   - StrykerJS configuration docs（mutant timeout 判定公式：`timeoutMS + timeoutFactor * test_time`）(2026-03-01)
+  - Hypothesis stateful docs（`@initialize` 不可加 precondition；可用 `check_during_init` 控制初始化阶段是否执行 invariants）(2026-03-01)
+  - fast-check scheduler docs（`waitIdle` 仅等待受控任务；外部异步源需显式纳入 scheduler）(2026-03-01)
+  - HN lanes snapshot（news: id=47245871 "Show HN: SaaS builder...", show: id=47245760 "Show HN: Memctl...", newest: id=47245071 "Deep Learning Is Not So Mysterious or Different"）(2026-03-01)
   - HN lanes snapshot（news: MCP server context reduction, show: profile picture Chrome extension, newest: split context window）(2026-03-01)
   - OpenAI Harness engineering (observability + long-run loops) (2026-02-11)
 last_verified: 2026-03-01
@@ -247,3 +250,23 @@ rank: 2
 - `fast-check fake data seed replay index shrink reproducibility`
 - `Stryker thresholds.break default null`
 - `Stryker timeoutMS timeoutFactor mutant timeout formula`
+
+## Cycle 126 同化增量：状态泄漏可测化（初始化路径 + 调度边界）
+
+目标：解决 AI 代码常见“单步正确、序列失真”和“异步表面通过、后台泄漏未测到”的同一元问题。
+
+1. 初始化路径必须进入不变量验收面
+   - Hypothesis stateful 文档明确 `@initialize` 不支持 precondition，且可通过 `check_during_init` 控制初始化阶段是否执行 invariants。
+   - 治理动作：对资金、权限、缓存等高风险状态机，强制启用初始化阶段不变量校验，避免“初始状态已污染”却在后续步骤才暴露。
+2. 异步序列测试必须声明“受控任务边界”
+   - fast-check scheduler 文档明确 `waitIdle` 只会等待由 scheduler 包装的任务，未纳入 scheduler 的外部异步工作不会被等待。
+   - 治理动作：将外部队列、计时器、回调任务统一包装进 scheduler；否则禁止把 `waitIdle` 通过当作“无状态泄漏”证明。
+3. 同化判定（L2/L7）
+   - 新证据仍属于同一元问题：`contract + property + mutation + replay + invariant` 的执行门禁，只是补上“初始化不变量”和“受控异步边界”两块缺口。
+   - 判定：同化到当前 canonical pattern，不新建 topic/pattern。
+
+## Cycle 126 检索锚点（L5）
+
+- `Hypothesis initialize cannot have precondition check_during_init`
+- `fast-check scheduler waitIdle only scheduled tasks`
+- `AI 状态泄漏 初始化不变量 异步回调 未纳入 scheduler`

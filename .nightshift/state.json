@@ -1,7 +1,7 @@
 {
   "version": "1.1",
-  "updated_at": "2026-03-01T06:50:04Z",
-  "cycle": 125,
+  "updated_at": "2026-03-01T07:00:30Z",
+  "cycle": 126,
   "status": "idle",
   "mode": "CONSTRAINED_EXPANSION",
   "active_directions": [
@@ -14,7 +14,7 @@
   "dormant_directions": [],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 125,
+    "last_cycle": 126,
     "actions": [
       {
         "type": "compress",
@@ -283,6 +283,12 @@
         "reason": "cycle 125：将 PRD 信息保真新证据（Structured Outputs schema 子集/深度与属性预算、optional null union 编码约束、schema budget gate）同化到 product-delivery canonical pattern（不新建）",
         "updated_pattern": "references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md",
         "new_patterns": 0
+      },
+      {
+        "type": "assimilate",
+        "reason": "cycle 126：将 AI 代码有效测试新证据（Hypothesis 初始化 invariants 边界 + fast-check scheduler waitIdle 受控任务语义）同化到 fullstack canonical pattern（不新建）",
+        "updated_pattern": "references/patterns/fullstack-engineering/contract-replay-verification-gate.md",
+        "new_patterns": 0
       }
     ]
   },
@@ -295,8 +301,8 @@
     "https://platform.openai.com/docs/guides/conversation-state"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md",
-  "last_cycle_commit": "pending-cycle-125",
+  "last_pattern": "references/patterns/fullstack-engineering/contract-replay-verification-gate.md",
+  "last_cycle_commit": "pending-cycle-126",
   "constraints": {
     "per_topic_max_patterns": 5,
     "active_direction_max": 15,

@@ -1,3 +1,62 @@
+# Morning Brief（Nightshift Cycle 126）
+
+> 更新时间：2026-03-01 06:59 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/fullstack-engineering/contract-replay-verification-gate.md`（同化更新）
+2. `references/patterns/fullstack-engineering/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2/L7）
+
+- 新发现可解决的 3 个场景：
+  1. 状态机初始化阶段已被污染，但测试只在后续步骤校验，导致“首步即错”被漏检
+  2. 异步任务未纳入调度器，`waitIdle` 后仍有后台副作用，形成“表面通过、实际泄漏”
+  3. AI 代码在边界序列上通过样例测试，但在真实调度下出现隐式依赖
+- 覆盖检查：
+  - 归属同一元问题：`contract + property + mutation + replay + invariant`
+  - 判定：**同化**到 `contract-replay-verification-gate`（不新建）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news/top`: id=47245871 — Show HN: SaaS builder that'll launch your app and call users
+  - `show`: id=47245760 — Show HN: Memctl
+  - `newest`: id=47245071 — Deep Learning Is Not So Mysterious or Different
+
+### 官方证据链（本轮新增）
+
+- Hypothesis stateful 文档：`@initialize` 不支持 precondition，且可通过 `check_during_init` 控制初始化阶段是否执行 invariants
+  - `https://hypothesis.readthedocs.io/en/latest/stateful.html`
+- fast-check scheduler 文档：`waitIdle` 仅等待受控任务；外部异步源若未纳入 scheduler，将造成“假空闲”
+  - `https://fast-check.dev/docs/advanced/race-conditions/`
+
+### 检索测试（L5，写后执行）
+
+- Query A：`Hypothesis initialize cannot have precondition check_during_init`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md:259`
+  - 动作：将“初始化阶段不变量校验”设为状态机测试默认门禁
+- Query B：`fast-check scheduler waitIdle only scheduled tasks`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md:262`
+  - 动作：将外部异步源统一包装进 scheduler，禁用未纳管的 `waitIdle` 通过结论
+- Query C：`AI 状态泄漏 初始化不变量 异步回调 未纳入 scheduler`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md:254`
+  - 动作：在 replay gate 前新增“初始化一致性 + 调度边界一致性”双检查
+
+### 约束检查
+
+- per-topic <= 5：通过（fullstack-engineering=4）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：下一窗口为 cycle=130（本轮非压缩窗口）
+
+---
 # Morning Brief（Nightshift Cycle 125）
 
 > 更新时间：2026-03-01 06:49 UTC  
