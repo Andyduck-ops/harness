@@ -8,3 +8,4 @@
 - [queue-fallback-recovery-threshold-gate](./queue-fallback-recovery-threshold-gate.md) — 将 fallback 容错模式切换转为恢复阈值门禁，阻断“只降级不恢复”的长期质量债务
 - [queue-fallback-hysteresis-cooldown-gate](./queue-fallback-hysteresis-cooldown-gate.md) — 将 fallback 恢复升级为双阈值滞回+冷却门禁，阻断“恢复后立刻回退”的模式振荡
 - [queue-pending-deadlock-self-heal-gate](./queue-pending-deadlock-self-heal-gate.md) — 将 Pending 僵局治理升级为分类自愈闭环，阻断“盲重试放大为长期吞吐黑洞”
+- [queue-rerun-blackhole-isolation-gate](./queue-rerun-blackhole-isolation-gate.md) — 将“重试”升级为“有效重试证明+黑洞隔离”，阻断 trigger_missing 场景下的无限无效重跑

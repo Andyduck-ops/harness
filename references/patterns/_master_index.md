@@ -97,6 +97,7 @@
 | 3 | [queue-fallback-recovery-threshold-gate](./queue-governance/queue-fallback-recovery-threshold-gate.md) | queue-governance | 0.78 | OPML + HN(news/show/new + API) + GitHub Merge Queue + merge_group |
 | 3 | [queue-fallback-hysteresis-cooldown-gate](./queue-governance/queue-fallback-hysteresis-cooldown-gate.md) | queue-governance | 0.79 | OPML + HN(news/show/new + API) + GitHub Merge Queue + merge_group |
 | 3 | [queue-pending-deadlock-self-heal-gate](./queue-governance/queue-pending-deadlock-self-heal-gate.md) | queue-governance | 0.78 | OPML + HN(top/show/new + API) + GitHub merge_queue + merge_group + Required Checks + Re-run |
+| 3 | [queue-rerun-blackhole-isolation-gate](./queue-governance/queue-rerun-blackhole-isolation-gate.md) | queue-governance | 0.79 | OPML + HN(top/show/new + API) + GitHub merge_queue + merge_group + Required Checks + Re-run |
 | 3 | [required-check-pending-deadlock-gate](./ci-governance/required-check-pending-deadlock-gate.md) | ci-governance | 0.77 | OPML + HN(top/show/new) + GitHub Actions + Required Checks |
 | 3 | [24h-unattended-ai-loop](./autonomous-ops/24h-unattended-ai-loop.md) | autonomous-ops | 0.72 | OpenAI + HN |
 | 3 | [prd-to-issue-execution-loop](./product-delivery/prd-to-issue-execution-loop.md) | product-delivery | 0.70 | Harness + GitHub + HN |
@@ -137,11 +138,11 @@
 | [source-governance/](./source-governance/) | 2 | 社区信号与官方规范的三角校验、订阅体身份约束与晋级仲裁治理 |
 | [feed-governance/](./feed-governance/) | 4 | 短链入口、同窗预算与车道身份一致性治理 |
 | [discovery-governance/](./discovery-governance/) | 6 | shownew->top 时滞预算、show/newest/top 共振仲裁、可执行预检、冷却复采样与复现验签晋级治理 |
-| [queue-governance/](./queue-governance/) | 8 | merge queue 同构校验、队尾绿灯风险预算、重排重建/证据纪元失效与 Pending 僵局分类自愈闭环治理 |
+| [queue-governance/](./queue-governance/) | 9 | merge queue 同构校验、队尾绿灯风险预算、重排重建/证据纪元失效与 Pending 僵局分类自愈及无效重试黑洞隔离治理 |
 
 ## 统计
 
-- 总计：95 patterns
+- 总计：96 patterns
 - 平均 confidence：0.79
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：73 patterns
+- 待验证（<0.80）：74 patterns

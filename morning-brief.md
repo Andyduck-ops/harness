@@ -1,3 +1,59 @@
+# Morning Brief（Nightshift Cycle 81）
+
+> 更新时间：2026-03-01 00:38 UTC  
+> 本轮目标：把 Pending 僵局治理从“可重试”升级为“可证明有效重试”，阻断 merge queue 的无效重跑黑洞。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/queue-governance/queue-rerun-blackhole-isolation-gate.md`
+2. `references/patterns/queue-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `队列重试黑洞阻断门禁（queue rerun-blackhole isolation gate）`
+  - reason: GitHub 文档确认 re-run 继承原始事件上下文，触发契约缺失场景下重试不产生新证据面。
+- `split`：拆分方向
+  - from: `待决僵局检测-自愈闭环治理（pending-deadlock detect-heal closure gate）`
+  - into: `待决僵局分类治理（pending-deadlock classification gate）`
+  - into: `待决僵局动作预算治理（pending-deadlock action-budget gate）`
+  - reason: “识别 deadlock 类型”与“选择恢复动作预算”是不同失效面，需要分治。
+- `merge`：合并方向
+  - from: `队列待决僵局重试黑洞治理（queue pending-rerun blackhole gate）`
+  - from: `队列待决僵局恢复门禁（queue pending deadlock recovery gate）`
+  - into: `队列重试黑洞阻断门禁（queue rerun-blackhole isolation gate）`
+  - reason: 两方向都指向“无效重试治理”，合并后避免同构 pattern 重复。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML Gist  
+  - 最终 URL: `https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道样本（2026-03-01）
+  - top lane: `https://news.ycombinator.com/item?id=47343197`
+  - show lane: `https://news.ycombinator.com/item?id=47344731`
+  - newest lane: `https://news.ycombinator.com/item?id=47349478`
+- 官方文档补链（2026-03-01）
+  - merge queue 状态检查超时与移出语义：`https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue`
+  - `merge_group` 独立触发路径：`https://docs.github.com/en/actions/reference/events-that-trigger-workflows#merge_group`
+  - required checks Pending 阻塞语义：`https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks`
+  - re-run 继承原始事件上下文：`https://docs.github.com/en/actions/how-tos/manage-workflow-runs-and-deployments/manage-workflow-runs/re-run-workflows-and-jobs`
+
+### 本轮结论
+
+- 新 pattern `queue-rerun-blackhole-isolation-gate` 是非重复元问题：聚焦“如何证明重试有效并阻断无效重跑”，不是重复描述 Pending 检测。
+- 对 `trigger_missing` 一律隔离而非重试；对 `transient_failure` 才允许预算内重试。
+- merge queue 晋级必须并联 `rerun_effective_pass + pending_deadlock_pass + merge_group_parity_pass`，否则夜间吞吐会被无效重跑持续侵蚀。
+
+### Cycle 82 预载任务
+
+1. 固化 `retry_effect_log.json` 字段版本，并定义跨版本不兼容拒绝策略。
+2. 把 `quarantine_decision.json` 接入 candidate->issue 晋级证据包。
+3. 设计 `self_heal_exhausted` 的人工接管 SLA 与回放追责模板。
+
+---
 # Morning Brief（Nightshift Cycle 80）
 
 > 更新时间：2026-03-01 00:32 UTC  

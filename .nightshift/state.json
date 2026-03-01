@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-03-01T00:34:08Z",
-  "cycle": 80,
+  "updated_at": "2026-03-01T00:38:49Z",
+  "cycle": 81,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -86,39 +86,39 @@
     "路径过滤可观测治理（path-filter observability governance）",
     "队列待决僵局自愈治理（queue pending deadlock self-heal gate）",
     "冲突入口兼容回放门禁（conflict intake compatibility replay gate）",
-    "队列待决僵局重试黑洞治理（queue pending-rerun blackhole gate）",
     "队列待决僵局检测门禁（queue pending deadlock detection gate）",
-    "队列待决僵局恢复门禁（queue pending deadlock recovery gate）",
-    "待决僵局检测-自愈闭环治理（pending-deadlock detect-heal closure gate）"
+    "队列重试黑洞阻断门禁（queue rerun-blackhole isolation gate）",
+    "待决僵局分类治理（pending-deadlock classification gate）",
+    "待决僵局动作预算治理（pending-deadlock action-budget gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 80,
+    "last_cycle": 81,
     "actions": [
       {
         "type": "expand",
-        "added": "队列待决僵局重试黑洞治理（queue pending-rerun blackhole gate）",
-        "reason": "GitHub re-run 继承原始事件上下文，无法修复触发契约缺失；需要独立治理盲重试黑洞。"
+        "added": "队列重试黑洞阻断门禁（queue rerun-blackhole isolation gate）",
+        "reason": "re-run 在原始事件上下文内执行，无法修复 trigger_missing；需要单独治理无效重跑黑洞。"
       },
       {
         "type": "split",
         "from": [
-          "队列待决僵局自愈治理（queue pending deadlock self-heal gate）"
+          "待决僵局检测-自愈闭环治理（pending-deadlock detect-heal closure gate）"
         ],
         "into": [
-          "队列待决僵局检测门禁（queue pending deadlock detection gate）",
-          "队列待决僵局恢复门禁（queue pending deadlock recovery gate）"
+          "待决僵局分类治理（pending-deadlock classification gate）",
+          "待决僵局动作预算治理（pending-deadlock action-budget gate）"
         ],
-        "reason": "僵局检测与僵局恢复是不同失效面，拆分后可分别定义准确性与动作安全预算。"
+        "reason": "僵局识别准确性与恢复动作安全预算属于不同失效面，拆分后可独立验收。"
       },
       {
         "type": "merge",
         "from": [
-          "必跑检查待决僵局治理（required-check pending deadlock governance）",
-          "队列待决僵局自愈治理（queue pending deadlock self-heal gate）"
+          "队列待决僵局重试黑洞治理（queue pending-rerun blackhole gate）",
+          "队列待决僵局恢复门禁（queue pending deadlock recovery gate）"
         ],
-        "into": "待决僵局检测-自愈闭环治理（pending-deadlock detect-heal closure gate）",
-        "reason": "两方向本质都在治理 Pending 僵局收敛，合并可避免同构 pattern 重复。"
+        "into": "队列重试黑洞阻断门禁（queue rerun-blackhole isolation gate）",
+        "reason": "两方向均治理无效重试收敛，合并可避免同构 pattern 与重复门禁。"
       }
     ]
   },
@@ -146,6 +146,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/queue-governance/queue-pending-deadlock-self-heal-gate.md",
-  "last_cycle_commit": "pending-cycle-80"
+  "last_pattern": "references/patterns/queue-governance/queue-rerun-blackhole-isolation-gate.md",
+  "last_cycle_commit": "pending-cycle-81"
 }
