@@ -1,3 +1,67 @@
+# Morning Brief（Nightshift Cycle 99）
+
+> 更新时间：2026-03-01 03:54 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 多 agent handoff 已做最小化，但仍缺统一运行级策略，导致各链路裁剪策略不一致
+  2. 会话持久化存在“半写入”风险，恢复时难以保证 checkpoint 一致性
+  3. 失败路径常用“重试兜底”，缺少基于任务输出的条件路由恢复编排
+- 已有 pattern 覆盖检查：
+  - `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md` 已覆盖同一元问题（scope-identity-memory 三联门禁）
+- 判定：**同化**（补强 run-level 输入裁剪 + 事务边界 + 条件路由恢复，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `top`: `The curious case of shell commands and language models`
+  - `show`: `Launch HN: Yood (YC W26) – AI note-taker for therapy`
+  - `newest`: `Only: Free and open source app to monitor your social media feed`
+
+### 官方证据链（不确定点补链）
+
+- OpenAI Agents SDK RunConfig：`handoff_input_filter` 与 `group_id` 可在运行级统一通信裁剪和追踪关联
+- OpenAI Agents SDK Tracing：`group_id` 用于跨 traces 关联同一 workflow/thread
+- OpenAI Agents SDK Handoffs：`input_filter` 支持对 handoff 输入做结构化重写
+- OpenAI Agents SDK Sessions：`SQLiteSession` 文档示例体现提交/回滚事务边界
+- CrewAI Event Listeners：事件总线监听可用于 handoff/异常/恢复审计
+- CrewAI Conditional Tasks：可按前置输出做条件分流，承载 fallback/recovery 执行路径
+
+### 检索测试（L5，写后执行）
+
+- Query A：`handoff_input_filter`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：执行 run-level 输入裁剪合同
+- Query B：`group_id`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：执行跨 agent 因果追踪统一主键
+- Query C：`SQLiteSession`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：执行 checkpoint 提交/回滚事务化约束
+- Query D：`ConditionalTask`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：执行失败分支条件路由
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：本轮 cycle=99（下一个强制压缩点=100）
+
+---
 # Morning Brief（Nightshift Cycle 98）
 
 > 更新时间：2026-03-01 03:50 UTC  

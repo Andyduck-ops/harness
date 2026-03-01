@@ -1,7 +1,7 @@
 {
   "version": "1.1",
-  "updated_at": "2026-03-01T03:50:09Z",
-  "cycle": 98,
+  "updated_at": "2026-03-01T03:54:30Z",
+  "cycle": 99,
   "status": "paused",
   "mode": "CONSTRAINED_EXPANSION",
   "active_directions": [
@@ -14,7 +14,7 @@
   "dormant_directions": [],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 98,
+    "last_cycle": 99,
     "actions": [
       {
         "type": "compress",
@@ -85,6 +85,12 @@
         "reason": "cycle 98：将 Agent SDK 生产恢复新证据（max_turns 错误分层恢复、group_id trace 关联、Anthropic context 管理、CrewAI 事件审计、Kode checkpoint-first 架构）同化到 runtime-governance canonical pattern（不新建）",
         "updated_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
         "new_patterns": 0
+      },
+      {
+        "type": "assimilate",
+        "reason": "cycle 99：将 Agent SDK 生产恢复新证据（RunConfig handoff_input_filter/group_id、SQLiteSession 事务边界、CrewAI ConditionalTask 条件路由、事件总线审计）同化到 runtime-governance canonical pattern（不新建）",
+        "updated_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
+        "new_patterns": 0
       }
     ]
   },
@@ -98,7 +104,7 @@
   ],
   "last_brief": "morning-brief.md",
   "last_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
-  "last_cycle_commit": "pending-cycle-98",
+  "last_cycle_commit": "pending-cycle-99",
   "constraints": {
     "per_topic_max_patterns": 5,
     "active_direction_max": 15,

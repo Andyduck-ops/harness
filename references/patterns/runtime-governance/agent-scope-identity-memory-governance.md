@@ -2,7 +2,7 @@
 name: agent-scope-identity-memory-governance
 topic: runtime-governance
 confidence: 0.86
-verified_count: 18
+verified_count: 19
 sources:
   - OpenAI Agent Platform docs (Python/TypeScript/Go support) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (2026-03-01)
@@ -12,6 +12,7 @@ sources:
   - OpenAI Agents SDK Tracing docs（group_id trace correlation）(2026-03-01)
   - OpenAI Agents SDK Python handoffs docs（nest_handoff_history/handoff input shaping）(2026-03-01)
   - OpenAI Agents SDK RunConfig docs（groupId/handoffInputFilter）(2026-03-01)
+  - OpenAI Agents SDK sessions docs（SQLiteSession transaction commit/rollback semantics）(2026-03-01)
   - OpenAI Agents SDK sessions docs（EncryptedSession API / TTL / key derivation）(2026-03-01)
   - OpenAI API Background mode guide (2026-03-01)
   - OpenAI API Conversations / conversation state docs (2026-03-01)
@@ -20,6 +21,7 @@ sources:
   - Anthropic API compaction docs（beta + non-ZDR constraints）(2026-03-01)
   - CrewAI Flows persistence docs (2026-03-01)
   - CrewAI Event Listeners docs（event bus instrumentation）(2026-03-01)
+  - CrewAI Conditional Tasks docs（runtime routing for fallback/recovery paths）(2026-03-01)
   - Kode Agent SDK README（stateful sessions / retry / multi-agent traceability）(2026-03-01)
   - Kode Agent SDK architecture README（7-stage checkpoint + stateless API/stateful worker）(2026-03-01)
   - HN top/show/new snapshots (2026-03-01)
@@ -110,6 +112,14 @@ Demo 能跑不等于 production 能跑。
 - **Kode 的长任务架构强调 checkpoint-first**：README 将架构拆为 `stateless API servers + stateful workers + shared store + queue decoupling`，并在多阶段流程中每阶段持久 checkpoint；可直接同化为“控制面无状态、执行面有状态”的恢复基线。
 - **社区热区信号持续一致**：HN `top/show/newest` 同窗都在强化同一主题：先解决状态与恢复，再扩张 agent 数量和自动化范围。
 
+## Cycle 99 同化增量（恢复合同细化：事务边界 + 条件路由）
+
+- **通信最小化与追踪主键应在运行级统一下发**：OpenAI Agents SDK `RunConfig` 同时提供 `handoff_input_filter` 与 `group_id`，适合把“输入裁剪”和“跨 agent 因果关联”做成同一个运行时合同，而不是散落到各 handoff 实现。
+- **会话持久层需要显式事务边界**：OpenAI `SQLiteSession` 文档示例体现了上下文管理器中的提交/回滚语义；生产恢复链应把“checkpoint 写入成功”视为可恢复前提，避免半写入状态导致回放漂移。
+- **恢复分支需要流程级条件路由，不只依赖重试**：CrewAI `ConditionalTask` 能依据前置任务输出做分支执行，适合作为“失败降级路径/人工复核路径”的执行面编排。
+- **事件审计需要覆盖 kickoff→handoff→recovery 全链路**：CrewAI Event Listeners 文档提供基于事件总线的监听挂点；应将 handoff、异常、恢复完成统一打点，和 OpenAI `group_id` 追踪做关联。
+- **社区信号继续验证“先稳态再扩张”**：HN 当窗 `top`（The curious case of shell commands and language models）、`show`（Launch HN: Yood）、`newest`（Only: Free and open source app to monitor your social media feed）仍显示实践侧关注点集中在可执行链路与运行稳定性。
+
 ## 合并来源
 
 - agent scope drift severity budget
@@ -118,6 +128,7 @@ Demo 能跑不等于 production 能跑。
 - agent memory partition least-privilege
 - OpenAI/CrewAI/Anthropic 官方文档 + Kode Agent SDK 官方仓库 README 中关于 state persistence、handoff、async recovery 的一手规范
 - HN top/show/new 与 OPML 作为“实践热区”信号，不单独作为入库依据
+- OpenAI 与 CrewAI 官方文档提供运行级配置、事务边界和条件路由证据；HN 仅作为热区侧证
 
 ## 检索测试
 
