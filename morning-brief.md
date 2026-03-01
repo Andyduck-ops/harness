@@ -1,3 +1,62 @@
+# Morning Brief（Nightshift Cycle 102）
+
+> 更新时间：2026-03-01 04:08 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. `groupId`、`handoffInputFilter`、`maxTurns` 分散配置导致运行合同漂移
+  2. 多 agent 故障排查仅靠日志回溯，缺少生命周期事件审计点
+  3. Go 执行面 session 后端硬编码，导致环境迁移/恢复策略难以统一
+- 已有 pattern 覆盖检查：
+  - `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md` 已覆盖同一元问题（state + communication + recovery）
+- 判定：**同化**（补强 RunConfig 合同化、lifecycle hooks 审计、go session backend 策略位）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `top`: `Huge pages and garbage collection in the Java virtual machine`
+  - `show`: `Show HN: Open social network`
+  - `newest`: `DuckDB + LLMs to parse and process arbitrary CSV files`
+
+### 官方证据链（不确定点补链）
+
+- OpenAI Agents SDK JS RunConfig：`groupId`、`handoffInputFilter`、`maxTurns` 可在运行级统一下发
+- OpenAI Agents SDK JS lifecycle hooks：提供 `agent/handoff/tool` 生命周期事件挂点
+- OpenAI Agents SDK JS running agents：`toTextStream`、event stream 与中断恢复链可协同
+- `openai-agents-go` README：SessionStore 抽象、memory/sqlite/redis 适配、hooks/retries/telemetry
+
+### 检索测试（L5，写后执行）
+
+- Query A：`RunConfig groupId handoffInputFilter maxTurns`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：把追踪、输入裁剪、回合预算收敛成单一运行合同
+- Query B：`lifecycle hooks agent_start handoff tool_start`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：以事件级审计替代“仅日志排障”
+- Query C：`openai-agents-go session store sqlite redis`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：将会话后端升级为运行时策略位，避免业务硬编码
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：本轮 cycle=102（下一个强制压缩点=105）
+
+---
 # Morning Brief（Nightshift Cycle 101）
 
 > 更新时间：2026-03-01 04:04 UTC  

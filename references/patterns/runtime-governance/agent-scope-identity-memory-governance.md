@@ -15,6 +15,8 @@ sources:
   - OpenAI Agents SDK sessions docs（SQLiteSession transaction commit/rollback semantics）(2026-03-01)
   - OpenAI Agents SDK sessions docs（EncryptedSession API / TTL / key derivation）(2026-03-01)
   - OpenAI Agents SDK JS running agents docs（session auto history + run_state resume）(2026-03-01)
+  - OpenAI Agents SDK JS RunConfig docs（groupId/handoffInputFilter/maxTurns）(2026-03-01)
+  - OpenAI Agents SDK JS Lifecycle hooks docs（agent/tool/handoff hooks for runtime audit）(2026-03-01)
   - OpenAI Agents SDK guardrails docs（run_in_parallel side-effect boundary）(2026-03-01)
   - OpenAI Agents SDK runner docs（error_handlers + max_turns lifecycle）(2026-03-01)
   - OpenAI API Background mode guide (2026-03-01)
@@ -28,6 +30,7 @@ sources:
   - CrewAI Conditional Tasks docs（runtime routing for fallback/recovery paths）(2026-03-01)
   - Kode Agent SDK README（stateful sessions / retry / multi-agent traceability）(2026-03-01)
   - Kode Agent SDK architecture README（7-stage checkpoint + stateless API/stateful worker）(2026-03-01)
+  - nlpodyssey/openai-agents-go README（session stores/hook callbacks/retry & telemetry）(2026-03-01)
   - HN top/show/new snapshots (2026-03-01)
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (redirect verified 2026-03-01)
 last_verified: 2026-03-01
@@ -132,6 +135,14 @@ Demo 能跑不等于 production 能跑。
 - **Claude 子代理天然提供上下文隔离边界**：Claude Code subagents 文档明确子代理使用独立上下文窗口，且不会自动继承完整对话历史。可作为多 agent 场景的“隔离执行单元”，降低 identity/memory drift。
 - **强制信源侧证继续聚焦“稳定性先于扩张”**：HN 当前窗口 `top`（Trellis: Structured language model reinforcement learning for tool use）、`show`（Show HN: No Time To Die, a game made by one person for the gameboy）、`newest`（Convergence may be impossible for this one weird reason）与 OPML 锚点（`https://t.co/dwAiIjlXet` -> `popular blogs opml`）共同提示：工程主战场仍是可恢复执行面，而不是盲目增加 agent 数。
 
+## Cycle 102 同化增量（RunConfig 合同化 + Go 执行面补强）
+
+- **运行级合同应一次性下发通信与预算约束**：OpenAI Agents SDK JS `RunConfig` 同时给出 `groupId`、`handoffInputFilter`、`maxTurns`。生产上应把“关联追踪 + 输入裁剪 + 回合预算”绑定为同一运行合同，避免三套策略分别漂移。
+- **观测面要从日志升级为生命周期事件**：OpenAI Agents SDK JS 的 lifecycle hooks（`agent_start/end`、`handoff`、`tool_start/end`）提供了天然审计点。多 agent 通信排障应优先对接事件流，而不是靠事后日志拼图。
+- **Go 执行面可纳入同一 canonical pattern**：`openai-agents-go` README 给出的 session stores（memory/sqlite/redis）+ hook callbacks + retries/backoff + OpenTelemetry，实质对应同一元问题（state + communication + recovery），应同化到本 pattern，不额外拆 topic。
+- **会话持久层需要“后端可替换”而非“实现可替换”**：Go SDK 实践强调 SessionStore 接口与具体适配器分离；治理上应把 session backend 当成运行时策略位（按环境切换），而不是在业务层硬编码。
+- **强制信源窗口继续给出同向侧证**：HN 当前窗口 `top`（Huge pages and garbage collection in the Java virtual machine）、`show`（Show HN: Open social network）、`newest`（DuckDB + LLMs to parse and process arbitrary CSV files）与 OPML 锚点共同表明，工程热区仍集中在“运行效率 + 可运维数据链路”，支撑“稳定性先于规模化”策略。
+
 ## 合并来源
 
 - agent scope drift severity budget
@@ -139,6 +150,7 @@ Demo 能跑不等于 production 能跑。
 - agent state cell replay envelope
 - agent memory partition least-privilege
 - OpenAI/CrewAI/Anthropic 官方文档 + Kode Agent SDK 官方仓库 README 中关于 state persistence、handoff、async recovery 的一手规范
+- OpenAI Agents SDK JS RunConfig/Lifecycle hooks 与 openai-agents-go README 为“运行级合同 + 事件级审计 + 可替换会话后端”提供直接证据
 - HN top/show/new 与 OPML 作为“实践热区”信号，不单独作为入库依据
 - OpenAI 与 CrewAI 官方文档提供运行级配置、事务边界和条件路由证据；HN 仅作为热区侧证
 
