@@ -116,10 +116,10 @@ Analyst 持续执行：
 | 检查 | 通过 | 未通过 |
 |------|------|--------|
 | 与 bedrock 原理一致？ | 继续 | `[BEDROCK_CONFLICT]` → conflicts.md |
-| 不是已有 pattern 的重复？ | 新建 | 合并为已有 pattern 的变体 |
-| 有实际证据（非纯观点）？ | 继续 | confidence -= 0.15 |
+| 不是已有 pattern 的重复？（L2 同化检查） | 新建 | **默认合并**为已有 pattern 的变体 |
+| 有实际证据（非纯观点）？ | 继续 | 降级为 low confidence |
 | 可操作（非纯理论）？ | 继续 | `[THEORY_ONLY]`，降 rank |
-| confidence ≥ 0.4？ | 通过 | 丢弃，通知 cartographer |
+| 检索测试通过？（L5：能解决什么具体问题？） | 继续 | 不入库 |
 | 关于 meta-framework 自身？ | `[SELF_MODIFY]` | — |
 
 ### Distill 核心原则
@@ -132,16 +132,34 @@ Analyst 持续执行：
 
 ## Step 5: Rank & Merge（Cartographer 执行）
 
-收到 Analyst 的验证结果后：
+收到 Analyst 的验证结果后，**必须按以下顺序执行**：
 
-- **同一元问题已存在** → 合并为实现变体，更新 sources/verified_count/confidence
-- **新元问题** → 创建新 pattern 文件，更新 _master_index.md
-- **与已有 pattern 矛盾** → 写入 conflicts.md，不自动解决
-- **Serendipity 发现** → 评估是否需要开辟新 topic 目录
+### 5a: 饱和门检查（L1）
+
+该 topic 已有 ≥5 patterns？→ 必须先 merge 已有 patterns 腾出空间，才能继续。
+
+### 5b: 同化优先（L2）
+
+对新发现执行 3 问比较：
+1. 列出它能解决的 3 个具体场景
+2. 已有 patterns 能覆盖吗？
+3. 判定：全覆盖→更新 sources；部分覆盖→合并；全新→创建
+
+### 5c: 检索测试（L5）
+
+新 pattern 写完后立即自测："遇到什么问题时会查这个？能得到什么具体行动？"
+回答模糊或重复 → 不入库。
+
+### 5d: 执行写入
+
+- **同化** → 更新已有 pattern 的 sources 和实现变体
+- **创建** → 新建 pattern 文件 + 原子 4 层索引更新
+- **矛盾** → 写入 conflicts.md，不自动解决
+- **Serendipity** → 评估是否开辟新 topic（需 L3 方向上限检查）
 
 信源评分更新：
-- 产出高质量 finding → score += 0.02（上限 0.95）
-- 大部分是 noise → score -= 0.03（下限 0.3）
+- 产出有用 finding → score 提升（上限 high）
+- 大部分是 noise → score 降低（下限 low）
 - 无新内容 → 不变
 
 ---
@@ -164,10 +182,10 @@ Analyst 持续执行：
 
 Cartographer 每 10 个 cycle 执行一次：
 
-1. 扫描所有 patterns，找 90 天无引用无验证的
-2. confidence 衰减 -0.05
-3. 低于 0.3 的移入 `archive/`
-4. 更新 `_master_index.md`
+1. 扫描所有 patterns，找连续 10 cycles 无引用无更新的 → 标记 dormant
+2. 已 dormant 超过 30 cycles → 移入 `archive/`
+3. 更新 `_master_index.md`
+4. **不使用时间（天/月），使用 cycle 计数**——运行频率不固定
 
 ---
 
@@ -257,7 +275,7 @@ stop-guard.py hook 确保 agent 不会因为"觉得做完了"而自行退出—�
 |------|------|------|----------|
 | L0 | `morning-brief.md` | 50 条 | 溢出 → `.nightshift/briefs/{date}.md` |
 | L1 | `_master_index.md` | 每 topic ≤ 8 行 | topic 太多 → 分组（`## 核心 / ## 探索中`） |
-| L2 | `{topic}/_index.md` | 50 patterns/topic | 超限 → 拆分子 topic |
+| L2 | `{topic}/_index.md` | 5 patterns/topic（L1 饱和门） | 超限 → 先 merge，非拆分 |
 | L3 | `{pattern}.md` | 300 行 | 拆分为子 pattern（同目录） |
 | L4 | `sources/{topic}.yaml` | 50 条 | 低分归档 → `sources/archive/` |
 | — | `metrics/*.jsonl` | 按日期轮转 | 每天新文件 |
@@ -265,10 +283,12 @@ stop-guard.py hook 确保 agent 不会因为"觉得做完了"而自行退出—�
 
 ### Cartographer 健康检查（每 5 轮）
 
-1. 检查各层文件大小 → 触发分裂/归档
-2. 验证层间一致性 → L2 每条都能指向 L3 文件
-3. 检查 sources 去重 → 跨 topic 同 URL 合并
-4. metrics 日期轮转 → 新日期新文件
+1. **压缩周期（L4）**：遍历所有 topics，merge 可合并的 patterns，跨 topic 去重
+2. 检查各层文件大小 → 触发归档
+3. 验证层间一致性 → L2 每条都能指向 L3 文件
+4. 检查 sources 去重 → 跨 topic 同 URL 合并
+5. **饱和门扫描**：任何 topic > 5 patterns → 强制 merge
+6. metrics 日期轮转 → 新日期新文件
 
 
 
@@ -276,15 +296,23 @@ stop-guard.py hook 确保 agent 不会因为"觉得做完了"而自行退出—�
 
 ## 动态方向演化
 
-**这是 nightshift 的核心创新：方向不是固定的，而是随着探索动态演化。**
+**方向不是固定的，而是随探索动态演化。但有硬约束防止爆炸。**
 
-Cartographer 在每轮结束后更新方向策略：
+**硬上限：active_directions ≤ 15。** 无空槽时，必须先收缩或合并才能扩展。
 
-1. **扩展**：发现新的有价值子领域 → 添加到 active_directions
-2. **收缩**：某方向连续 5 轮无新 findings → 移入 exhausted_directions
-3. **分裂**：一个方向太宽泛 → 拆分为更具体的子方向
-4. **合并**：两个方向实质是同一问题 → 合并
-5. **Serendipity 注入**：Scout 的意外发现 → 可能催生全新方向
+Cartographer 在每轮结束后更新方向策略（**按优先级排序**）：
+
+1. **收缩**（优先）：某方向连续 5 轮无新 findings → 移入 dormant_directions
+2. **合并**（优先）：两个方向实质是同一问题 → 合并为一个方向
+3. **扩展**（需空槽）：Serendipity 发现 + Analyst 确认 → 添加新方向
+4. **分裂**（需空槽 + 极端情况）：一个方向单轮产出 > 5 个不同元问题 → 拆分
+5. **Serendipity 注入**：Scout 意外发现 → 评估，走扩展流程
+
+**关键：收缩和合并排在扩展和分裂前面。** 先释放空间，再占用空间。
+
+dormant 方向：
+- 10 cycles 无复活 → archive
+- 后续有新信源命中 → 可从 archive 恢复（占空槽）
 
 
 
@@ -315,3 +343,68 @@ vcp-knowledge-sea 产出的是**启发性的方法论洞察**（怎么想）。
 
 > **没有时间上限，只有停止信号。**
 > 世界是运动与变化的。学习不应该有人为的截止时间。
+
+---
+
+## 学习原则（Anti-Governance-Recursion）
+
+> **Nightshift 第一轮运行的教训：87 cycles，103 patterns 膨胀到 33 topics，**
+> **76 个碎片 pattern 本质是同一主题的不同切面。根因是只 split 不 merge。**
+
+以下 7 条原则是硬约束，Cartographer 必须在每个 cycle 遵守。
+
+### L1: 学习是压缩不是积累（饱和门）
+
+**per-topic pattern 上限 = 5。** 超过 5 个时，必须先 merge 再添加。
+新 pattern 必须证明它和已有 5 个解决的是不同的具体问题。
+
+### L2: 默认同化，例外创建（Assimilate-First）
+
+发现新信息后，Cartographer 必须先执行 3 问比较：
+
+1. 列出新发现能解决的 3 个具体场景
+2. 逐个检查：已有 patterns 能解决这些场景吗？
+3. 判定：
+   - 3 个场景全部已被覆盖 → **不入库**，更新已有 pattern 的 sources
+   - 1-2 个场景已覆盖 → **合并**到最相关的已有 pattern
+   - 3 个场景全新 → **创建**新 pattern
+
+**默认路径是同化，不是创建。**
+
+### L3: 注意力有限（方向上限）
+
+**active_directions 硬上限 = 15。**
+- 新方向只能从 dormant 槽位释放或 serendipity 产生
+- 无空槽时，必须先收缩或合并一个方向
+
+### L4: 周期性压缩（Compression Cycle）
+
+**每 5 cycles 强制执行一次压缩：**
+1. 遍历所有 topics，找可合并的 patterns → merge
+2. 跨 topic 检查：本质相同但散在不同 topic 的 → 合并或重新归类
+3. 输出 compression_report（合并了什么、为什么）
+
+这模拟人脑睡眠时的 replay + compression。
+
+### L5: 检索测试 + 功能去重
+
+新 pattern 写完后，立即自测：
+
+> "遇到什么具体问题时，我会查这个 pattern？查了能得到什么具体行动？"
+
+- 如果回答模糊 → pattern 不够具体，不入库
+- 如果回答和已有 pattern 重复 → 同化到已有 pattern
+- 如果能给出已有 pattern 无法覆盖的具体行动 → 入库
+
+### L6: 显式衰减
+
+- 10 cycles 无引用无更新 → 标记 dormant
+- 30 cycles 仍 dormant → 移入 archive/
+- 不使用时间（天/月），使用 cycle 计数——因为运行频率不固定
+
+### L7: 不量化不可量化的
+
+- **可量化的**：pattern 数量、cycle 数、source 个数、方向数量
+- **不可量化的**："相似度"、"重要性"、"新颖程度"
+- 不可量化的东西用**功能性判断**替代数值判断
+- confidence 分数只保留粗粒度（高/中/低），不伪精确到小数点

@@ -10,13 +10,15 @@
 
 **核心循环**：
 1. 分析 `_master_index.md` → 识别知识空白
-2. 生成探索指令 → 发给 Scout
-3. 接收 Analyst 验证结果 → Rank & Merge
-4. **原子更新 4 层索引**：L3(pattern) → L2(_index.md) → L1(_master_index) → L0(brief)
-5. git commit（4 层全更新后才 commit）
-6. 每 5 轮执行文件健康检查（膨胀控制）
-7. 每 10 轮执行 Decay Sweep
-8. 动态调整方向（扩展/收缩/分裂/合并/Serendipity）
+2. **饱和门检查（L1）**：任何 topic ≥5 patterns → 先 merge 再继续
+3. 生成探索指令 → 发给 Scout
+4. 接收 Analyst 验证结果 → **同化优先（L2）**：3 问比较，默认归入已有 pattern
+5. **检索测试（L5）**：新 pattern 能解决什么已有 pattern 不能解决的？
+6. 执行写入 + 原子更新 4 层索引
+7. git commit（4 层全更新后才 commit）
+8. **每 5 轮：压缩周期（L4）**——强制 merge 可合并 patterns + 健康检查
+9. 每 10 轮执行 Decay Sweep（L6）
+10. 动态调整方向（**收缩/合并优先于扩展/分裂**，上限 15）
 
 **通信**：
 - → Scout: `team_message` 发送探索指令
@@ -65,6 +67,8 @@
 - 找到元问题，不堆积方案
 - 同一元问题只保留一条 pattern
 - 保留所有实现变体
+- **同化优先**：新发现默认归入已有 pattern，除非能证明解决了全新的具体问题
+- **检索测试**：写完自问"遇到什么问题会查这个？"——模糊则不入库
 
 **输出格式**：
 
