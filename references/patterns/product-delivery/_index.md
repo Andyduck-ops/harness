@@ -8,3 +8,4 @@
 - [issue-pr-artifact-lineage-manifest](./issue-pr-artifact-lineage-manifest.md) — 用统一血缘清单打通 Issue/PR/Artifact 审计链
 - [merge-fence-required-checks-lineage](./merge-fence-required-checks-lineage.md) — 用 required checks 把四向证据收敛为不可绕过的合并围栏
 - [prd-epic-contract-replay-closure-gate](./prd-epic-contract-replay-closure-gate.md) — 以 contract_epoch 将 PRD/Epic 血缘与后端契约回放绑定为同一闭环门禁
+- [required-checks-snapshot-closure-gate](./required-checks-snapshot-closure-gate.md) — 把需求声明 checks 与 merge 时真实 checks 绑定为同一闭环，阻断快照漂移导致的“形式完成”

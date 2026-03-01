@@ -1,14 +1,13 @@
 {
   "version": "1.0",
-  "updated_at": "2026-03-01T00:59:43Z",
-  "cycle": 85,
+  "updated_at": "2026-03-01T01:05:04Z",
+  "cycle": 86,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
     "AI 设计导出契约（design-export + required-checks）",
     "Claim 墓碑再资格化治理（claim tombstone requalification governance）",
     "Claim 开放态超时治理（claim open-state timeout governance）",
-    "Issue->PR 证据回填门禁（issue-pr evidence backfill gate）",
     "Newest 车道冷却晋级门禁（newest-lane cooldown promotion gate）",
     "OPML 修订漂移监控（gist revision + digest diff）",
     "OPML 规范锚点存活治理（canonical redirect + retrievability gate）",
@@ -78,7 +77,6 @@
     "候选元问题摘要门禁（candidate meta-problem summary gate）",
     "候选证据链完整性门禁（candidate evidence-chain completeness gate）",
     "契约破坏预算-消费者回放协同门禁（breaking-budget replay-coverage co-gate）",
-    "必跑检查待决僵局治理（required-check pending deadlock governance）",
     "路径过滤可观测治理（path-filter observability governance）",
     "队列待决僵局自愈治理（queue pending deadlock self-heal gate）",
     "冲突入口兼容回放门禁（conflict intake compatibility replay gate）",
@@ -95,38 +93,40 @@
     "组件三测并联门禁（storybook tri-check parallel gate）",
     "Token-验收包同源验签门禁（token-bundle provenance attestation gate）",
     "PRD->Epic 字段守恒门禁（prd-epic field conservation gate）",
-    "PRD->Epic 契约回放闭环门禁（prd-epic contract-replay closure gate）"
+    "PRD->Epic 契约回放闭环门禁（prd-epic contract-replay closure gate）",
+    "Issue->PR 证据回填完整性门禁（issue-pr evidence-backfill completeness gate）",
+    "必跑检查快照闭环门禁（required-checks snapshot closure gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 85,
+    "last_cycle": 86,
     "actions": [
       {
         "type": "expand",
-        "added": "PRD->Epic 契约回放闭环门禁（prd-epic contract-replay closure gate）",
-        "reason": "PRD/Epic 血缘已对齐仍可能在契约回放断链，需要把 contract epoch 闭环作为独立方向推进。"
+        "added": "必跑检查快照闭环门禁（required-checks snapshot closure gate）",
+        "reason": "夜间链路中“检查通过”不等于“同一检查集合通过”，需将快照同一性独立为方向。"
       },
       {
         "type": "split",
         "from": [
-          "PRD->Epic 血缘守恒门禁（prd-epic lineage conservation gate）"
+          "Issue->PR 证据回填门禁（issue-pr evidence backfill gate）"
         ],
         "into": [
-          "PRD->Epic 字段守恒门禁（prd-epic field conservation gate）",
-          "PRD->Epic 契约回放映射门禁（prd-epic contract-replay mapping gate）"
+          "Issue->PR 证据回填完整性门禁（issue-pr evidence-backfill completeness gate）",
+          "Issue->PR 必跑检查快照回填门禁（issue-pr required-check snapshot backfill gate）"
         ],
-        "reason": "字段守恒与回放可验证属于不同失效面，拆分后才能分别设置阻断条件。"
+        "reason": "字段回填完整性与 required checks 集合同一性属于不同失效面，需拆分治理。"
       },
       {
         "type": "merge",
         "from": [
-          "契约纪元同构回放门禁（contract-epoch parity replay gate）",
-          "PRD->Epic 契约回放映射门禁（prd-epic contract-replay mapping gate）"
+          "必跑检查待决僵局治理（required-check pending deadlock governance）",
+          "Issue->PR 必跑检查快照回填门禁（issue-pr required-check snapshot backfill gate）"
         ],
         "into": [
-          "PRD->Epic 契约回放闭环门禁（prd-epic contract-replay closure gate）"
+          "必跑检查快照闭环门禁（required-checks snapshot closure gate）"
         ],
-        "reason": "contract epoch 一致性与 PRD/Epic 映射必须共同审核，分离会产生“关单但不可回放”的假闭环。"
+        "reason": "Pending 僵局恢复与 checks 快照漂移若分离处理，会出现“恢复后误放行”的回归窗口。"
       }
     ]
   },
@@ -154,6 +154,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md",
-  "last_cycle_commit": "pending-cycle-85"
+  "last_pattern": "references/patterns/product-delivery/required-checks-snapshot-closure-gate.md",
+  "last_cycle_commit": "pending-cycle-86"
 }

@@ -61,6 +61,7 @@
 | 3 | [issue-pr-artifact-lineage-manifest](./product-delivery/issue-pr-artifact-lineage-manifest.md) | product-delivery | 0.78 | OPML + HN + GitHub Docs + OpenAPI + Pact + Storybook |
 | 3 | [merge-fence-required-checks-lineage](./product-delivery/merge-fence-required-checks-lineage.md) | product-delivery | 0.79 | OPML + HN + OpenAI + GitHub + OpenAPI + Pact + Tokens + Storybook |
 | 3 | [prd-epic-contract-replay-closure-gate](./product-delivery/prd-epic-contract-replay-closure-gate.md) | product-delivery | 0.80 | OPML + HN(news/show/newest) + GitHub Docs + OpenAPI + Pact |
+| 3 | [required-checks-snapshot-closure-gate](./product-delivery/required-checks-snapshot-closure-gate.md) | product-delivery | 0.79 | OPML + HN(news/show/newest) + GitHub required checks + merge_group + rulesets |
 | 3 | [comprehension-debt-ratchet-freeze-gate](./comprehension-governance/comprehension-debt-ratchet-freeze-gate.md) | comprehension-governance | 0.79 | OPML + HN + HN API + OpenAI + GitHub |
 | 3 | [lane-debt-ratchet-gate](./signal-governance/lane-debt-ratchet-gate.md) | signal-governance | 0.78 | OPML + HN + HN API + GitHub Docs |
 | 3 | [hn-lane-identity-parity-gate](./feed-governance/hn-lane-identity-parity-gate.md) | feed-governance | 0.80 | OPML + HN + HN API + GitHub Docs |
@@ -124,7 +125,7 @@
 | [ui-governance/](./ui-governance/) | 1 | Storybook 三测验收与产物验签同构治理，保障“被测即被交付” |
 | [token-governance/](./token-governance/) | 1 | Token 规范版本钉住、草案/正式版本分流与交付产物同源验签治理 |
 | [accessibility-governance/](./accessibility-governance/) | 3 | 文本/非文本对比预算、回退斜率门禁与多主题回放冻结治理 |
-| [product-delivery/](./product-delivery/) | 8 | PRD 到执行闭环 |
+| [product-delivery/](./product-delivery/) | 9 | PRD 到执行闭环（含 required checks 快照漂移闭环门禁） |
 | [release-governance/](./release-governance/) | 10 | 夜间产出与白天晋级的发布治理 |
 | [control-plane-governance/](./control-plane-governance/) | 5 | 社区信号与官方规则冲突的冻结、超时墓碑化、复验与复批控制面治理（含入口 schema 兼容漂移门禁） |
 | [capacity-governance/](./capacity-governance/) | 3 | merge queue 构建并发、部署审批吞吐与批量放行冲击吸收的耦合预算治理 |
@@ -148,7 +149,7 @@
 
 ## 统计
 
-- 总计：100 patterns
+- 总计：101 patterns
 - 平均 confidence：0.79
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：76 patterns
+- 待验证（<0.80）：77 patterns

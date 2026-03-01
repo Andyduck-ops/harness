@@ -1,3 +1,62 @@
+# Morning Brief（Nightshift Cycle 86）
+
+> 更新时间：2026-03-01 11:02 UTC  
+> 本轮目标：把 PRD->Epic->Issue->PR 的“声明式 required checks”与 merge 时“运行态 required checks”闭环为同一阻断门禁。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/product-delivery/required-checks-snapshot-closure-gate.md`
+2. `references/patterns/product-delivery/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `必跑检查快照闭环门禁（required-checks snapshot closure gate）`
+  - reason: “检查通过”与“通过的是同一检查集合”在无人值守链路里是两个问题，现有门禁缺少同一性校验。
+- `split`：拆分方向
+  - from: `Issue->PR 证据回填门禁（issue-pr evidence backfill gate）`
+  - into: `Issue->PR 证据回填完整性门禁（issue-pr evidence-backfill completeness gate）`
+  - into: `Issue->PR 必跑检查快照回填门禁（issue-pr required-check snapshot backfill gate）`
+  - reason: 证据字段完整性与 required checks 同一性是不同失效面，必须分治。
+- `merge`：合并方向
+  - from: `必跑检查待决僵局治理（required-check pending deadlock governance）`
+  - from: `Issue->PR 必跑检查快照回填门禁（issue-pr required-check snapshot backfill gate）`
+  - into: `必跑检查快照闭环门禁（required-checks snapshot closure gate）`
+  - reason: “Pending 僵局”与“快照漂移”若分开治理，会出现僵局恢复后误放行的回归窗口。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML Gist  
+  - 最终 URL: `https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道样本（2026-03-01）
+  - news lane: `https://news.ycombinator.com/news`（top title: `Stop Burning Your Context Window: How We Cut MCP Token Usage by 98%`）
+  - show lane: `https://news.ycombinator.com/show`（top title: `Show HN: Syncari – AI-driven Infrastructure as Code Automation`）
+  - newest lane: `https://news.ycombinator.com/newest`（top title: `A Proposal for Implementing Claude Code in the Browser`）
+- 官方文档补链（2026-03-01）
+  - required checks: `https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches`
+  - merge queue 事件面：`https://docs.github.com/en/actions/reference/events-that-trigger-workflows#merge_group`
+  - required checks 故障排查：`https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/troubleshooting-rules#troubleshooting-required-status-checks`
+  - rulesets 叠加：`https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets`
+  - Issue Forms: `https://docs.github.com/en/enterprise-server@3.16/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms`
+  - PR 关联 Issue: `https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue`
+
+### 本轮结论
+
+- 新 pattern `required-checks-snapshot-closure-gate` 解决的非重复元问题是：
+  “需求端声明的 required checks 集合”与“merge 时真实生效的 required checks 集合”同一性断裂。
+- 必须并联 `required_checks_snapshot_pass + required_checks_drift_pass + contract_replay_closure_pass`；
+  只看 checks 是否为绿，不足以证明闭环仍是同一个闭环。
+
+### Cycle 87 预载任务
+
+1. 为 `required_checks_drift_report.json` 增加 `rename_map` 与 `event_surface_diff`，区分“改名”与“丢检查”。
+2. 绑定 `required_checks_profile` 到 `promotion_closure.json`，阻断 profile 漂移下的旧结论复用。
+3. 在 `merge_group` 失败恢复流程中加入 checks 快照重采样，防止恢复后直接继承旧绿灯。
+
+---
 # Morning Brief（Nightshift Cycle 85）
 
 > 更新时间：2026-03-01 10:15 UTC  
