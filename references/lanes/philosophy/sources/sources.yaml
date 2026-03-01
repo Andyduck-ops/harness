@@ -1,0 +1,81 @@
+# nightshift-phi lane sources
+sources:
+  - name: John Milnor - Morse Theory
+    author: John Milnor
+    year: 1963
+    url: https://press.princeton.edu/books/paperback/9780691080086/morse-theory-am-51-volume-51
+    type: primary-book
+    topic: 高维拓扑
+    trust_band: high
+    last_checked: 2026-03-01
+    notes: "临界点与流形形状关系的原始著作"
+
+  - name: Stephen Smale - Differentiable Dynamical Systems
+    author: Stephen Smale
+    year: 1967
+    url: https://www.ams.org/bull/1967-73-06/S0002-9904-1967-11798-1/
+    type: primary-paper
+    topic: 高维拓扑
+    trust_band: high
+    last_checked: 2026-03-01
+    notes: "结构稳定与高维动力系统基础论文"
+
+  - name: Rene Thom - Stabilite structurelle et morphogenese
+    author: Rene Thom
+    year: 1972
+    url: https://catalogue.nla.gov.au/catalog/614145
+    type: primary-book
+    topic: 高维拓扑
+    trust_band: high
+    last_checked: 2026-03-01
+    notes: "突变与结构稳定原典"
+
+  - name: Guillemin & Pollack - Differential Topology
+    author: Victor Guillemin; Alan Pollack
+    year: 1974
+    url: https://bookstore.ams.org/chel-370-h
+    type: primary-book
+    topic: 高维拓扑
+    trust_band: high
+    last_checked: 2026-03-01
+    notes: "横截性与泛性语言的经典来源"
+
+  - name: Charles Conley - Isolated Invariant Sets and the Morse Index
+    author: Charles Conley
+    year: 1978
+    url: https://www.ams.org/books/cbms/038/
+    type: primary-book
+    topic: 高维拓扑
+    trust_band: high
+    last_checked: 2026-03-01
+    notes: "不变集与噪声下稳健结构的原始体系"
+
+  - name: Robert Ghrist - Barcodes: The Persistent Topology of Data
+    author: Robert Ghrist
+    year: 2008
+    url: https://www.ams.org/bull/2008-45-01/S0273-0979-07-01191-3/
+    type: primary-paper
+    topic: 高维拓扑
+    trust_band: medium-high
+    last_checked: 2026-03-01
+    notes: "持久同调条形码方法的作者一手阐释"
+
+  - name: Gunnar Carlsson - Topology and Data
+    author: Gunnar Carlsson
+    year: 2009
+    url: https://www.ams.org/journals/bull/2009-46-02/S0273-0979-09-01249-X/
+    type: primary-paper
+    topic: 高维拓扑
+    trust_band: medium-high
+    last_checked: 2026-03-01
+    notes: "TDA 方法论总览"
+
+  - name: Edelsbrunner & Harer - Computational Topology
+    author: Herbert Edelsbrunner; John Harer
+    year: 2010
+    url: https://www.ams.org/books/mbk/069/
+    type: primary-book
+    topic: 高维拓扑
+    trust_band: medium-high
+    last_checked: 2026-03-01
+    notes: "拓扑方法计算化的标准教材"
