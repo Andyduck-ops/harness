@@ -230,3 +230,55 @@ Cartographer 读取知识地图 → 识别空白 → 指派 Scout 探索 → Sco
 | `/harness:init` 内置 | 新项目初始化 | 最近 7 天轻量检查 | ~10 min |
 
 nightshift 是持续学习守护进程，calibrate 是按需定向校准。
+
+---
+
+## references/ 目录说明
+
+**references/ 是 nightshift skill 的产物（知识库），按需加载，一般不需要读取。**
+
+### 目录结构
+
+```
+references/
+├── bedrock/              # 第一性原理（几乎不变）
+├── patterns/             # 可复用模式（季度级更新）
+│   ├── context-injection/
+│   ├── quality-enforcement/
+│   ├── agent-lifecycle/
+│   ├── knowledge-evolution/
+│   ├── meta-framework/
+│   └── _master_index.md
+├── articles/             # 长文深度分析（周级）
+├── calibration/          # 校准记录
+└── sources.yaml          # 信源配置
+```
+
+### 5 层分形索引架构
+
+| 层级 | 文件 | 作用 | 何时读取 |
+|------|------|------|----------|
+| **L0** | claude.md | 基本认识（~100 行） | 总是注入 |
+| **L1** | references/patterns/_master_index.md | 全局索引 | 需要检索时 |
+| **L2** | references/patterns/{topic}/_index.md | Topic 摘要 | 定位到 topic 后 |
+| **L3** | references/patterns/{topic}/{pattern}.md | 具体 pattern | 确定需要此 pattern 时 |
+| **L4** | references/articles/ | 深度分析 | 需要完整上下文时 |
+
+### 与 Nightshift 的关系
+
+- **Nightshift 写入 references/**：Scout 探索 → Analyst 蒸馏 → Cartographer 合并 → 写入 patterns/
+- **Nightshift 读取 references/**：Cartographer 读取知识地图 → 识别空白 → 指派探索方向
+- **人读取 references/**：按需检索，通过 _master_index.md 定位
+- **Agent 读取 references/**：通过 JSONL 精确注入，不全量加载
+
+### 安全边界
+
+Nightshift 可以：
+- ✅ 更新 references/patterns/
+- ✅ 更新 references/sources.yaml
+- ✅ 创建 references/articles/
+
+Nightshift 不能：
+- ❌ 修改 PRD/
+- ❌ 修改 bedrock/
+- ❌ 修改 generator/

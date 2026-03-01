@@ -19,10 +19,31 @@ Harness 是一个**自进化 AI Agent 执行环境工程系统**。
 - **Practices（实践）**: 周级~日级 - 具体实现细节
 
 ## 元能力系统（自进化）
-- **外循环（calibrate）**: 从外部世界（X、博客、官方文档）获取新知识
-- **内循环（compound）**: 从自己的任务经验中提取教训
-- **夜间学习（nightshift）**: Agent 持续自主冲浪学习，无时间上限，产出 morning-brief.md
-- **自迭代**: Harness 可以改进自己的知识获取和处理方式
+
+### 双循环知识进化
+
+| 循环 | 输入 | 输出 | 触发 | 持续 |
+|------|------|------|------|------|
+| **内循环（compound）** | 自己的任务经验 | ANCHOR/SHAPE/DECODE/ESCAPE 教训 | 任务完成后 | ~10 min |
+| **外循环（calibrate）** | 外部文章/博客/官方文档 | patterns/ 知识库 | 手动，白天 | ~20 min |
+| **夜间学习（nightshift）** | 全部信源 + 探索 | patterns/ + morning-brief.md | 手动启动 | 无上限 |
+
+**数据流**：
+```
+外部世界 → calibrate/nightshift → patterns/（外循环）
+                                      ↓
+内部经验 → compound → 新教训 → patterns/（内循环）
+                                      ↓
+                                   sleep（压缩）
+```
+
+**核心理念**：
+- **Compound（内循环）**: 知识复利 = 每次工作都让系统变好一点
+- **Calibrate（外循环）**: 从外部世界获取新知识，按需加载
+- **Nightshift（持续学习）**: Agent 持续自主冲浪学习，无时间上限
+- **Sleep（压缩）**: 定期压缩、合并、清理 patterns/
+
+**自迭代**: Harness 可以改进自己的知识获取和处理方式
 
 ## Nightshift 的核心特征
 - **两个独立实现**：
