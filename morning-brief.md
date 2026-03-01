@@ -1,3 +1,65 @@
+# Morning Brief（Nightshift Cycle 104）
+
+> 更新时间：2026-03-01 04:18 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 多 agent 服务重启后，session backend 选型混乱（内存/持久化混用）导致恢复不一致
+  2. handoff 仅靠提示词约定输入，缺少过滤合同与追踪主键，通信漂移难定位
+  3. context editing/compaction 后 tool 结果处理不一致，长跑会话出现隐式依赖泄漏
+- 已有 pattern 覆盖检查：
+  - `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md` 已覆盖同一元问题（state + communication + recovery）
+- 判定：**同化**（补强状态后端分层 + 上下文编辑防漂移，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+  - raw OPML：`hn-popular-blogs-2025.opml`
+- HN 三车道（2026-03-01）
+  - `top`: `Show HN: MCPCat`
+  - `show`: `Show HN: Track nutrition by taking photos of your food`
+  - `newest`: `How can AI check software requirements and identify ambiguities?`
+
+### 官方证据链（不确定点补链）
+
+- OpenAI Agents SDK Sessions（Python）：`SQLAlchemySession`、`AdvancedSQLiteSession`（会话后端可持久化与可定制）
+- OpenAI Agents SDK Handoffs：支持 transferred input filtering（交接输入过滤）
+- OpenAI Agents SDK lifecycle（Python）：`RunHooks` / `AgentHooks`（生命周期事件审计挂点）
+- Anthropic Claude Code subagents：独立 context window（隔离执行）
+- Anthropic context editing：`clear_tool_inputs` / `clear_tool_results`（上下文编辑策略位）
+- CrewAI Event Listeners：生命周期事件监听（恢复链审计）
+
+### 检索测试（L5，写后执行）
+
+- Query A：`SQLAlchemySession AdvancedSQLiteSession production session backend`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：会话后端分层策略（dev memory / prod durable）
+- Query B：`Anthropic clear_tool_inputs clear_tool_results context editing`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：compaction 前后 invariants + tool 结果保留策略
+- Query C：`OpenAI RunHooks AgentHooks audit`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：agent/tool/handoff 生命周期统一审计流
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：本轮 cycle=104（下一个强制压缩点=105）
+
+---
 # Morning Brief（Nightshift Cycle 103）
 
 > 更新时间：2026-03-01 04:13 UTC  

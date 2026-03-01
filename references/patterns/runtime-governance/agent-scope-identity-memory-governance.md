@@ -2,7 +2,7 @@
 name: agent-scope-identity-memory-governance
 topic: runtime-governance
 confidence: 0.86
-verified_count: 20
+verified_count: 22
 sources:
   - OpenAI Agent Platform docs (Python/TypeScript/Go support) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (2026-03-01)
@@ -17,12 +17,14 @@ sources:
   - OpenAI Agents SDK JS running agents docs（session auto history + run_state resume）(2026-03-01)
   - OpenAI Agents SDK JS RunConfig docs（groupId/handoffInputFilter/maxTurns）(2026-03-01)
   - OpenAI Agents SDK JS Lifecycle hooks docs（agent/tool/handoff hooks for runtime audit）(2026-03-01)
+  - OpenAI Agents SDK Python lifecycle docs（RunHooks / AgentHooks wrappers）(2026-03-01)
   - OpenAI Agents SDK guardrails docs（run_in_parallel side-effect boundary）(2026-03-01)
   - OpenAI Agents SDK runner docs（error_handlers + max_turns lifecycle）(2026-03-01)
   - OpenAI API Background mode guide (2026-03-01)
   - OpenAI API Conversations / conversation state docs (2026-03-01)
   - Anthropic Agent SDK / tool use docs (2026-03-01)
   - Anthropic Claude Code subagents docs（separate context window isolation）(2026-03-01)
+  - Anthropic Claude Code context editing docs（clear_tool_inputs / clear_tool_results controls）(2026-03-01)
   - Anthropic Agent SDK overview（tool loop + auto context management）(2026-03-01)
   - Anthropic API compaction docs（beta + non-ZDR constraints）(2026-03-01)
   - CrewAI Flows persistence docs (2026-03-01)
@@ -143,6 +145,14 @@ Demo 能跑不等于 production 能跑。
 - **会话持久层需要“后端可替换”而非“实现可替换”**：Go SDK 实践强调 SessionStore 接口与具体适配器分离；治理上应把 session backend 当成运行时策略位（按环境切换），而不是在业务层硬编码。
 - **强制信源窗口继续给出同向侧证**：HN 当前窗口 `top`（Huge pages and garbage collection in the Java virtual machine）、`show`（Show HN: Open social network）、`newest`（DuckDB + LLMs to parse and process arbitrary CSV files）与 OPML 锚点共同表明，工程热区仍集中在“运行效率 + 可运维数据链路”，支撑“稳定性先于规模化”策略。
 
+## Cycle 104 同化增量（状态后端分层 + 上下文编辑防漂移）
+
+- **会话后端要先分层再扩 agent 数量**：OpenAI Agents SDK Sessions 文档已经把 `SQLAlchemySession` 和 `AdvancedSQLiteSession` 作为可持久化后端示例；生产应把 session backend 作为运行时策略位，禁止把内存会话当持久层。
+- **交接过滤应绑定运行合同而非散落实现**：OpenAI Agents SDK Handoffs 文档强调可对 transferred inputs 做过滤；结合 `group_id` 追踪可形成“最小输入 + 因果关联”的统一通信合同。
+- **生命周期审计要覆盖 hook 边界**：OpenAI Agents SDK Python lifecycle 文档给出 `RunHooks` / `AgentHooks` 包装点；应把 `agent/tool/handoff` 事件纳入同一审计流，而不是只靠日志回放。
+- **子代理隔离与上下文编辑要成对治理**：Anthropic 文档一方面明确 subagents 使用独立上下文窗口，另一方面 context editing 默认会清理部分 tool 结果；长跑恢复中应显式配置 `clear_tool_inputs` / `clear_tool_results` 策略，避免压缩后出现隐式依赖漂移。
+- **社区热区继续指向“稳态优先”**：本轮 HN `top`（Show HN: MCPCat）、`show`（Show HN: Track nutrition by taking photos of your food）、`newest`（How can AI check software requirements and identify ambiguities?）与 OPML 锚点同向，说明一线实践焦点仍是“可恢复执行链路”而非盲目扩编 agent。
+
 ## 合并来源
 
 - agent scope drift severity budget
@@ -153,6 +163,7 @@ Demo 能跑不等于 production 能跑。
 - OpenAI Agents SDK JS RunConfig/Lifecycle hooks 与 openai-agents-go README 为“运行级合同 + 事件级审计 + 可替换会话后端”提供直接证据
 - HN top/show/new 与 OPML 作为“实践热区”信号，不单独作为入库依据
 - OpenAI 与 CrewAI 官方文档提供运行级配置、事务边界和条件路由证据；HN 仅作为热区侧证
+- OpenAI Python Sessions/Lifecycle + Anthropic context editing 文档补强了“状态后端分层 + 上下文编辑防漂移”证据链
 
 ## 检索测试
 
@@ -186,6 +197,15 @@ Demo 能跑不等于 production 能跑。
 - 查询：`CrewAI 事件监听能否用于多 agent 恢复审计`  
   命中：本 pattern  
   动作：收敛到 `BaseEventListener hooks + recovery checkpoint telemetry`
+- 查询：`SQLAlchemySession AdvancedSQLiteSession production session backend`  
+  命中：本 pattern  
+  动作：收敛到 `session backend policy tier + persistence-first recovery`
+- 查询：`Anthropic clear_tool_inputs clear_tool_results context editing`  
+  命中：本 pattern  
+  动作：收敛到 `context editing policy + replay invariants before/after compaction`
+- 查询：`OpenAI RunHooks AgentHooks audit`  
+  命中：本 pattern  
+  动作：收敛到 `hook event pipeline + handoff/tool lifecycle governance`
 - 查询：`run_in_parallel guardrail 工具副作用`  
   命中：本 pattern  
   动作：收敛到 `high-risk tools serial guardrail + side-effect budget`
