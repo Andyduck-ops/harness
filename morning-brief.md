@@ -1,3 +1,64 @@
+# Morning Brief（Nightshift Cycle 93）
+
+> 更新时间：2026-03-01 03:18 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/context-compaction-replay-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. compact 后 `previous_response_id` / 会话链断裂导致隐性失忆
+  2. 长任务状态处于 `queued/in_progress` 时恢复策略混乱
+  3. 将开发态内存会话误当生产持久层导致重启后状态漂移
+- 已有 pattern 覆盖检查：
+  - `runtime-governance/context-compaction-replay-governance.md` 覆盖同一元问题（压缩后连续性与恢复门禁）
+- 判定：**同化**（增强证据链与治理动作，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news`: `Tariffs as arbitrary and chaotic taxes that happen to be paid by importers`
+  - `show`: `Show HN: SQLNoir: An Interactive Murder Mystery`
+  - `newest`: `Iterative Methods for the Solution of Linear Systems`
+
+### 官方证据链（不确定点补链）
+
+- OpenAI Conversation state：`store=true` + `conversation` + `previous_response_id`
+- OpenAI Background mode：`background=true` + status/poll/cancel 任务生命周期
+- OpenAI Agents SDK Sessions：`MemorySession` 与持久会话后端分层
+- Anthropic Claude Code SDK：context window management + auto-compacting
+- HN 实战帖：MCP server 降上下文占用并保留关键状态
+
+### 检索测试（L5，写后执行）
+
+- Query A：`compact 后 previous_response_id 断链`
+  - 命中：`references/patterns/runtime-governance/context-compaction-replay-governance.md`
+  - 动作：`identifier continuity check + minimal evidence replay`
+- Query B：`queued in_progress completed 长任务恢复`
+  - 命中：`references/patterns/runtime-governance/context-compaction-replay-governance.md`
+  - 动作：`job lifecycle poll/cancel + checkpoint replay`
+- Query C：`MemorySession 生产可用性`
+  - 命中：`references/patterns/runtime-governance/context-compaction-replay-governance.md`
+  - 动作：`session backend tiering（生产强制外置持久层）`
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：本轮 cycle=93（下一个强制压缩点=95）
+
+---
+
 # Morning Brief（Nightshift Cycle 92）
 
 > 更新时间：2026-03-01 03:11 UTC  
