@@ -1,18 +1,21 @@
 ---
 name: contract-replay-verification-gate
 topic: fullstack-engineering
-confidence: 0.82
-verified_count: 12
+confidence: 0.83
+verified_count: 13
 sources:
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (2026-03-01)
   - Hacker News top/show/new snapshot (2026-03-01)
   - OpenAPI Specification (official)
   - Pact official docs
   - Hypothesis docs (property-based testing) (2026-03-01)
+  - Hypothesis stateful testing docs (rules/invariants) (2026-03-01)
   - fast-check docs (property-based testing) (2026-03-01)
+  - fast-check model-based testing docs (replayPath/scheduledModelRun) (2026-03-01)
   - Stryker docs (mutation score thresholds) (2026-03-01)
   - PIT docs (mutation testing guidance) (2026-03-01)
   - mutmut docs (mutation workflow) (2026-03-01)
+  - OpenAI Harness engineering (observability + long-run loops) (2026-02-11)
 last_verified: 2026-03-01
 rank: 2
 ---
@@ -95,3 +98,38 @@ rank: 2
 - `mutation score threshold break contract replay`
 - `property-based shrinking seed replay gate`
 - `invariant replay 金额守恒 幂等键`
+
+## Cycle 95 同化增量：Stateful 序列重放 + 可观测不变量门禁
+
+目标：把“样例级 property”升级为“状态序列级 property”，并把失败从“日志可看见”升级为“PR 必阻断”。
+
+1. Stateful Property 序列
+   - Hypothesis `RuleBasedStateMachine` + `@invariant`：每一步后执行不变量断言。
+   - fast-check `commands` + `modelRun/asyncModelRun/scheduledModelRun`：覆盖同步、异步与并发时序（race）路径。
+2. 可复现失败清单（Replay Manifest）
+   - fast-check：`seed + path + replayPath` 三元组必须落盘，否则失败不可稳定重放。
+   - Hypothesis：保留最小失败程序片段（shrunk program）用于回归固定化。
+3. Mutation Fail-Fast
+   - Stryker：启用 `thresholds.break`，分数低于阈值直接 CI 失败。
+   - PIT：`mutationThreshold` 与 `coverageThreshold` 双阈值并联，防止“覆盖率高但断言弱”。
+4. Observability Invariant Gate
+   - 参照 OpenAI Harness 的工作树隔离观测做法，将 LogQL/PromQL 预算作为验证输入：
+     - 冷启动耗时上限
+     - 关键路径 span 上限
+     - 错误率预算
+   - 规则：`contract + property + mutation + replay + observability` 五门同过才可晋级。
+
+## Cycle 95 最小 CI 配置（5 Gate）
+
+1. `contract verify`：OpenAPI/Pact 兼容性。
+2. `stateful property verify`：Rule/Command 序列 + invariant。
+3. `mutation verify`：Stryker/PIT fail-fast 阈值。
+4. `replay verify`：seed/path/replayPath 回灌复现。
+5. `observability invariant verify`：日志/指标/trace 预算。
+
+## Cycle 95 检索锚点（L5）
+
+- `stateful command replayPath scheduledModelRun race condition`
+- `Hypothesis RuleBasedStateMachine invariant after every step`
+- `Stryker thresholds break PIT mutationThreshold coverageThreshold`
+- `observability invariant gate LogQL PromQL span budget`

@@ -1,3 +1,72 @@
+# Morning Brief（Nightshift Cycle 95）
+
+> 更新时间：2026-03-01 03:28 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：压缩窗口（cycle%5==0）+ 同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/fullstack-engineering/contract-replay-verification-gate.md`（同化更新）
+2. `references/patterns/fullstack-engineering/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. AI 生成代码在多步状态序列中“单步正确、序列失真”
+  2. 样例测试覆盖率高但断言弱，变异后仍存活
+  3. 功能回放通过但性能/错误预算突破（上线后才暴露）
+- 已有 pattern 覆盖检查：
+  - `fullstack-engineering/contract-replay-verification-gate.md` 已覆盖同一元问题（契约+回放验证门禁）
+- 判定：**同化**（增强 stateful/replay/observability 门禁，不新增 pattern）
+
+### 压缩执行（L4，cycle 95 强制）
+
+- 已执行跨 topic 合并扫描（merge > split 原则）
+- 结果：本轮未发现可安全合并的 canonical 冲突，执行同化更新 1 条
+- 结论：保持 31 patterns / 12 topics，不膨胀
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news`: `Show HN: Microgpt – AI agent framework and coding assistant with memory`
+  - `show`: `Show HN: Decided to play god this morning, so I built an agent civilisation`
+  - `newest`: `Ask HN: How to avoid pitfalls on Appsumo?`
+
+### 官方证据链（不确定点补链）
+
+- Hypothesis stateful testing：`RuleBasedStateMachine`、`rules`、`invariants`
+- fast-check model-based testing：`commands`、`modelRun/asyncModelRun/scheduledModelRun`、`replayPath`
+- Stryker 配置：`thresholds.break`
+- PIT Maven：`mutationThreshold` + `coverageThreshold`
+- OpenAI Harness（官方工程实践）：工作树隔离 + LogQL/PromQL + 长跑评测循环
+
+### 检索测试（L5，写后执行）
+
+- Query A：`stateful command replayPath scheduledModelRun race condition`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`
+  - 动作：启用 command 序列模型与并发时序回放
+- Query B：`Hypothesis RuleBasedStateMachine invariant after every step`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`
+  - 动作：每步不变量断言，定位序列级状态泄漏
+- Query C：`Stryker thresholds break PIT mutationThreshold coverageThreshold`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`
+  - 动作：mutation fail-fast 阻断“假绿测试”
+- Query D：`observability invariant gate LogQL PromQL span budget`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`
+  - 动作：把日志/指标/trace 预算并入发布前硬门禁
+
+### 约束检查
+
+- per-topic <= 5：通过（fullstack-engineering=4）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：通过（本轮已执行 compression cycle）
+
+---
 # Morning Brief（Nightshift Cycle 94）
 
 > 更新时间：2026-03-01 03:21 UTC  
@@ -2714,165 +2783,6 @@
 1. 增加 `max_cursor_lag_seconds` 的分车道阈值（top/show/new 各自预算）。
 2. 为 browser-contained agent 设计最小 `runtime_boundary_manifest` 字段集。
 3. 把 `cursor_freshness_report` 挂接到 candidate->issue 的晋级检查，不仅用于 PR 合并前。
-
----
-
----
-# Morning Brief（Nightshift Cycle 46）
-
-> 更新时间：2026-02-28 21:31 UTC  
-> 本轮目标：把“上下文窗口燃烧”从成本优化问题升级为“压缩后回放冻结”的晋级硬门禁，避免后台续跑在语义不完整时误晋级。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/context-governance/context-burn-replay-freeze-gate.md`
-2. `references/patterns/context-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 46）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `merge`：合并方向
-  - from: `恢复回放账本治理（checkpoint + replay + compaction）`
-  - from: `认知负债冻结治理（comprehension debt + freeze gate）`
-  - into: `上下文燃烧-回放冻结协同治理（context burn replay-freeze governance）`
-  - reason: 两方向在执行面已收敛到同一事故链（压缩前快照缺失 -> 续跑语义断裂 -> 误晋级），合并后可统一冻结门禁与回放验签字段。
-- `expand`：新增方向 `工具输出占比预算治理（tool-output ratio budget gate）`
-  - 触发依据：HN top 当轮出现 “Stop Burning Your Context Window: How We Cut MCP Token Usage by 98%”，说明工具输出占比已成为自治系统稳定性的独立控制面。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，采样时页面显示 last active 为 2026-02-28）。
-- HN `top/show/new`：已采样并写入证据链（2026-03-01）：
-  - top (`news`): `Stop Burning Your Context Window: How We Cut MCP Token Usage by 98%`
-  - show (`show`): `Show HN: Syncari – AI-driven Infrastructure as Code Automation`
-  - new (`newest`): `A Proposal for Implementing Claude Code in the Browser`
-- 官方文档证据链（本轮重点）
-  - OpenAI Background mode（后台状态机、`store=true` 要求、cancel 语义）
-  - OpenAI Conversation state（`previous_response_id` / `conversation` 状态链接与压缩相关端点）
-  - GitHub Actions Artifacts（artifact digest 与 retention 字段）
-  - GitHub Protected Branches（required status checks 作为不可绕过门禁）
-
-### 本轮结论
-
-- “压缩成功”不等于“语义连续”；压缩必须成为结构化快照事件，而不是透明优化。
-- `tool_output_ratio` 是上下文燃烧的先行指标，应直接接入冻结门触发逻辑。
-- 晋级前必须同时满足 `previous_response_id` 连续性与 `artifact_digest` 一致性，否则默认冻结。
-
-### Cycle 47 预载任务
-
-1. 为 `pre_compaction_snapshot.json` 增加 `decision_delta_hash` 与 `pending_claim_count` 的阈值告警。
-2. 将 `context_burn_replay_pass` 接入 `candidate -> issue` 晋级 check，而非仅用于 PR 合并前检查。
-3. 引入 `tool_output_ratio` 的分方向基线（探索车道 vs 晋级车道）防止统一阈值误报。
-
----
-
----
-# Morning Brief（Nightshift Cycle 45）
-
-> 更新时间：2026-02-28 21:33 UTC  
-> 本轮目标：把 merge queue 的“重排重建”从调度细节升级为晋级硬门禁，阻断 jump 后复用旧证据的隐式放行。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/queue-governance/queue-reorder-rebuild-attestation-gate.md`
-2. `references/patterns/queue-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 45）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `跨阶段时序预算治理（cross-stage window freshness budget gate）` 为：
-  - `队列重排时序预算治理（queue reorder freshness budget gate）`
-  - `审批跨阶段时序预算治理（approval cross-stage freshness budget gate）`
-  - reason: 原方向同时承载“队列重排窗口”和“审批跨阶段窗口”，执行约束边界过宽。
-- `merge`：合并方向
-  - from: `队列尾绿容错预算联动治理（tail-green attestation-budget parity gate）`
-  - from: `队列容错显式降级治理（merge-queue non-failing explicit fallback gate）`
-  - into: `队列容错预算降级一体化治理（merge-queue fallback-budget parity gate）`
-  - reason: 两方向都在约束容错模式放行边界，拆开会重复维护同一审计语义。
-- `expand`：新增方向 `队列重排重建验签治理（queue reorder rebuild attestation gate）`
-  - 触发依据：GitHub merge queue 文档确认 jump 到队首会触发 in-progress PR 重建，必须把重建事件提升为证据失效信号。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:27:10Z）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`): `747s and Coding Agents`
-  - show (`show`): `Show HN: Obsidian Garden for running local llm agents`
-  - new (`newest`): `Open Source and self host your own private Telegram using Telegram API`
-- 官方文档证据链（本轮重点）
-  - GitHub merge queue（jump 到队首会触发 in-progress PR 重建）
-  - GitHub Actions `merge_group` 事件（队列重建后的独立校验触发面）
-  - GitHub GraphQL（`EnqueuePullRequestInput.jump` / `MergeQueueParametersInput.groupingStrategy`）
-
-### 本轮结论
-
-- queue 重排不是“调度层小变更”，而是“验证对象切换”，必须触发旧证据失效。
-- `queue_epoch_id` + `merge_group_head_sha` 是最小绑定对；缺任何一项都不应晋级。
-- `groupingStrategy` 变化必须进入 quarantine 并要求人工确认，不能静默继承旧绿灯。
-
-### Cycle 46 预载任务
-
-1. 为 `queue_epoch_manifest.json` 增加历史链路字段（`previous_epoch_id` / `invalidated_at_utc`）。
-2. 把 `jump_requested=true` 接入 required checks 的 fail-fast 模板。
-3. 将 `groupingStrategy` 变化与 tail-green 风险预算做统一阈值表。
-
----
-
----
-# Morning Brief（Nightshift Cycle 44）
-
-> 更新时间：2026-02-28 21:19 UTC  
-> 本轮目标：把 ruleset 旁路名单“可见性盲区”升级为晋级硬门禁，阻断低权限快照导致的静默误放行。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/release-governance/ruleset-bypass-visibility-attestation-gate.md`
-2. `references/patterns/release-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 44）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `规则集导出盲区补偿治理（ruleset export blind-spot compensation gate）` 为：
-  - `规则集导出同构校验治理（ruleset export parity gate）`
-  - `低权限可见性降级治理（low-privilege visibility degradation gate）`
-  - reason: 原方向同时覆盖“导出同构差异”和“权限导致字段不可见”，执行边界过宽。
-- `merge`：合并方向
-  - from: `旁路名单主体漂移治理（bypass actor-set drift gate）`
-  - from: `低权限可见性降级治理（low-privilege visibility degradation gate）`
-  - into: `旁路主体可见性漂移治理（bypass actor-visibility drift gate）`
-  - reason: 两方向都治理旁路主体边界变化，一个是“真变更”，一个是“可见性退化”，应合并到同一门禁语义。
-- `expand`：新增方向 `队列容错显式降级治理（merge-queue non-failing explicit fallback gate）`
-  - 触发依据：GitHub merge queue 支持允许失败 PR 混入队列，可见性异常时需自动降级为“仅合并 non-failing PR”。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:19:40Z）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`): `How to build a coding agent`
-  - show (`show`): `Show HN: Self-hosting all your coding agents with a single script`
-  - new (`newest`): `Nvidia's net margin in AI peaks amid shrinking cloud rents`
-- 官方文档证据链（本轮重点）
-  - GitHub Rulesets REST API（`bypass_actors` 在写权限上下文才返回）
-  - GitHub merge queue（`Only merge non-failing pull requests` 模式开关）
-  - GitHub protected branches（required checks 与最新 commit/时效约束）
-
-### 本轮结论
-
-- 旁路名单审计首先要审计“可见性”，字段缺失不能等价为空。
-- 当 `visibility_unknown=true` 时，必须把 merge queue 降级到最保守模式并强制 `merge_group` 重验。
-- 没有 `bypass_visibility_attested` 的晋级决策，默认视为不可审计放行。
-
-### Cycle 45 预载任务
-
-1. 引入 `scope_hash` 与 token 角色映射，区分“字段为空”与“字段不可见”。
-2. 将 `visibility_unknown` 直接接到 required checks 的 fail-fast 入口。
-3. 为 `merge-queue non-failing fallback` 增加 TTL，避免长期保守模式形成吞吐债务。
 
 ---
 

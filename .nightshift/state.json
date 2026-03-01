@@ -1,7 +1,7 @@
 {
   "version": "1.1",
-  "updated_at": "2026-03-01T03:21:56Z",
-  "cycle": 94,
+  "updated_at": "2026-03-01T03:29:02Z",
+  "cycle": 95,
   "status": "paused",
   "mode": "CONSTRAINED_EXPANSION",
   "active_directions": [
@@ -14,7 +14,7 @@
   "dormant_directions": [],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 94,
+    "last_cycle": 95,
     "actions": [
       {
         "type": "compress",
@@ -55,6 +55,18 @@
         "reason": "cycle 94：将 Agent SDK 生产恢复链证据（RunState 恢复、错误来源分层、事件监听审计、compaction 合规约束）同化到 runtime-governance canonical pattern（不新建）",
         "updated_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
         "new_patterns": 0
+      },
+      {
+        "type": "compress",
+        "reason": "cycle 95 命中 5-cycle 压缩窗口；执行跨 topic 合并扫描并优先同化（merge > split）",
+        "merged_count": 0,
+        "assimilated_count": 1
+      },
+      {
+        "type": "assimilate",
+        "reason": "cycle 95：将 AI 代码有效测试的新证据（stateful sequence replay、mutation fail-fast、observability invariants）同化到 fullstack 验证门禁 canonical pattern（不新建）",
+        "updated_pattern": "references/patterns/fullstack-engineering/contract-replay-verification-gate.md",
+        "new_patterns": 0
       }
     ]
   },
@@ -67,8 +79,8 @@
     "https://platform.openai.com/docs/guides/conversation-state"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
-  "last_cycle_commit": "pending-cycle-94",
+  "last_pattern": "references/patterns/fullstack-engineering/contract-replay-verification-gate.md",
+  "last_cycle_commit": "pending-cycle-95",
   "constraints": {
     "per_topic_max_patterns": 5,
     "active_direction_max": 15,
