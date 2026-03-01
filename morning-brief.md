@@ -1,3 +1,66 @@
+# Morning Brief（Nightshift Cycle 101）
+
+> 更新时间：2026-03-01 04:04 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. guardrail 与 tool 并行时，副作用工具可能先执行再被 guardrail 判失败
+  2. 多 agent 长跑对 `max_turns` 仅重试兜底，缺少错误类型到恢复动作的映射
+  3. 审批/中断后恢复链缺少统一 checkpoint 协议，子代理上下文边界不清晰
+- 已有 pattern 覆盖检查：
+  - `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md` 已覆盖同一元问题（scope-identity-memory 三联门禁）
+- 判定：**同化**（补强副作用优先阻断 + run_state 恢复协议 + subagent 隔离边界，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `top`: `Trellis: Structured language model reinforcement learning for tool use`
+  - `show`: `Show HN: No Time To Die, a game made by one person for the gameboy`
+  - `newest`: `Convergence may be impossible for this one weird reason`
+
+### 官方证据链（不确定点补链）
+
+- OpenAI Agents SDK guardrails：`run_in_parallel=True` 时可能出现工具先执行后 guardrail 失败的副作用窗口
+- OpenAI Agents SDK runner：`error_handlers` 可按错误类型（含 `max_turns_exceeded`）定义恢复策略
+- OpenAI Agents SDK JS running agents：session 自动补齐历史并持久化本轮输入/输出
+- OpenAI Agents SDK Human-in-the-loop：`run_state.toString()/fromString()` 支持审批/中断后恢复
+- Anthropic Claude Code subagents：子代理使用独立上下文窗口，降低上下文串扰风险
+
+### 检索测试（L5，写后执行）
+
+- Query A：`run_in_parallel guardrail tool side effects`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：高风险工具切换串行 guardrail 阻断策略
+- Query B：`error_handlers max_turns_exceeded`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：建立错误类型 -> 恢复动作映射表
+- Query C：`run_state toString fromString`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：审批断点纳入 checkpoint/replay 协议
+- Query D：`Claude subagents separate context window`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：按子代理边界切分上下文与交接合同
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：本轮 cycle=101（下一个强制压缩点=105）
+
+---
 # Morning Brief（Nightshift Cycle 100）
 
 > 更新时间：2026-03-01 03:59 UTC  

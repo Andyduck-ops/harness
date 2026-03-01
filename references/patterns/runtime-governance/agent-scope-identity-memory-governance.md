@@ -2,7 +2,7 @@
 name: agent-scope-identity-memory-governance
 topic: runtime-governance
 confidence: 0.86
-verified_count: 19
+verified_count: 20
 sources:
   - OpenAI Agent Platform docs (Python/TypeScript/Go support) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (2026-03-01)
@@ -14,9 +14,13 @@ sources:
   - OpenAI Agents SDK RunConfig docs（groupId/handoffInputFilter）(2026-03-01)
   - OpenAI Agents SDK sessions docs（SQLiteSession transaction commit/rollback semantics）(2026-03-01)
   - OpenAI Agents SDK sessions docs（EncryptedSession API / TTL / key derivation）(2026-03-01)
+  - OpenAI Agents SDK JS running agents docs（session auto history + run_state resume）(2026-03-01)
+  - OpenAI Agents SDK guardrails docs（run_in_parallel side-effect boundary）(2026-03-01)
+  - OpenAI Agents SDK runner docs（error_handlers + max_turns lifecycle）(2026-03-01)
   - OpenAI API Background mode guide (2026-03-01)
   - OpenAI API Conversations / conversation state docs (2026-03-01)
   - Anthropic Agent SDK / tool use docs (2026-03-01)
+  - Anthropic Claude Code subagents docs（separate context window isolation）(2026-03-01)
   - Anthropic Agent SDK overview（tool loop + auto context management）(2026-03-01)
   - Anthropic API compaction docs（beta + non-ZDR constraints）(2026-03-01)
   - CrewAI Flows persistence docs (2026-03-01)
@@ -120,6 +124,14 @@ Demo 能跑不等于 production 能跑。
 - **事件审计需要覆盖 kickoff→handoff→recovery 全链路**：CrewAI Event Listeners 文档提供基于事件总线的监听挂点；应将 handoff、异常、恢复完成统一打点，和 OpenAI `group_id` 追踪做关联。
 - **社区信号继续验证“先稳态再扩张”**：HN 当窗 `top`（The curious case of shell commands and language models）、`show`（Launch HN: Yood）、`newest`（Only: Free and open source app to monitor your social media feed）仍显示实践侧关注点集中在可执行链路与运行稳定性。
 
+## Cycle 101 同化增量（副作用优先阻断 + 可恢复交接）
+
+- **高风险工具链默认不应并行放行**：OpenAI Agents SDK guardrails 文档指出 guardrail 默认可并行执行；若 `run_in_parallel=True`，模型输出工具调用时可能先执行工具再触发 guardrail 失败。生产上对有副作用的 tool 必须改为串行阻断策略（`run_in_parallel=False`）并显式做 tool 风险分级。
+- **恢复合同要绑定生命周期错误类型**：OpenAI runner 文档给出 `error_handlers`（含 `max_turns_exceeded`）可按错误类型分流恢复动作。治理上应从“统一重试”升级为“错误类型 -> 恢复策略”映射表。
+- **会话恢复需要执行面自动落盘**：OpenAI JS running agents 文档说明 runner 在存在 session 时会自动补齐历史并持久化本轮输入/输出；并支持 `run_state.toString()/fromString()` 恢复。可把审批/中断恢复并入同一 checkpoint 协议。
+- **Claude 子代理天然提供上下文隔离边界**：Claude Code subagents 文档明确子代理使用独立上下文窗口，且不会自动继承完整对话历史。可作为多 agent 场景的“隔离执行单元”，降低 identity/memory drift。
+- **强制信源侧证继续聚焦“稳定性先于扩张”**：HN 当前窗口 `top`（Trellis: Structured language model reinforcement learning for tool use）、`show`（Show HN: No Time To Die, a game made by one person for the gameboy）、`newest`（Convergence may be impossible for this one weird reason）与 OPML 锚点（`https://t.co/dwAiIjlXet` -> `popular blogs opml`）共同提示：工程主战场仍是可恢复执行面，而不是盲目增加 agent 数。
+
 ## 合并来源
 
 - agent scope drift severity budget
@@ -162,3 +174,12 @@ Demo 能跑不等于 production 能跑。
 - 查询：`CrewAI 事件监听能否用于多 agent 恢复审计`  
   命中：本 pattern  
   动作：收敛到 `BaseEventListener hooks + recovery checkpoint telemetry`
+- 查询：`run_in_parallel guardrail 工具副作用`  
+  命中：本 pattern  
+  动作：收敛到 `high-risk tools serial guardrail + side-effect budget`
+- 查询：`run_state toString fromString 恢复`  
+  命中：本 pattern  
+  动作：收敛到 `approval/interruption checkpoint replay protocol`
+- 查询：`Claude subagents separate context window`  
+  命中：本 pattern  
+  动作：收敛到 `subagent isolation boundary + scoped handoff contract`
