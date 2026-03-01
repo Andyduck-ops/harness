@@ -1,3 +1,66 @@
+# Morning Brief（Nightshift Cycle 91）
+
+> 更新时间：2026-03-01 03:10 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. Agent SDK 从 demo 到 production 的会话持久化与恢复分层
+  2. 多 agent handoff 的输入边界与主体漂移治理
+  3. 长跑 compaction / background 执行的恢复一致性与合规边界
+- 已有 pattern 覆盖检查：
+  - `runtime-governance/agent-scope-identity-memory-governance.md` 已覆盖同一元问题
+- 判定：**同化**（更新证据链与治理动作，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news`: `Tariffs as arbitrary and chaotic taxes that happen to be paid by importers`
+  - `show`: `Show HN: Visualize markdown projects with Obsidian-style graph view`
+  - `newest`: `A 15-Million-Year-Old Fossilized Rainforest in Panama`
+
+### 官方证据链（不确定点补链）
+
+- OpenAI Agents SDK Sessions：`MemorySession`（测试/本地）与 `OpenAIConversationsSession`（持久会话）分层
+- OpenAI Agents SDK Handoffs：`handoff()` + `inputType` + `inputFilter` + `onHandoff`
+- OpenAI Responses Compaction Session：会清空并重写底层 session，且不可与 `OpenAIConversationsSession` 组合
+- OpenAI Background mode：`background=true` + polling/cancel；并给出保留窗口与 ZDR 约束
+- Anthropic tool use：`stop_reason=tool_use` + 工具执行回传闭环
+- CrewAI Flows：`@persist` 支持方法级/类级状态持久化
+- Kode Agent SDK（官方仓库 README）：stateful sessions + retry + traceable multi-agent workflow
+
+### 检索测试（L5，写后执行）
+
+- Query A：`multi agent handoff 身份漂移`  
+  命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`  
+  动作：`handoff input filter + identity lease + replay checkpoint`
+- Query B：`background 长任务 断线恢复 合规`  
+  命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`  
+  动作：`job id + polling/cancel + retention/ZDR gate`
+- Query C：`Claude CrewAI Kode 长跑状态治理`  
+  命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`  
+  动作：`scope-identity-memory gate + tool checkpoint + persisted session`
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 压缩：本轮 cycle=91（下一个强制压缩点=95）
+
+---
+
 # Morning Brief（Nightshift Cycle 90）
 
 > 更新时间：2026-03-01 UTC  
@@ -2678,654 +2741,6 @@
 1. 增加 `ruleset_bypass_snapshot.json` 的权限探针（检测低权限 token 空返回误判）。
 2. 将 `ruleset_bypass_diff.json` 接入 required checks 与 merge queue 出队门禁。
 3. 为 `bypass_mode=always` 增加 TTL 和自动回收策略。
-
----
-
----
-# Morning Brief（Nightshift Cycle 42）
-
-> 更新时间：2026-02-28 21:09 UTC  
-> 本轮目标：把 deployment bypass 的“自由文本理由”升级为“可枚举、可验签、可追责”的注册门禁，阻断灰放行。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/release-governance/bypass-reason-registry-gate.md`
-2. `references/patterns/release-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 42）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `旁路理由枚举注册治理（bypass reason registry gate）` 为：
-  - `旁路理由分类治理（bypass reason taxonomy gate）`
-  - `旁路理由证据绑定治理（bypass reason evidence-binding gate）`
-  - reason: 原方向同时承载“理由词表设计”和“证据校验约束”，执行动作过宽，不利于自动化 gate。
-- `merge`：合并方向
-  - from: `旁路授权-禁绕策略同一治理（bypass authorization and no-bypass parity gate）`
-  - from: `旁路理由证据绑定治理（bypass reason evidence-binding gate）`
-  - into: `旁路授权-理由同一治理（bypass authorization-reason parity gate）`
-  - reason: 旁路是否允许与旁路理由是否合规属于同一准入面，拆开会产生“有权限但无合规理由”的审计裂缝。
-- `expand`：新增方向 `规则集旁路名单漂移治理（ruleset bypass-list drift gate）`
-  - 触发依据：GitHub rulesets 明确存在 bypass list，需要把名单变更纳入漂移审计与晋级阻断。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:09:22Z）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`): `MCP Spec Is Wrong: M×N ≠ M+N`
-  - show (`show`): `Show HN: Lok, a modern HN web and terminal client`
-  - new (`newest`): `Show HN: Aider Polyglot - One command install and launch all your coding agents`
-- 官方文档证据链（本轮重点）
-  - GitHub rulesets（bypass list）
-  - GitHub review deployments（bypass deployment protection rules）
-  - GitHub protected branches（do not allow bypassing）
-  - GitHub merge queue（队列校验独立上下文）
-
-### 本轮结论
-
-- bypass 不应只校验“谁可以”，还必须校验“为什么可以”且理由必须结构化。
-- `bypass_reason_code` 必须与证据要求绑定；无注册 code 的旁路默认不可晋级。
-- `promotion_decision.json` 必须包含 `reason_registry_pass`，否则次日无法归因审批依据。
-
-### Cycle 43 预载任务
-
-1. 增加 `reason_code -> required_evidence` 的模板与最小字段 lint（缺字段即 fail）。
-2. 把 `ruleset_bypass_list_diff.json` 接入 required checks。
-3. 为 `emergency` 类 reason 增加 TTL 上限与自动失效回放字段。
-
----
-
----
-# Morning Brief（Nightshift Cycle 41）
-
-> 更新时间：2026-02-28 21:04 UTC  
-> 本轮目标：把“分支禁绕”与“环境旁路”从并列配置升级为同一闸门，阻断策略口径冲突导致的隐式放行。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/release-governance/branch-environment-no-bypass-parity-gate.md`
-2. `references/patterns/release-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 41）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `分支保护禁绕策略一致性治理（branch no-bypass policy parity gate）` 为：
-  - `分支规则禁绕约束治理（branch-rule no-bypass enforcement gate）`
-  - `环境旁路策略对齐治理（environment bypass parity gate）`
-  - reason: 原方向把“分支硬门禁”和“环境例外旁路”耦合在一个动作里，执行边界过宽。
-- `merge`：合并方向
-  - from: `绕过执行身份约束治理（bypass actor authorization gate）`
-  - from: `环境旁路策略对齐治理（environment bypass parity gate）`
-  - into: `旁路授权-禁绕策略同一治理（bypass authorization and no-bypass parity gate）`
-  - reason: 两方向都在管控“谁可旁路 + 旁路是否违背禁绕策略”，合并后可避免同构 pattern 重复。
-- `expand`：新增方向 `旁路理由枚举注册治理（bypass reason registry gate）`
-  - 触发依据：GitHub review deployments 存在 bypass 入口；若不把 bypass reason 结构化枚举化，次日无法稳定追责。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:04:41Z）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`): `Open source and self host your own private Telegram using Telegram API`
-  - show (`show`): `Show HN: Aider Polyglot - One command install and launch all your coding agents`
-  - new (`newest`): `Making software for all is hard. Here's why`
-- 官方文档证据链（本轮重点）
-  - GitHub protected branches（`Do not allow bypassing the above settings`）
-  - GitHub deployments/environments（required reviewers / wait timer / prevent self-reviews）
-  - GitHub review deployments（bypass deployment protection rules）
-  - GitHub merge queue + Actions `merge_group`（队列校验独立触发上下文）
-
-### 本轮结论
-
-- “分支禁绕”与“环境可旁路”不是二选一配置，而是同一闸门的冲突裁决问题。
-- bypass 一旦发生，必须重算策略同一性并触发重验，不能继承旧绿灯。
-- 没有 `bypass_policy_parity_report.json` 的发布，默认视为不可审计放行。
-
-### Cycle 42 预载任务
-
-1. 固化 `bypass_reason_code` 注册表与最小字段 lint（缺失即 fail）。
-2. 增加 `policy_parity_state` 的分支分层阈值模板（main/release/hotfix）。
-3. 把 `parity_gate_pass` 接入 required checks 与晋级阻断。
-
----
-
----
-# Morning Brief（Nightshift Cycle 40）
-
-> 更新时间：2026-02-28 20:59 UTC  
-> 本轮目标：把 deployment bypass 从“人工例外”升级为“可追责旁路”，阻断强制放行绕过审计链。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/release-governance/environment-bypass-audit-quarantine-gate.md`
-2. `references/patterns/release-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 40）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `环境保护绕过审计门禁（environment protection bypass audit gate）` 为：
-  - `绕过执行身份约束治理（bypass actor authorization gate）`
-  - `绕过审计隔离治理（bypass audit quarantine gate）`
-  - reason: 原方向同时覆盖“谁能绕过”和“绕过后如何隔离追责”，执行边界过宽。
-- `merge`：合并方向
-  - from: `绕过审计隔离治理（bypass audit quarantine gate）`
-  - from: `审批-等待双触发重验治理（approval+wait dual-trigger reverify gate）`
-  - into: `审批-绕过双轨时效治理（approval-bypass dual-track freshness gate）`
-  - reason: 两方向都在治理“晋级前重验与例外放行”，合并后形成统一双轨门禁。
-- `expand`：新增方向 `分支保护禁绕策略一致性治理（branch no-bypass policy parity gate）`
-  - 触发依据：GitHub protected branches 提供“不允许绕过设置”策略面，需要与 environment bypass 审计口径一致。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T20:59:56Z）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`): `How to stop overcomplicating your product`
-  - show (`show`): `Show HN: Matrix, but it is all Git`
-  - new (`newest`): `10 years ago, someone asked me if there was any way to block AI from crawling`
-- 官方文档证据链（本轮重点）
-  - GitHub review deployments（bypass deployment protection rules）
-  - GitHub deployments/environments（required reviewers + prevent self-reviews + wait timer）
-  - GitHub protected branches（do not allow bypassing）
-  - GitHub merge queue（队列校验独立上下文）
-
-### 本轮结论
-
-- bypass 不是日志注释，而是独立晋级路径；必须有身份约束和对象绑定。
-- bypass 后默认应进入 `quarantine_review`，而不是沿用旧绿灯直接 promote。
-- 没有 `bypass_override_audit.json` 的放行，不具备次日可追责能力。
-
-### Cycle 41 预载任务
-
-1. 输出 `bypass_reason_code` 枚举与最小字段 lint（缺字段直接 fail）。
-2. 将 `post_bypass_reverify` 纳入 required checks，禁止 bypass 后跳过重验。
-3. 对齐 `branch no-bypass` 与 `environment bypass` 的冲突裁决顺序，避免策略打架。
-
----
-
----
-# Morning Brief（Nightshift Cycle 39）
-
-> 更新时间：2026-02-28 20:55 UTC  
-> 本轮目标：把 environment wait timer 从“被动等待”升级为“主动重验触发器”，阻断等待期间证据过窗后直接晋级。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/release-governance/environment-wait-timer-reverify-gate.md`
-2. `references/patterns/release-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 39）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `环境等待计时预算治理（environment wait-timer budget gate）` 为：
-  - `环境等待计时上限治理（environment wait-timer ceiling gate）`
-  - `环境等待到期重验闸门（wait-timer expiry reverify gate）`
-  - reason: 原方向同时混合“等待预算定义”和“到期重验动作”，可执行粒度过粗。
-- `merge`：合并方向
-  - from: `审批前重验闸门（pre-approval reverify gate）`
-  - from: `环境等待到期重验闸门（wait-timer expiry reverify gate）`
-  - into: `审批-等待双触发重验治理（approval+wait dual-trigger reverify gate）`
-  - reason: 两者都指向同一控制面（重验触发），合并后统一门禁契约并减少同构 pattern。
-- `expand`：新增方向 `环境保护绕过审计门禁（environment protection bypass audit gate）`
-  - 触发依据：GitHub Review deployments 文档明确存在 bypass 入口，需要独立审计门禁防止“强制放行不可追责”。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T20:55:06Z）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`): `Open source and self host your own private Telegram using Telegram API`
-  - show (`show`): `A framework to agentify your software and orchestrate dynamic LLMs`
-  - new (`newest`): `I got OpenAI Agent to make me 100k while I slept`
-- 官方文档证据链（本轮重点）
-  - GitHub deployments/environments（wait timer + required reviewers）
-  - GitHub review deployments（审批/拒绝与 bypass 机制）
-  - GitHub merge queue + `merge_group`（队列校验独立上下文）
-  - GitHub protected branches（required checks 与最新 SHA / 时效约束）
-
-### 本轮结论
-
-- wait timer 不是中性延时，而是“重验触发器”；等待越久，继承旧绿灯风险越高。
-- 审批与等待必须使用同一 `lineage_id` 记录双触发重验（approval age / wait elapsed）。
-- bypass 行为必须结构化审计并触发 `quarantine_review`，否则无法完成可追责发布。
-
-### Cycle 40 预载任务
-
-1. 为 `approval+wait dual-trigger reverify gate` 增加分支分层阈值模板（main/release/hotfix）。
-2. 把 `bypass_override_audit.json` 纳入 required checks 与晋级阻断。
-3. 增加“等待超窗 + 审批变更人”组合场景的回放字段规范。
-
----
-
----
-# Morning Brief（Nightshift Cycle 38）
-
-> 更新时间：2026-02-28 20:50 UTC  
-> 本轮目标：把“queue 通过”与“deployment 审批”之间的时间窗显式预算化，阻断过期绿灯继承。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/release-governance/approval-freshness-budget-gate.md`
-2. `references/patterns/release-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 38）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `审批时效预算治理（approval freshness budget gate）` 为：
-  - `审批签发时效预算治理（approval-sign freshness budget gate）`
-  - `审批前重验闸门（pre-approval reverify gate）`
-  - reason: 原方向把“审批时间预算”和“超窗重验动作”耦合在一起，执行颗粒度过粗。
-- `merge`：合并方向
-  - from: `同窗时序预算治理（window alignment + skew budget gate）`
-  - from: `审批签发时效预算治理（approval-sign freshness budget gate）`
-  - into: `跨阶段时序预算治理（cross-stage window freshness budget gate）`
-  - reason: 两者都在管控时间窗偏斜，合并后可统一 queue->approval->promotion 的预算口径。
-- `expand`：新增方向 `环境等待计时预算治理（environment wait-timer budget gate）`
-  - 触发依据：GitHub environment 支持 wait timer，说明审批/发布链路存在显式时间控制面，可独立建模为预算门禁。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T20:50:30Z）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`): `Tell HN: Looking for data points where coding assistants caused incidents`
-  - show (`show`): `Show HN: WeatherMCP: Access weather data from your AI tool`
-  - new (`newest`): `How to stop overcomplicating your product`
-- 官方文档证据链（本轮重点）
-  - GitHub merge queue（队列验证是独立合并上下文）
-  - GitHub Actions `merge_group` 事件（队列阶段独立触发面）
-  - GitHub deployments/environments + review deployments（审批规则、required reviewers、prevent self-reviews、wait timer）
-  - GitHub protected branches（required checks 需匹配最新 SHA，且有时效窗口）
-
-### 本轮结论
-
-- queue 绿灯不能直接继承到 deploy 审批，必须核对“通过时间”是否仍在预算内。
-- 审批卡片必须绑定 `lineage_id + merge_group_sha + checks_passed_at_utc + deploy_sha`，否则无法证明审批基于有效证据。
-- 超窗审批必须触发 `reverify_before_approval`，而不是沿用旧检查结果。
-
-### Cycle 39 预载任务
-
-1. 将 `approval_freshness_budget.json` 接入 required checks 与晋级决策。
-2. 按分支等级输出默认阈值模板（main/release/hotfix）。
-3. 给超窗重验失败场景补 `quarantine_replay_report` 字段规范。
-
----
-
----
-# Morning Brief（Nightshift Cycle 37）
-
-> 更新时间：2026-02-28 20:45 UTC  
-> 本轮目标：补齐 merge queue 与 environment 审批之间的连续性断层，避免“合并绿灯”直接穿透到“发布绿灯”。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/release-governance/queue-deploy-continuity-dual-gate.md`
-2. `references/patterns/release-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 37）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `环境审批发布门禁（environment approval release gate）` 为：
-  - `部署审批身份门禁（deployment reviewer identity gate）`
-  - `队列-部署连续性门禁（queue-to-deploy continuity gate）`
-  - reason: 原方向同时包含“审批身份约束”和“queue→deploy 连续性校验”，执行边界过宽，需拆分。
-- `merge`：合并方向
-  - from: `合并队列同构预检门禁（queue preflight parity gate）`
-  - from: `队列-部署连续性门禁（queue-to-deploy continuity gate）`
-  - into: `队列预检-部署连续性双门禁（queue preflight-deploy continuity dual gate）`
-  - reason: 两方向都约束晋级连续性，分离维护会重复同一批审计字段。
-- `expand`：新增方向 `审批时效预算治理（approval freshness budget gate）`
-  - 触发依据：queue 通过与 deploy 审批之间存在自然时滞，需独立 freshness 预算治理。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T20:45:37Z）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`): `Signal says it’s pulling feature users exploited to protect privacy`
-  - show (`show`): `Show HN: Wavpilot - Voice to Cursor in Your Browser`
-  - new (`newest`): `Introducing Claude 4.5`
-- 官方文档证据链（本轮重点）
-  - GitHub merge queue（队列阶段独立合并上下文）
-  - GitHub Actions `merge_group` 事件（队列校验独立触发面）
-  - GitHub deployments/environments + review deployments（environment 保护规则、required reviewers、阻止自审）
-  - GitHub required status checks（最新 SHA + 时效约束）
-
-### 本轮结论
-
-- “queue 可合并”与“deployment 可发布”不是同一闸门，必须做 lineage 绑定。
-- 部署审批卡片需要强绑定 `lineage_id + merge_group_sha + deploy_sha`，否则审计链会断。
-- queue 到 deploy 的时间窗必须纳入 freshness 预算，超窗后要重验而不是继承旧绿灯。
-
-### Cycle 38 预载任务
-
-1. 将 `queue_deploy_continuity.json` 纳入 required checks 与合并门禁。
-2. 对 `approval freshness budget` 增加分支分层阈值（main/release/hotfix）。
-3. 给 deploy 拒绝场景补 `quarantine_replay_report`（含 reviewer 决策轨迹）。
-
----
-
----
-# Morning Brief（Nightshift Cycle 36）
-
-> 更新时间：2026-02-28 20:41 UTC  
-> 本轮目标：把 merge queue 的“队尾绿灯”从默认可用改为“可审计可预算”，阻断失败成员被组合结果掩蔽。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/queue-governance/merge-queue-tail-green-risk-gate.md`
-2. `references/patterns/queue-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 36）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `merge_group 事件同构校验（merge_group parity checks）` 为：
-  - `merge_group 触发同构校验（merge_group event parity gate）`
-  - `队列容错模式验签（tail-green mode attestation gate）`
-  - reason: 同一方向同时覆盖“触发面一致性”和“队列策略一致性”，可执行性过宽，需拆分为双门禁。
-- `merge`：合并方向
-  - from: `合并队列预检门禁（merge queue preflight gate）`
-  - from: `merge_group 触发同构校验（merge_group event parity gate）`
-  - into: `合并队列同构预检门禁（queue preflight parity gate）`
-  - reason: 两者都在约束“入队前同构校验”，合并可减少重复门禁并统一审计字段。
-- `expand`：新增方向 `队列尾绿掩蔽预算治理（tail-green masking budget gate）`
-  - 触发依据：GitHub merge queue 支持“允许失败 PR 混入队列”的容错模式，需要独立预算治理。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T20:39:15Z，observed revisions: 29）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`): `Obsidian Sync and local-first software`
-  - show (`show`): `Show HN: Now I Get It: Visuals on how AI translators work`
-  - new (`newest`): `The Making of Anthropic CEO Dario Amodei (2025)`
-- 官方文档证据链（本轮重点）
-  - GitHub merge queue（模式配置：可选只合并非失败 PR）
-  - GitHub Actions `merge_group` 事件（队列阶段独立触发面）
-  - GitHub required status checks（最新 SHA + 7 天有效窗口）
-  - OPML 2.0 规范（`text/xmlUrl/htmlUrl` 可编辑属性）
-
-### 本轮结论
-
-- “PR 通过”与“队列可合并”仍是两个判定面；容错模式下必须补成员失败预算。
-- 队尾通过不能替代组内失败分布；否则会出现可追踪性缺口。
-- 晋级门禁应同时绑定 `mode_attested + member_matrix + dual freshness`。
-
-### Cycle 37 预载任务
-
-1. 把 `failing_member_ratio` 做分支分层阈值模板（main/release/hotfix）。
-2. 将 `queue_mode_attestation` 接入 required checks 与审计报表。
-3. 为 tail-green 例外路径补齐 quarantine 回放报告（含成员失败根因）。
-
----
-
----
-# Morning Brief（Nightshift Cycle 35）
-
-> 更新时间：2026-02-28 20:36 UTC  
-> 本轮目标：把“PR 阶段通过”升级为“merge queue 出队时仍可证”，避免排队等待造成的静默失效晋级。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/queue-governance/merge-group-parity-freshness-gate.md`
-2. `references/patterns/queue-governance/_index.md`（新 topic 自动创建）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 行与统计更新）
-4. `morning-brief.md`（新增 Cycle 35）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `白天晋级车道（分支保护 + 环境审批）` 为：
-  - `合并队列预检门禁（merge queue preflight gate）`
-  - `环境审批发布门禁（environment approval release gate）`
-  - reason: “队列验证”与“环境审批”是两个独立失效面，必须拆开验收。
-- `merge`：合并方向
-  - from: `墓碑检测回放治理（deleted/dead replay detector）`
-  - from: `晋级前重放窗口契约（pre-promotion replay window contract）`
-  - into: `晋级双时点重放治理（capture+promotion replay dual-phase gate）`
-  - reason: 两方向都在解决“采样与晋级之间的失真窗口”，合并后可统一门禁字段。
-- `expand`：新增方向 `merge_group 事件同构校验（merge_group parity checks）`
-  - 触发依据：GitHub merge queue 与 workflow `merge_group` 事件是独立触发面，需新增同构校验方向。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T20:35:58Z）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`): `Japan's Buddhist temples turn to AI chatbots amid monk shortage`
-  - show (`show`): `Show HN: Open-Source Note Taking App with Spatial Keyboard Navigation`
-  - new (`newest`): `I made a stupidly simple app to stop my household from losing things`
-- 官方文档证据链（本轮重点）
-  - GitHub merge queue（合并前队列验证）
-  - GitHub Actions `merge_group` 事件（队列阶段独立触发面）
-  - GitHub required checks 规则（状态检查 7 天时效约束）
-  - OPML 2.0 规范（入口身份字段语义）
-
-### 本轮结论
-
-- PR 阶段绿灯不等于 queue 出队绿灯，`merge_group` 必须有同构验证。
-- 排队时滞必须入账，否则会出现“采样时有效、出队时过期”的隐性失败。
-- 证据门禁应采用 `入队前 + 出队前` 双时点校验，禁止继承旧检查结果直接晋级。
-
-### Cycle 36 预载任务
-
-1. 把 `queue_wait_minutes` 接入分支分层阈值模板（main/release/hotfix）。
-2. 将 `queue_exit_fresh_pass` 接入 `promotion_decision` required checks。
-3. 为 `merge_group` 失败补齐 quarantine 回放报告字段（含 tombstone 与 retrievability）。
-
----
-
----
-# Morning Brief（Nightshift Cycle 34）
-
-> 更新时间：2026-02-28 20:28 UTC  
-> 本轮目标：把“可回放证据”再推进到“晋级时仍可用”，阻断 deleted/dead 墓碑对象的幽灵晋级。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/evidence-governance/tombstone-replay-promotion-gate.md`
-2. `references/patterns/evidence-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 34）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `HN Item 墓碑漂移治理（deleted/dead item tombstone policy）` 为：
-  - `墓碑检测回放治理（deleted/dead replay detector）`
-  - `墓碑晋级冻结门禁（tombstone promotion freeze gate）`
-  - reason: 需把“识别失效对象”和“阻断晋级路径”拆分为两个可验收控制面。
-- `expand`：新增方向 `晋级前重放窗口契约（pre-promotion replay window contract）`
-  - 触发依据：required status checks 存在时效窗口，晋级前必须二次回放才能保证证据仍然有效。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T20:28:31Z）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`): `Deep learning is akin to a nuclear first strike`
-  - show (`show`): `Show HN: The Mad 2025 Chart of Fortune 500 Revenue, Earnings and Stock`
-  - new (`newest`): `Show HN: Build and host react apps, no config`
-- 官方文档证据链（本轮重点）
-  - OPML 2.0 规范（`text/xmlUrl/htmlUrl` 字段语义）
-  - Hacker News API（`item.deleted` / `item.dead` 墓碑语义）
-  - GitHub 分支保护与 required checks（状态检查 7 天时效约束）
-
-### 本轮结论
-
-- 采集时可回放不等于晋级时可用；中间窗口可能产生墓碑漂移。
-- 证据门禁必须拆成 `capture_replay_pass + promotion_replay_pass` 双时点校验。
-- `deleted/dead` 必须触发硬隔离而不是软告警，否则会产生“绿灯但不可证”的晋级事故。
-
-### Cycle 35 预载任务
-
-1. 在 `promotion_decision.json` 增加 `tombstone_freeze_pass` 并纳入 required checks。
-2. 为 `tombstone_quarantine.json` 加入 `recovery_policy`（人工复核/直接废弃）。
-3. 将 `pre-promotion replay window` 与 `retrievability_sla_hours` 做分支分层模板联动。
-
----
-
----
-# Morning Brief（Nightshift Cycle 33）
-
-> 更新时间：2026-02-28 20:24 UTC  
-> 本轮目标：把“有证据”升级为“证据可检索可回放”，避免次日无法定位同一 claim 对象。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/evidence-governance/claim-anchor-retrievability-gate.md`
-2. `references/patterns/evidence-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 33）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `证据引用可检索契约（claim id + anchor retrievability contract）` 为：
-  - `Claim-ID 强绑定治理（claim_id -> hn_item_id -> outline_key binding）`
-  - `锚点存活预算治理（anchor retrievability SLA + mirror fallback）`
-  - reason: 原方向过宽，需把“身份绑定”与“锚点存活”拆为独立控制面，便于执行与验收。
-- `expand`：新增方向 `HN Item 墓碑漂移治理（deleted/dead item tombstone policy）`
-  - 触发依据：HN API item 存在 `deleted/dead` 语义，需新增失效证据处置方向，避免把墓碑对象继续作为晋级证据。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T20:22:12Z）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`, item `45871445`): `ChatGPT’s confidence can mislead users, study finds`
-  - show (`show`, item `45871193`): `Show HN: Open-Source Cursor Alternative`
-  - new (`newest`, item `45871883`): `Version 4.2.0`
-- 官方文档证据链（本轮重点）
-  - OPML 2.0 规范（`text/xmlUrl/htmlUrl` 字段语义）
-  - Hacker News API（`topstories/showstories/newstories` + `item`）
-  - GitHub REST API: Gist revision（可回溯入口版本）
-
-### 本轮结论
-
-- 只记录标题或 URL 的 claim 本质上不可审计，次日无法稳定回放同一对象。
-- claim 必须绑定 `hn_item_id + outline_key`，并带重放时间戳。
-- OPML revision 变化后若不触发批量重放，会产生“证据仍存在但已不可检索”的静默故障。
-
-### Cycle 34 预载任务
-
-1. 为 `claim_replay_report` 增加 `tombstone_reason` 与自动隔离策略。
-2. 建立 `retrievability_sla_hours` 的分支分层阈值模板（main/release/hotfix）。
-3. 将 `retrievable_pass` 接入 `promotion_decision` required checks。
-
----
-
----
-# Morning Brief（Nightshift Cycle 32）
-
-> 更新时间：2026-02-28 20:18 UTC  
-> 本轮目标：把 OPML 订阅入口从“可读名称”升级为“可审计身份主键”，避免夜间发现到白天晋级的证据对象错配。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/source-governance/opml-outline-tri-key-drift-gate.md`
-2. `references/patterns/source-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 32）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `OPML 订阅体身份约束（outline identity contract: text/xmlUrl/htmlUrl）` 为：
-  - `OPML 三元主键约束（text/xmlUrl/htmlUrl tri-key contract）`
-  - `OPML 可编辑字段漂移探针（outline text edit-drift probe）`
-  - reason: OPML 的 `text` 可编辑而 `xmlUrl/htmlUrl` 更接近结构身份，需拆分“身份建模”与“漂移处置”两类控制面。
-- `merge`：合并方向
-  - from: `车道完备性仲裁（lane completeness quorum gate）`
-  - from: `车道身份一致性审计（lane identity parity gate）`
-  - into: `车道仲裁同一双门禁（lane quorum + identity dual gate）`
-  - reason: 两方向均作用于 HN 三车道晋级门，长期分离会重复维护同构字段与判定逻辑。
-- `expand`：新增方向 `证据引用可检索契约（claim id + anchor retrievability contract）`
-  - 触发依据：HN API 提供稳定 item id，若不强制 claim 与可检索锚点绑定，次日无法回放到同一证据对象。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`): `Building software products in the age of AI [video]`
-  - show (`show`): `Show HN: Better Auth - Authentication and authorization framework for TypeScript`
-  - new (`newest`): `Build your own SQLite, Part 1: Listing tables`
-- 官方文档证据链（本轮重点）
-  - OPML 2.0 规范（`text/xmlUrl/htmlUrl` 语义与 RSS 约束）
-  - Hacker News API（`topstories/showstories/newstories`）
-  - GitHub REST API: Gists（revision 可追踪）
-  - GitHub artifact attestations 离线验签（`trusted_root.jsonl` 时效约束）
-
-### 本轮结论
-
-- 用 `outline.text` 单字段去重会把“改名”误判为“新来源”，直接破坏去重和晋级审计。
-- 订阅入口必须最少落盘 `xmlUrl/htmlUrl/text` 三元身份，并把 `text` 漂移降级为显示层变更。
-- claim 必须绑定 `outline_key + hn_item_id`，否则即使证据存在，也不可回放验证同一对象。
-
-### Cycle 33 预载任务
-
-1. 为 `outline_drift_report` 增加 `drift_severity` 与自动处置矩阵（display_drift/source_break）。
-2. 设计 `claim_id -> hn_item_id -> outline_key` 的冲突仲裁优先级。
-3. 把 `证据引用可检索契约` 接入 `promotion_decision` required checks。
-
----
-
----
-# Morning Brief（Nightshift Cycle 31）
-
-> 更新时间：2026-02-28 20:12 UTC  
-> 本轮目标：把“离线验签通过”升级为“根信任新鲜且可追责”，避免 trusted root 过期导致的伪安全晋级。
-
-## 本轮新增（已落盘）
-
-1. `references/patterns/trust-governance/trusted-root-freshness-quarantine-gate.md`
-2. `references/patterns/trust-governance/_index.md`（新 topic 自动创建）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 行与统计更新）
-4. `morning-brief.md`（新增 Cycle 31）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-## 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `验签根信任新鲜度治理（trusted-root freshness gate）` 为：
-  - `根信任轮换门禁（trusted-root rotation gate）`
-  - `离线验签实例漂移探针（offline verification instance drift probe）`
-  - reason: 根信任“时效轮换”与“验签执行环境漂移”是两类失效面，必须拆分治理。
-- `merge`：合并方向
-  - from: `构建摘要同一性闸门（build subject digest parity gate）`
-  - from: `摘要失配隔离升级（digest mismatch quarantine escalation）`
-  - into: `摘要同一-隔离闭环治理（digest parity + quarantine closed loop）`
-  - reason: 一条负责检测、一条负责处置，长期分离会重复产出同构策略与字段。
-- `expand`：新增方向 `OPML 订阅体身份约束（outline identity contract: text/xmlUrl/htmlUrl）`
-  - 触发依据：OPML 2.0 明确 outline 的 `text/xmlUrl/htmlUrl` 语义，适合用于入口身份与证据来源约束。
-
-## 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已实测重定向到 HN Popular Blogs OPML Gist（checked 2026-02-28T20:12:13Z）。
-- HN `top/show/new`：已采样并写入证据链（示例）：
-  - top (`news`): `A New Law of Thermodynamics: The Law of Disorder`
-  - show (`show`): `Show HN: Milestone, a desktop app to mark student work with AI`
-  - new (`newest`): `GitHub Issues Search now supports nested queries and boolean operators`
-- 官方文档证据链（本轮重点）
-  - Hacker News API（`topstories/showstories/newstories`）
-  - GitHub artifact attestations（生成与验证）
-  - GitHub offline verification（`trusted_root.jsonl` 更新与验签）
-  - OPML 2.0 规范（outline 身份字段）
-
-## 本轮结论
-
-- “验签通过”不是终点；trusted root 时效失控会把通过结果降级为不可审计结论。
-- 夜间无人流程必须把 `root_fresh_pass` 升级为 required check，而非仅记录日志。
-- 根信任轮换与摘要同一性应并联校验，否则会出现“对象正确但信任根过期”的隐性风险。
-
-## Cycle 32 预载任务
-
-1. 设计 `root_age_budget` 的分支分层阈值（`main/release/hotfix`）。
-2. 为 `offline verification instance drift` 增加 `runner_image_digest` 对账字段。
-3. 把 `outline identity contract` 接入 source-governance 的三角校验清单。
 
 ---
 

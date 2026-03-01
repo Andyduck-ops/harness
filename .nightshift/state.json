@@ -1,7 +1,7 @@
 {
   "version": "1.1",
-  "updated_at": "2026-03-01T03:00:00Z",
-  "cycle": 90,
+  "updated_at": "2026-03-01T03:10:00Z",
+  "cycle": 91,
   "status": "paused",
   "mode": "CONSTRAINED_EXPANSION",
   "active_directions": [
@@ -14,7 +14,7 @@
   "dormant_directions": [],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 90,
+    "last_cycle": 91,
     "actions": [
       {
         "type": "compress",
@@ -31,6 +31,12 @@
         "reason": "cycle 90 命中 5-cycle 压缩窗口；执行跨 topic 合并扫描并选择同化更新",
         "merged_count": 0,
         "assimilated_count": 1
+      },
+      {
+        "type": "assimilate",
+        "reason": "cycle 91：将 Agent SDK 落地与长跑稳定性新证据同化到 runtime-governance 既有 canonical pattern（不新建）",
+        "updated_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
+        "new_patterns": 0
       }
     ]
   },
@@ -44,7 +50,7 @@
   ],
   "last_brief": "morning-brief.md",
   "last_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
-  "last_cycle_commit": "pending-cycle-90",
+  "last_cycle_commit": "pending-cycle-91",
   "constraints": {
     "per_topic_max_patterns": 5,
     "active_direction_max": 15,

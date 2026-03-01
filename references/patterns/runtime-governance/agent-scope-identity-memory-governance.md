@@ -2,7 +2,7 @@
 name: agent-scope-identity-memory-governance
 topic: runtime-governance
 confidence: 0.85
-verified_count: 14
+verified_count: 15
 sources:
   - OpenAI Agent Platform docs (Python/TypeScript/Go support) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (2026-03-01)
@@ -11,6 +11,7 @@ sources:
   - OpenAI API Conversations / conversation state docs (2026-03-01)
   - Anthropic Agent SDK / tool use docs (2026-03-01)
   - CrewAI Flows persistence docs (2026-03-01)
+  - Kode Agent SDK README（stateful sessions / retry / multi-agent traceability）(2026-03-01)
   - HN top/show/new snapshots (2026-03-01)
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (redirect verified 2026-03-01)
 last_verified: 2026-03-01
@@ -55,7 +56,7 @@ Demo 能跑不等于 production 能跑。
 - OpenAI：Agent Platform 明确给出 Python/TypeScript/Go 三栈 SDK，适合作为统一控制面入口；落地时仍需把会话存储与后台任务状态外置化。
 - Claude：Agent SDK 与 tool use 规则强调工具定义和输入约束，落地重点是“交接合同可验证”，而不是只靠提示词约定。
 - CrewAI：Flow `@persist` 将状态持久化变成显式机制，生产上应配合 replay/checkpoint 才能避免恢复漂移。
-- Kode SDK：本轮未检索到稳定的一手官方文档证据链，暂不单列为新 pattern，维持同化待补证据状态。
+- Kode SDK：官方仓库 README 已明确“内建状态管理与重试机制、默认持久化 session、可追踪多 agent 工作流”；可同化到三联门禁，不必新建 pattern。
 
 ## Cycle 90 压缩同化增量
 
@@ -65,13 +66,22 @@ Demo 能跑不等于 production 能跑。
 - **后台长任务恢复模型已可标准化**：background mode 的 `background=true + poll + cancel` 给出统一恢复面；并且存在约 10 分钟数据保留与 ZDR 不兼容约束，需在合规层前置分流。
 - **会话跨设备/跨作业复用可直接落地**：Conversations API 的 durable identifier 能把“单进程记忆”升级为“跨运行单元记忆”。
 
+## Cycle 91 同化增量（Agent SDK 落地 + 长跑稳定性）
+
+- **Session 选型必须环境分层**：OpenAI Sessions 文档将 `OpenAIConversationsSession`（持久会话）与 `MemorySession`（本地开发）分离；生产默认应外置会话并禁止把内存 session 当持久层。
+- **Handoff 输入边界可硬编码**：`handoff()` 的 `inputType + inputFilter + onHandoff` 已覆盖“schema 化交接 + 历史裁剪 + 交接审计”，可直接作为多 agent 通信合同。
+- **Compaction 属于状态迁移，不是纯优化**：`OpenAIResponsesCompactionSession` 会清空并重写底层 session，且不可与 `OpenAIConversationsSession` 组合；上线前必须跑 continuity replay 与 invariant 校验。
+- **异步恢复要纳入合规模型**：OpenAI background mode 明确了 polling/cancel 路径，同时文档给出“结果保留约 10 分钟 + 不支持 Zero Data Retention”约束，需在 prod 分流合规流量。
+- **Claude 工具回路是天然恢复点**：Anthropic tool use 规范里 `stop_reason=tool_use` 与“执行工具后回传结果”的闭环，适合作为 checkpoint 粒度。
+- **CrewAI 与 Kode 可被同一门禁吸收**：CrewAI 强调 state 生命周期与可持久化恢复；Kode README 强调 stateful sessions/retry/traceability。两者都落在 `scope-identity-memory` 三联门禁里，无需新增主题。
+
 ## 合并来源
 
 - agent scope drift severity budget
 - external identity lease replay
 - agent state cell replay envelope
 - agent memory partition least-privilege
-- OpenAI/CrewAI/Anthropic/ADK 官方文档中关于 state persistence、handoff、async recovery 的一手规范
+- OpenAI/CrewAI/Anthropic 官方文档 + Kode Agent SDK 官方仓库 README 中关于 state persistence、handoff、async recovery 的一手规范
 - HN top/show/new 与 OPML 作为“实践热区”信号，不单独作为入库依据
 
 ## 检索测试
@@ -85,3 +95,6 @@ Demo 能跑不等于 production 能跑。
 - 查询：`session compaction 后上下文一致性如何验收`  
   命中：本 pattern  
   动作：收敛到 `compaction before/after invariants + continuity replay + non-conversations-session rewrite check`
+- 查询：`Claude/CrewAI/Kode 多 agent 长跑如何统一治理`  
+  命中：本 pattern  
+  动作：收敛到 `scope-identity-memory 三联门禁 + tool checkpoint + persisted session + retry budget`
