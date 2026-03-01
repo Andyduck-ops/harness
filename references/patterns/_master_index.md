@@ -44,6 +44,7 @@
 | 3 | [theme-contrast-regression-slope-gate](./accessibility-governance/theme-contrast-regression-slope-gate.md) | accessibility-governance | 0.78 | OPML + HN API + WCAG 2.2 + Storybook + GitHub |
 | 3 | [color-vision-simulation-replay-gate](./accessibility-governance/color-vision-simulation-replay-gate.md) | accessibility-governance | 0.79 | OPML + HN + WCAG 2.2 + Storybook + GitHub |
 | 3 | [contract-breaking-budget-replay-gate](./fullstack-engineering/contract-breaking-budget-replay-gate.md) | fullstack-engineering | 0.77 | OPML + HN + HN API + OpenAPI + Pact + GitHub |
+| 3 | [contract-epoch-replay-gate](./contract-governance/contract-epoch-replay-gate.md) | contract-governance | 0.78 | OPML + HN(news/show/newest) + OpenAPI + Pact + GitHub Checks |
 | 3 | [compaction-recovery-contract](./context-governance/compaction-recovery-contract.md) | context-governance | 0.77 | OPML + HN + OpenAI + GitHub + git-reflog |
 | 3 | [context-burn-replay-freeze-gate](./context-governance/context-burn-replay-freeze-gate.md) | context-governance | 0.78 | OPML + HN + OpenAI + GitHub |
 | 3 | [agent-state-cell-replay-envelope](./state-governance/agent-state-cell-replay-envelope.md) | state-governance | 0.77 | OPML + HN + OpenAI + SQLite + GitHub |
@@ -111,6 +112,7 @@
 | [meta-framework/](./meta-framework/) | 1 | 元框架自身的模式 |
 | [autonomous-ops/](./autonomous-ops/) | 4 | 24h 无人巡航与守门机制 |
 | [fullstack-engineering/](./fullstack-engineering/) | 6 | 前后端工程化执行模式 |
+| [contract-governance/](./contract-governance/) | 1 | 契约纪元与回放样本纪元同构治理，阻断 PR/队列路径分叉带来的不可回放晋级 |
 | [design-governance/](./design-governance/) | 1 | 语义色名规范化、主题回放与可访问性门禁治理 |
 | [accessibility-governance/](./accessibility-governance/) | 3 | 文本/非文本对比预算、回退斜率门禁与多主题回放冻结治理 |
 | [product-delivery/](./product-delivery/) | 7 | PRD 到执行闭环 |
@@ -136,7 +138,7 @@
 
 ## 统计
 
-- 总计：92 patterns
+- 总计：93 patterns
 - 平均 confidence：0.79
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：70 patterns
+- 待验证（<0.80）：71 patterns

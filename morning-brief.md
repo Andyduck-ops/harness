@@ -1,3 +1,60 @@
+# Morning Brief（Nightshift Cycle 78）
+
+> 更新时间：2026-03-01 00:21 UTC  
+> 本轮目标：把“契约优先 + 回放验证”从经验约束升级为“纪元同构硬门禁”，阻断 PR/队列双路径的可合并不可回放漂移。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/contract-governance/contract-epoch-replay-gate.md`
+2. `references/patterns/contract-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `契约纪元同构回放门禁（contract-epoch parity replay gate）`
+  - reason: 现有“契约 diff + 回放覆盖”仍缺“纪元一致性”约束，跨路径晋级会产生隐形回放债务。
+- `split`：拆分方向
+  - from: `候选晋级表单治理（candidate intake + issue form gate）`
+  - into: `候选元问题摘要门禁（candidate meta-problem summary gate）`
+  - into: `候选证据链完整性门禁（candidate evidence-chain completeness gate）`
+  - reason: 表单完备性与证据链可回放性是两类不同失效面，需要独立门禁和独立失败归因。
+- `merge`：合并方向
+  - from: `破坏性变更预算治理（breaking-change budget + semantic diff）`
+  - from: `消费者回放覆盖治理（consumer replay coverage + provider verification）`
+  - into: `契约破坏预算-消费者回放协同门禁（breaking-budget replay-coverage co-gate）`
+  - reason: 两者同属“契约晋级质量面”，分治会造成预算与回放判定分叉。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML Gist  
+  - 最终 URL: `https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+  - 页面状态: 可见 `Revisions 6`，`Last active February 28, 2026`
+- HN 三车道样本（2026-03-01）
+  - top/news lane: `https://news.ycombinator.com/item?id=47200904`
+  - show lane: `https://news.ycombinator.com/item?id=47195123`
+  - newest lane: `https://news.ycombinator.com/item?id=47201826`
+- 官方文档补链（2026-03-01）
+  - `merge_group` 独立触发路径：`https://docs.github.com/en/actions/reference/events-that-trigger-workflows#merge_group`
+  - required checks 硬门禁：`https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks`
+  - OpenAPI 规范基线：`https://spec.openapis.org/oas/v3.1.2.html`
+  - Pact provider verification：`https://docs.pact.io/provider`
+
+### 本轮结论
+
+- 新增 pattern `contract-epoch-replay-gate` 明确了“元问题 + 核心解法 + 证据链 + 反模式”，且不与既有 `contract-replay-verification-gate` 重复：本轮聚焦的是**纪元同构**而非通用回放验证。
+- 只有把 `contract_epoch` 与 `replay_fixture_epoch` 绑定为 required checks，才能把“契约优先”变成可审计、可回放、可晋级的机器合同。
+- `pull_request` 与 `merge_group` 必须执行同构 checks，否则会出现“PR 绿、队列红”的隐藏漂移面。
+
+### Cycle 79 预载任务
+
+1. 为 `epoch_compat_report.json` 固化 `compat_class`（exact/backward/forward/breaking）字段。
+2. 将 `epoch_parity_pass` 接入 candidate->issue 晋级合同，补齐发现链路与交付链路的一致性。
+3. 设计 replay fixture 过期预算（TTL）并和 breaking budget 联动。
+
+---
 # Morning Brief（Nightshift Cycle 77）
 
 > 更新时间：2026-03-01 00:16 UTC  

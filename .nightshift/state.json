@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-03-01T00:16:10Z",
-  "cycle": 77,
+  "updated_at": "2026-03-01T00:21:40Z",
+  "cycle": 78,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -26,7 +26,6 @@
     "代理最小权限分级预算治理（agent least-privilege drift budget gate）",
     "代理记忆分区闭环治理（agent memory partition closure gate）",
     "信号债务路由（exploit/explore + debt ratchet）",
-    "候选晋级表单治理（candidate intake + issue form gate）",
     "冲突入口结构化必填门禁（conflict-intake required-form gate）",
     "冲突账本冻结门禁（contradiction-ledger freeze gate）",
     "冲突超时墓碑门禁（contradiction SLA tombstone gate）",
@@ -46,9 +45,7 @@
     "晋级双时点重放治理（capture+promotion replay dual-phase gate）",
     "根信任轮换门禁（trusted-root rotation gate）",
     "浏览器边界-权限同构协同治理（browser boundary-scope parity co-gate）",
-    "消费者回放覆盖治理（consumer replay coverage + provider verification）",
     "热度锚定采样（HN top anchor lane）",
-    "破坏性变更预算治理（breaking-change budget + semantic diff）",
     "离线验签实例漂移探针（offline verification instance drift probe）",
     "组件验收治理（story + a11y + visual gate）",
     "自驱代码人审触发门禁治理（self-driving code human-review trigger gate）",
@@ -83,36 +80,40 @@
     "冲突字段兼容回放门禁（conflict schema compatibility replay gate）",
     "冲突入口表单版本漂移门禁（conflict intake form-version drift gate）",
     "冲突仲裁包版本漂移门禁（conflict arbitration-packet version drift gate）",
-    "Shownew->Top 时滞半衰期一体门禁（shownew-top lag-half-life unified gate）"
+    "Shownew->Top 时滞半衰期一体门禁（shownew-top lag-half-life unified gate）",
+    "契约纪元同构回放门禁（contract-epoch parity replay gate）",
+    "候选元问题摘要门禁（candidate meta-problem summary gate）",
+    "候选证据链完整性门禁（candidate evidence-chain completeness gate）",
+    "契约破坏预算-消费者回放协同门禁（breaking-budget replay-coverage co-gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 77,
+    "last_cycle": 78,
     "actions": [
       {
         "type": "expand",
-        "added": "冲突字段兼容回放门禁（conflict schema compatibility replay gate）",
-        "reason": "required 字段只保证存在性，不保证 schema 语义兼容；需要独立门禁保障回放可执行。"
+        "added": "契约纪元同构回放门禁（contract-epoch parity replay gate）",
+        "reason": "补齐契约语义与回放样本纪元同构约束，避免 PR/队列双路径的隐式漂移。"
       },
       {
         "type": "split",
         "from": [
-          "冲突字段版本漂移门禁（conflict form-schema drift gate）"
+          "候选晋级表单治理（candidate intake + issue form gate）"
         ],
         "into": [
-          "冲突入口表单版本漂移门禁（conflict intake form-version drift gate）",
-          "冲突仲裁包版本漂移门禁（conflict arbitration-packet version drift gate）"
+          "候选元问题摘要门禁（candidate meta-problem summary gate）",
+          "候选证据链完整性门禁（candidate evidence-chain completeness gate）"
         ],
-        "reason": "入口表单与仲裁包属于不同演进面，拆分后可按链路分别阻断。"
+        "reason": "表单结构完整性与证据链可回放性属于不同失效面，拆分后便于独立阻断与归因。"
       },
       {
         "type": "merge",
         "from": [
-          "Shownew->Top 时滞复采样一体门禁（shownew-top lag-reverify unified gate）",
-          "Shownew->Top 证据半衰期预算治理（shownew-top evidence half-life budget gate）"
+          "破坏性变更预算治理（breaking-change budget + semantic diff）",
+          "消费者回放覆盖治理（consumer replay coverage + provider verification）"
         ],
-        "into": "Shownew->Top 时滞半衰期一体门禁（shownew-top lag-half-life unified gate）",
-        "reason": "两方向都在治理 shownew->top 的证据时效预算，合并可减少同构门禁参数漂移。"
+        "into": "契约破坏预算-消费者回放协同门禁（breaking-budget replay-coverage co-gate）",
+        "reason": "预算判定与回放覆盖本质同属契约晋级质量面，合并可避免双轨阈值漂移。"
       }
     ]
   },
@@ -140,6 +141,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/control-plane-governance/conflict-form-schema-drift-gate.md",
-  "last_cycle_commit": "pending-cycle-77"
+  "last_pattern": "references/patterns/contract-governance/contract-epoch-replay-gate.md",
+  "last_cycle_commit": "pending-cycle-78"
 }
