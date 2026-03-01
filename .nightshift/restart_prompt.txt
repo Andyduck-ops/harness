@@ -6,7 +6,7 @@ $nightshift
 ## 启动要求
 - 使用 nightshift skill 的流程执行。
 - 基于现有 31 patterns / 12 topics 继续扩展。
-- 不要重复已有知识；默认同化，不轻易新建。
+- 不要重复已有知识。
 
 ## 探索方向
 1) Agent SDK 落地实战
@@ -31,6 +31,13 @@ $nightshift
 - active directions <= 15。
 - 每 5 cycles 必须压缩（合并优先，禁止纯 split 膨胀）。
 - 每轮写完必须执行检索测试，并在 morning-brief 记录结果。
+
+## 同化判定准则（核心）
+- 同化判定标准不是“是否重复”，而是：
+  **同化后检索信噪比是否下降**。
+- 一个 pattern 只承载一个元问题。
+- 若新发现跨元问题：宁可新建 pattern，也不要硬塞进旧 pattern。
+- 该判定依赖语义判断，不使用伪精确硬阈值（符合 L7）。
 
 ## 每次运行只执行 1 个 cycle（runner 会自动续跑）
 1) 从 `.nightshift/state.json` 读取当前 cycle，执行 cycle + 1。
