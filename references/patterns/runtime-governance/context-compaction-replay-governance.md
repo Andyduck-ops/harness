@@ -1,13 +1,16 @@
 ---
 name: context-compaction-replay-governance
 topic: runtime-governance
-confidence: 0.81
-verified_count: 14
+confidence: 0.82
+verified_count: 15
 sources:
   - OpenAI API Conversation state docs (`store=true`, conversation id continuity) (2026-03-01)
+  - OpenAI API Conversation state docs（`previous_response_id` 与 `conversation` 互斥；response 对象默认 30 天保留）(2026-03-01)
   - OpenAI API Background mode docs (queued/in_progress/completed + poll/cancel) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (`MemorySession` vs persistent session backends) (2026-03-01)
   - OpenAI Agents SDK JS Sessions docs (`sessionInputCallback` + compaction scheduling guidance) (2026-03-01)
+  - OpenAI Agents SDK JS Sessions docs（`OpenAIResponsesCompactionSession` 与 `OpenAIConversationsSession` 不兼容；`runCompaction` 支持 `store` 与 `responseId`）(2026-03-01)
+  - OpenAI Agents SDK JS Sessions docs（自动 compaction 会等待 compact 完成后再结束 stream）(2026-03-01)
   - OpenAI Agents SDK JS Handoffs docs (`inputFilter`, default full history forwarding) (2026-03-01)
   - OpenAI Agents SDK JS Running agents docs (`reasoningItemIdPolicy` strict-provider recovery) (2026-03-01)
   - Anthropic Claude Code SDK docs（context window management + auto-compacting strategies）(2026-03-01)
@@ -67,6 +70,27 @@ rank: 3
   - HN `top/show/newest` 同窗条目仍高频聚焦 context 管理与 agent coding 实践；
   - 结论：本轮不新建 pattern，继续同化到 compaction canonical pattern 可提升检索信噪比。
 
+## Cycle 112 同化增量（压缩语义一致性 + 保留期边界）
+
+- **手动链路与会话链路不能混搭**：
+  - OpenAI conversation state 文档明确：`previous_response_id` 与 `conversation` 不能同时使用；
+  - 结论：恢复合同必须先声明“response-chain 模式”或“conversation 模式”，禁止混合提交导致链路歧义。
+- **保留期要按对象类型分层治理**：
+  - 文档明确 response 对象默认保留 30 天，而 conversation 对象及其 items 不受该 30 天保留期影响；
+  - 结论：长跑恢复不能只依赖 response id，必须把关键状态沉淀到 conversation 层或外部持久层。
+- **Compaction Session 与 Conversations Session 存在结构不兼容**：
+  - OpenAI Agents JS 文档明确 `OpenAIResponsesCompactionSession` 不应包装 `OpenAIConversationsSession`；
+  - 结论：压缩治理要显式区分“本地可压缩会话”和“远端持久会话”，避免双重状态源冲突。
+- **Compaction 的存储策略必须显式化**：
+  - `runCompaction({ store, responseId })` 提供“是否存储 compact 结果”和“链路锚点 responseId”策略位；
+  - 结论：长会话需把 `store` 与 `responseId` 作为必填恢复字段，禁止默认值隐式漂移。
+- **自动 compaction 会影响流完成语义**：
+  - 文档指出自动 compact 会在 stream 结束前等待 compact 完成；
+  - 结论：流式 SLA 需要并联“模型输出延迟”和“compaction 延迟”两条预算，不得只看首 token 时延。
+- **强制信源侧证（当窗）继续同向**：
+  - HN `news`（id=47224755）、`show`（id=47225679）、`newest`（id=47226766）与 OPML 锚点同窗验证：社区持续聚焦“上下文持久化与恢复一致性”。
+  - 判定：仍为同一元问题，执行同化，不新建 pattern。
+
 ## 合并来源
 
 - compaction recovery contract
@@ -97,3 +121,15 @@ rank: 3
 - 查询：`reasoningItemIdPolicy omit strict provider 400`
   - 命中：本 pattern
   - 动作：执行 `replay id policy=omit`，保证恢复链稳定
+- 查询：`previous_response_id and conversation cannot both be used`
+  - 命中：本 pattern
+  - 动作：执行 `response-chain vs conversation mode` 二选一恢复合同
+- 查询：`response object retention 30 days conversation items not affected`
+  - 命中：本 pattern
+  - 动作：执行 `response/conversation dual retention policy`
+- 查询：`OpenAIResponsesCompactionSession should not wrap OpenAIConversationsSession`
+  - 命中：本 pattern
+  - 动作：执行 `compaction backend separation`，禁止双层会话混搭
+- 查询：`runCompaction store responseId stream waits compaction`
+  - 命中：本 pattern
+  - 动作：执行 `explicit compaction options + stream SLA dual-budget`

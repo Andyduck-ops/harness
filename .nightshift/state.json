@@ -1,7 +1,7 @@
 {
   "version": "1.1",
-  "updated_at": "2026-03-01T05:05:20Z",
-  "cycle": 111,
+  "updated_at": "2026-03-01T05:11:10Z",
+  "cycle": 112,
   "status": "paused",
   "mode": "CONSTRAINED_EXPANSION",
   "active_directions": [
@@ -14,7 +14,7 @@
   "dormant_directions": [],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 111,
+    "last_cycle": 112,
     "actions": [
       {
         "type": "compress",
@@ -181,6 +181,12 @@
         "reason": "cycle 111：将长跑记忆预算新证据（setMaxTurnsPerTurn/setSessionLimit/sessionInputCallback/maxTurnsExceeded 恢复分支）同化到 runtime-governance canonical pattern（不新建）",
         "updated_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
         "new_patterns": 0
+      },
+      {
+        "type": "assimilate",
+        "reason": "cycle 112：将压缩语义一致性与保留期边界新证据（previous_response_id/conversation 互斥、response 30天保留、CompactionSession 与 ConversationsSession 不兼容、runCompaction store/responseId）同化到 runtime-governance compaction canonical pattern（不新建）",
+        "updated_pattern": "references/patterns/runtime-governance/context-compaction-replay-governance.md",
+        "new_patterns": 0
       }
     ]
   },
@@ -193,8 +199,8 @@
     "https://platform.openai.com/docs/guides/conversation-state"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
-  "last_cycle_commit": "pending-cycle-111",
+  "last_pattern": "references/patterns/runtime-governance/context-compaction-replay-governance.md",
+  "last_cycle_commit": "pending-cycle-112",
   "constraints": {
     "per_topic_max_patterns": 5,
     "active_direction_max": 15,

@@ -1,3 +1,65 @@
+# Morning Brief（Nightshift Cycle 112）
+
+> 更新时间：2026-03-01 05:11 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/context-compaction-replay-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 团队同时传 `previous_response_id` 和 `conversation`，导致恢复链语义冲突
+  2. 团队只保留 response id，忽略 response 30 天保留边界，长跑恢复在保留期后失效
+  3. 团队将 `OpenAIResponsesCompactionSession` 包装在 `OpenAIConversationsSession` 外，形成双状态源冲突
+- 已有 pattern 覆盖检查：
+  - `references/patterns/runtime-governance/context-compaction-replay-governance.md` 已覆盖同一元问题（compaction + replay continuity + context governance）
+- 判定：**同化**（补强“模式互斥、保留期分层、compaction 结构兼容、显式 compaction 参数”）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news/top`: item `47224755` — `New internet boom, same old cycle`
+  - `show`: item `47225679` — `Show HN: Memento, a self-organizing workspace`
+  - `newest`: item `47226766` — `From "Let me know..." to "Good game..."`
+
+### 官方证据链（不确定点补链）
+
+- OpenAI Conversation state：`previous_response_id` 与 `conversation` 不能同时使用；response 对象默认保留 30 天，conversation items 不受该 30 天限制
+- OpenAI Agents SDK JS Sessions：`OpenAIResponsesCompactionSession` 不应包装 `OpenAIConversationsSession`
+- OpenAI Agents SDK JS Sessions：`runCompaction({ store, responseId })` 提供存储与链路锚点策略位
+- OpenAI Agents SDK JS Sessions：自动 compaction 会等待 compact 完成后再结束 stream
+
+### 检索测试（L5，写后执行）
+
+- Query A：`previous_response_id and conversation cannot both be used`
+  - 命中：`references/patterns/runtime-governance/context-compaction-replay-governance.md`（1/1）
+  - 动作：恢复链先做 `response-chain` / `conversation` 二选一
+- Query B：`response object retention 30 days conversation items not affected`
+  - 命中：`references/patterns/runtime-governance/context-compaction-replay-governance.md`（1/1）
+  - 动作：执行 response/conversation 分层保留策略
+- Query C：`OpenAIResponsesCompactionSession should not wrap OpenAIConversationsSession`
+  - 命中：`references/patterns/runtime-governance/context-compaction-replay-governance.md`（1/1）
+  - 动作：执行 compaction backend separation
+- Query D：`runCompaction store responseId stream waits compaction`
+  - 命中：`references/patterns/runtime-governance/context-compaction-replay-governance.md`（1/1）
+  - 动作：把 `store`/`responseId` 纳入恢复合同，并计入 stream SLA 双预算
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：本轮 cycle=112（下一强制压缩点=115）
+
+---
 # Morning Brief（Nightshift Cycle 111）
 
 > 更新时间：2026-03-01 05:05 UTC  
@@ -2960,112 +3022,3 @@
 
 
 ---
-# Morning Brief（Nightshift Cycle 62）
-
-> 更新时间：2026-02-28 22:52 UTC  
-> 本轮目标：把 merge queue 的 fallback 从“临时容错开关”升级为“可恢复阈值门禁”，防止夜间长期停留在降级模式。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/queue-governance/queue-fallback-recovery-threshold-gate.md`
-2. `references/patterns/queue-governance/_index.md`
-3. `references/patterns/_master_index.md`
-4. `morning-brief.md`
-5. `.nightshift/state.json`
-
-### 激进动态策略执行（本轮）
-
-- `expand`：新增方向
-  - `队列容错恢复确认窗口治理（queue fallback recovery confirmation-window gate）`
-  - reason: merge queue 的 `minimum pull requests to merge` 提供恢复观察窗口锚点，可避免“刚降噪就恢复”的抖动。
-- `split`：拆分方向
-  - from: `队列降级触发密度预算治理（queue fallback trigger-density budget gate）`
-  - into: `队列降级触发失败密度预算治理（queue fallback failure-density budget gate）`
-  - into: `队列降级触发冲突密度预算治理（queue fallback conflict-density budget gate）`
-  - reason: fallback 触发同时受“检查失败密度”和“冲突密度”影响，属于独立失效面。
-- `merge`：合并方向
-  - from: `队列重建吞吐损耗预算治理（queue rebuild throughput loss budget gate）`
-  - from: `队列跳跃吞吐损耗预算治理（queue jump throughput-loss budget gate）`
-  - into: `队列重排吞吐损耗预算治理（queue reorder throughput-loss budget gate）`
-  - reason: 两方向都在治理 reorder 引起的吞吐损耗，合并可统一预算口径。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已解析并重定向到 HN Popular Blogs OPML Gist（checked 2026-02-28）。
-- HN 三车道（API 快照，2026-02-28）
-  - top: item `47203487` — `What happened when I built a daily coding challenge platform with AI`
-  - show: item `47205198` — `Show HN: Now I Get It – Translate scientific papers into interactive webpages`
-  - new: item `47205652` — `Show HN: Free, open-source native macOS client for di.fm`
-- 官方文档证据链（本轮重点）
-  - GitHub Merge Queue：支持 `Only merge non-failing pull requests`、`Status check timeout`、`minimum pull requests to merge`
-  - GitHub Actions 事件：merge queue required checks 需监听 `merge_group`
-  - HN API：`topstories/newstories/showstories` + item `deleted/dead`
-  - OPML 2.0：`outline.text` 与 RSS `xmlUrl` 结构契约
-
-### 本轮结论
-
-- fallback 治理必须“双阈值对称”：有降级阈值，也必须有恢复阈值。
-- fallback→strict 切换必须绑定 `merge_group` 重验，否则恢复不可审计。
-- 外部信号稳定性（HN `deleted/dead` + OPML 契约）应进入恢复门禁，而不是仅用于晋级门禁。
-
-### Cycle 63 预载任务
-
-1. 输出 `fallback_recovery_report.json` 的失败分桶（insufficient-clean-window / stale-evidence / check-regression）。
-2. 将 `queue_fallback_state.json` 接入 candidate->issue 晋级表单，要求恢复证据随单据提交。
-3. 把 `queue reorder throughput-loss` 与 `fallback recovery` 联立为统一夜间阈值仪表盘。
-
-
----
-# Morning Brief（Nightshift Cycle 61）
-
-> 更新时间：2026-02-28 22:48 UTC  
-> 本轮目标：把 merge queue 的 `jump` 从“可随意提速按钮”升级为“吞吐损耗预算门禁”，避免夜间频繁重排导致重建风暴。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/queue-governance/queue-jump-throughput-loss-budget-gate.md`
-2. `references/patterns/queue-governance/_index.md`
-3. `references/patterns/_master_index.md`
-4. `morning-brief.md`
-5. `.nightshift/state.json`
-
-### 激进动态策略执行（本轮）
-
-- `expand`：新增方向
-  - `队列跳跃吞吐损耗预算治理（queue jump throughput-loss budget gate）`
-  - reason: GitHub merge queue 文档明确 `jump` 会触发 in-progress PR 全量重建并可能降低合并速度，需单独预算门禁。
-- `split`：拆分方向
-  - from: `队列容错预算降级一体化治理（merge-queue fallback-budget parity gate）`
-  - into: `队列降级触发密度预算治理（queue fallback trigger-density budget gate）`
-  - into: `队列降级恢复门槛治理（queue fallback recovery-threshold gate）`
-  - reason: “何时降级”与“何时恢复”是独立失效面，拆分后可独立 required checks。
-- `merge`：合并方向
-  - from: `浏览器会话边界声明治理（browser runtime-boundary manifest gate）`
-  - from: `浏览器工具权限同构治理（browser tool-scope parity gate）`
-  - into: `浏览器边界-权限同构协同治理（browser boundary-scope parity co-gate）`
-  - reason: 两方向均治理 browser runtime 边界与权限一致性，合并可减少同构重复并统一验收口径。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已解析并重定向到 HN Popular Blogs OPML Gist（checked 2026-02-28）。
-- HN 三车道（2026-02-28）
-  - news: item `47205591` — `MinIO Is Dead, Long Live MinIO`
-  - show: item `47205198` — `Show HN: Now I Get It – Translate scientific papers into interactive webpages`
-  - newest: `Show HN: Free, open-source native macOS client for di.fm`
-- 官方文档证据链（本轮重点）
-  - GitHub Merge Queue：`jump` 到队首会触发 in-progress pull requests 全量重建并影响 merge velocity
-  - GitHub Actions 事件：merge queue required checks 需监听 `merge_group`
-  - HN API：`topstories/newstories/showstories` + item `deleted/dead`
-  - OPML 2.0：`outline.text` 与 RSS `xmlUrl` 契约
-
-### 本轮结论
-
-- 仅做“重排后重验”还不够，必须先做“是否值得重排”的预算判定。
-- `jump` 应从应急手段升级为可计量成本对象，超预算只能走 incident 覆盖路径。
-- 预算门禁、merge_group 重建回放、外部证据稳定性（HN/OPML）必须联动，否则会出现吞吐损耗与错误晋级双重放大。
-
-### Cycle 62 预载任务
-
-1. 增加 `queue_jump_budget.json` 的成本归因维度（按 required check 分类耗时）。
-2. 引入 `incident_override` 的自动审计字段，追踪超预算 jump 的审批闭环。
-3. 将 `queue_jump_budget_pass` 接入候选晋级表单，阻断无预算评估的重排请求。
