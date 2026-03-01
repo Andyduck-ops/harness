@@ -1,7 +1,7 @@
 {
   "version": "1.1",
-  "updated_at": "2026-03-01T04:53:40Z",
-  "cycle": 109,
+  "updated_at": "2026-03-01T04:59:06Z",
+  "cycle": 110,
   "status": "paused",
   "mode": "CONSTRAINED_EXPANSION",
   "active_directions": [
@@ -14,7 +14,7 @@
   "dormant_directions": [],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 109,
+    "last_cycle": 110,
     "actions": [
       {
         "type": "compress",
@@ -163,6 +163,18 @@
         "reason": "cycle 109：将 AI 代码有效测试新证据（Hypothesis 失败重放稳定性边界、ExampleDatabase 共享后端、Stryker incremental 校准机制）同化到 fullstack canonical pattern（不新建）",
         "updated_pattern": "references/patterns/fullstack-engineering/contract-replay-verification-gate.md",
         "new_patterns": 0
+      },
+      {
+        "type": "compress",
+        "reason": "cycle 110 命中 5-cycle 压缩窗口；执行跨 topic 合并扫描并保持 merge > split",
+        "merged_count": 0,
+        "assimilated_count": 1
+      },
+      {
+        "type": "assimilate",
+        "reason": "cycle 110：将 OpenAI Agents JS 会话压缩调度/通信裁剪/strict provider replay 新证据同化到 runtime-governance compaction canonical pattern（不新建）",
+        "updated_pattern": "references/patterns/runtime-governance/context-compaction-replay-governance.md",
+        "new_patterns": 0
       }
     ]
   },
@@ -175,8 +187,8 @@
     "https://platform.openai.com/docs/guides/conversation-state"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/fullstack-engineering/contract-replay-verification-gate.md",
-  "last_cycle_commit": "pending-cycle-109",
+  "last_pattern": "references/patterns/runtime-governance/context-compaction-replay-governance.md",
+  "last_cycle_commit": "pending-cycle-110",
   "constraints": {
     "per_topic_max_patterns": 5,
     "active_direction_max": 15,
