@@ -6,8 +6,8 @@ HARNESS_DIR="/home/eric/harness"
 LOG_FILE="$HARNESS_DIR/.nightshift/watchdog.log"
 SESSION_NAME="nightshift"
 RUNNER_SCRIPT="$HARNESS_DIR/.nightshift/nightshift-runner.sh"
-CHECK_INTERVAL_SECONDS=3600   # 1小时检查一次
-STALL_THRESHOLD_SECONDS=7200  # 2小时无进展视为卡住
+CHECK_INTERVAL_SECONDS=1200   # 20分钟检查一次
+STALL_THRESHOLD_SECONDS=3600  # 60分钟无进展视为卡住
 
 mkdir -p "$HARNESS_DIR/.nightshift"
 
@@ -89,7 +89,7 @@ check_once() {
     return
   fi
 
-  if (( commit_age > (STALL_THRESHOLD_SECONDS * 2) )); then
+  if (( commit_age > (STALL_THRESHOLD_SECONDS * 3) )); then
     append_log "WARN: no new commits for ${commit_age}s (soft warning)"
   fi
 }

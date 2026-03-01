@@ -1,4 +1,7 @@
 # runtime-governance
 
-- [browser-runtime-boundary-manifest-gate](./browser-runtime-boundary-manifest-gate.md) — 浏览器运行边界声明、会话链同构与晋级硬门禁
-- [browser-tool-scope-parity-gate](./browser-tool-scope-parity-gate.md) — 浏览器/CLI 跨 runtime 工具权限同构校验与晋级门禁
+> 运行时权限/状态/冲突控制治理
+
+- [agent-scope-identity-memory-governance](./agent-scope-identity-memory-governance.md)
+- [context-compaction-replay-governance](./context-compaction-replay-governance.md)
+- [control-plane-conflict-governance](./control-plane-conflict-governance.md)

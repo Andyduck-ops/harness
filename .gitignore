@@ -1,4 +1,7 @@
-# Nightshift runtime logs
+# Nightshift runtime logs/reports
 .nightshift/session.log
 .nightshift/watchdog.log
 .nightshift/runner.log
+.nightshift/reporter.log
+.nightshift/progress-report.md
+.nightshift/progress-latest.md

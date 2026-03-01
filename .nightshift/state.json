@@ -1,8 +1,8 @@
 {
   "version": "1.0",
-  "updated_at": "2026-03-01T01:05:04Z",
-  "cycle": 86,
-  "status": "active",
+  "updated_at": "2026-03-01T02:30:00+08:00",
+  "cycle": 87,
+  "status": "paused",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
     "AI 设计导出契约（design-export + required-checks）",
@@ -95,38 +95,29 @@
     "PRD->Epic 字段守恒门禁（prd-epic field conservation gate）",
     "PRD->Epic 契约回放闭环门禁（prd-epic contract-replay closure gate）",
     "Issue->PR 证据回填完整性门禁（issue-pr evidence-backfill completeness gate）",
-    "必跑检查快照闭环门禁（required-checks snapshot closure gate）"
+    "必跑检查集合漂移闭环门禁（required-check set-drift closure gate）",
+    "必跑检查事件-来源同一门禁（required-check event-source parity gate）",
+    "merge_group 检查来源钉住门禁（merge_group check-source pinning gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 86,
+    "last_cycle": 87,
     "actions": [
       {
         "type": "expand",
-        "added": "必跑检查快照闭环门禁（required-checks snapshot closure gate）",
-        "reason": "夜间链路中“检查通过”不等于“同一检查集合通过”，需将快照同一性独立为方向。"
+        "added": "merge_group 检查来源钉住门禁（merge_group check-source pinning gate）",
+        "reason": "GitHub required checks 可绑定 specific app/source，且 merge_group 是独立事件面；需独立治理来源身份漂移。"
       },
       {
         "type": "split",
         "from": [
-          "Issue->PR 证据回填门禁（issue-pr evidence backfill gate）"
-        ],
-        "into": [
-          "Issue->PR 证据回填完整性门禁（issue-pr evidence-backfill completeness gate）",
-          "Issue->PR 必跑检查快照回填门禁（issue-pr required-check snapshot backfill gate）"
-        ],
-        "reason": "字段回填完整性与 required checks 集合同一性属于不同失效面，需拆分治理。"
-      },
-      {
-        "type": "merge",
-        "from": [
-          "必跑检查待决僵局治理（required-check pending deadlock governance）",
-          "Issue->PR 必跑检查快照回填门禁（issue-pr required-check snapshot backfill gate）"
-        ],
-        "into": [
           "必跑检查快照闭环门禁（required-checks snapshot closure gate）"
         ],
-        "reason": "Pending 僵局恢复与 checks 快照漂移若分离处理，会出现“恢复后误放行”的回归窗口。"
+        "into": [
+          "必跑检查集合漂移闭环门禁（required-check set-drift closure gate）",
+          "必跑检查事件-来源同一门禁（required-check event-source parity gate）"
+        ],
+        "reason": "检查集合漂移与检查来源身份漂移是两个不同失效面，混治会导致误放行。"
       }
     ]
   },
@@ -154,6 +145,14 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/product-delivery/required-checks-snapshot-closure-gate.md",
-  "last_cycle_commit": "pending-cycle-86"
+  "last_pattern": "references/patterns/ci-governance/required-check-expected-source-pinning-gate.md",
+  "last_cycle_commit": "pending-cycle-87",
+  "consolidation": {
+    "date": "2026-03-01",
+    "before_patterns": 102,
+    "before_topics": 36,
+    "after_patterns": 31,
+    "after_topics": 12,
+    "archive": "references/patterns/_archive/20260301_harvest"
+  }
 }

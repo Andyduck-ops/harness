@@ -1,3 +1,75 @@
+# Morning Brief（Harvest Consolidation）
+
+> 更新时间：2026-03-01 02:30 CST  
+> 目标：对 Nightshift 产出执行收敛合并，降低主题碎片化并保留核心资产。
+
+## 本次收敛结果
+
+- 收敛前：102 patterns / 36 topics
+- 收敛后：31 patterns / 12 topics
+- 核心保留：Rank 1-2 高质量层 + 中层代表性模式
+- 归档路径：`references/patterns/_archive/20260301_harvest`
+
+## 新增聚合主题
+
+1. pipeline-governance（CI/Release/Queue 一体化）
+2. discovery-governance（多车道发现与晋级）
+3. runtime-governance（权限/状态/冲突控制面）
+4. evidence-governance（证据时效/信任/对账）
+
+---
+
+# Morning Brief（Nightshift Cycle 87）
+
+> 更新时间：2026-03-01 01:08 UTC  
+> 本轮目标：把 required checks 从“同名通过”升级为“名称 + 来源 + 事件面”同一性门禁，阻断 merge_group 与 ruleset 叠加下的假绿灯。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/ci-governance/required-check-expected-source-pinning-gate.md`
+2. `references/patterns/ci-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `必跑检查来源钉住门禁（required-check expected-source pinning gate）`
+  - reason: GitHub required checks 支持绑定 specific app/source，说明“同名”不足以代表同一性。
+- `split`：拆分方向
+  - from: `必跑检查快照闭环门禁（required-checks snapshot closure gate）`
+  - into: `必跑检查集合漂移闭环门禁（required-check set-drift closure gate）`
+  - into: `必跑检查事件-来源同一门禁（required-check event-source parity gate）`
+  - reason: 集合漂移与来源身份漂移属于不同失效面，必须分治。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML Gist  
+  - 最终 URL: `https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道样本（2026-03-01）
+  - news lane: `https://news.ycombinator.com/news`（top title: `Stop Burning Your Context Window: How We Cut MCP Token Usage by 98%`）
+  - show lane: `https://news.ycombinator.com/show`（top title: `Show HN: Clojure MCP - A Clojure library for building MCP servers`）
+  - newest lane: `https://news.ycombinator.com/newest`（top title: `A Proposal for Implementing Claude Code in the Browser`）
+- 官方文档补链（2026-03-01）
+  - protected branches / required checks: `https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches`
+  - merge_group 事件面: `https://docs.github.com/en/actions/reference/events-that-trigger-workflows#merge_group`
+  - required checks 故障排查: `https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/troubleshooting-rules#troubleshooting-required-status-checks`
+  - rulesets 叠加约束: `https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets`
+
+### 本轮结论
+
+- 新 pattern `required-check-expected-source-pinning-gate` 锁定的非重复元问题是：
+  “同名 required checks 通过”并不等于“同一来源主体通过”。
+- 无人推进链路应把 `name_match + source_match + event_surface_match` 绑定为同一阻断条件；仅校验 check 名会放大 ruleset/merge_group 叠加带来的误判。
+
+### Cycle 88 预载任务
+
+1. 给 `required_check_identity_contract.json` 增加 `source_alias_map`，区分合法迁移与来源劫持。
+2. 在 `merge_group` 失败恢复路径加入 `identity re-sample`，禁止复用旧来源结论。
+3. 将 `required_check_identity_pass` 接入 `promotion_closure.json` 作为硬门禁。
+
+---
 # Morning Brief（Nightshift Cycle 86）
 
 > 更新时间：2026-03-01 11:02 UTC  
