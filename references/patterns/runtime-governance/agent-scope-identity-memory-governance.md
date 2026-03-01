@@ -2,23 +2,26 @@
 name: agent-scope-identity-memory-governance
 topic: runtime-governance
 confidence: 0.86
-verified_count: 17
+verified_count: 18
 sources:
   - OpenAI Agent Platform docs (Python/TypeScript/Go support) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (2026-03-01)
   - OpenAI Agents SDK Handoffs docs (2026-03-01)
   - OpenAI Agents SDK Human-in-the-loop guide（RunState serialize/deserialize + resume）(2026-03-01)
   - OpenAI Agents SDK Running agents docs（error handling / lifecycle exceptions）(2026-03-01)
+  - OpenAI Agents SDK Tracing docs（group_id trace correlation）(2026-03-01)
   - OpenAI Agents SDK Python handoffs docs（nest_handoff_history/handoff input shaping）(2026-03-01)
   - OpenAI Agents SDK RunConfig docs（groupId/handoffInputFilter）(2026-03-01)
   - OpenAI Agents SDK sessions docs（EncryptedSession API / TTL / key derivation）(2026-03-01)
   - OpenAI API Background mode guide (2026-03-01)
   - OpenAI API Conversations / conversation state docs (2026-03-01)
   - Anthropic Agent SDK / tool use docs (2026-03-01)
+  - Anthropic Agent SDK overview（tool loop + auto context management）(2026-03-01)
   - Anthropic API compaction docs（beta + non-ZDR constraints）(2026-03-01)
   - CrewAI Flows persistence docs (2026-03-01)
   - CrewAI Event Listeners docs（event bus instrumentation）(2026-03-01)
   - Kode Agent SDK README（stateful sessions / retry / multi-agent traceability）(2026-03-01)
+  - Kode Agent SDK architecture README（7-stage checkpoint + stateless API/stateful worker）(2026-03-01)
   - HN top/show/new snapshots (2026-03-01)
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (redirect verified 2026-03-01)
 last_verified: 2026-03-01
@@ -98,6 +101,15 @@ Demo 能跑不等于 production 能跑。
 - **恢复链路需串联人工审批断点**：Human-in-the-loop 的 `RunState.fromString` + `result.state.toString` 使审批前后恢复可回放；审批节点应纳入统一 checkpoint，而不是流程外侧补丁。
 - **社区实践继续验证 state cell 化趋势**：HN top 的 `MCP server reduces context consumption by 98%` 与 HN show 的 `SQLite for Rivet Actors` 指向同一结论：先做状态分区与输入裁剪，再谈 agent 数量扩张。
 
+## Cycle 98 同化增量（跨 SDK 恢复合同收敛）
+
+- **错误恢复必须绑定“循环预算 + 错误分层”**：OpenAI Running agents 文档给出 `max_turns` 与类型化异常（如 `MaxTurnsExceeded`）；生产上应按 `agent/tool/guardrail/lifecycle` 维度拆分 retry budget，避免无界重试。
+- **多 agent 通信需要因果追踪主键**：OpenAI Tracing 的 `trace(workflow_name, group_id=...)` 可把跨 agent 事件串成同一因果链；`group_id` 应与 handoff 合同共用同一关联 ID。
+- **Claude 侧把“工具回路 + 上下文管理”并入默认运行层**：Anthropic Agent SDK overview 明确基于 tool use 构建并内置 context window management；上线时应把 compaction 与上下文预算纳入运行时门禁，而非后补优化。
+- **CrewAI 可观测性已具备事件级挂点**：Event Listeners 文档提供 `BaseEventListener` 与 `CrewKickoffStartedEvent`，可对 handoff/异常/恢复点做统一审计打点。
+- **Kode 的长任务架构强调 checkpoint-first**：README 将架构拆为 `stateless API servers + stateful workers + shared store + queue decoupling`，并在多阶段流程中每阶段持久 checkpoint；可直接同化为“控制面无状态、执行面有状态”的恢复基线。
+- **社区热区信号持续一致**：HN `top/show/newest` 同窗都在强化同一主题：先解决状态与恢复，再扩张 agent 数量和自动化范围。
+
 ## 合并来源
 
 - agent scope drift severity budget
@@ -130,3 +142,12 @@ Demo 能跑不等于 production 能跑。
 - 查询：`session TTL 加密与恢复如何共存`  
   命中：本 pattern  
   动作：收敛到 `EncryptedSession tier + expiration policy + replay continuity`
+- 查询：`max_turns exceeded 后如何避免死循环重试`  
+  命中：本 pattern  
+  动作：收敛到 `error-class retry budget + lifecycle fallback + checkpoint resume`
+- 查询：`group_id tracing 怎么和 handoff 对齐`  
+  命中：本 pattern  
+  动作：收敛到 `shared correlation id across trace + handoff contract`
+- 查询：`CrewAI 事件监听能否用于多 agent 恢复审计`  
+  命中：本 pattern  
+  动作：收敛到 `BaseEventListener hooks + recovery checkpoint telemetry`

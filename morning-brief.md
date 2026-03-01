@@ -1,3 +1,68 @@
+# Morning Brief（Nightshift Cycle 98）
+
+> 更新时间：2026-03-01 03:50 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 多 agent 链路出现无限循环或粗暴重试，缺少 error-class 级别恢复预算
+  2. handoff 虽已最小化输入，但跨 agent 事件仍缺统一因果追踪主键
+  3. 长任务恢复有 checkpoint，但审批/恢复/观测仍未形成统一合同
+- 已有 pattern 覆盖检查：
+  - `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md` 已覆盖同一元问题（scope-identity-memory 三联门禁）
+- 判定：**同化**（补强 retry budget + group_id trace correlation + checkpoint-first 架构，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `top`: `MCP server that reduces context consumption by 98%`
+  - `show`: `SQLite for Rivet Actors: One database per agent, tenant, or document`
+  - `newest`: `Agentation: Structured UI feedback for coding agents`
+
+### 官方证据链（不确定点补链）
+
+- OpenAI Agents SDK Running agents：`max_turns` 与类型化异常（含 `MaxTurnsExceeded`）
+- OpenAI Agents SDK Tracing：`trace(..., group_id=...)` 支持跨 agent 追踪关联
+- OpenAI Agents SDK Handoffs：`handoff` + `input_filter` 合同化通信
+- Anthropic Agent SDK Overview：默认 tool use 回路 + 自动 context window 管理
+- CrewAI Flows Persistence：`@persist` + `SQLiteFlowPersistence` 持久化恢复
+- CrewAI Event Listeners：`BaseEventListener` 与 kickoff 事件挂点用于链路审计
+- Kode Agent SDK README：`stateless API + stateful workers + shared store + queue decoupling` 与多阶段 checkpoint
+
+### 检索测试（L5，写后执行）
+
+- Query A：`max_turns exceeded 后如何避免死循环重试`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：执行 `error-class retry budget + lifecycle fallback + checkpoint resume`
+- Query B：`group_id tracing 怎么和 handoff 对齐`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：执行 `shared correlation id across trace + handoff contract`
+- Query C：`CrewAI 事件监听如何用于恢复审计`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：执行 `BaseEventListener hooks + recovery checkpoint telemetry`
+- Query D：`Claude Agent SDK context 管理如何并入运行时门禁`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：执行 `context budget threshold + compaction continuity replay`
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：通过（下一个强制压缩点=100）
+
+---
 # Morning Brief（Nightshift Cycle 97）
 
 > 更新时间：2026-03-01 03:58 UTC  
@@ -2761,157 +2826,6 @@
 1. 增加 `scope_diff_severity` 分级（read-only drift / write-capable drift）。
 2. 将权限升级封套接入 `candidate -> issue -> PR` 全链路。
 3. 为不同执行车道建立最小权限基线与漂移预算。
-
----
-
----
-# Morning Brief（Nightshift Cycle 49）
-
-> 更新时间：2026-02-28 21:49 UTC  
-> 本轮目标：把“跨 runtime 结果可完成”升级为“跨 runtime 权限必须同构”，阻断 scope 漂移下的静默晋级。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/runtime-governance/browser-tool-scope-parity-gate.md`
-2. `references/patterns/runtime-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 49）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `自驱代码库晋级证明治理（self-driving codebase promotion proof gate）` 为：
-  - `自驱代码生成证据账本治理（self-driving code generation evidence ledger gate）`
-  - `自驱代码人审触发门禁治理（self-driving code human-review trigger gate）`
-  - reason: 自动生成的“证据完备性”与人工审批的“晋级触发约束”是两类门禁，拆分后可独立演化。
-- `expand`：新增方向 `代理最小权限白名单治理（agent least-privilege scope manifest gate）`
-  - 触发依据：HN newest 出现 `Be Careful with LLM Agents`，且 GitHub `GITHUB_TOKEN` 文档强调最小权限，需补 scope manifest 独立方向。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:47:01Z）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`): `Obsidian Sync now has a headless client`
-  - show (`show`): `Show HN: Now I Get It – Translate scientific papers into interactive webpages`
-  - new (`newest`): `Be Careful with LLM Agents`（作为本轮信号条目）
-- 官方文档证据链（本轮重点）
-  - OpenAI Background mode（异步状态与取消语义）
-  - OpenAI Conversation state（`previous_response_id` / `conversation` 链路）
-  - GitHub Protected Branches（required checks 晋级硬门禁）
-  - GitHub `GITHUB_TOKEN`（最小权限与 `permissions` 配置）
-  - Hacker News API（`topstories/showstories/newstories` 车道端点）
-
-### 本轮结论
-
-- “完成”只能说明任务结束，不能说明权限一致；scope parity 必须独立验收。
-- `scope_parity_pass` 应与 `runtime_boundary_pass` 并列 required check。
-- 会话链连续但 scope 不同，必须默认 quarantine，而不是弱告警。
-
-### Cycle 50 预载任务
-
-1. 增加 `scope_diff_severity` 分级策略（read-only drift / write-capable drift）。
-2. 将 `scope_parity_pass` 接入 `candidate -> issue` 与 `issue -> PR` 双阶段门禁。
-3. 为 browser runtime 增加 `scope_manifest_version`，防止字段静默扩展。
-
----
-
----
-# Morning Brief（Nightshift Cycle 48）
-
-> 更新时间：2026-02-28 21:39 UTC  
-> 本轮目标：为 browser-contained agent 建立“运行边界声明 + 会话链同构 + 晋级硬门禁”最小协议，阻断跨 runtime 的静默误晋级。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/runtime-governance/browser-runtime-boundary-manifest-gate.md`
-2. `references/patterns/runtime-governance/_index.md`（新建 topic 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 48）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `浏览器内代理运行边界治理（browser-contained agent runtime boundary gate）` 为：
-  - `浏览器会话边界声明治理（browser runtime-boundary manifest gate）`
-  - `浏览器工具权限同构治理（browser tool-scope parity gate）`
-  - reason: 运行边界声明与工具权限同构属于不同校验面，拆分后可独立定义 required checks。
-- `expand`：新增方向 `自驱代码库晋级证明治理（self-driving codebase promotion proof gate）`
-  - 触发依据：HN newest 出现 `The Self-Driving Codebase: Introducing GitHub Spark and Spark CLI`，说明从生成到交付链路更短，需新增晋级证明控制面。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证 301 重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:40:03Z）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`): `Stop Burning Your Context Window: How We Cut MCP Token Usage by 98%`
-  - show (`show`): `Show HN: Now I get it, this is what all the fuss over LLMs is about`
-  - new (`newest`): `The Self-Driving Codebase: Introducing GitHub Spark and Spark CLI`
-- 官方文档证据链（本轮重点）
-  - OpenAI Background mode（异步状态机与取消状态）
-  - OpenAI Conversation state（`previous_response_id` / `conversation` 链路）
-  - GitHub Protected Branches（required checks 晋级门禁）
-  - Hacker News API（统一 API 前缀与 item 读取）
-
-### 本轮结论
-
-- 浏览器内执行不是“换壳”，而是新的风险边界；必须显式写入 runtime 边界声明。
-- `completed` 不是晋级条件，必须叠加会话链连续性和权限摘要同构校验。
-- `runtime_boundary_pass` / `conversation_chain_pass` 应与现有门禁同级，进入 required checks。
-
-### Cycle 49 预载任务
-
-1. 为 `runtime_boundary_manifest.json` 增加 `boundary_epoch_id`，支持跨轮重放定位。
-2. 把 `scope_parity_pass` 接入 candidate->issue 晋级检查，不仅用于 PR 合并前。
-3. 在 browser runtime 引入最小 `tool_scope_digest` 版本策略，避免静默字段扩展。
-
----
-
----
-# Morning Brief（Nightshift Cycle 47）
-
-> 更新时间：2026-02-28 21:35 UTC  
-> 本轮目标：把“后台任务可运行”升级为“后台结论可晋级”，新增游标时效门禁，阻断晚到旧 run 的静默晋级。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/state-governance/background-cursor-freshness-gate.md`
-2. `references/patterns/state-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 47）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `工具输出占比预算治理（tool-output ratio budget gate）` 为：
-  - `工具输出占比分层阈值治理（lane-tiered tool-output ratio threshold gate）`
-  - `工具输出占比触发冻结治理（tool-output-ratio freeze trigger gate）`
-  - reason: 原方向同时覆盖“监控阈值”和“晋级冻结触发”，执行面过宽，拆分后可分别定义预算与闸门字段。
-- `expand`：新增方向 `浏览器内代理运行边界治理（browser-contained agent runtime boundary gate）`
-  - 触发依据：HN newest 出现 “A Proposal for Implementing Claude Code in the Browser”，说明 browser-contained agent 正成为新执行形态，需要提前治理隔离边界与审计接口。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:35:53Z）。
-- HN `top/show/new`：已采样并写入证据链（2026-03-01）：
-  - top (`news`): `Stop Burning Your Context Window: How We Cut MCP Token Usage by 98%`
-  - show (`show`): `Show HN: Syncari – AI-driven Infrastructure as Code Automation`
-  - new (`newest`): `A Proposal for Implementing Claude Code in the Browser`
-- 官方文档证据链（本轮重点）
-  - OpenAI Background mode（后台状态机与取消语义）
-  - OpenAI Conversation state（`previous_response_id` / `conversation` 链路）
-  - GitHub Protected Branches（required status checks 作为晋级硬门禁）
-  - Hacker News API（`topstories/showstories/newstories` 车道主键）
-
-### 本轮结论
-
-- 异步完成不是有效完成；必须验证“完成时游标是否仍绑定最新锚点窗口”。
-- `previous_response_id` 链连续性与 `anchor_window_id` 新鲜度应作为同级门禁，不可拆分。
-- `cursor_freshness_pass` 必须是 required check，否则夜间旧结论仍可能绕过晋级。
-
-### Cycle 48 预载任务
-
-1. 增加 `max_cursor_lag_seconds` 的分车道阈值（top/show/new 各自预算）。
-2. 为 browser-contained agent 设计最小 `runtime_boundary_manifest` 字段集。
-3. 把 `cursor_freshness_report` 挂接到 candidate->issue 的晋级检查，不仅用于 PR 合并前。
 
 ---
 
