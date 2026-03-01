@@ -1,3 +1,76 @@
+# Morning Brief（Nightshift Cycle 100）
+
+> 更新时间：2026-03-01 03:59 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先 + 5-cycle 压缩（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/fullstack-engineering/contract-replay-verification-gate.md`（同化更新）
+2. `references/patterns/fullstack-engineering/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. AI 生成测试在随机输入下偶发失败，但失败路径无法稳定复放
+  2. mutation 流水线开启但阈值默认无阻断，PR 仍可“带病合并”
+  3. Python mutation 长跑任务中断后缺少增量续跑，夜间预算失控
+- 已有 pattern 覆盖检查：
+  - `references/patterns/fullstack-engineering/contract-replay-verification-gate.md` 已覆盖同一元问题（contract + property + mutation + replay + invariant）
+- 判定：**同化**（补强 deterministic replay contract + mutation dual-threshold gate，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `top`: `Microgpt: A tiny language model in pure C from scratch`
+  - `show`: `Show HN: memctl, a memory manager for AI coding assistants`
+  - `newest`: `Ask HN: What are you using, and how, to make your software run itself?`
+
+### 官方证据链（不确定点补链）
+
+- Hypothesis API 文档：`settings(derandomize/database)` 支持确定性与失败样本复放
+- fast-check model-based 文档：`seed + path + replayPath` 用于状态序列重放
+- Stryker 配置文档：`thresholds.break` 低于阈值触发非零退出（阻断 CI）
+- PIT 快速入门文档：`mutationThreshold` 与 `coverageThreshold` 双阈值门禁
+- mutmut 文档：支持中断后续跑与增量变异执行
+
+### 检索测试（L5，写后执行）
+
+- Query A：`Hypothesis derandomize database replay`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`
+  - 动作：把 property 测试切到可复放确定性配置
+- Query B：`fast-check replayPath seed path`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`
+  - 动作：落盘序列失败三元组并回灌重放
+- Query C：`Stryker thresholds.break`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`
+  - 动作：设定 mutation fail-fast 阈值阻断合并
+- Query D：`PIT mutationThreshold coverageThreshold`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`
+  - 动作：并联阈值避免弱断言假绿
+- Query E：`mutmut resume incremental`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`
+  - 动作：夜间 mutation 任务采用可续跑预算模型
+
+### Cycle 100 压缩报告（L4）
+
+- 扫描范围：12 topics / 31 patterns（跨 topic 去重 + 同构合并检查）
+- 合并结果：`merged_count=0`（未发现满足“同一元问题但可安全合并”的跨 topic 条目）
+- 同化结果：`assimilated_count=1`（fullstack-engineering canonical pattern 增量吸收）
+- 结论：满足“每 5 cycles 必压缩（merge > split）”，且本轮未新增 pattern
+
+### 约束检查
+
+- per-topic <= 5：通过（fullstack-engineering=4）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：通过（cycle=100 已执行）
+
+---
 # Morning Brief（Nightshift Cycle 99）
 
 > 更新时间：2026-03-01 03:54 UTC  
@@ -2834,62 +2907,6 @@
 1. 在 `promotion_packet` 增加 `drift_tier` 与 `lane_budget_snapshot` 以支持复盘。
 2. 把分级预算门禁接入 `candidate -> issue -> PR` 全链路。
 3. 为 memory-persistence 场景补最小权限分区模板（read cache / write memory / external sync）。
-
----
-
----
-# Morning Brief（Nightshift Cycle 50）
-
-> 更新时间：2026-02-28 21:50 UTC  
-> 本轮目标：把“最小权限”从静态建议升级为“会话级清单 + 升级后重放 + required check”的晋级硬门禁。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/permission-governance/agent-scope-manifest-escalation-gate.md`
-2. `references/patterns/permission-governance/_index.md`（新建 topic 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 行与统计更新）
-4. `morning-brief.md`（新增 Cycle 50）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `审批-绕过双轨时效治理（approval-bypass dual-track freshness gate）` 为：
-  - `审批时效预算治理（approval freshness budget gate）`
-  - `绕过时效预算治理（bypass freshness budget gate）`
-  - reason: 审批窗口和绕过窗口的失败模式不同，拆分后可独立设阈值与 required checks。
-- `merge`：合并方向
-  - from: `旁路理由分类治理（bypass reason taxonomy gate）`
-  - from: `旁路授权-理由同一治理（bypass authorization-reason parity gate）`
-  - into: `旁路理由授权一致性治理（bypass reason-authorization coherence gate）`
-  - reason: 两者都在约束 bypass 的“理由-授权”耦合，分开维护会产生同构重复。
-- `expand`：新增方向 `代理会话最小权限漂移治理（agent session least-privilege drift gate）`
-  - 触发依据：HN newest 出现 `Be Careful with LLM Agents`，且 GitHub `GITHUB_TOKEN` 文档强调显式 `permissions` 最小化。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:50:19Z）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`): `Verified Spec-Driven Development with OpenAI and IaC (Sponsored)`
-  - show (`show`): `Show HN: Augment Agent, coding assistant with autonomy`
-  - new (`newest`): `Be Careful with LLM Agents`
-- 官方文档证据链（本轮重点）
-  - OpenAI Background mode（异步状态机，`completed` 仅表示执行结束）
-  - OpenAI Conversation state（`previous_response_id` / `conversation` 链路）
-  - GitHub Protected Branches（required status checks 晋级硬门禁）
-  - GitHub `GITHUB_TOKEN`（`permissions` 最小权限配置）
-  - Hacker News API（`topstories/showstories/newstories` 车道端点）
-
-### 本轮结论
-
-- 无人值守链路里的“权限升级”必须视为状态切换事件，不是普通日志。
-- `scope_manifest_pass` 与 `escalation_replay_pass` 必须并列 required checks。
-- 升级后未重放的结论只能保留探索层，禁止直接晋级。
-
-### Cycle 51 预载任务
-
-1. 增加 `scope_diff_severity` 分级（read-only drift / write-capable drift）。
-2. 将权限升级封套接入 `candidate -> issue -> PR` 全链路。
-3. 为不同执行车道建立最小权限基线与漂移预算。
 
 ---
 

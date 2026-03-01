@@ -1,8 +1,8 @@
 ---
 name: contract-replay-verification-gate
 topic: fullstack-engineering
-confidence: 0.83
-verified_count: 13
+confidence: 0.84
+verified_count: 14
 sources:
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (2026-03-01)
   - Hacker News top/show/new snapshot (2026-03-01)
@@ -10,9 +10,10 @@ sources:
   - Pact official docs
   - Hypothesis docs (property-based testing) (2026-03-01)
   - Hypothesis stateful testing docs (rules/invariants) (2026-03-01)
+  - Hypothesis API docs (settings.derandomize/database/replay) (2026-03-01)
   - fast-check docs (property-based testing) (2026-03-01)
   - fast-check model-based testing docs (replayPath/scheduledModelRun) (2026-03-01)
-  - Stryker docs (mutation score thresholds) (2026-03-01)
+  - Stryker docs (thresholds + break/fail behavior) (2026-03-01)
   - PIT docs (mutation testing guidance) (2026-03-01)
   - mutmut docs (mutation workflow) (2026-03-01)
   - OpenAI Harness engineering (observability + long-run loops) (2026-02-11)
@@ -133,3 +134,27 @@ rank: 2
 - `Hypothesis RuleBasedStateMachine invariant after every step`
 - `Stryker thresholds break PIT mutationThreshold coverageThreshold`
 - `observability invariant gate LogQL PromQL span budget`
+
+## Cycle 100 同化增量：Deterministic Replay Contract（AI 代码有效测试）
+
+目标：把“测试发现问题”升级为“失败可重放 + 质量可阻断”，避免 AI 代码在边界和状态序列上“偶现绿灯”。
+
+1. Property 随机性必须可重放
+   - Hypothesis `settings` 明确 `derandomize`、`database` 与 replay 能力；CI 建议用确定性配置，且保留失败样本数据库以回灌复现。
+   - fast-check model-based testing 明确 `commands` 场景复放需要 `{ seed, path, replayPath }` 三元组；缺 `replayPath` 会导致状态序列失败不可稳定重现。
+2. Mutation 结果必须可阻断
+   - Stryker `thresholds.break` 低于门槛会直接 `exit code 1`；默认 `break=0` 不会阻断构建，生产流水线必须显式改为非零阈值。
+   - PIT 同时支持 `--mutationThreshold` 与 `--coverageThreshold` 失败闸门；两者并联可避免“覆盖率高但断言弱”假阳性。
+3. Python 侧长跑策略要增量可持续
+   - mutmut 支持增量记忆与恢复续跑（中断后可续），可与 nightly mutation 结合，控制 AI 代码回归成本。
+4. Cycle 100 压缩结论（L4）
+   - 与现有元问题完全同构：仍属于 `contract + property + mutation + replay + invariant` 验证闸门。
+   - 判定：同化到当前 canonical pattern，不新建 topic/pattern。
+
+## Cycle 100 检索锚点（L5）
+
+- `Hypothesis derandomize database replay failed tests`
+- `fast-check commands replayPath seed path`
+- `Stryker thresholds.break exit code 1`
+- `PIT mutationThreshold coverageThreshold`
+- `mutmut restart where left off incremental`

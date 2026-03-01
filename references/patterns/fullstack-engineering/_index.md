@@ -1,6 +1,6 @@
 # fullstack-engineering
 
-> 前后端契约 + 设计系统执行（cycle 95 同化：stateful sequence replay + mutation fail-fast + observability invariant）
+> 前后端契约 + 设计系统执行（cycle 100 同化：deterministic replay contract + mutation dual-threshold gate）
 
 - [backend-contract-first](./backend-contract-first.md)
 - [contract-replay-verification-gate](./contract-replay-verification-gate.md)
