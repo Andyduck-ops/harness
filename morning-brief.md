@@ -1,3 +1,67 @@
+# Morning Brief（Nightshift Cycle 96）
+
+> 更新时间：2026-03-01 03:33 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 多 agent 交接历史既要可追踪又要可控裁剪（避免上下文膨胀）
+  2. 会话恢复已做持久化，但缺少加密与 TTL 导致数据治理边界不清
+  3. 审批插入后运行态恢复可行，但未纳入统一 checkpoint 合同
+- 已有 pattern 覆盖检查：
+  - `runtime-governance/agent-scope-identity-memory-governance.md` 覆盖同一元问题（scope-identity-memory 三联门禁）
+- 判定：**同化**（增强 handoff policy + encrypted session + replay 恢复，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `top`: `MCP server that reduces context consumption by 98%`
+  - `show`: `SQLite for Rivet Actors: One database per agent, tenant, or document`
+  - `newest`: `Agentation allows AI to call your APIs naturally`
+
+### 官方证据链（不确定点补链）
+
+- OpenAI Agents SDK Sessions：`EncryptedSession`（TTL + key derivation + auto expiration）
+- OpenAI Agents SDK Python Handoffs：`nest_handoff_history`（默认关闭，可按 handoff 覆盖）
+- OpenAI Agents SDK RunConfig：`handoffInputFilter` + `groupId`
+- OpenAI Agents SDK Human-in-the-loop：`RunState.fromString` / `state.toString` 恢复链路
+- OpenAI Background mode：`queued/in_progress/completed` + polling/cancel
+- CrewAI Flows：`@persist` 与 `SQLiteFlowPersistence`
+
+### 检索测试（L5，写后执行）
+
+- Query A：`nest_handoff_history default disabled policy`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：设定交接历史保留策略 + 按任务覆盖
+- Query B：`OpenAI EncryptedSession TTL key derivation`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：分层部署加密会话与过期策略
+- Query C：`RunConfig handoffInputFilter groupId`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：运行级通信裁剪与追踪分组
+- Query D：`CrewAI @persist SQLiteFlowPersistence`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：把流程状态持久化纳入恢复合同
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：本轮 cycle=96（下一个强制压缩点=100）
+
+---
 # Morning Brief（Nightshift Cycle 95）
 
 > 更新时间：2026-03-01 03:28 UTC  

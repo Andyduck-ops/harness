@@ -1,14 +1,17 @@
 ---
 name: agent-scope-identity-memory-governance
 topic: runtime-governance
-confidence: 0.85
-verified_count: 16
+confidence: 0.86
+verified_count: 17
 sources:
   - OpenAI Agent Platform docs (Python/TypeScript/Go support) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (2026-03-01)
   - OpenAI Agents SDK Handoffs docs (2026-03-01)
   - OpenAI Agents SDK Human-in-the-loop guide（RunState serialize/deserialize + resume）(2026-03-01)
   - OpenAI Agents SDK Running agents docs（error handling / lifecycle exceptions）(2026-03-01)
+  - OpenAI Agents SDK Python handoffs docs（nest_handoff_history/handoff input shaping）(2026-03-01)
+  - OpenAI Agents SDK RunConfig docs（groupId/handoffInputFilter）(2026-03-01)
+  - OpenAI Agents SDK sessions docs（EncryptedSession API / TTL / key derivation）(2026-03-01)
   - OpenAI API Background mode guide (2026-03-01)
   - OpenAI API Conversations / conversation state docs (2026-03-01)
   - Anthropic Agent SDK / tool use docs (2026-03-01)
@@ -87,6 +90,14 @@ Demo 能跑不等于 production 能跑。
 - **压缩能力也要过合规门**：Anthropic compaction 文档给出 beta 与 non-ZDR 约束，说明“自动压缩”不是纯性能特性；上线时应把 compaction 路径纳入数据治理分流。
 - **社区一线正在收敛到状态分区治理**：HN show 的 `SQLite for Rivet Actors`（每 agent/tenant/document 独立数据库）与 HN newest 的 `Agentation` 信号表明，state cell 化是 demo->production 的共同升级路径。
 
+## Cycle 96 同化增量（状态保真 + 通信裁剪协同）
+
+- **交接历史策略要显式治理**：OpenAI Python handoffs 文档显示 `nest_handoff_history` 默认关闭，并可按 handoff 覆盖；生产上要把“是否保留交接轨迹”设为运行时策略而不是隐式默认。
+- **通信最小化要上升到运行级配置**：`RunConfig` 支持 `handoffInputFilter` 与 `groupId`，可统一约束跨 agent 传输输入与可追踪分组，避免每个 handoff 各自实现导致漂移。
+- **会话安全层应独立于业务状态层**：Sessions 文档提供 `EncryptedSession` 与 TTL 过期机制，说明“可恢复”之外还要具备“可过期/可密钥轮换”的数据治理边界。
+- **恢复链路需串联人工审批断点**：Human-in-the-loop 的 `RunState.fromString` + `result.state.toString` 使审批前后恢复可回放；审批节点应纳入统一 checkpoint，而不是流程外侧补丁。
+- **社区实践继续验证 state cell 化趋势**：HN top 的 `MCP server reduces context consumption by 98%` 与 HN show 的 `SQLite for Rivet Actors` 指向同一结论：先做状态分区与输入裁剪，再谈 agent 数量扩张。
+
 ## 合并来源
 
 - agent scope drift severity budget
@@ -113,3 +124,9 @@ Demo 能跑不等于 production 能跑。
 - 查询：`RunState 人工审批后如何无损恢复`  
   命中：本 pattern  
   动作：收敛到 `serialize/deserialize run_state + approval checkpoint + replay resume`
+- 查询：`handoff history 默认关闭如何治理`  
+  命中：本 pattern  
+  动作：收敛到 `nest_handoff_history policy + run-level handoffInputFilter`
+- 查询：`session TTL 加密与恢复如何共存`  
+  命中：本 pattern  
+  动作：收敛到 `EncryptedSession tier + expiration policy + replay continuity`
