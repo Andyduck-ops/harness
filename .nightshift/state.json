@@ -1,7 +1,7 @@
 {
   "version": "1.1",
-  "updated_at": "2026-03-01T06:44:00Z",
-  "cycle": 124,
+  "updated_at": "2026-03-01T06:50:04Z",
+  "cycle": 125,
   "status": "idle",
   "mode": "CONSTRAINED_EXPANSION",
   "active_directions": [
@@ -14,7 +14,7 @@
   "dormant_directions": [],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 124,
+    "last_cycle": 125,
     "actions": [
       {
         "type": "compress",
@@ -271,6 +271,18 @@
         "reason": "cycle 124：将类型化交接产物与追踪最小暴露新证据（OpenAI JS/Go outputType、RunConfig traceIncludeSensitiveData、CrewAI delegation defaults）同化到 runtime-governance canonical pattern（不新建）",
         "updated_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
         "new_patterns": 0
+      },
+      {
+        "type": "compress",
+        "reason": "cycle 125 命中 5-cycle 压缩窗口；执行跨 topic 合并扫描并保持 merge > split",
+        "merged_count": 0,
+        "assimilated_count": 1
+      },
+      {
+        "type": "assimilate",
+        "reason": "cycle 125：将 PRD 信息保真新证据（Structured Outputs schema 子集/深度与属性预算、optional null union 编码约束、schema budget gate）同化到 product-delivery canonical pattern（不新建）",
+        "updated_pattern": "references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md",
+        "new_patterns": 0
       }
     ]
   },
@@ -283,8 +295,8 @@
     "https://platform.openai.com/docs/guides/conversation-state"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
-  "last_cycle_commit": "pending-cycle-124",
+  "last_pattern": "references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md",
+  "last_cycle_commit": "pending-cycle-125",
   "constraints": {
     "per_topic_max_patterns": 5,
     "active_direction_max": 15,

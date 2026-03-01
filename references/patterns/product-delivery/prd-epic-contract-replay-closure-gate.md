@@ -21,6 +21,8 @@ sources:
   - HN lanes snapshot（news: id=47202708 "Microgpt", show: id=47201816 "Show HN: DreamBOMB", newest: id=47203831 "A Transition Experiment by reaching back in internet history"）(2026-03-01)
   - OpenAI Structured Outputs guide（`strict: true` 保证输出匹配 JSON Schema；JSON mode 仅保证有效 JSON）(https://platform.openai.com/docs/guides/structured-outputs)
   - Anthropic Tool Use docs（tool `input_schema` 使用 JSON Schema 定义输入合同）(https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use)
+  - OpenAI: Introducing Structured Outputs in the API（supported schema subset：all fields required、optional via `null` union、`additionalProperties=false`、depth<=5、object properties<=100）(https://openai.com/index/introducing-structured-outputs-in-the-api/)
+  - HN lanes snapshot（news: id=47202708 "Microgpt", show: id=47201816 "Show HN: Xmloxide", newest: id=47245071 "Deep Learning Is Not So Mysterious or Different"）(2026-03-01)
 last_verified: 2026-03-01
 rank: 3
 ---
@@ -140,3 +142,42 @@ rank: 3
 - `structured outputs strict true json schema vs json mode`
 - `anthropic tool input_schema json schema contract`
 - `prd spec tasks schema lock manifest required fields pass`
+
+## Cycle 125 同化增量：Schema Budget Gate（防“结构化但失真”）
+
+目标：解决 `PRD -> spec -> arch -> tasks` 已使用结构化输出，但因为 schema 表达能力/规模越界而发生静默失真的问题。
+
+1. 结构化输出不是“任意 JSON Schema”
+   - OpenAI 官方文档明确 strict 模式只支持 schema 子集，且要求：
+     - 所有字段必须在 `required`
+     - 可选字段需显式编码为 `type: ["T","null"]`
+     - `additionalProperties: false`
+     - 对象总属性上限 100、嵌套深度上限 5
+   - 动作：在 PRD 转译前新增 `schema_budget_check`，不再默认“有 schema 就等于无损保真”。
+
+2. 信息保真需要“预算化拆分”而不是硬塞单一 schema
+   - 当 PRD 语义超过单 schema 预算（深度/属性数）时，强制拆为分段合同：
+     - `prd_slice_schema.json`
+     - `arch_decision_schema.json`
+     - `task_contract_schema.json`
+   - 动作：禁止把超预算结构 flatten 成“宽表字段堆砌”，避免语义关系丢失。
+
+3. 为 PECRCG 增加预算证据件
+   - 新增 `schema_budget_report.json`：
+     - `lineage_id`
+     - `schema_id`
+     - `max_depth`
+     - `total_properties`
+     - `optional_encoding_pass`
+     - `strict_subset_pass`
+   - 规则：`strict_subset_pass=false` 或 `optional_encoding_pass=false` 直接阻断 `contract_replay_closure_pass`。
+
+4. 同化结论（L2/L7）
+   - 本轮新增证据仍是同一元问题：`PRD 血缘 + 契约回放` 的闭环真实性。
+   - 判定：同化到 `prd-epic-contract-replay-closure-gate`，不新建 pattern/topic（检索信噪比不下降）。
+
+## Cycle 125 检索锚点（L5）
+
+- `structured outputs schema subset required fields optional null union`
+- `additionalProperties false nested depth 5 object properties 100`
+- `schema budget report prd spec tasks fidelity gate`

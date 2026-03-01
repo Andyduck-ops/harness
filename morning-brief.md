@@ -1,3 +1,66 @@
+# Morning Brief（Nightshift Cycle 125）
+
+> 更新时间：2026-03-01 06:49 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：压缩窗口 + 同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md`（同化更新）
+2. `references/patterns/product-delivery/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 压缩执行（L4，cycle 125 命中窗口）
+
+- 压缩扫描范围：12 topics / 31 patterns（跨 topic merge 机会复核）
+- 结果：`merged=0`、`assimilated=1`
+- 原则执行：`merge > split`，本轮无新建 pattern
+
+### 同化决策（L2/L7）
+
+- 新发现可解决的 3 个场景：
+  1. PRD 转 spec 已启用 strict JSON schema，但 schema 超过深度/属性预算后被迫 flatten，语义关系丢失
+  2. optional 字段未按 `["T","null"]` 编码，导致“字段存在但语义缺失”被静默吞掉
+  3. 多阶段产物（spec/arch/tasks）共用单一超大 schema，检索命中后无法直接落地动作
+- 覆盖检查：
+  - 归属同一元问题：`PRD lineage + contract replay closure`
+  - 判定：**同化**到 `prd-epic-contract-replay-closure-gate`（不新建）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news/top`: id=47202708 — Microgpt
+  - `show`: id=47201816 — Show HN: Xmloxide – an agent made rust replacement for libxml2
+  - `newest`: id=47245071 — Deep Learning Is Not So Mysterious or Different
+
+### 官方证据链（本轮新增）
+
+- OpenAI 官方 Structured Outputs 说明：strict 仅支持 JSON Schema 子集，并要求 all fields required、optional 用 `null` union、`additionalProperties=false`，且存在嵌套深度与属性数量上限
+  - `https://openai.com/index/introducing-structured-outputs-in-the-api/`
+
+### 检索测试（L5，写后执行）
+
+- Query A：`structured outputs schema subset required fields optional null union`
+  - 命中：`references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md:151`
+  - 动作：将“schema 子集合法性”前置为 `schema_budget_check`
+- Query B：`additionalProperties false nested depth 5 object properties 100`
+  - 命中：`references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md:155`
+  - 动作：超预算时强制拆分 `prd_slice/arch_decision/task_contract` 三段 schema
+- Query C：`schema budget report prd spec tasks fidelity gate`
+  - 命中：`references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md:166`
+  - 动作：新增 `schema_budget_report.json` 并接入 closure 阻断
+
+### 约束检查
+
+- per-topic <= 5：通过（product-delivery=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：通过（cycle=125 已执行压缩扫描）
+
+---
 # Morning Brief（Nightshift Cycle 124）
 
 > 更新时间：2026-03-01 06:43 UTC  

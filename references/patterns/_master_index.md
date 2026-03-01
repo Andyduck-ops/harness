@@ -1,7 +1,7 @@
 # Pattern Master Index
 
 > 合并收敛版索引（Harvest Consolidation）。
-> 最后更新：2026-03-01（cycle 124）
+> 最后更新：2026-03-01（cycle 125）
 
 ## Top Patterns
 
@@ -22,7 +22,7 @@
 | 2 | [observation-masking](./context-injection/observation-masking.md) | context-injection | 0.80 | 8 |
 | 2 | [pipeline-gate-canonicalization](./pipeline-governance/pipeline-gate-canonicalization.md) | pipeline-governance | 0.80 | 9 |
 | 2 | [token-storybook-readiness](./fullstack-engineering/token-storybook-readiness.md) | fullstack-engineering | 0.80 | 10 |
-| 3 | [prd-epic-contract-replay-closure-gate](./product-delivery/prd-epic-contract-replay-closure-gate.md) | product-delivery | 0.82 | 26 |
+| 3 | [prd-epic-contract-replay-closure-gate](./product-delivery/prd-epic-contract-replay-closure-gate.md) | product-delivery | 0.82 | 28 |
 | 3 | [agent-scope-identity-memory-governance](./runtime-governance/agent-scope-identity-memory-governance.md) | runtime-governance | 0.87 | 72 |
 | 3 | [dual-gate-execution-card](./product-delivery/dual-gate-execution-card.md) | product-delivery | 0.79 | 24 |
 | 3 | [evidence-provenance-freshness-trust-governance](./evidence-governance/evidence-provenance-freshness-trust-governance.md) | evidence-governance | 0.79 | 7 |
