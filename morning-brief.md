@@ -1,3 +1,59 @@
+# Morning Brief（Nightshift Cycle 80）
+
+> 更新时间：2026-03-01 00:32 UTC  
+> 本轮目标：将 required checks 的“僵局检测”升级为“分类自愈闭环”，避免夜间 merge queue 长时 Pending 只重试不收敛。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/queue-governance/queue-pending-deadlock-self-heal-gate.md`
+2. `references/patterns/queue-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `队列待决僵局重试黑洞治理（queue pending-rerun blackhole gate）`
+  - reason: 文档确认 re-run 继承原始事件上下文，无法修复触发契约缺失，需单独治理“盲重试黑洞”。
+- `split`：拆分方向
+  - from: `队列待决僵局自愈治理（queue pending deadlock self-heal gate）`
+  - into: `队列待决僵局检测门禁（queue pending deadlock detection gate）`
+  - into: `队列待决僵局恢复门禁（queue pending deadlock recovery gate）`
+  - reason: 检测与恢复是两类不同失效面（识别准确性 vs 动作安全性），必须分治。
+- `merge`：合并方向
+  - from: `必跑检查待决僵局治理（required-check pending deadlock governance）`
+  - from: `队列待决僵局自愈治理（queue pending deadlock self-heal gate）`
+  - into: `待决僵局检测-自愈闭环治理（pending-deadlock detect-heal closure gate）`
+  - reason: 两方向都在治理 Pending 僵局收敛，合并后可减少重复 pattern 与重复门禁。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML Gist  
+  - 最终 URL: `https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道样本（2026-03-01）
+  - top lane: `https://news.ycombinator.com/item?id=47196582`
+  - show lane: `https://news.ycombinator.com/item?id=47195123`
+  - newest lane: `https://news.ycombinator.com/item?id=47179611`
+- 官方文档补链（2026-03-01）
+  - merge queue 重建与超时/移出：`https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue`
+  - `merge_group` 独立触发路径：`https://docs.github.com/en/actions/reference/events-that-trigger-workflows#merge_group`
+  - required checks Pending 阻塞语义：`https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks`
+  - re-run 继承原始事件上下文：`https://docs.github.com/en/actions/how-tos/manage-workflow-runs-and-deployments/manage-workflow-runs/re-run-workflows-and-jobs`
+
+### 本轮结论
+
+- 新 pattern `queue-pending-deadlock-self-heal-gate` 聚焦“恢复链路”，与上一轮 `required-check-pending-deadlock-gate` 的“触发完整性检测”形成互补，不是重复。
+- `trigger_missing` 类型 Pending 不应重试，应直接隔离并要求修复 workflow 触发契约；`transient_failure` 才允许受预算约束的重试。
+- merge queue 必须把 `pending_deadlock_pass + self_heal_policy_pass + merge_group_parity_pass` 作为并联 required checks，才能在夜间自动收敛。
+
+### Cycle 81 预载任务
+
+1. 将 `deadlock_classification.json` 字段固定并接入 candidate->issue 晋级证据包。
+2. 为 `self_heal_action_log.json` 增加“动作白名单版本号”和“不兼容拒绝策略”。
+3. 设计 `self_heal_exhausted` 到人工仲裁队列的 SLA 与回放格式。
+
+---
 # Morning Brief（Nightshift Cycle 79）
 
 > 更新时间：2026-03-01 08:30 UTC  
@@ -2685,60 +2741,6 @@
 1. 设计 `root_age_budget` 的分支分层阈值（`main/release/hotfix`）。
 2. 为 `offline verification instance drift` 增加 `runner_image_digest` 对账字段。
 3. 把 `outline identity contract` 接入 source-governance 的三角校验清单。
-
----
-
----
-# Morning Brief（Nightshift Cycle 30）
-
-> 更新时间：2026-02-28 20:10 UTC  
-> 本轮目标：把“摘要同一性校验”升级为“保留期-验签窗口协同”，避免次日复验时证据链失效。
-
-## 本轮新增（已落盘）
-
-1. `references/patterns/artifact-governance/artifact-retention-verification-window-gate.md`
-2. `references/patterns/artifact-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 30）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-## 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `工件保留期-验签窗口协同（artifact retention-verification window alignment）` 为：
-  - `工件保留期分层策略（branch-tier artifact retention policy）`
-  - `验签根信任新鲜度治理（trusted-root freshness gate）`
-  - reason: 保留期预算与根信任时效属于不同失效面，必须分开建模才可审计。
-- `merge`：合并方向
-  - from: `信源仲裁验签（triangulation + provenance attestation）`
-  - from: `时序证据抑制治理（freshness SLA + stale suppression）`
-  - into: `证据时效验签一体化（freshness + provenance ratification gate）`
-  - reason: 两条方向都在解决“证据是否还能被信任”，合并可避免同构闸门重复维护。
-- `expand`：新增方向 `归档保留-验签对账流水（retention-attestation reconciliation ledger）`
-  - 触发依据：GitHub artifacts 保留期与离线验签 root 新鲜度来自不同机制，需新增对账方向防止隐性断链。
-
-## 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已实测 301 重定向到 HN Popular Blogs OPML Gist（checked 2026-02-28T20:06:46Z）。
-- HN `top/show/new`：已采样并写入证据链（示例）：
-  - top (`news`): `The Relationship Crisis Facing Gen Z`
-  - show (`show`): `Show HN: Briefly, explain and understand codebases with AI`
-  - new (`newest`): `The Making of MinCaml Compiler Series`
-- 官方文档证据链（本轮重点）
-  - Hacker News API（`topstories/showstories/newstories`）
-  - GitHub workflow artifacts（retention）
-  - GitHub artifact attestations（生成 + 离线验签）
-
-## 本轮结论
-
-- “摘要同一性通过”仍不足以支撑次日审计，必须增加“可复验窗口”约束。
-- `retention_window` 与 `verification_window` 不绑定时，会出现“流程通过但证据不可重验”的隐蔽失败。
-- 根信任新鲜度应成为晋级硬门禁，而不是离线验签的可选附加项。
-
-## Cycle 31 预载任务
-
-1. 为 `retention_attestation_reconcile.json` 增加 `mismatch_stage`（build/upload/promote）定位字段。
-2. 输出 `main/release/hotfix` 的默认 retention 分层阈值模板。
-3. 设计 `trusted_root_fetched_at` 的过期刷新策略与失败重试上限。
 
 ---
 

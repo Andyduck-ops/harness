@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-03-01T00:27:19Z",
-  "cycle": 79,
+  "updated_at": "2026-03-01T00:34:08Z",
+  "cycle": 80,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -85,36 +85,40 @@
     "必跑检查待决僵局治理（required-check pending deadlock governance）",
     "路径过滤可观测治理（path-filter observability governance）",
     "队列待决僵局自愈治理（queue pending deadlock self-heal gate）",
-    "冲突入口兼容回放门禁（conflict intake compatibility replay gate）"
+    "冲突入口兼容回放门禁（conflict intake compatibility replay gate）",
+    "队列待决僵局重试黑洞治理（queue pending-rerun blackhole gate）",
+    "队列待决僵局检测门禁（queue pending deadlock detection gate）",
+    "队列待决僵局恢复门禁（queue pending deadlock recovery gate）",
+    "待决僵局检测-自愈闭环治理（pending-deadlock detect-heal closure gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 79,
+    "last_cycle": 80,
     "actions": [
       {
         "type": "expand",
-        "added": "队列待决僵局自愈治理（queue pending deadlock self-heal gate）",
-        "reason": "required checks 在路径过滤与事件分裂下会长期 Pending，需要自动超时阻断与隔离自愈。"
+        "added": "队列待决僵局重试黑洞治理（queue pending-rerun blackhole gate）",
+        "reason": "GitHub re-run 继承原始事件上下文，无法修复触发契约缺失；需要独立治理盲重试黑洞。"
       },
       {
         "type": "split",
         "from": [
-          "分支规则禁绕约束治理（branch-rule no-bypass enforcement gate）"
+          "队列待决僵局自愈治理（queue pending deadlock self-heal gate）"
         ],
         "into": [
-          "必跑检查待决僵局治理（required-check pending deadlock governance）",
-          "路径过滤可观测治理（path-filter observability governance）"
+          "队列待决僵局检测门禁（queue pending deadlock detection gate）",
+          "队列待决僵局恢复门禁（queue pending deadlock recovery gate）"
         ],
-        "reason": "禁绕策略与触发完整性属于不同失效面，拆分后可独立门禁与归因。"
+        "reason": "僵局检测与僵局恢复是不同失效面，拆分后可分别定义准确性与动作安全预算。"
       },
       {
         "type": "merge",
         "from": [
-          "冲突入口表单版本漂移门禁（conflict intake form-version drift gate）",
-          "冲突字段兼容回放门禁（conflict schema compatibility replay gate）"
+          "必跑检查待决僵局治理（required-check pending deadlock governance）",
+          "队列待决僵局自愈治理（queue pending deadlock self-heal gate）"
         ],
-        "into": "冲突入口兼容回放门禁（conflict intake compatibility replay gate）",
-        "reason": "两方向实质都治理冲突入口 schema 兼容回放，合并可避免同构 pattern 重复。"
+        "into": "待决僵局检测-自愈闭环治理（pending-deadlock detect-heal closure gate）",
+        "reason": "两方向本质都在治理 Pending 僵局收敛，合并可避免同构 pattern 重复。"
       }
     ]
   },
@@ -142,6 +146,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/ci-governance/required-check-pending-deadlock-gate.md",
-  "last_cycle_commit": "pending-cycle-79"
+  "last_pattern": "references/patterns/queue-governance/queue-pending-deadlock-self-heal-gate.md",
+  "last_cycle_commit": "pending-cycle-80"
 }
