@@ -2,15 +2,19 @@
 name: agent-scope-identity-memory-governance
 topic: runtime-governance
 confidence: 0.85
-verified_count: 15
+verified_count: 16
 sources:
   - OpenAI Agent Platform docs (Python/TypeScript/Go support) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (2026-03-01)
   - OpenAI Agents SDK Handoffs docs (2026-03-01)
+  - OpenAI Agents SDK Human-in-the-loop guide（RunState serialize/deserialize + resume）(2026-03-01)
+  - OpenAI Agents SDK Running agents docs（error handling / lifecycle exceptions）(2026-03-01)
   - OpenAI API Background mode guide (2026-03-01)
   - OpenAI API Conversations / conversation state docs (2026-03-01)
   - Anthropic Agent SDK / tool use docs (2026-03-01)
+  - Anthropic API compaction docs（beta + non-ZDR constraints）(2026-03-01)
   - CrewAI Flows persistence docs (2026-03-01)
+  - CrewAI Event Listeners docs（event bus instrumentation）(2026-03-01)
   - Kode Agent SDK README（stateful sessions / retry / multi-agent traceability）(2026-03-01)
   - HN top/show/new snapshots (2026-03-01)
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (redirect verified 2026-03-01)
@@ -75,6 +79,14 @@ Demo 能跑不等于 production 能跑。
 - **Claude 工具回路是天然恢复点**：Anthropic tool use 规范里 `stop_reason=tool_use` 与“执行工具后回传结果”的闭环，适合作为 checkpoint 粒度。
 - **CrewAI 与 Kode 可被同一门禁吸收**：CrewAI 强调 state 生命周期与可持久化恢复；Kode README 强调 stateful sessions/retry/traceability。两者都落在 `scope-identity-memory` 三联门禁里，无需新增主题。
 
+## Cycle 94 同化增量（Agent SDK 生产恢复链）
+
+- **人工审批不再是“会话断点”**：OpenAI Human-in-the-loop 的 `RunState` 支持 serialize/deserialize，审批前后可恢复同一运行态；治理上应把人工确认纳入可回放状态机，而不是旁路聊天确认。
+- **错误恢复从“重试”升级为“分层处置”**：OpenAI Running agents 文档将错误来源显式拆到 agent/tool/guardrail/lifecycle hook；生产上应按来源映射 retry budget 与降级动作，避免统一粗暴重跑。
+- **通信链路需要事件级可观测性**：CrewAI Event Listeners 提供 event bus 监听点；多 agent 通信需要把 handoff 与异常事件统一打点，才能定位 identity drift 的真正来源。
+- **压缩能力也要过合规门**：Anthropic compaction 文档给出 beta 与 non-ZDR 约束，说明“自动压缩”不是纯性能特性；上线时应把 compaction 路径纳入数据治理分流。
+- **社区一线正在收敛到状态分区治理**：HN show 的 `SQLite for Rivet Actors`（每 agent/tenant/document 独立数据库）与 HN newest 的 `Agentation` 信号表明，state cell 化是 demo->production 的共同升级路径。
+
 ## 合并来源
 
 - agent scope drift severity budget
@@ -98,3 +110,6 @@ Demo 能跑不等于 production 能跑。
 - 查询：`Claude/CrewAI/Kode 多 agent 长跑如何统一治理`  
   命中：本 pattern  
   动作：收敛到 `scope-identity-memory 三联门禁 + tool checkpoint + persisted session + retry budget`
+- 查询：`RunState 人工审批后如何无损恢复`  
+  命中：本 pattern  
+  动作：收敛到 `serialize/deserialize run_state + approval checkpoint + replay resume`

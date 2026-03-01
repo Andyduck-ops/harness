@@ -1,3 +1,65 @@
+# Morning Brief（Nightshift Cycle 94）
+
+> 更新时间：2026-03-01 03:21 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 多 agent 人工审批插入后，运行状态不可恢复
+  2. 失败重试策略只做全局重跑，无法按错误来源分层恢复
+  3. 长跑压缩与合规约束（ZDR/保留策略）冲突时缺少统一门禁
+- 已有 pattern 覆盖检查：
+  - `runtime-governance/agent-scope-identity-memory-governance.md` 覆盖同一元问题（scope-identity-memory 三联门禁）
+- 判定：**同化**（增强恢复链证据与治理动作，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news`: `Show HN: Microgpt – AI agent framework and coding assistant with memory`
+  - `show`: `Show HN: SQLite for Rivet Actors: One database per agent, tenant, or document`
+  - `newest`: `Agentation allows AI to call your APIs naturally`
+
+### 官方证据链（不确定点补链）
+
+- OpenAI Agents SDK Human-in-the-loop：`RunState` 支持 serialize/deserialize 与恢复执行
+- OpenAI Agents SDK Running agents：错误来源拆分到 agent/tool/guardrail/lifecycle hooks
+- OpenAI Agents SDK Handoffs：`inputType` + `inputFilter` + `onHandoff` 形成交接合同
+- OpenAI Background mode：异步任务 `queued/in_progress/completed` + poll/cancel 恢复路径
+- Anthropic API Compaction：beta 能力且不支持 ZDR，需纳入合规分流
+- CrewAI Event Listeners：事件总线监听可用于通信链路与错误恢复审计
+
+### 检索测试（L5，写后执行）
+
+- Query A：`RunState serialize deserialize approval checkpoint`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：`serialize/deserialize run_state + replay resume`
+- Query B：`agent tool guardrail lifecycle hook exception recovery`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：`按错误来源分层 retry budget + fallback`
+- Query C：`SQLite per agent tenant document state isolation`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`
+  - 动作：`state cell 分区 + identity lease + handoff 最小输入`
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：本轮 cycle=94（下一个强制压缩点=95）
+
+---
+
 # Morning Brief（Nightshift Cycle 93）
 
 > 更新时间：2026-03-01 03:18 UTC  
