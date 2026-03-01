@@ -1,3 +1,67 @@
+# Morning Brief（Nightshift Cycle 105）
+
+> 更新时间：2026-03-01 04:23 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：压缩优先 + 同化更新（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/fullstack-engineering/contract-replay-verification-gate.md`（同化更新）
+2. `references/patterns/fullstack-engineering/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 压缩周期执行（L4，cycle 105 强制）
+
+- 压缩扫描：已执行（跨 topic + topic 内 merge 检查）
+- 结果：`merged_count=0`，`assimilated_count=1`
+- 结论：本轮新增证据与既有元问题同构，按 L2 同化，不做 split 膨胀
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. AI 代码 property 测试覆盖了样例但难以命中高风险边界（深分支/长序列）
+  2. mutation 全量重跑成本过高，夜间流水线长跑不稳定
+  3. 团队启用增量 mutation 后门禁松动，速度提升但质量阈值退化
+- 已有 pattern 覆盖检查：
+  - `references/patterns/fullstack-engineering/contract-replay-verification-gate.md` 已覆盖同一元问题（contract + property + mutation + replay + invariant）
+- 判定：**同化**（补强 targeted property + incremental mutation，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+  - raw OPML：`https://gist.githubusercontent.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b/raw/hn-popular-blogs-2025.opml`
+- HN 三车道（2026-03-01）
+  - `top`: `Speeding up OpenJDK's G1 by 10% by reducing memory barriers`
+  - `show`: `Show HN: Track nutrition by taking photos of your food`
+  - `newest`: `How can AI check software requirements and identify ambiguities?`
+
+### 官方证据链（不确定点补链）
+
+- Hypothesis docs：`target()`（Targeted property-based testing）可将搜索预算引导到高风险输入区域
+- Stryker docs：incremental testing 允许基于历史结果提速，但不替代 `thresholds.break` 阻断门
+
+### 检索测试（L5，写后执行）
+
+- Query A：`Hypothesis target() targeted property-based testing`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`
+  - 动作：将高风险边界探索从“随机覆盖”升级为“定向覆盖”
+- Query B：`Stryker incremental testing thresholds.break`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`
+  - 动作：增量变异提速 + 固定 break 阈值双策略
+- Query C：`contract property mutation replay invariant gate`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`
+  - 动作：按五门并联执行 CI，阻断表面正确边界错
+
+### 约束检查
+
+- per-topic <= 5：通过（fullstack-engineering=4）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：通过（cycle 105 已执行压缩扫描）
+
+---
 # Morning Brief（Nightshift Cycle 104）
 
 > 更新时间：2026-03-01 04:18 UTC  

@@ -2,7 +2,7 @@
 name: contract-replay-verification-gate
 topic: fullstack-engineering
 confidence: 0.84
-verified_count: 14
+verified_count: 15
 sources:
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (2026-03-01)
   - Hacker News top/show/new snapshot (2026-03-01)
@@ -14,8 +14,10 @@ sources:
   - fast-check docs (property-based testing) (2026-03-01)
   - fast-check model-based testing docs (replayPath/scheduledModelRun) (2026-03-01)
   - Stryker docs (thresholds + break/fail behavior) (2026-03-01)
+  - Stryker docs (incremental testing baseline workflow) (2026-03-01)
   - PIT docs (mutation testing guidance) (2026-03-01)
   - mutmut docs (mutation workflow) (2026-03-01)
+  - Hypothesis docs (targeted property-based testing via target()) (2026-03-01)
   - OpenAI Harness engineering (observability + long-run loops) (2026-02-11)
 last_verified: 2026-03-01
 rank: 2
@@ -158,3 +160,22 @@ rank: 2
 - `Stryker thresholds.break exit code 1`
 - `PIT mutationThreshold coverageThreshold`
 - `mutmut restart where left off incremental`
+
+## Cycle 105 同化增量：Targeted Property + Incremental Mutation（压缩窗口）
+
+目标：在不牺牲覆盖面的前提下，把 AI 代码验证从“重跑全部”升级为“可持续长跑”。
+
+1. Targeted Property（定向性质探索）
+   - Hypothesis `target()` 允许把搜索导向高风险区域（例如长度、分支深度、状态跃迁幅度），用于更快命中“表面正确但边界错误”的 AI 代码缺陷。
+   - 规则：核心性质必须同时保留 shrinking + seed/replay 能力，避免“只找到一次，无法复现”。
+2. Incremental Mutation（增量变异基线）
+   - Stryker incremental testing 支持以上一轮结果为基线，仅对受影响范围优先变异，降低长流水线成本。
+   - 规则：增量模式用于提速，不替代门禁阈值；`thresholds.break` 仍是阻断开关。
+3. Cycle 105 压缩结论（L4）
+   - 新证据解决的问题仍是同一元问题：`contract + property + mutation + replay + invariant` 的可执行门禁。
+   - 判定：同化到现有 canonical pattern，不新建 pattern/topic。
+
+## Cycle 105 检索锚点（L5）
+
+- `Hypothesis target() targeted property-based testing`
+- `Stryker incremental testing baseline thresholds.break`

@@ -1,7 +1,7 @@
 # Pattern Master Index
 
 > 合并收敛版索引（Harvest Consolidation）。
-> 最后更新：2026-03-01（cycle 104）
+> 最后更新：2026-03-01（cycle 105）
 
 ## Top Patterns
 
@@ -17,7 +17,7 @@
 | 2 | [permission-ladder](./agent-lifecycle/permission-ladder.md) | agent-lifecycle | 0.85 | 10 |
 | 2 | [staleness-detection](./knowledge-evolution/staleness-detection.md) | knowledge-evolution | 0.85 | 14 |
 | 2 | [structured-escalation](./agent-lifecycle/structured-escalation.md) | agent-lifecycle | 0.85 | 13 |
-| 2 | [contract-replay-verification-gate](./fullstack-engineering/contract-replay-verification-gate.md) | fullstack-engineering | 0.84 | 15 |
+| 2 | [contract-replay-verification-gate](./fullstack-engineering/contract-replay-verification-gate.md) | fullstack-engineering | 0.84 | 17 |
 | 2 | [audit-gated-autonomy](./autonomous-ops/audit-gated-autonomy.md) | autonomous-ops | 0.81 | 15 |
 | 2 | [observation-masking](./context-injection/observation-masking.md) | context-injection | 0.80 | 8 |
 | 2 | [pipeline-gate-canonicalization](./pipeline-governance/pipeline-gate-canonicalization.md) | pipeline-governance | 0.80 | 9 |

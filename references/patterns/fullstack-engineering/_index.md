@@ -1,6 +1,6 @@
 # fullstack-engineering
 
-> 前后端契约 + 设计系统执行（cycle 100 同化：deterministic replay contract + mutation dual-threshold gate）
+> 前后端契约 + 设计系统执行（cycle 105 同化：targeted property + incremental mutation）
 
 - [backend-contract-first](./backend-contract-first.md)
 - [contract-replay-verification-gate](./contract-replay-verification-gate.md)
