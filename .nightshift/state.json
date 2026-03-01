@@ -1,7 +1,7 @@
 {
   "version": "1.1",
-  "updated_at": "2026-03-01T06:00:22Z",
-  "cycle": 119,
+  "updated_at": "2026-03-01T06:06:53Z",
+  "cycle": 120,
   "status": "paused",
   "mode": "CONSTRAINED_EXPANSION",
   "active_directions": [
@@ -14,7 +14,7 @@
   "dormant_directions": [],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 119,
+    "last_cycle": 120,
     "actions": [
       {
         "type": "compress",
@@ -235,6 +235,18 @@
         "reason": "cycle 119：将 PRD->spec->tasks 信息保真新证据（Structured Outputs strict schema、Anthropic tool input_schema、schema-lock 中间证据件）同化到 product-delivery canonical pattern（不新建）",
         "updated_pattern": "references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md",
         "new_patterns": 0
+      },
+      {
+        "type": "compress",
+        "reason": "cycle 120 命中 5-cycle 压缩窗口；执行跨 topic 合并扫描并保持 merge > split",
+        "merged_count": 0,
+        "assimilated_count": 1
+      },
+      {
+        "type": "assimilate",
+        "reason": "cycle 120：将 Agent SDK 多框架工具循环终止与重试预算拆层证据（resetToolChoice/toolUseBehavior、openai-agents-go loop exit、CrewAI guardrail_max_retries）同化到 runtime-governance canonical pattern（不新建）",
+        "updated_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
+        "new_patterns": 0
       }
     ]
   },
@@ -247,8 +259,8 @@
     "https://platform.openai.com/docs/guides/conversation-state"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md",
-  "last_cycle_commit": "pending-cycle-119",
+  "last_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
+  "last_cycle_commit": "pending-cycle-120",
   "constraints": {
     "per_topic_max_patterns": 5,
     "active_direction_max": 15,

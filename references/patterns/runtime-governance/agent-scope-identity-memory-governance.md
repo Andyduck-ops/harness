@@ -2,7 +2,7 @@
 name: agent-scope-identity-memory-governance
 topic: runtime-governance
 confidence: 0.87
-verified_count: 26
+verified_count: 27
 sources:
   - OpenAI Agent Platform docs (Python/TypeScript/Go support) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (2026-03-01)
@@ -34,6 +34,8 @@ sources:
   - CrewAI Event Listeners docs（event bus instrumentation）(2026-03-01)
   - CrewAI Conditional Tasks docs（runtime routing for fallback/recovery paths）(2026-03-01)
   - OpenAI Agents SDK JS running agents docs（errorHandlers default/maxTurns + typed exceptions）(2026-03-01)
+  - OpenAI Agents SDK JS agents guide（preventing infinite loops: resetToolChoice/toolUseBehavior）(2026-03-01)
+  - OpenAI Agents SDK Python agents docs（tool_use_behavior / StopAtTools / reset_tool_choice）(2026-03-01)
   - OpenAI Agents SDK Python handoffs docs（RunConfig.handoff_history_mapper fallback）(2026-03-01)
   - Kode Agent SDK README（stateful sessions / retry / multi-agent traceability）(2026-03-01)
   - Kode Agent SDK architecture README（7-stage checkpoint + stateless API/stateful worker）(2026-03-01)
@@ -46,6 +48,9 @@ sources:
   - OpenAI Agents SDK JS MCP docs（`connectMcpServers` 连接失败处理 + `mcp_server_error` 事件 + `invalidateToolList` 缓存失效）(2026-03-01)
   - Anthropic Claude Code MCP docs（`stdio/sse/http` 传输 + 启动/工具超时 + `/mcp` 状态检查）(2026-03-01)
   - Anthropic MCP connector docs（默认 `MAX_MCP_OUTPUT_TOKENS=25000` + 超限文件附件 + compatibility mode 限制）(2026-03-01)
+  - CrewAI Agents docs（max_iter / max_retry_limit）(2026-03-01)
+  - CrewAI Tasks docs（guardrail_max_retries + max_retries deprecation）(2026-03-01)
+  - nlpodyssey/openai-agents-go README（tool loop exit conditions / max turns）(2026-03-01)
   - HN top/show/new snapshots (2026-03-01)
   - HN top item: Deterministic Programming with LLMs (using Jujutsu)（id=47203405, 2026-03-01）
   - HN newest item: Show HN: Memctl: Persistent memory and context management for AI coding agents（id=47205594, 2026-03-01）
@@ -214,6 +219,14 @@ Demo 能跑不等于 production 能跑。
   - 治理动作：生产环境禁止“兼容模式 + MCP”混搭发布，发布前执行 capabilities snapshot 对账。
 - **强制信源侧证（本轮）**：`https://t.co/dwAiIjlXet` 仍重定向至 HN Popular Blogs OPML；HN `news/show/newest` 本轮均出现 MCP/agent memory 相关实践条目。
 
+## Cycle 120 同化增量（工具循环终止合同：回合预算 + 工具出口策略）
+
+- **工具循环必须有默认“出口策略”**：OpenAI Agents SDK JS 文档明确 `resetToolChoice` 默认开启，用于避免模型反复调用同一工具形成循环；若手动关闭该行为，应把该 agent 标记为高风险执行单元并绑定更严格的 `maxTurns`。
+- **通信合同要包含“工具后是否继续思考”语义**：OpenAI JS/Python 文档给出 `toolUseBehavior` / `tool_use_behavior`（如 `run_llm_again`、`stop_on_first_tool`、`StopAtTools`）；生产上应把该配置作为 handoff 合同字段持久化，否则跨 agent 审计无法解释“为什么在某工具后终止/继续”。
+- **恢复面应统一到回合预算断路器**：`openai-agents-go` README 明确运行循环在“无工具调用 / 产出最终结果 / 到达最大回合”三条件之一退出；max turns 应视为恢复分支入口，而不是普通重试。
+- **重试预算必须拆层**：CrewAI Agent 侧 `max_iter`/`max_retry_limit` 与 Task 侧 `guardrail_max_retries`（`max_retries` 已弃用）表达的是不同失败面；应拆分为“推理循环预算”和“校验重试预算”，防止单一重试参数掩盖状态泄漏。
+- **Cycle 120 压缩结论（L4）**：新增证据仍落在同一元问题 `scope + communication + recovery`，执行同化，不新建 pattern/topic。
+
 ## 合并来源
 
 - agent scope drift severity budget
@@ -230,6 +243,8 @@ Demo 能跑不等于 production 能跑。
 - HN `top/newest`（Deterministic Programming with LLMs / Memctl）作为“可预测执行 + 持久记忆”社区热区侧证
 - OpenAI JS guardrails（首 agent 输入护栏触发面 + 并行副作用边界）与 JS handoffs API（strict schema + input/history 双轨 + streaming 可见性限制）补强了“通信合同可验证 + 审计可回放”执行合同
 - OpenAI JS MCP（部分连接失败可观测 + 工具清单缓存失效）与 Anthropic MCP（输出 token 预算 + transport/compatibility 边界）补强了“连接健康 + 输出预算 + 能力对账”执行合同
+- OpenAI JS/Python Agents 文档（`resetToolChoice`/`toolUseBehavior`/`StopAtTools`）+ openai-agents-go 运行循环退出条件补强了“工具循环终止合同 + 回合预算断路器”
+- CrewAI Agents/Tasks 文档（`max_iter`、`max_retry_limit`、`guardrail_max_retries`）补强了“推理循环预算与校验重试预算拆层”治理动作
 
 ## 检索测试
 
@@ -317,3 +332,12 @@ Demo 能跑不等于 production 能跑。
 - 查询：`MAX_MCP_OUTPUT_TOKENS 25000 connector output file attachment`  
   命中：本 pattern  
   动作：收敛到 `token-budgeted MCP output + attachment fallback`
+- 查询：`resetToolChoice preventing infinite loops toolUseBehavior stop_on_first_tool`  
+  命中：本 pattern  
+  动作：收敛到 `tool-loop exit policy + handoff contract persistence`
+- 查询：`openai-agents-go loop exits no tool calls final output max turns`  
+  命中：本 pattern  
+  动作：收敛到 `max-turns circuit breaker + recovery branch`
+- 查询：`CrewAI guardrail_max_retries max_retry_limit max_iter`  
+  命中：本 pattern  
+  动作：收敛到 `reasoning budget vs validation-retry budget split`

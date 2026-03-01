@@ -1,3 +1,74 @@
+# Morning Brief（Nightshift Cycle 120）
+
+> 更新时间：2026-03-01 06:06 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：压缩窗口 + 同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 压缩执行（L4，cycle%5==0）
+
+- 已执行跨 topic 压缩扫描（merge > split）
+- 结果：`merged_count=0`，`assimilated_count=1`
+- 结论：新增证据与 `agent-scope-identity-memory-governance` 同一元问题，执行同化而非新建
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 多 agent 工具链里 `tool_choice` 未重置，模型反复调用同一工具导致循环放大
+  2. 不同 SDK 对“工具后继续推理/直接结束”语义未合同化，handoff 审计无法解释退出路径
+  3. 把推理循环重试和校验重试混成单一参数，状态泄漏被“重试成功”掩盖
+- 覆盖检查：
+  - 归属同一元问题：`scope + communication + recovery` 三联治理
+  - 判定：**同化**到 `agent-scope-identity-memory-governance`（不新建）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news/top`: `https://news.ycombinator.com/item?id=47184434`
+  - `show`: `https://news.ycombinator.com/item?id=47180083`
+  - `newest`: `https://news.ycombinator.com/item?id=47207672`
+
+### 官方证据链（本轮新增）
+
+- OpenAI Agents SDK JS（`resetToolChoice` 默认开启防循环；`toolUseBehavior` 定义工具后退出/继续语义）
+  - `https://openai.github.io/openai-agents-js/guides/agents/`
+- OpenAI Agents SDK Python（`tool_use_behavior` / `StopAtTools` / `reset_tool_choice`）
+  - `https://openai.github.io/openai-agents-python/agents/`
+- CrewAI Agents（`max_iter` / `max_retry_limit`）
+  - `https://docs.crewai.com/en/concepts/agents`
+- CrewAI Tasks（`guardrail_max_retries`；`max_retries` 已弃用）
+  - `https://docs.crewai.com/concepts/tasks`
+- openai-agents-go README（循环退出条件：无工具调用/最终输出/达到 max turns）
+  - `https://github.com/nlpodyssey/openai-agents-go`
+
+### 检索测试（L5，写后执行）
+
+- Query A：`resetToolChoice preventing infinite loops toolUseBehavior stop_on_first_tool`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:335`
+  - 动作：强制 `tool-loop exit policy + handoff contract persistence`
+- Query B：`openai-agents-go loop exits no tool calls final output max turns`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:338`
+  - 动作：强制 `max-turns circuit breaker + recovery branch`
+- Query C：`CrewAI guardrail_max_retries max_retry_limit max_iter`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:341`
+  - 动作：强制 `reasoning budget vs validation-retry budget split`
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：通过（cycle=120 已执行压缩）
+
+---
 # Morning Brief（Nightshift Cycle 119）
 
 > 更新时间：2026-03-01 06:00 UTC  
@@ -3009,61 +3080,6 @@
 1. 输出 `shownew_lag_budget.json` 与 `shownew_cross_lane_recheck.json` 的 schema + lint。
 2. 将 `shownew_lag_budget_pass` 接入 candidate->issue 晋级必填 checks。
 3. 给“复采样失败”场景补充自动回退到观察池的处置模板。
-
-
----
-# Morning Brief（Nightshift Cycle 70）
-
-> 更新时间：2026-03-01 00:05 UTC  
-> 本轮目标：把 Show/Top 同窗热度从“立即晋级触发器”降级为“需冷却复采样后才可晋级”的信号。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/discovery-governance/show-top-resonance-cooldown-gate.md`
-2. `references/patterns/discovery-governance/_index.md`
-3. `references/patterns/_master_index.md`
-4. `morning-brief.md`
-5. `.nightshift/state.json`
-
-### 激进动态策略执行（本轮）
-
-- `expand`：新增方向
-  - `Shownew 晋级延迟采样治理（shownew-promotion-latency gate）`
-  - reason: shownew->show/news 迁移速度常早于复现证据生成速度，需要独立延迟采样治理。
-- `split`：拆分方向
-  - from: `Show-Top 共振冷却晋级治理（show-top resonance cooldown gate）`
-  - into: `Show-Top 共振窗口门禁（show-top resonance-window gate）`
-  - into: `Show-Top 冷却预算门禁（show-top cooldown-budget gate）`
-  - reason: 共振判定与冷却预算属于不同控制面，需分离阈值与回退策略。
-- `merge`：合并方向
-  - from: `Show URL 可达门禁（show-url reachability gate）`
-  - from: `HN 条目存活预检治理（dead/deleted pre-promotion gate）`
-  - into: `Show 可达-存活预检门禁（show reachability-liveness preflight gate）`
-  - reason: 两者都在过滤无效候选，合并后 preflight 合同更一致。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已重定向至 HN Popular Blogs OPML（Gist 最新修订 2026-02-28 可见）。
-- HN 三车道同窗采样（2026-02-28）
-  - news: item `47195123` — `Show HN: RubberUI...`
-  - show: item `47180083` — `Show HN: DeFAI...`
-  - newest: item `47200719` — `Show HN: Better Auth...`
-- 官方文档证据链
-  - HN API：`topstories/showstories/newstories` 与 item 对象语义分离（社区分发信号）。
-  - GitHub Merge Queue + `merge_group`：队列场景需独立检查触发。
-  - GitHub Protected Branches：required status checks 未通过不可合并。
-
-### 本轮结论
-
-- Show/Top 共振是“传播加速度”信号，不是“执行成熟度”信号。
-- candidate->issue 晋级应强制 `capture -> cooldown -> recapture` 三步闭环，禁止单次快照直通。
-- 冷却后未复采样即晋级，等价于把热度当证据，必须阻断。
-
-### Cycle 71 预载任务
-
-1. 输出 `show_resonance_window.json` 与 `show_resonance_cooldown.json` 的 schema + lint。
-2. 将 `show_resonance_reverify_pass` 接入 candidate->issue 晋级表单必填检查。
-3. 给 `show-top` 共振场景补充“冷却失败自动降级到观察队列”的处置模板。
 
 
 ---
