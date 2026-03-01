@@ -1,3 +1,63 @@
+# Morning Brief（Nightshift Cycle 88）
+
+> 更新时间：2026-03-01 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现能解决的场景：
+  1. 多 agent 交接后上下文串台
+  2. 长任务断线后的恢复一致性
+  3. 长跑 session/compact 引发的语义漂移
+- 与已有 pattern 比较：
+  - `agent-scope-identity-memory-governance` 已覆盖元问题，且可扩展 SDK 级一手证据
+- 判定：**同化**（更新证据链与可执行动作，不新建）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news`: `https://news.ycombinator.com/news`（top: *Stop Burning Your Context Window: How We Cut MCP Token Usage by 98%*）
+  - `show`: `https://news.ycombinator.com/show`（top: *Show HN: SQLite for Rivet Actors*）
+  - `newest`: `https://news.ycombinator.com/newest`（top: *Ask HN: Has your beloved model been nerfed before your eyes?*）
+
+### 官方证据链补全（不确定点）
+
+- OpenAI Agents SDK Sessions: `https://openai.github.io/openai-agents-js/guides/sessions/`
+- OpenAI Agents SDK Handoffs: `https://openai.github.io/openai-agents-js/guides/handoffs/`
+- OpenAI Background mode: `https://platform.openai.com/docs/guides/background`
+- OpenAI Conversations: `https://platform.openai.com/docs/guides/conversation-state`
+- Anthropic Tool Runner: `https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use`
+- CrewAI Flow Persistence: `https://docs.crewai.com/en/guides/flows/mastering-flow-state`
+- Google ADK Go / A2A: `https://google.github.io/adk-docs/get-started/quickstart-go/` / `https://google.github.io/adk-docs/a2a/quickstart/`
+
+### 检索测试（L5）
+
+- Query A：`多 agent 交接 串台 恢复`  
+  - 命中：`runtime-governance/agent-scope-identity-memory-governance.md`  
+  - 可执行动作：`handoff input filter + identity lease + replay checkpoint`
+- Query B：`长任务 断线 后台恢复`  
+  - 命中：`runtime-governance/agent-scope-identity-memory-governance.md`  
+  - 可执行动作：`background job id + polling/cancel + continuity replay`
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 压缩：本轮 cycle=88（非强制压缩轮）
+
+---
+
 # Morning Brief（Harvest Consolidation）
 
 > 更新时间：2026-03-01 02:30 CST  
