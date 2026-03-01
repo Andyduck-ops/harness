@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-03-01T00:41:42Z",
-  "cycle": 82,
+  "updated_at": "2026-03-01T00:50:07Z",
+  "cycle": 83,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -46,14 +46,12 @@
     "浏览器边界-权限同构协同治理（browser boundary-scope parity co-gate）",
     "热度锚定采样（HN top anchor lane）",
     "离线验签实例漂移探针（offline verification instance drift probe）",
-    "组件验收治理（story + a11y + visual gate）",
     "自驱代码人审触发门禁治理（self-driving code human-review trigger gate）",
     "自驱代码生成证据账本治理（self-driving code generation evidence ledger gate）",
     "色觉仿真回放治理（color-vision simulation replay gate）",
     "色觉仿真失败证据签名治理（color-vision replay attestation gate）",
     "规则集导出同构校验治理（ruleset export parity gate）",
     "视觉回归预算分层治理（visual regression tiered budget gate）",
-    "设计令牌治理（schema + drift lint）",
     "证据到模式回放治理（evidence->pattern replay governance）",
     "跨车道去重预算门禁（cross-lane dedupe budget gate）",
     "跨车道身份同一门禁（cross-lane identity quorum gate）",
@@ -91,27 +89,41 @@
     "队列重试黑洞阻断门禁（queue rerun-blackhole isolation gate）",
     "待决僵局分类治理（pending-deadlock classification gate）",
     "待决僵局动作预算治理（pending-deadlock action-budget gate）",
-    "待决僵局分类词典版本漂移门禁（pending-deadlock taxonomy-version drift gate）"
+    "待决僵局分类词典版本漂移门禁（pending-deadlock taxonomy-version drift gate）",
+    "组件验收三测并联门禁（storybook interaction-a11y-visual tri-check gate）",
+    "组件验收验签门禁（storybook acceptance attestation gate）",
+    "前端交付证据同构治理（token-schema + storybook attestation gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 82,
+    "last_cycle": 83,
     "actions": [
       {
         "type": "expand",
-        "added": "待决僵局分类词典版本漂移门禁（pending-deadlock taxonomy-version drift gate）",
-        "reason": "同一故障在不同 cycle 出现分类命名漂移，导致恢复动作无法稳定回放；需要版本化词典治理。"
+        "added": "前端交付证据同构治理（token-schema + storybook attestation gate）",
+        "reason": "将前端次日实战从“测试通过”提升为“验收包可验签”，补齐交付同一性失效面。"
       },
       {
         "type": "split",
         "from": [
-          "队列待决僵局检测门禁（queue pending deadlock detection gate）"
+          "组件验收治理（story + a11y + visual gate）"
         ],
         "into": [
-          "待决僵局证据覆盖治理（pending-deadlock evidence-coverage gate）",
-          "待决僵局触发完整性治理（pending-deadlock trigger-completeness gate）"
+          "组件验收三测并联门禁（storybook interaction-a11y-visual tri-check gate）",
+          "组件验收验签门禁（storybook acceptance attestation gate）"
         ],
-        "reason": "僵局检测需拆为“证据覆盖”与“触发完整性”两个失效面，否则无法精确映射恢复动作。"
+        "reason": "测试执行覆盖与产物同一性验签属于不同失效面，分治后可独立阻断与审计。"
+      },
+      {
+        "type": "merge",
+        "from": [
+          "设计令牌治理（schema + drift lint）",
+          "组件验收验签门禁（storybook acceptance attestation gate）"
+        ],
+        "into": [
+          "前端交付证据同构治理（token-schema + storybook attestation gate）"
+        ],
+        "reason": "token schema 漂移与验收验签必须同构治理，避免“局部通过、整体失真”。"
       }
     ]
   },
@@ -139,6 +151,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/queue-governance/pending-deadlock-taxonomy-version-drift-gate.md",
-  "last_cycle_commit": "pending-cycle-82"
+  "last_pattern": "references/patterns/ui-governance/storybook-acceptance-attestation-gate.md",
+  "last_cycle_commit": "pending-cycle-83"
 }

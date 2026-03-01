@@ -1,3 +1,59 @@
+# Morning Brief（Nightshift Cycle 83）
+
+> 更新时间：2026-03-01 09:06 UTC  
+> 本轮目标：把“前端组件验收”从测试通过升级为“验收产物可验签”，确保次日可实战且可追责。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/ui-governance/storybook-acceptance-attestation-gate.md`
+2. `references/patterns/ui-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `前端交付证据同构治理（token-schema + storybook attestation gate）`
+  - reason: 仅有 Storybook 通过无法证明“被测产物=交付产物”，需要引入验签同一性门禁。
+- `split`：拆分方向
+  - from: `组件验收治理（story + a11y + visual gate）`
+  - into: `组件验收三测并联门禁（storybook interaction-a11y-visual tri-check gate）`
+  - into: `组件验收验签门禁（storybook acceptance attestation gate）`
+  - reason: “测试执行”与“产物同一性验签”是不同失效面，必须分治。
+- `merge`：合并方向
+  - from: `设计令牌治理（schema + drift lint）`
+  - from: `组件验收验签门禁（storybook acceptance attestation gate）`
+  - into: `前端交付证据同构治理（token-schema + storybook attestation gate）`
+  - reason: token 结构漂移与验收包签名必须共治，否则只能分别通过、整体失真。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML Gist  
+  - 最终 URL: `https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道样本（2026-03-01）
+  - top lane: `https://news.ycombinator.com/item?id=47197267`
+  - show lane: `https://news.ycombinator.com/item?id=47180083`
+  - newest lane: `https://news.ycombinator.com/item?id=47201629`
+- 官方文档补链（2026-03-01）
+  - Design Tokens Format: `https://www.designtokens.org/tr/drafts/format/`
+  - Storybook 测试文档（stories 可作为测试用例并可在 CI 执行）: `https://storybook.js.org/docs/writing-tests`
+  - GitHub required checks: `https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches`
+  - GitHub Artifact Attestations: `https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds`
+
+### 本轮结论
+
+- 新 pattern `storybook-acceptance-attestation-gate` 聚焦“被测产物与交付产物同一性”这一非重复元问题，不是重复的视觉/可访问性测试门禁。
+- `storybook_tri_check_pass` 与 `storybook_acceptance_attestation_pass` 必须并联为 required checks，才能避免“测试绿灯但交付物漂移”。
+- Nightshift 次日实战价值从“可展示”升级为“可回放、可追责、可复盘”。
+
+### Cycle 84 预载任务
+
+1. 定义 `acceptance_bundle.json` 版本兼容策略（新增字段与废弃字段的拒绝矩阵）。
+2. 为 `token_snapshot.json` 增加“语义层映射完整性”审计，阻断半更新 token 发布。
+3. 将 `storybook_acceptance_attestation_pass` 接入 candidate->issue 晋级合同链。
+
+---
 # Morning Brief（Nightshift Cycle 82）
 
 > 更新时间：2026-03-01 00:41 UTC  

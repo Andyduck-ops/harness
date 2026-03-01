@@ -39,6 +39,7 @@
 | 3 | [execution-proof-bundle](./product-delivery/execution-proof-bundle.md) | product-delivery | 0.78 | OPML + HN + OpenAI + GitHub + OpenAPI + Pact + Storybook |
 | 3 | [workspace-recovery-envelope](./recovery-governance/workspace-recovery-envelope.md) | recovery-governance | 0.78 | OPML + HN + OpenAI + GitHub + git-reflog |
 | 3 | [agent-design-export-contract](./fullstack-engineering/agent-design-export-contract.md) | fullstack-engineering | 0.78 | OPML + HN + Design Tokens + Storybook + GitHub |
+| 3 | [storybook-acceptance-attestation-gate](./ui-governance/storybook-acceptance-attestation-gate.md) | ui-governance | 0.78 | OPML + HN(top/show/newest) + Design Tokens + Storybook + GitHub Attestations |
 | 3 | [semantic-color-role-canonicalization-gate](./design-governance/semantic-color-role-canonicalization-gate.md) | design-governance | 0.78 | OPML + HN API + Design Tokens + Storybook + GitHub |
 | 3 | [theme-contrast-readability-budget-gate](./accessibility-governance/theme-contrast-readability-budget-gate.md) | accessibility-governance | 0.77 | OPML + HN API + WCAG 2.2 + Storybook + GitHub |
 | 3 | [theme-contrast-regression-slope-gate](./accessibility-governance/theme-contrast-regression-slope-gate.md) | accessibility-governance | 0.78 | OPML + HN API + WCAG 2.2 + Storybook + GitHub |
@@ -118,6 +119,7 @@
 | [fullstack-engineering/](./fullstack-engineering/) | 6 | 前后端工程化执行模式 |
 | [contract-governance/](./contract-governance/) | 1 | 契约纪元与回放样本纪元同构治理，阻断 PR/队列路径分叉带来的不可回放晋级 |
 | [design-governance/](./design-governance/) | 1 | 语义色名规范化、主题回放与可访问性门禁治理 |
+| [ui-governance/](./ui-governance/) | 1 | Storybook 三测验收与产物验签同构治理，保障“被测即被交付” |
 | [accessibility-governance/](./accessibility-governance/) | 3 | 文本/非文本对比预算、回退斜率门禁与多主题回放冻结治理 |
 | [product-delivery/](./product-delivery/) | 7 | PRD 到执行闭环 |
 | [release-governance/](./release-governance/) | 10 | 夜间产出与白天晋级的发布治理 |
@@ -143,7 +145,7 @@
 
 ## 统计
 
-- 总计：97 patterns
+- 总计：98 patterns
 - 平均 confidence：0.79
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：74 patterns
+- 待验证（<0.80）：75 patterns
