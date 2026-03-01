@@ -2,7 +2,7 @@
 name: required-checks-snapshot-closure-gate
 topic: product-delivery
 confidence: 0.79
-verified_count: 8
+verified_count: 9
 sources:
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet -> https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b (redirect checked 2026-03-01)
   - HN news lane snapshot (https://news.ycombinator.com/news, checked 2026-03-01, top title: "Stop Burning Your Context Window: How We Cut MCP Token Usage by 98%")
@@ -17,6 +17,7 @@ sources:
   - HN news lane snapshot (https://news.ycombinator.com/news, checked 2026-03-01, top item id: 47202708, top title: "747s and Coding Agents")
   - HN show lane snapshot (https://news.ycombinator.com/show, checked 2026-03-01, top item id: 47201816, top title: "Show HN: DreamBOMB")
   - HN newest lane snapshot (https://news.ycombinator.com/newest, checked 2026-03-01, top item id: 47203831, top title: "A Transition Experiment by reaching back in internet history")
+  - HN newest lane snapshot (https://news.ycombinator.com/newest, checked 2026-03-01, top item id: 47203590, top title: "SpecLock: Lightweight specs that your AI coding tool can understand")
   - GitHub Docs: About protected branches (required status checks) (https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
   - GitHub Docs: Events that trigger workflows (`merge_group`) (https://docs.github.com/en/actions/reference/events-that-trigger-workflows#merge_group)
   - GitHub Docs: Troubleshooting required status checks (https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/troubleshooting-rules#troubleshooting-required-status-checks)
@@ -26,6 +27,9 @@ sources:
   - GitHub Docs: Troubleshooting rulesets (`required status checks` naming format / exact name / source) (https://docs.github.com/en/enterprise-server@3.19/repositories/configuring-branches-and-merges-in-your-repository/troubleshooting-rules)
   - GitHub Docs: Troubleshooting required workflows (new ruleset workflow won't run on existing open PRs unless branch updates/reopen) (https://docs.github.com/en/enterprise-cloud@latest/repositories/configuring-branches-and-merges-in-your-repository/troubleshooting-rules#troubleshooting-required-workflows)
   - GitHub Docs: Managing a merge queue (`Require all queue entries to pass required checks`, `Status check timeout` 5-60 mins) (https://docs.github.com/en/enterprise-cloud@latest/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue)
+  - GitHub Docs: Troubleshooting required workflows（仅支持 `pull_request`/`pull_request_target`/`merge_group`，并忽略 workflow 级 filters 与 `types`）(https://docs.github.com/en/enterprise-cloud@latest/repositories/configuring-branches-and-merges-in-your-repository/troubleshooting-rules#troubleshooting-required-workflows)
+  - GitHub Docs: Troubleshooting required workflows（由 `GITHUB_TOKEN` 触发的事件不会触发 ruleset workflow；`cancel-in-progress` 可能导致 required workflow 不按预期执行）(https://docs.github.com/en/enterprise-cloud@latest/repositories/configuring-branches-and-merges-in-your-repository/troubleshooting-rules#troubleshooting-required-workflows)
+  - GitHub Docs: Troubleshooting rulesets insights（ruleset insights 在 PR 合并或尝试合并后才记录）(https://docs.github.com/en/enterprise-cloud@latest/repositories/configuring-branches-and-merges-in-your-repository/troubleshooting-rules)
   - GitHub Docs: Skipping workflow runs (workflow-level skip leaves checks pending) (https://docs.github.com/en/actions/how-tos/manage-workflow-runs/skip-workflow-runs)
   - GitHub Docs: Syntax for issue forms (https://docs.github.com/en/enterprise-server@3.16/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms)
   - GitHub Docs: Creating issue templates for your repository (https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-issue-templates-for-your-repository)
@@ -170,3 +174,31 @@ rank: 3
 - `required status checks expected source github app`
 - `required checks must have completed successfully in last seven days`
 - `workflow skipped due to path filtering pending`
+
+## Cycle 115 同化增量：Ruleset Workflow 触发完整性（token 触发/并发取消/可观测滞后）
+
+目标：解决“required checks 已声明，但 required workflow 实际未执行或执行证据滞后”的隐藏失真。
+
+1. 触发面必须按 ruleset 实际语义建模，而不是按 workflow 文件假设
+   - GitHub 故障排查文档明确：ruleset required workflows 仅支持 `pull_request`、`pull_request_target`、`merge_group`，并忽略 workflow 级过滤器（包括 `types`）。
+   - 动作：`required_checks_runtime.json` 新增 `ruleset_supported_events[]` 与 `ruleset_filters_ignored=true`，如果运行面缺 `merge_group` 则阻断。
+2. `GITHUB_TOKEN` 触发链不能当作 required workflow 证据来源
+   - 同文档明确：由 `GITHUB_TOKEN` 触发的事件不会执行 ruleset workflows。
+   - 动作：`required_checks_identity_manifest.json` 新增 `trigger_actor_class`；当 `trigger_actor_class=github_token` 时，标记 `ruleset_workflow_executable=false` 并强制补跑。
+3. 并发取消策略会破坏 required workflow 稳定触发
+   - 文档明确：ruleset workflows 不应配置 `concurrency` 的 `cancel-in-progress`，否则在最新 commit 上可能不按预期运行。
+   - 动作：`required_checks_drift_report.json` 新增 `concurrency_cancel_in_progress_detected`；命中即 `drift_pass=false`。
+4. 规则洞察存在记录时滞，不能替代运行时快照
+   - 文档指出：ruleset insights 仅在 PR 合并/尝试合并后记录。
+   - 动作：保留 `baseline/runtime/drift` 三件套为主审计源，insights 仅作事后对账，不作为放行依据。
+5. 同化结论（L2）
+   - 新证据仍是同一元问题：`需求声明 checks` 与 `合并时真实 checks` 的一致性对账。
+   - 判定：同化到本 pattern，不新建 topic/pattern。
+
+## Cycle 115 检索锚点（L5）
+
+- `ruleset required workflow supports pull_request pull_request_target merge_group`
+- `ruleset workflow ignores workflow filters and types`
+- `events triggered by GITHUB_TOKEN do not run ruleset workflows`
+- `cancel-in-progress may cause required workflow not to run as expected`
+- `ruleset insights are only available after merge or merge attempt`

@@ -1,3 +1,71 @@
+# Morning Brief（Nightshift Cycle 115）
+
+> 更新时间：2026-03-01 05:31 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：压缩窗口 + 同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/product-delivery/required-checks-snapshot-closure-gate.md`（同化更新）
+2. `references/patterns/product-delivery/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 压缩执行（L4，cycle%5==0）
+
+- 已执行跨 topic 压缩扫描（merge > split）
+- 结果：`merged_count=0`，`assimilated_count=1`
+- 结论：本轮新增证据与 `required-checks-snapshot-closure-gate` 同一元问题，执行同化而非新建
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 团队以为 required workflow 会按 workflow 文件里的 `types/paths/branches` 触发，实际 ruleset 忽略这些过滤条件，导致 required checks 缺失
+  2. 自动化链路由 `GITHUB_TOKEN` 触发后，ruleset required workflow 不执行，但流水线仍被误判为“已触发”
+  3. 为节省 CI 时间启用 `concurrency.cancel-in-progress`，导致 required workflow 在最新提交上不按预期运行
+- 已有 pattern 覆盖检查：
+  - `references/patterns/product-delivery/required-checks-snapshot-closure-gate.md` 已覆盖同一元问题（声明 checks 与运行 checks 一致性）
+- 判定：**同化**（补强触发完整性与可观测时滞治理，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news/top`: item `47202708` — `747s and Coding Agents`
+  - `show`: item `47201816` — `Show HN: DreamBOMB`
+  - `newest`: item `47203590` — `SpecLock: Lightweight specs that your AI coding tool can understand`
+
+### 官方证据链（不确定点补链）
+
+- GitHub `troubleshooting required workflows`：ruleset required workflows 仅支持 `pull_request`/`pull_request_target`/`merge_group`，并忽略 workflow filters（含 `types`）
+- GitHub `troubleshooting required workflows`：由 `GITHUB_TOKEN` 触发的事件不会触发 ruleset workflows
+- GitHub `troubleshooting required workflows`：ruleset workflows 不应启用 `concurrency.cancel-in-progress`，否则可能不按预期运行
+- GitHub `troubleshooting rules`：ruleset insights 在 PR 合并或尝试合并后才记录，不能替代运行时放行证据
+
+### 检索测试（L5，写后执行）
+
+- Query A：`ruleset required workflow supports pull_request pull_request_target merge_group`
+  - 命中：`references/patterns/product-delivery/required-checks-snapshot-closure-gate.md:200`（1/1）
+  - 动作：`runtime` 快照新增 `ruleset_supported_events[]`
+- Query B：`events triggered by GITHUB_TOKEN do not run ruleset workflows`
+  - 命中：`references/patterns/product-delivery/required-checks-snapshot-closure-gate.md:202`（1/1）
+  - 动作：新增 `trigger_actor_class` 并对 `github_token` 触发链执行补跑阻断
+- Query C：`cancel-in-progress may cause required workflow not to run as expected`
+  - 命中：`references/patterns/product-delivery/required-checks-snapshot-closure-gate.md:203`（1/1）
+  - 动作：`concurrency_cancel_in_progress_detected=true` 直接置 `drift_pass=false`
+- Query D：`ruleset insights are only available after merge or merge attempt`
+  - 命中：`references/patterns/product-delivery/required-checks-snapshot-closure-gate.md:204`（1/1）
+  - 动作：insights 仅用于事后审计，不作为放行条件
+
+### 约束检查
+
+- per-topic <= 5：通过（product-delivery=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：通过（cycle=115 已执行压缩扫描）
+
+---
 # Morning Brief（Nightshift Cycle 114）
 
 > 更新时间：2026-03-01 14:05 UTC  
@@ -2975,61 +3043,6 @@
 1. 输出 `deploy_review_batch_policy.json` 与 `deploy_review_batch_report.json` 的 schema 与 lint 规则。
 2. 将 `shock_ratio` 接入 candidate->issue 晋级表单，禁止无冲击预算的提速请求。
 3. 为审批冲击场景补充“自动降并发 + 禁止旁路常态化”的回退模板。
-
-
----
-# Morning Brief（Nightshift Cycle 65）
-
-> 更新时间：2026-02-28 23:07 UTC  
-> 本轮目标：把“merge queue 提速后部署审批拥塞”从隐性症状升级为可度量门禁，形成独立审批吞吐预算模式。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/capacity-governance/deployment-reviewer-throughput-budget-gate.md`
-2. `references/patterns/capacity-governance/_index.md`
-3. `references/patterns/_master_index.md`
-4. `morning-brief.md`
-5. `.nightshift/state.json`
-
-### 激进动态策略执行（本轮）
-
-- `expand`：新增方向
-  - `部署审批批次节流治理（deployment review batch-throttle gate）`
-  - reason: GitHub review deployments 支持批量批准 waiting jobs，若无批次上限与冷却窗口，会放大证据同窗失真。
-- `split`：拆分方向
-  - from: `构建并发-审批容量压差治理（build-concurrency review-capacity pressure gate）`
-  - into: `队列侧构建吞吐预算治理（queue-side build-throughput budget gate）`
-  - into: `审批侧批次吞吐预算治理（review-side batch-throughput budget gate）`
-  - reason: 入队提速与出队审批是独立失效面，需要分别定义预算阈值与回退策略。
-- `merge`：合并方向
-  - from: `队列恢复清洁窗口治理（queue recovery clean-window gate）`
-  - from: `队列恢复回退冷却治理（queue recovery rollback-cooldown gate）`
-  - into: `队列恢复稳态窗口治理（queue recovery stability-window gate）`
-  - reason: 两方向均治理 fallback 恢复阶段稳定性，合并后可减少同构重复并统一验收口径。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已解析并重定向到 HN Popular Blogs OPML Gist（checked 2026-02-28）。
-- HN 三车道页面快照（2026-02-28）
-  - news: `Signal says it’s pulling feature users exploited to protect privacy`
-  - show: `Show HN: Better Auth – Authentication and authorization framework for TypeScript`
-  - newest: `Ask HN: How to think about and design LLM apps?`
-- 官方文档证据链（本轮重点）
-  - GitHub Deployments/Environments：required reviewers + wait timer（1 分钟到 30 天）
-  - GitHub Review Deployments：approve all waiting jobs / prevent self-reviews / bypass 边界
-  - GitHub Merge Queue + Actions `merge_group`：提速验证面需和发布审批面联动治理
-
-### 本轮结论
-
-- 部署审批吞吐必须独立建模；否则 merge queue 提速会把系统推入“验证绿灯、发布拥塞、旁路上升”的失控区。
-- 需要把 `approval_rate_per_hour`、`review_backlog_minutes_p95`、`pressure_ratio` 设为晋级前置 gate。
-- 批量审批必须绑定批次上限与冷却窗口，避免 waiting jobs 同窗批准导致审计漂移。
-
-### Cycle 66 预载任务
-
-1. 输出 `deploy_reviewer_capacity.json` 的 schema 与 lint 规则（含 batch_limit/cooldown）。
-2. 将 `pressure_ratio` 与 `review_backlog_minutes_p95` 接入 candidate->issue 晋级表单。
-3. 为审批超载场景补充“自动降并发 + 禁止旁路常态化”的回退策略模板。
 
 
 ---
