@@ -96,6 +96,7 @@
 | 3 | [queue-jump-throughput-loss-budget-gate](./queue-governance/queue-jump-throughput-loss-budget-gate.md) | queue-governance | 0.79 | OPML + HN(news/show/new + API) + GitHub Merge Queue + merge_group |
 | 3 | [queue-fallback-recovery-threshold-gate](./queue-governance/queue-fallback-recovery-threshold-gate.md) | queue-governance | 0.78 | OPML + HN(news/show/new + API) + GitHub Merge Queue + merge_group |
 | 3 | [queue-fallback-hysteresis-cooldown-gate](./queue-governance/queue-fallback-hysteresis-cooldown-gate.md) | queue-governance | 0.79 | OPML + HN(news/show/new + API) + GitHub Merge Queue + merge_group |
+| 3 | [required-check-pending-deadlock-gate](./ci-governance/required-check-pending-deadlock-gate.md) | ci-governance | 0.77 | OPML + HN(top/show/new) + GitHub Actions + Required Checks |
 | 3 | [24h-unattended-ai-loop](./autonomous-ops/24h-unattended-ai-loop.md) | autonomous-ops | 0.72 | OpenAI + HN |
 | 3 | [prd-to-issue-execution-loop](./product-delivery/prd-to-issue-execution-loop.md) | product-delivery | 0.70 | Harness + GitHub + HN |
 | 3 | [frontend-system-first](./fullstack-engineering/frontend-system-first.md) | fullstack-engineering | 0.68 | HN blogs + web.dev |
@@ -119,6 +120,7 @@
 | [release-governance/](./release-governance/) | 10 | 夜间产出与白天晋级的发布治理 |
 | [control-plane-governance/](./control-plane-governance/) | 5 | 社区信号与官方规则冲突的冻结、超时墓碑化、复验与复批控制面治理（含入口 schema 兼容漂移门禁） |
 | [capacity-governance/](./capacity-governance/) | 3 | merge queue 构建并发、部署审批吞吐与批量放行冲击吸收的耦合预算治理 |
+| [ci-governance/](./ci-governance/) | 1 | required checks 触发完整性与 Pending 僵局自愈治理 |
 | [recovery-governance/](./recovery-governance/) | 1 | 长时自治执行中的可恢复性治理 |
 | [context-governance/](./context-governance/) | 2 | 上下文预算、压缩交接与回放冻结治理 |
 | [state-governance/](./state-governance/) | 2 | 每 agent 状态隔离、回放信封与游标时效治理 |
@@ -138,7 +140,7 @@
 
 ## 统计
 
-- 总计：93 patterns
+- 总计：94 patterns
 - 平均 confidence：0.79
 - 高置信度（≥0.90）：5 patterns
-- 待验证（<0.80）：71 patterns
+- 待验证（<0.80）：72 patterns

@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-03-01T00:21:40Z",
-  "cycle": 78,
+  "updated_at": "2026-03-01T00:27:19Z",
+  "cycle": 79,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -29,7 +29,6 @@
     "冲突入口结构化必填门禁（conflict-intake required-form gate）",
     "冲突账本冻结门禁（contradiction-ledger freeze gate）",
     "冲突超时墓碑门禁（contradiction SLA tombstone gate）",
-    "分支规则禁绕约束治理（branch-rule no-bypass enforcement gate）",
     "取消-晋级时序治理（cancel-to-promote sequencing gate）",
     "外部身份租约回放治理（external identity lease replay gate）",
     "审批冲击吸收门禁治理（approval shock-absorber gate）",
@@ -77,43 +76,45 @@
     "高对比主题压测治理（high-contrast theme stress gate）",
     "Show-Top 共振冷却一体门禁（show-top resonance-cooldown unified gate）",
     "冲突恢复双相合同门禁（arbitration reverify-reapprove gate）",
-    "冲突字段兼容回放门禁（conflict schema compatibility replay gate）",
-    "冲突入口表单版本漂移门禁（conflict intake form-version drift gate）",
     "冲突仲裁包版本漂移门禁（conflict arbitration-packet version drift gate）",
     "Shownew->Top 时滞半衰期一体门禁（shownew-top lag-half-life unified gate）",
     "契约纪元同构回放门禁（contract-epoch parity replay gate）",
     "候选元问题摘要门禁（candidate meta-problem summary gate）",
     "候选证据链完整性门禁（candidate evidence-chain completeness gate）",
-    "契约破坏预算-消费者回放协同门禁（breaking-budget replay-coverage co-gate）"
+    "契约破坏预算-消费者回放协同门禁（breaking-budget replay-coverage co-gate）",
+    "必跑检查待决僵局治理（required-check pending deadlock governance）",
+    "路径过滤可观测治理（path-filter observability governance）",
+    "队列待决僵局自愈治理（queue pending deadlock self-heal gate）",
+    "冲突入口兼容回放门禁（conflict intake compatibility replay gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 78,
+    "last_cycle": 79,
     "actions": [
       {
         "type": "expand",
-        "added": "契约纪元同构回放门禁（contract-epoch parity replay gate）",
-        "reason": "补齐契约语义与回放样本纪元同构约束，避免 PR/队列双路径的隐式漂移。"
+        "added": "队列待决僵局自愈治理（queue pending deadlock self-heal gate）",
+        "reason": "required checks 在路径过滤与事件分裂下会长期 Pending，需要自动超时阻断与隔离自愈。"
       },
       {
         "type": "split",
         "from": [
-          "候选晋级表单治理（candidate intake + issue form gate）"
+          "分支规则禁绕约束治理（branch-rule no-bypass enforcement gate）"
         ],
         "into": [
-          "候选元问题摘要门禁（candidate meta-problem summary gate）",
-          "候选证据链完整性门禁（candidate evidence-chain completeness gate）"
+          "必跑检查待决僵局治理（required-check pending deadlock governance）",
+          "路径过滤可观测治理（path-filter observability governance）"
         ],
-        "reason": "表单结构完整性与证据链可回放性属于不同失效面，拆分后便于独立阻断与归因。"
+        "reason": "禁绕策略与触发完整性属于不同失效面，拆分后可独立门禁与归因。"
       },
       {
         "type": "merge",
         "from": [
-          "破坏性变更预算治理（breaking-change budget + semantic diff）",
-          "消费者回放覆盖治理（consumer replay coverage + provider verification）"
+          "冲突入口表单版本漂移门禁（conflict intake form-version drift gate）",
+          "冲突字段兼容回放门禁（conflict schema compatibility replay gate）"
         ],
-        "into": "契约破坏预算-消费者回放协同门禁（breaking-budget replay-coverage co-gate）",
-        "reason": "预算判定与回放覆盖本质同属契约晋级质量面，合并可避免双轨阈值漂移。"
+        "into": "冲突入口兼容回放门禁（conflict intake compatibility replay gate）",
+        "reason": "两方向实质都治理冲突入口 schema 兼容回放，合并可避免同构 pattern 重复。"
       }
     ]
   },
@@ -141,6 +142,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/contract-governance/contract-epoch-replay-gate.md",
-  "last_cycle_commit": "pending-cycle-78"
+  "last_pattern": "references/patterns/ci-governance/required-check-pending-deadlock-gate.md",
+  "last_cycle_commit": "pending-cycle-79"
 }
