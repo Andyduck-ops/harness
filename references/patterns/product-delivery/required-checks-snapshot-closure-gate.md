@@ -2,18 +2,24 @@
 name: required-checks-snapshot-closure-gate
 topic: product-delivery
 confidence: 0.79
-verified_count: 5
+verified_count: 6
 sources:
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet -> https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b (redirect checked 2026-03-01)
   - HN news lane snapshot (https://news.ycombinator.com/news, checked 2026-03-01, top title: "Stop Burning Your Context Window: How We Cut MCP Token Usage by 98%")
   - HN show lane snapshot (https://news.ycombinator.com/show, checked 2026-03-01, top title: "Show HN: Syncari – AI-driven Infrastructure as Code Automation")
   - HN newest lane snapshot (https://news.ycombinator.com/newest, checked 2026-03-01, top title: "A Proposal for Implementing Claude Code in the Browser")
+  - HN news lane snapshot (https://news.ycombinator.com/news, checked 2026-03-01, top title: "Huge pages and garbage collection in the Java virtual machine")
+  - HN show lane snapshot (https://news.ycombinator.com/show, checked 2026-03-01, top title: "Show HN: Open social network")
+  - HN newest lane snapshot (https://news.ycombinator.com/newest, checked 2026-03-01, top title: "DuckDB + LLMs to parse and process arbitrary CSV files")
   - GitHub Docs: About protected branches (required status checks) (https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
   - GitHub Docs: Events that trigger workflows (`merge_group`) (https://docs.github.com/en/actions/reference/events-that-trigger-workflows#merge_group)
   - GitHub Docs: Troubleshooting required status checks (https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/troubleshooting-rules#troubleshooting-required-status-checks)
   - GitHub Docs: About rulesets (https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)
   - GitHub Docs: Syntax for issue forms (https://docs.github.com/en/enterprise-server@3.16/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms)
+  - GitHub Docs: Creating issue templates for your repository (https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-issue-templates-for-your-repository)
   - GitHub Docs: Linking a pull request to an issue (https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue)
+  - GitHub GraphQL Reference: `MergeQueueParametersInput` (`groupingStrategy`) (https://docs.github.com/en/graphql/reference/input-objects#mergequeueparametersinput)
+  - GitHub Docs: About code scanning merge protection (https://docs.github.com/en/code-security/code-scanning/managing-your-code-scanning-configuration/set-code-scanning-merge-protection)
 merge_upgrade_of:
   - references/patterns/ci-governance/required-check-pending-deadlock-gate.md
   - references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md
@@ -76,3 +82,29 @@ rank: 3
 - PR 路径校验齐全，但 merge queue 缺失 `merge_group` 触发。
 - ruleset 或 branch protection 变更后继续复用旧的晋级结论。
 - Issue 中没有声明预期 checks，导致“事后解释型”门禁无法审计。
+
+## Cycle 103 同化增量：双平面门禁一致性（Status Checks vs Merge Protection）
+
+目标：把 `required checks` 平面与 `merge protection` 平面统一纳入闭环，避免“状态检查全绿但仍不可合并”造成的信息失真。
+
+1. 入口结构化增强（Issue Form Metadata）
+   - GitHub Issue Form 支持 `id`、`validations.required`，并可在模板层声明 `projects` 与 `type`。
+   - 动作：在 issue 入口补齐结构化元数据（`lineage_id`、`contract_epoch`、`required_checks_profile`），禁止仅靠正文自然语言传递。
+2. 回链语义增强（PR Closure Semantics）
+   - GitHub 文档明确 `Closes/Fixes` 触发关闭与默认分支语义强绑定，且手动关联上限为 10 个 issue。
+   - 动作：`promotion_closure.json` 必须记录“默认分支合并事件”与“关联方式（keyword/manual）”，防止仅凭 PR 文本判定闭环。
+3. merge queue 分组策略入账（Grouping Strategy as Contract）
+   - GitHub GraphQL `MergeQueueParametersInput` 暴露 `groupingStrategy`（`ALLGREEN` / `HEADGREEN`）。
+   - 动作：`required_checks_runtime.json` 新增 `merge_queue_grouping_strategy` 字段；若为 `HEADGREEN`，强制补跑 lineage 对应的 replay 样本，避免“组内头提交绿灯掩盖个体漂移”。
+4. 双平面门禁并联（Status Checks + Code Scanning Merge Protection）
+   - GitHub 文档明确：Code scanning merge protection 独立于 status checks，且不应用于 merge queue group。
+   - 动作：晋级门禁拆成两条并联：
+     - `required_checks_drift_pass`
+     - `code_scanning_merge_protection_pass`
+   - 任一失败均阻断，禁止用“checks 全绿”替代安全面结论。
+
+## Cycle 103 检索锚点（L5）
+
+- `issue form validations required projects type lineage_id`
+- `merge queue groupingStrategy ALLGREEN HEADGREEN`
+- `code scanning merge protection not status checks merge queue group`
