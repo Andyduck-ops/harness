@@ -7,13 +7,17 @@ sources:
   - OpenAI API Background mode docs（cancel idempotency / store=true requirement / stream cursor resume constraints）(2026-03-01)
   - OpenAI Agents SDK running config docs（nest_handoff_history default-off + handoff_history_mapper precedence）(2026-03-01)
   - OpenAI Agents SDK handoffs docs（handoff input_filter override and transcript shaping）(2026-03-01)
+  - OpenAI Agents SDK running agents docs（`conversation_locked` 自动重试/指数退避 + 回滚语义）(2026-03-01)
+  - OpenAI Agents SDK running agents docs（`call_model_input_filter` / `tool_error_formatter` 运行级输入净化）(2026-03-01)
+  - OpenAI Agents SDK running agents docs（`conversation_id` 在非 OpenAI provider 下可能造成 partial conversations）(2026-03-01)
   - Anthropic Claude Code hooks docs（Stop/SubagentStop decision control + stop_hook_active）(2026-03-01)
   - Anthropic Claude Code subagents docs（separate context window）(2026-03-01)
   - CrewAI Flows docs（@persist for state recovery）(2026-03-01)
   - CrewAI Event Listeners docs（event bus + BaseEventListener）(2026-03-01)
-  - HN news lane snapshot (https://news.ycombinator.com/news, checked 2026-03-01, top title: "How to write deterministic code and tests with AI (2025)")
-  - HN show lane snapshot (https://news.ycombinator.com/show, checked 2026-03-01, top title: "Show HN: llm-d: Kubernetes-Native Distributed Inference at Scale")
-  - HN newest lane snapshot (https://news.ycombinator.com/newest, checked 2026-03-01, top title: "How to write deterministic code and tests with AI (2025)")
+  - CrewAI Event Listeners docs（listener 必须在 crew kickoff 前实例化/导入）(2026-03-01)
+  - HN news lane snapshot (https://news.ycombinator.com/news, checked 2026-03-01, top title: "747s and Coding Agents")
+  - HN show lane snapshot (https://news.ycombinator.com/show, checked 2026-03-01, top title: "Show HN: DreamBOMB")
+  - HN newest lane snapshot (https://news.ycombinator.com/newest, checked 2026-03-01, sampled title: "SpecLock: Lightweight specs that your AI coding tool can understand")
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet -> https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b (redirect checked 2026-03-01)
   - control-plane-governance cluster (cycles 70-87)
   - ci-governance cluster (cycles 70-87)
@@ -56,6 +60,26 @@ rank: 3
    - CrewAI event bus + `BaseEventListener`、Flows `@persist` 说明冲突事件应先落盘再仲裁；
    - 控制面动作：未落盘事件不得进入“仲裁完成”状态，防止事后不可审计。
 
+## Cycle 114 同化增量：锁冲突回退 + 输入净化 + 监听器启动顺序
+
+目标：补齐“看似可恢复、实则偶发失效”的控制面灰区，降低多 agent 长跑中的隐性死锁与证据缺失。
+
+1. `conversation_locked` 不应当作普通失败直接重跑
+   - OpenAI Agents SDK running agents 文档明确：同一 `conversation_id` 并发请求会触发 `conversation_locked`，Runner 会按指数退避重试，超过最大重试后回滚会话状态；
+   - 控制面动作：把 `conversation_locked` 从 `retry_default` 升级为 `lock_conflict` 专用分支，记录 `attempt_count/backoff_ms/rollback_applied`，禁止无界重提。
+2. 跨 provider 复用 `conversation_id` 会产生“部分对话”
+   - 文档明确：`conversation_id` 主要用于 OpenAI provider；切到其他 provider 仍继续累积 session 可能导致 partial conversations；
+   - 控制面动作：冲突账本新增 `provider_family` 与 `conversation_mode`，跨 provider 切换时强制 `conversation_mode=off|split`，避免隐式链路断裂。
+3. 运行级输入净化必须前置
+   - OpenAI Agents SDK `call_model_input_filter` 与 `tool_error_formatter` 可在模型调用前裁剪输入、统一工具错误输出；
+   - 控制面动作：把这两个钩子纳入冲突入口必填策略，先做输入/错误表面规范化，再做冲突仲裁，减少误判噪声。
+4. 事件监听器若晚注册，会形成“无证据冲突”
+   - CrewAI Event Listeners 文档强调：监听器需在 `crew.kickoff` 前实例化或导入；
+   - 控制面动作：在启动阶段加入 `listener_bootstrap_check`，未通过则阻断进入自动仲裁。
+5. 强制信源侧证（同窗）
+   - HN top/show/new 与 OPML 锚点继续集中在“coding agents 生产化与可恢复执行”；
+   - 判定：同一元问题（控制面冲突治理），执行同化，不新建 pattern。
+
 ## 最小冲突账本字段（新增）
 
 | 字段 | 说明 | 阻断条件 |
@@ -78,6 +102,9 @@ rank: 3
 - background cancel idempotency + stream resumability constraints
 - nested handoff precedence + stop-hook recursion guard
 - event-bus evidence persistence before arbitration
+- lock-conflict retries + rollback-aware arbitration
+- provider-family session split + pre-model input sanitization
+- listener bootstrap gate before kickoff
 
 ## Cycle 108 检索锚点（L5）
 
@@ -88,6 +115,10 @@ rank: 3
 - `Stop SubagentStop stop_hook_active recursion`
 - `stop_hook_active SubagentStop recursion`
 - `event bus persist before arbitration`
+- `conversation_locked exponential backoff rollback`
+- `conversation_id non-openai provider partial conversation`
+- `call_model_input_filter tool_error_formatter conflict hygiene`
+- `CrewAI listener must be instantiated before kickoff`
 
 ## 检索测试
 
@@ -100,3 +131,15 @@ rank: 3
 - 查询：`handoff 历史压缩配置冲突怎么排查`
   - 命中：本 pattern
   - 动作：按 `input_filter > handoff_history_mapper > default` 复验并回放
+- 查询：`conversation_locked retries exponential backoff rollback`
+  - 命中：本 pattern
+  - 动作：执行 `lock_conflict branch + rollback_applied audit + bounded retry`
+- 查询：`conversation_id non-OpenAI provider partial conversations`
+  - 命中：本 pattern
+  - 动作：执行 `provider_family split + conversation_mode override`
+- 查询：`call_model_input_filter tool_error_formatter`
+  - 命中：本 pattern
+  - 动作：执行 `pre-model sanitization + normalized tool error surface`
+- 查询：`CrewAI listener instantiate before crew kickoff`
+  - 命中：本 pattern
+  - 动作：执行 `listener_bootstrap_check`，未注册则阻断自动仲裁

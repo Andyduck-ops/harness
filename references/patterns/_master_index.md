@@ -1,7 +1,7 @@
 # Pattern Master Index
 
 > 合并收敛版索引（Harvest Consolidation）。
-> 最后更新：2026-03-01（cycle 113）
+> 最后更新：2026-03-01（cycle 114）
 
 ## Top Patterns
 
@@ -32,7 +32,7 @@
 | 3 | [context-compaction-replay-governance](./runtime-governance/context-compaction-replay-governance.md) | runtime-governance | 0.82 | 17 |
 | 3 | [deployment-review-throughput-governance](./pipeline-governance/deployment-review-throughput-governance.md) | pipeline-governance | 0.78 | 6 |
 | 3 | [multi-lane-discovery-arbitration](./discovery-governance/multi-lane-discovery-arbitration.md) | discovery-governance | 0.78 | 10 |
-| 3 | [control-plane-conflict-governance](./runtime-governance/control-plane-conflict-governance.md) | runtime-governance | 0.80 | 13 |
+| 3 | [control-plane-conflict-governance](./runtime-governance/control-plane-conflict-governance.md) | runtime-governance | 0.81 | 17 |
 | 3 | [opml-hn-priority-watchlist](./autonomous-ops/opml-hn-priority-watchlist.md) | autonomous-ops | 0.77 | 6 |
 | 3 | [promotion-cooldown-latency-governance](./discovery-governance/promotion-cooldown-latency-governance.md) | discovery-governance | 0.77 | 6 |
 | 3 | [24h-unattended-ai-loop](./autonomous-ops/24h-unattended-ai-loop.md) | autonomous-ops | 0.72 | 10 |
