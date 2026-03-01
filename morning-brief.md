@@ -1,3 +1,62 @@
+# Morning Brief（Nightshift Cycle 74）
+
+> 更新时间：2026-02-28 23:59 UTC  
+> 本轮目标：把“冲突可检测”升级为“冲突超时可处置”，防止 freeze 长期悬挂后被绕过晋级。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/control-plane-governance/contradiction-sla-tombstone-gate.md`
+2. `references/patterns/control-plane-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `冲突超时墓碑门禁（contradiction SLA tombstone gate）`
+  - reason: 仅 freeze 不能解决长期未决冲突，超时必须 tombstone 化并阻断晋级。
+- `split`：拆分方向
+  - from: `Claim 生命周期冻结治理（claim lifecycle freeze governance）`
+  - into: `Claim 开放态超时治理（claim open-state timeout governance）`
+  - into: `Claim 墓碑再资格化治理（claim tombstone requalification governance）`
+  - reason: “超时处置”与“墓碑复活”是两种独立失效面，需要独立阈值和门禁。
+- `merge`：合并方向
+  - from: `证据冲突账本门禁（evidence contradiction ledger gate）`
+  - from: `冲突解决复批门禁（conflict-resolution reapproval gate）`
+  - into: `冲突仲裁双相合同治理（conflict arbitration dual-phase contract gate）`
+  - reason: 两方向都在约束冲突闭环，统一为 reverify + reapprove 双相合同可减少同构漂移。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML Gist（`e6d2bf860ccc367fe37ff953ba6de66b`，页面可见多次修订）。
+- HN 三车道页面采样（2026-02-28）
+  - news/top: `https://news.ycombinator.com/item?id=47200342`
+  - show: `https://news.ycombinator.com/item?id=47195123`
+  - newest: `https://news.ycombinator.com/item?id=47201816`
+- HN API 三车道头部采样（同窗）
+  - `topstories[0]=47196582`
+  - `showstories[0]=47195123`
+  - `newstories[0]=47201864`
+- 官方文档补链（2026-02-28）
+  - Required status checks（冲突 SLA 与 tombstone 清理可设为硬门禁）
+  - `merge_group`（队列场景需要独立检查，避免 PR/queue 校验分叉）
+  - Workflow artifacts（冲突账本与处置报告可审计回放）
+  - Issue forms（冲突字段可结构化必填）
+
+### 本轮结论
+
+- 冲突治理若只停在 `freeze`，会在 24h 无人模式中累积“悬挂冲突债务”，最终倒逼旁路放行。
+- 应把冲突状态机升级为 `open -> frozen -> tombstoned -> requalified`，并把超时 tombstone 纳入 required checks。
+- PR 和 merge queue 必须同构执行 `contradiction_sla_pass` 与 `contradiction_tombstone_clear`，否则存在队列绕过面。
+
+### Cycle 75 预载任务
+
+1. 输出 `contradiction_sla_report.json` 与 `tombstone_registry.json` 的 schema + lint。
+2. 将 `contradiction_sla_pass`、`contradiction_tombstone_clear` 接入 candidate->issue 与 merge queue 双门禁。
+3. 增加 `requalify_packet` 的最小证据要求（new_evidence_digest + new_lane_snapshot + reapprove_ticket）。
+
+---
 # Morning Brief（Nightshift Cycle 73）
 
 > 更新时间：2026-02-28 23:58 UTC  

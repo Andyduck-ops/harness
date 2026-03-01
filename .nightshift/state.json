@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-02-28T23:58:00Z",
-  "cycle": 73,
+  "updated_at": "2026-02-28T23:59:33Z",
+  "cycle": 74,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -78,38 +78,39 @@
     "Shownew 跨车道复采样时滞门禁（shownew-cross-lane-lag-reverify gate）",
     "Shownew->Top 时滞复采样一体门禁（shownew-top lag-reverify unified gate）",
     "冲突账本冻结门禁（contradiction-ledger freeze gate）",
-    "证据冲突账本门禁（evidence contradiction ledger gate）",
-    "冲突解决复批门禁（conflict-resolution reapproval gate）",
-    "Claim 生命周期冻结治理（claim lifecycle freeze governance）"
+    "冲突超时墓碑门禁（contradiction SLA tombstone gate）",
+    "Claim 开放态超时治理（claim open-state timeout governance）",
+    "Claim 墓碑再资格化治理（claim tombstone requalification governance）",
+    "冲突仲裁双相合同治理（conflict arbitration dual-phase contract gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 73,
+    "last_cycle": 74,
     "actions": [
       {
         "type": "expand",
-        "added": "冲突账本冻结门禁（contradiction-ledger freeze gate）",
-        "reason": "社区热度与官方规则冲突时，若不冻结晋级会导致错误决策跨 cycle 扩散。"
+        "added": "冲突超时墓碑门禁（contradiction SLA tombstone gate）",
+        "reason": "仅 freeze 不足以治理长期未决冲突，需要把超时冲突自动 tombstone，阻断被动旁路。"
       },
       {
         "type": "split",
         "from": [
-          "证据时效验签一体化（freshness + provenance ratification gate）"
+          "Claim 生命周期冻结治理（claim lifecycle freeze governance）"
         ],
         "into": [
-          "证据冲突账本门禁（evidence contradiction ledger gate）",
-          "冲突解决复批门禁（conflict-resolution reapproval gate）"
+          "Claim 开放态超时治理（claim open-state timeout governance）",
+          "Claim 墓碑再资格化治理（claim tombstone requalification governance）"
         ],
-        "reason": "冲突识别与冲突解锁批准是独立失效面，需要独立阈值与阻断动作。"
+        "reason": "冲突生命周期中的“超时处置”与“墓碑复活”是两个独立失效面，需要拆分阈值与执行合同。"
       },
       {
         "type": "merge",
         "from": [
-          "Claim-ID 强绑定治理（claim_id -> hn_item_id -> outline_key binding）",
-          "墓碑晋级冻结门禁（tombstone promotion freeze gate）"
+          "证据冲突账本门禁（evidence contradiction ledger gate）",
+          "冲突解决复批门禁（conflict-resolution reapproval gate）"
         ],
-        "into": "Claim 生命周期冻结治理（claim lifecycle freeze governance）",
-        "reason": "两者都在治理 claim 的可追溯与失效冻结，合并可统一治理口径并减少同构重复。"
+        "into": "冲突仲裁双相合同治理（conflict arbitration dual-phase contract gate）",
+        "reason": "两者都指向冲突仲裁闭环，合并后用统一的 reverify+reapprove 合同减少方向同构重复。"
       }
     ]
   },
@@ -137,6 +138,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/control-plane-governance/contradiction-ledger-freeze-gate.md",
-  "last_cycle_commit": "pending-cycle-73"
+  "last_pattern": "references/patterns/control-plane-governance/contradiction-sla-tombstone-gate.md",
+  "last_cycle_commit": "pending-cycle-74"
 }
