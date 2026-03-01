@@ -1,7 +1,7 @@
 # Pattern Master Index
 
 > 合并收敛版索引（Harvest Consolidation）。
-> 最后更新：2026-03-01（cycle 115）
+> 最后更新：2026-03-01（cycle 116）
 
 ## Top Patterns
 
@@ -29,7 +29,7 @@
 | 3 | [merge-queue-failure-surface-budget](./pipeline-governance/merge-queue-failure-surface-budget.md) | pipeline-governance | 0.79 | 8 |
 | 3 | [required-checks-snapshot-closure-gate](./product-delivery/required-checks-snapshot-closure-gate.md) | product-delivery | 0.79 | 51 |
 | 3 | [artifact-retention-reconciliation-governance](./evidence-governance/artifact-retention-reconciliation-governance.md) | evidence-governance | 0.78 | 10 |
-| 3 | [context-compaction-replay-governance](./runtime-governance/context-compaction-replay-governance.md) | runtime-governance | 0.82 | 17 |
+| 3 | [context-compaction-replay-governance](./runtime-governance/context-compaction-replay-governance.md) | runtime-governance | 0.83 | 26 |
 | 3 | [deployment-review-throughput-governance](./pipeline-governance/deployment-review-throughput-governance.md) | pipeline-governance | 0.78 | 6 |
 | 3 | [multi-lane-discovery-arbitration](./discovery-governance/multi-lane-discovery-arbitration.md) | discovery-governance | 0.78 | 10 |
 | 3 | [control-plane-conflict-governance](./runtime-governance/control-plane-conflict-governance.md) | runtime-governance | 0.81 | 17 |

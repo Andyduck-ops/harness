@@ -1,8 +1,8 @@
 ---
 name: context-compaction-replay-governance
 topic: runtime-governance
-confidence: 0.82
-verified_count: 15
+confidence: 0.83
+verified_count: 16
 sources:
   - OpenAI API Conversation state docs (`store=true`, conversation id continuity) (2026-03-01)
   - OpenAI API Conversation state docs（`previous_response_id` 与 `conversation` 互斥；response 对象默认 30 天保留）(2026-03-01)
@@ -14,9 +14,20 @@ sources:
   - OpenAI Agents SDK JS Handoffs docs (`inputFilter`, default full history forwarding) (2026-03-01)
   - OpenAI Agents SDK JS Running agents docs (`reasoningItemIdPolicy` strict-provider recovery) (2026-03-01)
   - Anthropic Claude Code SDK docs（context window management + auto-compacting strategies）(2026-03-01)
+  - Anthropic Claude Code Subagents docs（每次调用新实例 + 独立上下文窗口 + resume 继承完整历史）(2026-03-01)
+  - Anthropic Claude Code Subagents docs（subagent transcripts 独立持久化且不并入主对话 compaction）(2026-03-01)
+  - Anthropic Claude Code Hooks docs（`stop_hook_active` 防递归触发）(2026-03-01)
+  - OpenAI Agents SDK JS Running agents docs（`errorHandlers` 当前仅支持 `maxTurns`）(2026-03-01)
+  - OpenAI Agents SDK Python Handoffs docs（无显式 filter 时回落到 `default_handoff_input_filter`）(2026-03-01)
+  - CrewAI Event Listeners docs（监听器需在 `crew.py` / `flow.py` 导入以完成加载）(2026-03-01)
+  - CrewAI Flows docs（`@persist` 重启恢复）(2026-03-01)
+  - nlpodyssey/openai-agents-go README（SessionStore backends + `MaxTurnsExceededError`）(2026-03-01)
   - HN top/show/new snapshots (2026-03-01)
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (redirect verified 2026-03-01)
   - HN news（MCP server context-preservation field report）(2026-03-01)
+  - HN news lane snapshot (https://news.ycombinator.com/news, checked 2026-03-01, top item id: 47202730, title: "Ask HN: What kind of product should OpenAI release next?")
+  - HN show lane snapshot (https://news.ycombinator.com/show, checked 2026-03-01, top item id: 47201816, title: "Show HN: DreamBOMB")
+  - HN newest lane snapshot (https://news.ycombinator.com/newest, checked 2026-03-01, top item id: 47203831, title: "A Transition Experiment by reaching back in internet history")
   - context-governance cluster (cycles 45-80)
   - comprehension-governance cluster (cycles 45-80)
 last_verified: 2026-03-01
@@ -91,6 +102,33 @@ rank: 3
   - HN `news`（id=47224755）、`show`（id=47225679）、`newest`（id=47226766）与 OPML 锚点同窗验证：社区持续聚焦“上下文持久化与恢复一致性”。
   - 判定：仍为同一元问题，执行同化，不新建 pattern。
 
+## Cycle 116 同化增量（子代理转录隔离 + 压缩恢复双轨合同）
+
+- **子代理上下文隔离是压缩治理边界，不是实现细节**：
+  - Anthropic Subagents 文档明确子代理使用独立上下文窗口，且每次调用都会创建新实例；
+  - 结论：主会话 compaction 不能默认覆盖子代理记忆面，必须维护 `main_context` 与 `subagent_context` 双轨账本。
+- **resume 语义要求“转录连续”与“主会话连续”分开验收**：
+  - 同文档明确可 `resume` 到已有 subagent，并保留完整交互历史；
+  - 结论：恢复验收需并联两条 continuity check：`conversation continuity` + `subagent transcript continuity`。
+- **subagent transcripts 的持久化与主对话 compaction 解耦**：
+  - 文档明确 subagent transcripts 独立保存，不会被压缩进主对话；
+  - 结论：compact 后若只验证主会话标识链，会漏检“子代理历史失配”。
+- **运行时错误处理面在 SDK 间并不对称，需外层仲裁矩阵补齐**：
+  - OpenAI Agents JS 文档明确 `errorHandlers` 目前仅支持 `maxTurns`；
+  - 结论：非 `maxTurns` 异常（含交接/工具/外部 provider 失败）必须由外层控制面统一仲裁，不能假设 SDK 内建兜底。
+- **交接输入过滤的兜底链必须显式写入恢复合同**：
+  - OpenAI Python Handoffs 文档明确：当 handoff 未配置 `input_filter` 且 run 级 mapper 也缺失时，会回落到 `default_handoff_input_filter`；
+  - 结论：恢复回放必须记录“本轮实际命中的 filter 层级”，避免重放时输入面漂移。
+- **事件监听与状态持久化要在压缩前闭环**：
+  - CrewAI 文档要求监听器在 `crew.py/flow.py` 导入加载，Flows `@persist` 支持重启恢复；
+  - 结论：未加载监听器或未持久化状态时禁止进入自动 compaction，先补证据链再压缩。
+- **Go 执行面同样落在同一元问题**：
+  - `openai-agents-go` README 给出 `SessionStore`（memory/sqlite/redis）与 `MaxTurnsExceededError`；
+  - 结论：多语言栈都需要统一 `compaction + replay + budget` 合同，而不是按语言分裂 pattern。
+- **强制信源侧证（本轮）**：
+  - `https://t.co/dwAiIjlXet` 重定向到 HN Popular Blogs OPML Gist；
+  - HN `news/show/newest` 当窗条目继续聚焦 agent 生产化与长跑实践，支持本轮“同化不新建”判定。
+
 ## 合并来源
 
 - compaction recovery contract
@@ -133,3 +171,15 @@ rank: 3
 - 查询：`runCompaction store responseId stream waits compaction`
   - 命中：本 pattern
   - 动作：执行 `explicit compaction options + stream SLA dual-budget`
+- 查询：`subagent transcripts are persisted separately and not compacted into main conversation`
+  - 命中：本 pattern
+  - 动作：执行 `main/subagent dual continuity checks`，阻断单轨验收
+- 查询：`each subagent invocation creates a new instance with a fresh context window`
+  - 命中：本 pattern
+  - 动作：执行 `subagent scope rotation + explicit rehydration policy`
+- 查询：`errorHandlers currently only maxTurns`
+  - 命中：本 pattern + `control-plane-conflict-governance`
+  - 动作：执行 `non-maxTurns external arbitration matrix`
+- 查询：`if no input_filter and no handoff_history_mapper default_handoff_input_filter`
+  - 命中：本 pattern
+  - 动作：执行 `effective filter layer snapshot` 并写入 replay artifact

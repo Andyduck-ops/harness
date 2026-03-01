@@ -1,3 +1,68 @@
+# Morning Brief（Nightshift Cycle 116）
+
+> 更新时间：2026-03-01 05:42 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/context-compaction-replay-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 主会话 compact 后，子代理历史未同步验证，导致“主会话看似连续、子代理实际上断链”
+  2. 多 agent 长跑里恢复分支误以为 SDK 会统一兜底，实际仅 `maxTurns` 有内建 handler
+  3. handoff 未显式配置过滤器时，恢复回放输入面漂移且难追责
+- 覆盖检查：
+  - 归属同一元问题：`context compaction -> replay continuity governance`
+  - 判定：**同化**到 `context-compaction-replay-governance`（不新建）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news/top`: item `47202730` — `Ask HN: What kind of product should OpenAI release next?`
+  - `show`: item `47201816` — `Show HN: DreamBOMB`
+  - `newest`: item `47203831` — `A Transition Experiment by reaching back in internet history`
+
+### 官方证据链（本轮新增）
+
+- OpenAI Agents SDK JS Running：`errorHandlers` 当前仅支持 `maxTurns`
+- OpenAI Agents SDK Python Handoffs：无显式 `input_filter` 且无 run-level mapper 时回落 `default_handoff_input_filter`
+- Anthropic Claude Code Subagents：每次调用新实例/独立上下文；支持 `resume`，subagent transcripts 独立持久化且不并入主对话 compaction
+- Anthropic Claude Code Hooks：`stop_hook_active` 防递归保护
+- CrewAI Event Listeners：监听器需在 `crew.py` / `flow.py` 导入加载
+- CrewAI Flows：`@persist` 支持重启恢复
+- openai-agents-go README：`SessionStore`（memory/sqlite/redis）与 `MaxTurnsExceededError`
+
+### 检索测试（L5，写后执行）
+
+- Query A：`subagent transcripts are persisted separately and not compacted into main conversation`
+  - 命中：`references/patterns/runtime-governance/context-compaction-replay-governance.md:174`
+  - 动作：启用 `main/subagent dual continuity checks`
+- Query B：`each subagent invocation creates a new instance with a fresh context window`
+  - 命中：`references/patterns/runtime-governance/context-compaction-replay-governance.md:177`
+  - 动作：启用 `subagent scope rotation + explicit rehydration policy`
+- Query C：`errorHandlers currently only maxTurns`
+  - 命中：`references/patterns/runtime-governance/context-compaction-replay-governance.md:180`
+  - 动作：非 `maxTurns` 异常走外层仲裁矩阵
+- Query D：`if no input_filter and no handoff_history_mapper default_handoff_input_filter`
+  - 命中：`references/patterns/runtime-governance/context-compaction-replay-governance.md:183`
+  - 动作：落盘 `effective filter layer snapshot`
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：通过（cycle=116 非压缩窗口，最近压缩已在 cycle=115 执行）
+
+---
 # Morning Brief（Nightshift Cycle 115）
 
 > 更新时间：2026-03-01 05:31 UTC  
@@ -2933,116 +2998,6 @@
 1. 把 `show_executability_preflight.json` 变成 issue 表单必填工件。
 2. 对 `newest` 的 Show 候选增加冷却复采样阈值。
 3. 给 `merge_group` 增补 Show 证据门禁检查模板。
-
-
----
-# Morning Brief（Nightshift Cycle 67）
-
-> 更新时间：2026-02-28 23:17 UTC  
-> 本轮目标：把“代码评审”和“部署审批”从形式双门禁升级为“身份独立性门禁”，阻断同一批评审人跨阶段重复放行。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/release-governance/cross-stage-reviewer-diversity-gate.md`
-2. `references/patterns/release-governance/_index.md`
-3. `references/patterns/_master_index.md`
-4. `morning-brief.md`
-5. `.nightshift/state.json`
-
-### 激进动态策略执行（本轮）
-
-- `expand`：新增方向
-  - `跨阶段评审身份多样性门禁治理（cross-stage reviewer diversity gate）`
-  - reason: GitHub Deployments 在 required reviewers 场景中仅需 1 人可批准，且支持批量 `Start all waiting jobs`，需要补齐跨阶段身份独立性约束。
-- `split`：拆分方向
-  - from: `审批-旁路双轨时效同构治理（approval-bypass dual-track freshness parity gate）`
-  - into: `跨阶段评审身份重叠预算治理（cross-stage reviewer overlap budget gate）`
-  - into: `部署批量审批隔离审计治理（deployment batch-approval quarantine gate）`
-  - reason: 身份重叠与旁路隔离是两个独立失效面，拆分后可分别绑定阈值和追责字段。
-- `merge`：合并方向
-  - from: `审批批次上限治理（approval batch-size cap gate）`
-  - from: `审批冷却窗口治理（approval cooldown window gate）`
-  - into: `审批波次配额治理（approval wave-quota gate）`
-  - reason: 两者同属批量审批波次治理，合并可减少同构重复并统一策略落点。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已解析并重定向到 HN Popular Blogs OPML Gist（checked 2026-02-28）。
-- HN 三车道快照（2026-02-28）
-  - news: item `47213443` — `Show HN: ShipAny - Open source engine for customer support teams`
-  - show: item `47197088` — `Show HN: PydanticAI-Bandit, game benchmark for coding agents`
-  - newest: item `47200919` — `Show HN: A2A Coder`（同窗抓取）
-- 官方文档证据链（本轮重点）
-  - GitHub Review Deployments：required reviewers 只需一人可批准；支持 `Start all waiting jobs`；支持 `Prevent self-reviews`
-  - GitHub Rulesets：支持 required approvals、dismiss stale approvals、approval from someone other than last pusher
-  - GitHub Merge Queue + Actions `merge_group`：并发/跳队会改变验证批次，晋级前需同构重验
-
-### 本轮结论
-
-- “双阶段审批”不等于“独立审查”；当评审身份重叠过高，双门禁会退化为单点判断。
-- 需要把 `overlap_ratio`、`distinct_deploy_reviewers` 与批量批准动作绑定为硬门禁。
-- 当 `high_overlap + batch_approve + bypass` 同时出现，应自动降级到 quarantine 波次而不是继续提速。
-
-### Cycle 68 预载任务
-
-1. 输出 `reviewer_diversity_policy.json` 与 `promotion_identity_report.json` 的 schema + lint。
-2. 将 `overlap_ratio` 接入 candidate->issue 晋级表单，缺失即阻断。
-3. 给 `Start all waiting jobs` 增加最小独立审批人数和 incident 绑定模板。
-
-
----
-# Morning Brief（Nightshift Cycle 66）
-
-> 更新时间：2026-02-28 23:11 UTC  
-> 本轮目标：将 deployment 批量审批从“应急提速手段”升级为“冲击吸收门禁”，避免 `approve all waiting jobs` 造成证据跨窗放行。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/capacity-governance/approval-batch-shock-absorber-gate.md`
-2. `references/patterns/capacity-governance/_index.md`
-3. `references/patterns/_master_index.md`
-4. `morning-brief.md`
-5. `.nightshift/state.json`
-
-### 激进动态策略执行（本轮）
-
-- `expand`：新增方向
-  - `审批冲击吸收门禁治理（approval shock-absorber gate）`
-  - reason: GitHub review deployments 支持 `approve and deploy all waiting jobs`，需要将批量放行显式转为可度量门禁。
-- `split`：拆分方向
-  - from: `部署审批批次节流治理（deployment review batch-throttle gate）`
-  - into: `审批批次上限治理（approval batch-size cap gate）`
-  - into: `审批冷却窗口治理（approval cooldown window gate）`
-  - reason: 批次规模与批次间隔是独立失效面，需分别绑定阈值和触发器。
-- `merge`：合并方向
-  - from: `队列侧构建吞吐预算治理（queue-side build-throughput budget gate）`
-  - from: `审批侧批次吞吐预算治理（review-side batch-throughput budget gate）`
-  - into: `队列-审批吞吐同频治理（queue-review throughput parity gate）`
-  - reason: 二者共同约束“入队速率 > 出队审批速率”的系统压差，合并后避免同构重复。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已解析并重定向到 HN Popular Blogs OPML Gist（checked 2026-02-28）。
-- HN API 三车道快照（2026-02-28）
-  - top: item `47207437` — `Show HN: BuouUI - Open-source UI component library for Svelte and Tailwind`
-  - show: item `47208381` — `Show HN: Plane – Open-source JIRA and Linear alternative`
-  - new: item `47209514` — `A bare metal solution for AI agent deployment`
-- 官方文档证据链（本轮重点）
-  - GitHub Merge Queue：`build concurrency`、`jump` 会重启 in-progress checks。
-  - GitHub Actions `merge_group`：required checks 需覆盖 merge queue 场景。
-  - GitHub Review Deployments：支持“approve and deploy all waiting jobs”、阻止自审与旁路。
-
-### 本轮结论
-
-- 批量审批不是“免费吞吐扩容”，而是一个会放大证据跨窗风险的冲击源。
-- 需要把 `batch_limit`、`cooldown_minutes`、`shock_ratio` 设为晋级前置 gate，并把超载反馈回 queue 并发。
-- `approve all waiting jobs` 必须和 freshness reverify 成对出现，否则会把旧证据批量带过晋级线。
-
-### Cycle 67 预载任务
-
-1. 输出 `deploy_review_batch_policy.json` 与 `deploy_review_batch_report.json` 的 schema 与 lint 规则。
-2. 将 `shock_ratio` 接入 candidate->issue 晋级表单，禁止无冲击预算的提速请求。
-3. 为审批冲击场景补充“自动降并发 + 禁止旁路常态化”的回退模板。
 
 
 ---
