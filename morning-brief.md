@@ -1,3 +1,67 @@
+# Morning Brief（Nightshift Cycle 92）
+
+> 更新时间：2026-03-01 03:11 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/fullstack-engineering/contract-replay-verification-gate.md`（同化更新）
+2. `references/patterns/fullstack-engineering/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. AI 代码样例测试全绿但边界组合失败
+  2. 断言过弱导致缺陷存活（测试未失效）
+  3. 回放流量中状态序列通过但业务不变量破坏
+- 已有 pattern 覆盖检查：
+  - `fullstack-engineering/contract-replay-verification-gate.md` 已覆盖同一元问题（验证门禁缺失）
+- 判定：**同化**（新增 mutation/property/invariant 变体，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news`: `Tariffs as arbitrary and chaotic taxes that happen to be paid by importers`
+  - `show`: `Show HN: SQLNoir: An Interactive Murder Mystery` 
+  - `newest`: `Iterative Methods for the Solution of Linear Systems`
+
+### 官方证据链（不确定点补链）
+
+- OpenAI Agents SDK Sessions：`MemorySession` 与 `OpenAIConversationsSession` 的环境分层
+- OpenAI Agents SDK Handoffs：`handoff()` 的 `inputType`、`inputFilter`、`onHandoff`
+- OpenAI Background mode：`background=true` + polling/cancel
+- OpenAI Conversation state：`conversation` 持久标识 + `previous_response_id`
+- Anthropic Tool Use：`stop_reason=tool_use` 工具回传闭环
+- CrewAI Flows：`@persist` 状态持久化
+- Hypothesis / fast-check：property-based 生成与 shrinking
+- Stryker / PIT / mutmut：mutation score 作为 CI 阻断阈值
+
+### 检索测试（L5，写后执行）
+
+- Query A：`mutation score threshold break contract replay`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`
+  - 动作：`mutation threshold gate + contract/replay 联合阻断`
+- Query B：`property-based shrinking seed replay gate`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`
+  - 动作：`property 失败最小化 + seed 回灌复现`
+- Query C：`invariant replay 金额守恒 幂等键`
+  - 命中：`references/patterns/fullstack-engineering/contract-replay-verification-gate.md`
+  - 动作：`回放不变量门禁 + 业务语义守护`
+
+### 约束检查
+
+- per-topic <= 5：通过（fullstack-engineering=4）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：本轮 cycle=92（下一个强制压缩点=95）
+
+---
+
 # Morning Brief（Nightshift Cycle 91）
 
 > 更新时间：2026-03-01 03:10 UTC  
@@ -2686,61 +2750,6 @@
 1. 引入 `scope_hash` 与 token 角色映射，区分“字段为空”与“字段不可见”。
 2. 将 `visibility_unknown` 直接接到 required checks 的 fail-fast 入口。
 3. 为 `merge-queue non-failing fallback` 增加 TTL，避免长期保守模式形成吞吐债务。
-
----
-
----
-# Morning Brief（Nightshift Cycle 43）
-
-> 更新时间：2026-02-28 21:15 UTC  
-> 本轮目标：把 ruleset bypass 名单漂移从“配置观察”升级为“晋级阻断 + 队列重验”的硬门禁，避免静默放行。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/release-governance/ruleset-bypass-list-drift-gate.md`
-2. `references/patterns/release-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 43）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `split`：拆分方向 `规则集旁路名单漂移治理（ruleset bypass-list drift gate）` 为：
-  - `旁路名单主体漂移治理（bypass actor-set drift gate）`
-  - `旁路模式升级漂移治理（bypass_mode escalation drift gate）`
-  - reason: 原方向同时覆盖“主体集合变化”和“绕过模式升级”，执行粒度过粗，难以绑定独立 gate。
-- `merge`：合并方向
-  - from: `队列容错模式验签（tail-green mode attestation gate）`
-  - from: `队列尾绿掩蔽预算治理（tail-green masking budget gate）`
-  - into: `队列尾绿容错预算联动治理（tail-green attestation-budget parity gate）`
-  - reason: 两方向都治理 tail-green 的可接受边界，拆开会重复记录同一失败面。
-- `expand`：新增方向 `规则集导出盲区补偿治理（ruleset export blind-spot compensation gate）`
-  - 触发依据：GitHub ruleset history 导出不包含 bypass actor 细节，需要引入 API 快照补偿观测盲区。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向到 HN Popular Blogs OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`，checked 2026-02-28T21:15:38Z）。
-- HN `top/show/new`：已采样并写入证据链（2026-02-28）：
-  - top (`news`): `Modern-day Oracles or Bullshit Machines?`
-  - show (`show`): `Show HN: Decided to play god and create my own agent civilisation`
-  - new (`newest`): `Show HN: AIQuotaBar – Menubar app for OpenAI API usage tracking`
-- 官方文档证据链（本轮重点）
-  - GitHub rulesets（bypass list + bypass_mode）
-  - GitHub ruleset history（导出 JSON 不含 bypass actor 细节）
-  - GitHub Rules API（可编程抓取规则快照）
-  - GitHub merge queue + `merge_group`（队列阶段独立校验面）
-
-### 本轮结论
-
-- 旁路名单治理不能只靠规则导出，必须做“API 快照 + 漂移 diff + 晋级阻断”闭环。
-- bypass actor 集合变化与 bypass_mode 升级必须拆分审计；任一异常都应触发队列重验。
-- 没有 `ruleset_bypass_drift_pass` 的晋级决策，默认视为不可审计放行。
-
-### Cycle 44 预载任务
-
-1. 增加 `ruleset_bypass_snapshot.json` 的权限探针（检测低权限 token 空返回误判）。
-2. 将 `ruleset_bypass_diff.json` 接入 required checks 与 merge queue 出队门禁。
-3. 为 `bypass_mode=always` 增加 TTL 和自动回收策略。
 
 ---
 

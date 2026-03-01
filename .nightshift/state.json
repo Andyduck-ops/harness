@@ -1,7 +1,7 @@
 {
   "version": "1.1",
-  "updated_at": "2026-03-01T03:10:00Z",
-  "cycle": 91,
+  "updated_at": "2026-03-01T03:14:09Z",
+  "cycle": 92,
   "status": "paused",
   "mode": "CONSTRAINED_EXPANSION",
   "active_directions": [
@@ -14,7 +14,7 @@
   "dormant_directions": [],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 91,
+    "last_cycle": 92,
     "actions": [
       {
         "type": "compress",
@@ -37,6 +37,12 @@
         "reason": "cycle 91：将 Agent SDK 落地与长跑稳定性新证据同化到 runtime-governance 既有 canonical pattern（不新建）",
         "updated_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
         "new_patterns": 0
+      },
+      {
+        "type": "assimilate",
+        "reason": "cycle 92：将 AI 代码有效测试的新证据（property/mutation/invariant）同化到 fullstack 验证门禁 canonical pattern（不新建）",
+        "updated_pattern": "references/patterns/fullstack-engineering/contract-replay-verification-gate.md",
+        "new_patterns": 0
       }
     ]
   },
@@ -49,8 +55,8 @@
     "https://platform.openai.com/docs/guides/conversation-state"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
-  "last_cycle_commit": "pending-cycle-91",
+  "last_pattern": "references/patterns/fullstack-engineering/contract-replay-verification-gate.md",
+  "last_cycle_commit": "pending-cycle-92",
   "constraints": {
     "per_topic_max_patterns": 5,
     "active_direction_max": 15,

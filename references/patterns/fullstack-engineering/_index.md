@@ -1,6 +1,6 @@
 # fullstack-engineering
 
-> 前后端契约 + 设计系统执行
+> 前后端契约 + 设计系统执行（cycle 92 同化：mutation/property/invariant 有效性闸门）
 
 - [backend-contract-first](./backend-contract-first.md)
 - [contract-replay-verification-gate](./contract-replay-verification-gate.md)
