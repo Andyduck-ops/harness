@@ -2,7 +2,7 @@
 name: agent-scope-identity-memory-governance
 topic: runtime-governance
 confidence: 0.87
-verified_count: 25
+verified_count: 26
 sources:
   - OpenAI Agent Platform docs (Python/TypeScript/Go support) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (2026-03-01)
@@ -43,10 +43,14 @@ sources:
   - OpenAI Agents SDK JS running agents docs（errorHandlers.maxTurnsExceeded fallback strategy）(2026-03-01)
   - OpenAI Agents SDK JS guardrails docs（input guardrails 仅在工作流首个 agent 生效 + `run_in_parallel` 并发副作用边界）(2026-03-01)
   - OpenAI Agents SDK JS handoffs API ref（`strict_json_schema` 建议 + `input_items/new_items` 语义 + streaming 可见性限制）(2026-03-01)
+  - OpenAI Agents SDK JS MCP docs（`connectMcpServers` 连接失败处理 + `mcp_server_error` 事件 + `invalidateToolList` 缓存失效）(2026-03-01)
+  - Anthropic Claude Code MCP docs（`stdio/sse/http` 传输 + 启动/工具超时 + `/mcp` 状态检查）(2026-03-01)
+  - Anthropic MCP connector docs（默认 `MAX_MCP_OUTPUT_TOKENS=25000` + 超限文件附件 + compatibility mode 限制）(2026-03-01)
   - HN top/show/new snapshots (2026-03-01)
   - HN top item: Deterministic Programming with LLMs (using Jujutsu)（id=47203405, 2026-03-01）
   - HN newest item: Show HN: Memctl: Persistent memory and context management for AI coding agents（id=47205594, 2026-03-01）
   - HN lanes snapshot（news: id=47202708 "Microgpt", show: id=47201816 "Xmloxide", newest sampled: id=47203804 "Welcome to the future of software development"）(2026-03-01)
+  - HN lanes snapshot（news: id=47206745 "MCP server that reduces Claude Code context consumption by 98%", show: id=47203334 "Memctl v0.1", newest: id=47207396 "SpecLock: AI Constraint Engine..."）(2026-03-01)
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (redirect verified 2026-03-01)
 last_verified: 2026-03-01
 rank: 3
@@ -196,6 +200,20 @@ Demo 能跑不等于 production 能跑。
   - 治理动作：生产审计必须补充非流式落盘日志，避免只看实时流导致审计缺失。
 - **强制信源侧证（本轮）**：`https://t.co/dwAiIjlXet` 重定向仍指向 HN Popular Blogs OPML；HN `news/show/newest` 当窗继续高频出现 agent 工程实践议题。
 
+## Cycle 118 同化增量（MCP 通信面治理：连接恢复 + 输出预算 + 兼容边界）
+
+- **MCP 连接失败要可降级，不可全局连坐失败**：OpenAI Agents SDK JS MCP 文档指出，手动调用 `connectMcpServers` 时可捕获部分服务器连接失败，并通过 `mcp_server_error` 事件暴露错误；
+  - 治理动作：把每个 MCP server 视为独立依赖单元，失败时降级到剩余可用工具并落盘 `server_health`。
+- **工具清单缓存会引入“旧 schema 漂移”**：同文档给出 `cacheToolsList` 与 `invalidateToolList`；
+  - 治理动作：发布/配置变更后强制 `invalidateToolList`，避免 handoff 仍按旧工具签名执行。
+- **MCP 输出必须预算化，超限要走附件通道**：Anthropic MCP connector 文档给出默认 `MAX_MCP_OUTPUT_TOKENS=25000`，超限输出会写入文件附件；
+  - 治理动作：对高吞吐工具启用“token 预算 + 附件化回传”双轨，避免长跑上下文被单次工具输出挤爆。
+- **传输与超时边界要显式配置**：Anthropic Claude Code MCP 文档明确支持 `stdio/sse/http`，并可设启动超时/工具超时，且可用 `/mcp` 查看状态；
+  - 治理动作：把 transport、startup timeout、tool timeout 作为运行合同字段纳入回放证据。
+- **Compatibility mode 会改变 MCP 可用性面**：Anthropic 文档说明 compatibility mode 默认不支持 MCP tools，需 `--experimental` 才可启用；
+  - 治理动作：生产环境禁止“兼容模式 + MCP”混搭发布，发布前执行 capabilities snapshot 对账。
+- **强制信源侧证（本轮）**：`https://t.co/dwAiIjlXet` 仍重定向至 HN Popular Blogs OPML；HN `news/show/newest` 本轮均出现 MCP/agent memory 相关实践条目。
+
 ## 合并来源
 
 - agent scope drift severity budget
@@ -211,6 +229,7 @@ Demo 能跑不等于 production 能跑。
 - OpenAI JS Sessions（`setMaxTurnsPerTurn`/`setSessionLimit`/`sessionInputCallback`）与 JS running agents（`errorHandlers.maxTurnsExceeded`）补强了“记忆预算闸门 + 预算耗尽恢复”执行合同
 - HN `top/newest`（Deterministic Programming with LLMs / Memctl）作为“可预测执行 + 持久记忆”社区热区侧证
 - OpenAI JS guardrails（首 agent 输入护栏触发面 + 并行副作用边界）与 JS handoffs API（strict schema + input/history 双轨 + streaming 可见性限制）补强了“通信合同可验证 + 审计可回放”执行合同
+- OpenAI JS MCP（部分连接失败可观测 + 工具清单缓存失效）与 Anthropic MCP（输出 token 预算 + transport/compatibility 边界）补强了“连接健康 + 输出预算 + 能力对账”执行合同
 
 ## 检索测试
 
@@ -289,3 +308,12 @@ Demo 能跑不等于 production 能跑。
 - 查询：`input_items are not sent to stream handlers in streaming mode`  
   命中：本 pattern  
   动作：收敛到 `stream + durable dual-channel audit`
+- 查询：`connectMcpServers mcp_server_error partial failure`  
+  命中：本 pattern  
+  动作：收敛到 `per-server degradation + health ledger`
+- 查询：`invalidateToolList cacheToolsList stale MCP tool schema`  
+  命中：本 pattern  
+  动作：收敛到 `post-deploy tool-schema cache invalidation`
+- 查询：`MAX_MCP_OUTPUT_TOKENS 25000 connector output file attachment`  
+  命中：本 pattern  
+  动作：收敛到 `token-budgeted MCP output + attachment fallback`

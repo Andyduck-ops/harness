@@ -1,3 +1,63 @@
+# Morning Brief（Nightshift Cycle 118）
+
+> 更新时间：2026-03-01 05:52 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 多 MCP server 连接时某一节点失败，整个 agent run 被错误地视为全量失败
+  2. 工具 schema 已更新但本地/会话仍命中缓存，handoff 在旧签名上执行导致隐式通信漂移
+  3. MCP 工具输出过长把上下文窗口挤爆，长跑 session 退化加速
+- 覆盖检查：
+  - 归属同一元问题：`scope + communication + recovery` 三联治理
+  - 判定：**同化**到 `agent-scope-identity-memory-governance`（不新建）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news/top`: item `47206745` — `Show HN: MCP server that reduces Claude Code context consumption by 98%`
+  - `show`: item `47203334` — `Show HN: Memctl v0.1, open source shared memory for AI coding agents`
+  - `newest`: item `47207396` — `SpecLock: AI Constraint Engine for Product Requirements`
+
+### 官方证据链（本轮新增）
+
+- OpenAI Agents SDK JS MCP：`connectMcpServers` 可对部分连接失败做显式错误处理，并触发 `mcp_server_error`
+- OpenAI Agents SDK JS MCP：`cacheToolsList` + `invalidateToolList` 定义了工具清单缓存失效路径
+- Anthropic MCP connector：默认 `MAX_MCP_OUTPUT_TOKENS=25000`，超限输出转文件附件；可通过环境变量调节
+- Anthropic Claude Code MCP：支持 `stdio/sse/http`，并提供启动/工具超时与 `/mcp` 状态检查
+- Anthropic Claude Code MCP：compatibility mode 默认不支持 MCP tools（需 `--experimental`）
+
+### 检索测试（L5，写后执行）
+
+- Query A：`connectMcpServers mcp_server_error partial failure`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:311`
+  - 动作：强制 `per-server degradation + health ledger`
+- Query B：`invalidateToolList cacheToolsList stale MCP tool schema`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:314`
+  - 动作：强制 `post-deploy tool-schema cache invalidation`
+- Query C：`MAX_MCP_OUTPUT_TOKENS 25000 output file attachment`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:317`
+  - 动作：强制 `token-budgeted MCP output + attachment fallback`
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：通过（cycle=118 非压缩窗口，最近压缩为 cycle=115）
+
+---
 # Morning Brief（Nightshift Cycle 117）
 
 > 更新时间：2026-03-01 13:58 UTC  
