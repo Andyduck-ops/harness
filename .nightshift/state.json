@@ -1,7 +1,7 @@
 {
   "version": "1.1",
-  "updated_at": "2026-03-01T06:32:09Z",
-  "cycle": 123,
+  "updated_at": "2026-03-01T06:44:00Z",
+  "cycle": 124,
   "status": "idle",
   "mode": "CONSTRAINED_EXPANSION",
   "active_directions": [
@@ -14,7 +14,7 @@
   "dormant_directions": [],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 123,
+    "last_cycle": 124,
     "actions": [
       {
         "type": "compress",
@@ -265,6 +265,12 @@
         "reason": "cycle 123：将多 agent 通信模式分层新证据（handoff 默认历史透传、asTool/as_tool 受控委托、CrewAI typed task outputs）同化到 runtime-governance canonical pattern（不新建）",
         "updated_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
         "new_patterns": 0
+      },
+      {
+        "type": "assimilate",
+        "reason": "cycle 124：将类型化交接产物与追踪最小暴露新证据（OpenAI JS/Go outputType、RunConfig traceIncludeSensitiveData、CrewAI delegation defaults）同化到 runtime-governance canonical pattern（不新建）",
+        "updated_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
+        "new_patterns": 0
       }
     ]
   },
@@ -278,7 +284,7 @@
   ],
   "last_brief": "morning-brief.md",
   "last_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
-  "last_cycle_commit": "pending-cycle-123",
+  "last_cycle_commit": "pending-cycle-124",
   "constraints": {
     "per_topic_max_patterns": 5,
     "active_direction_max": 15,

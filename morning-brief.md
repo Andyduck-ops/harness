@@ -1,3 +1,69 @@
+# Morning Brief（Nightshift Cycle 124）
+
+> 更新时间：2026-03-01 06:43 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2/L7）
+
+- 新发现可解决的 3 个场景：
+  1. 多 agent 交接后中间产物是自由文本，跨 SDK 回放时语义漂移
+  2. 长跑链路启用 tracing 后把敏感输入全量暴露到审计平面
+  3. agent 默认可委托下游导致任务边界扩散，身份漂移难以追责
+- 覆盖检查：
+  - 归属同一元问题：`scope + communication + recovery`
+  - 判定：**同化**到 `agent-scope-identity-memory-governance`（不新建）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news/top`: id=47244362 — Still no sign of Earth's missing planetary engineer
+  - `show`: id=47244041 — Show HN: CVEMap – Visualizing CVEs by EPSS and Severity
+  - `newest`: id=47245071 — Deep Learning Is Not So Mysterious or Different
+
+### 官方证据链（本轮新增）
+
+- OpenAI Agents SDK JS Running agents：配置 `outputType` 后，结构化结果出现在 `result.finalOutput`
+  - `https://openai.github.io/openai-agents-js/guides/running-agents/`
+- OpenAI Agents SDK JS RunConfig：`traceIncludeSensitiveData` 默认最小暴露（scalar 级别默认 false）
+  - `https://openai.github.io/openai-agents-js/ref/types/runconfig/`
+- CrewAI Agents：`allow_delegation=false` 默认关闭委托，`respect_context_window=true` 默认启用上下文窗口治理
+  - `https://docs.crewai.com/en/concepts/agents`
+- openai-agents-go README：`outputType` + schema provider 产出类型化最终输出
+  - `https://github.com/nlpodyssey/openai-agents-go`
+
+### 检索测试（L5，写后执行）
+
+- Query A：`OpenAI outputType finalOutput structured`  
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:253`  
+  - 动作：将 typed final output 设为跨 agent 通信必填产物
+- Query B：`RunConfig traceIncludeSensitiveData default`  
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:255`  
+  - 动作：默认最小暴露追踪，仅在故障窗口临时提级
+- Query C：`CrewAI allow_delegation false respect_context_window true`  
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:257`  
+  - 动作：默认禁用隐式委托，保留显式 handoff/as_tool 路由
+- Query D：`openai-agents-go outputType schema provider`  
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:253`  
+  - 动作：Go/JS 对齐 typed contract，减少跨 SDK 回放漂移
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：下一次窗口为 cycle=125（本轮非压缩窗口）
+
+---
 # Morning Brief（Nightshift Cycle 123）
 
 > 更新时间：2026-03-01 06:30 UTC  

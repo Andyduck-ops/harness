@@ -2,7 +2,7 @@
 name: agent-scope-identity-memory-governance
 topic: runtime-governance
 confidence: 0.87
-verified_count: 28
+verified_count: 29
 sources:
   - OpenAI Agent Platform docs (Python/TypeScript/Go support) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (2026-03-01)
@@ -61,6 +61,11 @@ sources:
   - HN lanes snapshot（news: id=47202708 "Microgpt", show: id=47201816 "Xmloxide", newest sampled: id=47203804 "Welcome to the future of software development"）(2026-03-01)
   - HN lanes snapshot（news: id=47206745 "MCP server that reduces Claude Code context consumption by 98%", show: id=47203334 "Memctl v0.1", newest: id=47207396 "SpecLock: AI Constraint Engine..."）(2026-03-01)
   - HN lanes snapshot（news: id=47227757 "The hidden cost of AI coding assistants", show: id=47227735 "Show HN: memory", newest: id=47227820 "Why AI slop is a tragedy, not just an annoyance"）(2026-03-01)
+  - OpenAI Agents SDK JS running agents docs（`outputType` -> `result.finalOutput` 结构化输出合同）(2026-03-01)
+  - OpenAI Agents SDK JS run config docs（`traceIncludeSensitiveData` 默认最小暴露）(2026-03-01)
+  - CrewAI Agents docs（`allow_delegation=false` 默认关闭委托；`respect_context_window=true` 自动摘要）(2026-03-01)
+  - nlpodyssey/openai-agents-go README（`outputType` + schema provider 产出类型化最终输出）(2026-03-01)
+  - HN lanes snapshot（news: id=47244362 "Still no sign of Earth's missing planetary engineer", show: id=47244041 "Show HN: CVEMap", newest: id=47245071 "Deep Learning Is Not So Mysterious or Different"）(2026-03-01)
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (redirect verified 2026-03-01)
 last_verified: 2026-03-01
 rank: 3
@@ -243,6 +248,18 @@ Demo 能跑不等于 production 能跑。
   - 两类通道都必须落地 schema-locked 输出与 replay 证据。
 - **强制信源侧证（本轮）**：`https://t.co/dwAiIjlXet` 持续作为 OPML 锚点；HN `news/show/newest` 当窗条目继续集中在 AI coding assistant 的成本与记忆治理，支持“通信模式分层优先于 agent 扩张”的同化判断。
 
+## Cycle 124 同化增量（类型化交接产物 + 追踪脱敏 + 委托默认收口）
+
+- **类型化输出应成为跨 SDK 通信合同**：OpenAI Agents JS `run()` 在配置 `outputType` 后会把结构化结果放到 `result.finalOutput`；`openai-agents-go` 也支持 `outputType` + schema provider 产出类型化最终输出。
+  - 治理动作：把“typed final output”作为 handoff/tool 双通道的必填产物，禁止自由文本直接跨 agent 传递。
+- **追踪默认应最小暴露**：OpenAI Agents JS RunConfig 中 `traceIncludeSensitiveData` 默认不会暴露模型与工具输入输出细节。
+  - 治理动作：长跑会话默认走最小暴露追踪，只有故障审计窗口才临时提升明细级别并落盘审批记录。
+- **委托默认关闭可减少身份漂移**：CrewAI Agents 文档给出 `allow_delegation=false` 默认值；同时 `respect_context_window=true` 会在超窗时自动摘要。
+  - 治理动作：多 agent 拓扑先用显式路由（handoff/as_tool）而非隐式委托，防止任务链在未知下游扩散。
+- **同化判定（L2/L7）**：本轮新增证据对应的仍是同一元问题 `scope + communication + recovery`，且检索信噪比不下降。
+  - 判定：同化到 `agent-scope-identity-memory-governance`，不新建 pattern/topic。
+- **强制信源侧证（本轮）**：`https://t.co/dwAiIjlXet` 已重定向到 HN Popular Blogs OPML；HN `news/show/newest` 同窗（47244362 / 47244041 / 47245071）继续提供实践热区信号。
+
 ## 合并来源
 
 - agent scope drift severity budget
@@ -262,6 +279,7 @@ Demo 能跑不等于 production 能跑。
 - OpenAI JS/Python Agents 文档（`resetToolChoice`/`toolUseBehavior`/`StopAtTools`）+ openai-agents-go 运行循环退出条件补强了“工具循环终止合同 + 回合预算断路器”
 - CrewAI Agents/Tasks 文档（`max_iter`、`max_retry_limit`、`guardrail_max_retries`）补强了“推理循环预算与校验重试预算拆层”治理动作
 - OpenAI handoff/tool 双通道文档（JS `asTool` + Python `as_tool` + Handoffs 默认历史透传）与 CrewAI 结构化任务输出共同补强了“通信模式分层 + 中间产物 schema 锁定”治理动作
+- OpenAI JS/Go 的 `outputType` 类型化输出、RunConfig 追踪脱敏默认与 CrewAI 委托默认收口共同补强了“通信产物可验证 + 追踪最小暴露 + 身份边界收口”治理动作
 
 ## 检索测试
 
