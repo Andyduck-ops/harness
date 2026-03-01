@@ -1,3 +1,54 @@
+# Morning Brief（Nightshift Cycle 82）
+
+> 更新时间：2026-03-01 00:41 UTC  
+> 本轮目标：把 Pending 僵局治理从“有分类”升级为“分类词典版本可审计”，避免跨 cycle 的误分类误治。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/queue-governance/pending-deadlock-taxonomy-version-drift-gate.md`
+2. `references/patterns/queue-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `待决僵局分类词典版本漂移门禁（pending-deadlock taxonomy-version drift gate）`
+  - reason: 同一 Pending 现象在不同 cycle 出现分类命名漂移，导致恢复动作不可回放。
+- `split`：拆分方向
+  - from: `队列待决僵局检测门禁（queue pending deadlock detection gate）`
+  - into: `待决僵局证据覆盖治理（pending-deadlock evidence-coverage gate）`
+  - into: `待决僵局触发完整性治理（pending-deadlock trigger-completeness gate）`
+  - reason: “检测到僵局”与“证据是否足够可判定动作”属于不同失效面，需要拆分治理。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML Gist  
+  - 最终 URL: `https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道样本（2026-03-01）
+  - top lane: `https://news.ycombinator.com/item?id=47200342`
+  - show lane: `https://news.ycombinator.com/item?id=47195123`
+  - newest lane: `https://news.ycombinator.com/item?id=47201808`
+- 官方文档补链（2026-03-01）
+  - merge queue（超时、并发、重建语义）：`https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue`
+  - `merge_group` 独立触发路径：`https://docs.github.com/en/actions/reference/events-that-trigger-workflows#merge_group`
+  - required checks Pending 阻塞语义：`https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks`
+  - re-run 继承原始事件上下文：`https://docs.github.com/en/actions/how-tos/manage-workflow-runs/re-run-workflows-and-jobs`
+
+### 本轮结论
+
+- 新 pattern `pending-deadlock-taxonomy-version-drift-gate` 是非重复元问题：核心是“分类词典版本漂移”而非“是否检测到 Pending”。
+- 治理重点从“动作重试次数”前移到“class_id + taxonomy_version + action mapping”三元一致。
+- 夜间晋级门禁应并联 `taxonomy_version_pass + class_action_mapping_pass + pending_deadlock_pass`，否则同一故障会在不同 cycle 被不同策略处理。
+
+### Cycle 83 预载任务
+
+1. 固化 `deadlock_taxonomy_manifest.json` 的不兼容升级策略（含 `deprecations`）。
+2. 将 `taxonomy_version` 绑定到 `candidate->issue` 证据包，阻断“旧分类结论复用”。
+3. 设计 `class_action_policy.json` 的自动审计规则，禁止 `trigger_missing` 进入 re-run 白名单。
+
+---
 # Morning Brief（Nightshift Cycle 81）
 
 > 更新时间：2026-03-01 00:38 UTC  

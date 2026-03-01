@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-03-01T00:38:49Z",
-  "cycle": 81,
+  "updated_at": "2026-03-01T00:41:42Z",
+  "cycle": 82,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -86,39 +86,32 @@
     "路径过滤可观测治理（path-filter observability governance）",
     "队列待决僵局自愈治理（queue pending deadlock self-heal gate）",
     "冲突入口兼容回放门禁（conflict intake compatibility replay gate）",
-    "队列待决僵局检测门禁（queue pending deadlock detection gate）",
+    "待决僵局证据覆盖治理（pending-deadlock evidence-coverage gate）",
+    "待决僵局触发完整性治理（pending-deadlock trigger-completeness gate）",
     "队列重试黑洞阻断门禁（queue rerun-blackhole isolation gate）",
     "待决僵局分类治理（pending-deadlock classification gate）",
-    "待决僵局动作预算治理（pending-deadlock action-budget gate）"
+    "待决僵局动作预算治理（pending-deadlock action-budget gate）",
+    "待决僵局分类词典版本漂移门禁（pending-deadlock taxonomy-version drift gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 81,
+    "last_cycle": 82,
     "actions": [
       {
         "type": "expand",
-        "added": "队列重试黑洞阻断门禁（queue rerun-blackhole isolation gate）",
-        "reason": "re-run 在原始事件上下文内执行，无法修复 trigger_missing；需要单独治理无效重跑黑洞。"
+        "added": "待决僵局分类词典版本漂移门禁（pending-deadlock taxonomy-version drift gate）",
+        "reason": "同一故障在不同 cycle 出现分类命名漂移，导致恢复动作无法稳定回放；需要版本化词典治理。"
       },
       {
         "type": "split",
         "from": [
-          "待决僵局检测-自愈闭环治理（pending-deadlock detect-heal closure gate）"
+          "队列待决僵局检测门禁（queue pending deadlock detection gate）"
         ],
         "into": [
-          "待决僵局分类治理（pending-deadlock classification gate）",
-          "待决僵局动作预算治理（pending-deadlock action-budget gate）"
+          "待决僵局证据覆盖治理（pending-deadlock evidence-coverage gate）",
+          "待决僵局触发完整性治理（pending-deadlock trigger-completeness gate）"
         ],
-        "reason": "僵局识别准确性与恢复动作安全预算属于不同失效面，拆分后可独立验收。"
-      },
-      {
-        "type": "merge",
-        "from": [
-          "队列待决僵局重试黑洞治理（queue pending-rerun blackhole gate）",
-          "队列待决僵局恢复门禁（queue pending deadlock recovery gate）"
-        ],
-        "into": "队列重试黑洞阻断门禁（queue rerun-blackhole isolation gate）",
-        "reason": "两方向均治理无效重试收敛，合并可避免同构 pattern 与重复门禁。"
+        "reason": "僵局检测需拆为“证据覆盖”与“触发完整性”两个失效面，否则无法精确映射恢复动作。"
       }
     ]
   },
@@ -146,6 +139,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/queue-governance/queue-rerun-blackhole-isolation-gate.md",
-  "last_cycle_commit": "pending-cycle-81"
+  "last_pattern": "references/patterns/queue-governance/pending-deadlock-taxonomy-version-drift-gate.md",
+  "last_cycle_commit": "pending-cycle-82"
 }
