@@ -1,8 +1,8 @@
 ---
 name: agent-scope-identity-memory-governance
 topic: runtime-governance
-confidence: 0.84
-verified_count: 13
+confidence: 0.85
+verified_count: 14
 sources:
   - OpenAI Agent Platform docs (Python/TypeScript/Go support) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (2026-03-01)
@@ -57,6 +57,14 @@ Demo 能跑不等于 production 能跑。
 - CrewAI：Flow `@persist` 将状态持久化变成显式机制，生产上应配合 replay/checkpoint 才能避免恢复漂移。
 - Kode SDK：本轮未检索到稳定的一手官方文档证据链，暂不单列为新 pattern，维持同化待补证据状态。
 
+## Cycle 90 压缩同化增量
+
+- **OpenAI Sessions 的生产边界更清晰**：`OpenAIConversationsSession` 与 `MemorySession` 的角色区分是核心断裂点；后者仅适合本地开发，生产需替换为可恢复的外部会话后端。
+- **Compaction 不是“纯优化”，是一致性风险面**：`OpenAIResponsesCompactionSession` 会清空并重写底层会话，且文档明确不应与 `OpenAIConversationsSession` 组合。上线前必须把 compaction 作为状态迁移来验收（replay + invariant）。
+- **Handoff 必须合同化而不是提示词化**：`handoff()` 明确支持 `inputType` 与 `inputFilter`，可把“交接最小输入”从软约定升级为硬约束。
+- **后台长任务恢复模型已可标准化**：background mode 的 `background=true + poll + cancel` 给出统一恢复面；并且存在约 10 分钟数据保留与 ZDR 不兼容约束，需在合规层前置分流。
+- **会话跨设备/跨作业复用可直接落地**：Conversations API 的 durable identifier 能把“单进程记忆”升级为“跨运行单元记忆”。
+
 ## 合并来源
 
 - agent scope drift severity budget
@@ -74,3 +82,6 @@ Demo 能跑不等于 production 能跑。
 - 查询：`长任务断线后怎么恢复`  
   命中：本 pattern  
   动作：收敛到 `background job id + polling + cancel + replay`
+- 查询：`session compaction 后上下文一致性如何验收`  
+  命中：本 pattern  
+  动作：收敛到 `compaction before/after invariants + continuity replay + non-conversations-session rewrite check`

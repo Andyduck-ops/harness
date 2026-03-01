@@ -1,3 +1,63 @@
+# Morning Brief（Nightshift Cycle 90）
+
+> 更新时间：2026-03-01 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：压缩优先 + 同化更新（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化 + 证据链增强）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### Cycle 90 强制压缩（L4）
+
+- 压缩扫描范围：12 topics / 31 patterns
+- 合并决策：
+  - `agent-scope-identity-memory-governance` 与 `context-compaction-replay-governance` 存在交叉，但职责边界不同（前者是 scope-identity-memory 三联门禁，后者是 compaction 专项恢复门禁），本轮不做错误合并。
+- 结果：**0 新建 / 0 split / 1 同化更新**（满足“merge > split、禁止纯膨胀”）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news`: `Show HN: iNaturalist API v2 by Example`
+  - `show`: `Show HN: We made an open-source synthetic data platform`
+  - `newest`: `Prime Number Coordinate Space and Cyclicity`
+
+### 官方证据链（补全不确定点）
+
+- OpenAI Agents SDK Sessions（`OpenAIConversationsSession` / `MemorySession` / custom backend）
+- OpenAI Agents SDK Handoffs（`handoff()` + `inputType` + `inputFilter`）
+- OpenAI Responses Compaction Session（重写底层会话、不可与 Conversations session 组合）
+- OpenAI Background mode（`background=true` + polling/cancel + retention/ZDR 约束）
+- OpenAI Conversations State（durable identifier for cross-session state）
+- Anthropic tool use / SDK（工具约束与执行结构）
+- CrewAI flow state persistence（`@persist`）
+
+### 检索测试（L5，写后执行）
+
+- Query A：`multi agent handoff 身份漂移`  
+  命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`  
+  动作：`handoff input filter + identity lease + replay checkpoint`
+- Query B：`background 长任务 断线恢复`  
+  命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`  
+  动作：`background job id + polling + cancel + replay`
+- Query C：`session compaction 一致性验收`  
+  命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md` + `references/patterns/runtime-governance/context-compaction-replay-governance.md`  
+  动作：`before/after invariants + continuity replay`
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：通过（cycle=90 已执行压缩扫描）
+
+---
+
 # Morning Brief（Nightshift Cycle 89）
 
 > 更新时间：2026-03-01 UTC  
