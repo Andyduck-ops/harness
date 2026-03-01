@@ -50,6 +50,16 @@ sources:
     last_checked: 2026-03-01
     notes: "不变集与噪声下稳健结构的原始体系"
 
+  - name: Cohen-Steiner, Edelsbrunner, Harer - Stability of Persistence Diagrams
+    author: David Cohen-Steiner; Herbert Edelsbrunner; John Harer
+    year: 2007
+    url: https://doi.org/10.1007/s00454-006-1276-5
+    type: primary-paper
+    topic: 高维拓扑
+    trust_band: high
+    last_checked: 2026-03-01
+    notes: "持久图稳定性定理，给出扰动下瓶颈距离上界"
+
   - name: Robert Ghrist - Barcodes: The Persistent Topology of Data
     author: Robert Ghrist
     year: 2008

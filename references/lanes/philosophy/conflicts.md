@@ -47,3 +47,12 @@
 - side_a: 优先压低波动，维持系统稳定
 - side_b: 在环境突变期主动引入受控扰动以发现新可行解
 - status: unresolved
+
+## Cycle 130
+
+### conflict-007
+- topic: 高维拓扑
+- tension: 连续可微动力建模优先 vs 离散数据拓扑优先
+- side_a: 先建立可微系统模型（Morse/Smale/Conley）再做决策，强调机理可解释与结构条件
+- side_b: 先从采样数据做持久同调（barcode/diagram）再做决策，强调抗噪稳健与快速落地
+- status: unresolved

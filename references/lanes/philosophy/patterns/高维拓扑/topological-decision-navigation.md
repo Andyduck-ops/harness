@@ -2,13 +2,14 @@
 name: topological-decision-navigation
 topic: 高维拓扑
 evidence_band: medium-high
-verified_count: 8
+verified_count: 9
 sources:
   - John Milnor, Morse Theory (1963)
   - Stephen Smale, Differentiable Dynamical Systems (1967)
   - Rene Thom, Stabilite structurelle et morphogenese (1972)
   - Victor Guillemin, Alan Pollack, Differential Topology (1974)
   - Charles Conley, Isolated Invariant Sets and the Morse Index (1978)
+  - David Cohen-Steiner, Herbert Edelsbrunner, John Harer, Stability of Persistence Diagrams (2007)
   - Robert Ghrist, Barcodes: The Persistent Topology of Data (2008)
   - Gunnar Carlsson, Topology and Data (2009)
   - Herbert Edelsbrunner, John Harer, Computational Topology (2010)
@@ -59,8 +60,33 @@ rank: 2
 - 多目标冲突：增长、利润、风险无法同时最优。
 - 高切换成本系统：平台迁移、组织重构、供应链再布局。
 
+## 原始命题映射卡（工程决策）
+
+### 卡片 1：Milnor 临界值跃迁
+
+- 原始命题：子水平集拓扑只在临界值处改变。
+- 决策动作：把代价函数跨临界值作为强制切换点（回滚、重选工作点、停止自动扩容）。
+- 可执行判据：Betti 数跳变与参数跨阈值同时出现且持续 3 个窗口，30 分钟内目标分量停留占比 >=80%。
+
+### 卡片 2：Smale 双曲稳定
+
+- 原始命题：双曲不变集在小扰动下保持定性结构稳定。
+- 决策动作：接近非双曲边界时优先降阶运行、减载或解耦，而非继续推高吞吐。
+- 可执行判据：局部谱半径 rho >=0.95 持续 3 个窗口即触发动作，执行后恢复时间 P95 下降 >=20%。
+
+### 卡片 3：Conley 指数延拓不变
+
+- 原始命题：孤立不变集的 Conley index 在 continuation 下保持不变。
+- 决策动作：指数变化时触发强动作（熔断、回滚、隔离租户）。
+- 可执行判据：跨版本 index 变化且故障复现率上升 >=15%，自动执行回滚并标记拓扑触发事件。
+
+### 卡片 4：持久同调稳定性
+
+- 原始命题：persistence diagram 对小扰动稳定，长条更可能是结构而非噪声。
+- 决策动作：只对持久度高于阈值 tau 的特征触发结构性动作。
+- 可执行判据：B=20 次重采样中保留率 >=85% 才允许扩容/路由改写，否则仅告警。
+
 ## 原始证据链摘要
 
 - Milnor/Conley/Smale/Thom 给出“临界点-不变集-结构稳定-突变边界”框架。
-- Ghrist/Carlsson/Edelsbrunner-Harer 给出“持久结构优先于瞬时噪声”的可计算路径。
-
+- Cohen-Steiner/Edelsbrunner/Harer/Ghrist/Carlsson 给出“持久结构优先于瞬时噪声”的可计算路径。

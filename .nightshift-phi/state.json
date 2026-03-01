@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-03-01T19:40:31Z",
-  "cycle": 129,
+  "updated_at": "2026-03-01T19:45:59Z",
+  "cycle": 130,
   "status": "idle",
   "mode": "CONSTRAINED_EXPANSION",
   "active_directions": [
@@ -13,11 +13,11 @@
   "dormant_directions": [],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 129,
+    "last_cycle": 130,
     "actions": [
       {
         "type": "resume",
-        "reason": "从 cycle 128 断点续跑并完成 cycle 129 原子写入"
+        "reason": "从 cycle 129 断点续跑并完成 cycle 130 同化补强"
       }
     ]
   },
