@@ -1,4 +1,4 @@
-# Team Protocol — Nightshift 三角色协作协议
+# Team Protocol — Nightshift-Phi 三角色协作协议
 
 ## 角色定义
 
@@ -13,7 +13,7 @@
 2. **饱和门检查（L1）**：任何 topic ≥5 patterns → 先 merge 再继续
 3. 生成探索指令 → 发给 Scout
 4. 接收 Analyst 验证结果 → **同化优先（L2）**：3 问比较，默认归入已有 pattern
-5. **检索测试（L5）**：新 pattern 能解决什么已有 pattern 不能解决的？
+5. **检索测试（L5）**：新 pattern 能指导什么已有 pattern 不能指导的决策？
 6. 执行写入 + 原子更新 4 层索引
 7. git commit（4 层全更新后才 commit）
 8. **每 5 轮：压缩周期（L4）**——强制 merge 可合并 patterns + 健康检查
@@ -41,13 +41,12 @@
 4. 当前指令搜尽 → 请求新指令
 
 **搜索策略**：
-- 广度优先：每个指令搜索 3-5 个不同角度
-- 二级探索：从已有 patterns 关键词出发做关联搜索
+- **追溯源头**：优先找原始著作和原始作者
+- **跨文化**：同一方法论的东西方不同表述
+- **历史脉络**：追踪思想演化链（谁影响了谁）
+- **批评与反驳**：搜索对立观点和失败案例
 - 去重：跳过 `sources/{topic}.yaml` 中 score < 0.4 的信源
 - 多语言：中文 + 英文双语搜索
-
-**Finding 格式**：
-
 
 ---
 
@@ -59,30 +58,31 @@
 
 **核心循环**：
 1. 收到 findings → Distill 提取元问题
-2. Analyze 检查（bedrock 一致性、证据、可操作性）
+2. Analyze 检查（bedrock 一致性、历史验证、可迁移性）
 3. 评分 confidence
 4. 发给 Cartographer 待 Merge
 
 **Distill 核心**：
-- 找到元问题，不堆积方案
-- 同一元问题只保留一条 pattern
-- 保留所有实现变体
-- **同化优先**：新发现默认归入已有 pattern，除非能证明解决了全新的具体问题
+- 找到**跨学派的元问题**，不堆积各家观点
+- 同一元问题只保留一条 pattern，包含所有学派的表述变体
+- **同化优先**：新发现默认归入已有 pattern，除非能证明指导了全新的决策场景
 - **检索信噪比**：同化前问「搜这个问题命中目标 pattern 能直接得到答案吗？」跨元问题维度不同化
-- **检索测试**：写完自问"遇到什么问题会查这个？"——模糊则不入库
-
-**输出格式**：
-
+- **检索测试**：写完自问"面对什么决策时会查这个？"——模糊则不入库
+- **学派矛盾处理**：不裁决谁对谁错，记录各自适用条件
 
 ---
 
 ## 消息流
 
-
+Cartographer → Scout: 探索指令
+Scout → Cartographer: findings
+Cartographer → Analyst: 待验证 findings
+Analyst → Cartographer: 验证结果
+Cartographer: 执行写入
 
 ## 流水线并行
 
-关键：Scout 和 Analyst 可以**交错执行**：
+Scout 和 Analyst 可以**交错执行**：
 
 - Cycle N: Scout 搜索方向 A
 - Cycle N: Analyst 验证上一轮的 findings

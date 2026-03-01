@@ -1,18 +1,23 @@
 #!/bin/bash
-# nightshift-launch.sh — 后台启动 nightshift 持续学习
+# nightshift-launch.sh — 三件套启动 nightshift 持续学习
 #
-# 用法:
+# 启动:
 #   ./nightshift-launch.sh "AI agent 工作流, 知识管理, 代码质量"
 #   ./nightshift-launch.sh  # 使用默认方向
 #
 # 停止:
 #   tmux kill-session -t nightshift
-#   或 tmux attach -t nightshift 然后 Ctrl+C
+#   tmux kill-session -t nightshift-watchdog
+#   tmux kill-session -t nightshift-reporter
+#   或一键: for s in nightshift nightshift-watchdog nightshift-reporter; do tmux kill-session -t $s 2>/dev/null; done
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 HARNESS_DIR="${HARNESS_DIR:-$HOME/harness}"
-DIRECTIONS="${1:-AI agent workflows, knowledge management systems, code quality enforcement}"
+STATE_DIR=".nightshift"
+SKILL="nightshift"
+DIRECTIONS="${1:-Agent SDK 落地实战, AI 全栈可靠性边界, PRD 到产品信息保真, AI 代码有效测试, 长运行稳定性工程}"
 
 # 确保 harness 仓库存在
 if [ ! -d "$HARNESS_DIR" ]; then
@@ -21,8 +26,16 @@ if [ ! -d "$HARNESS_DIR" ]; then
     exit 1
 fi
 
-# 确保 .nightshift 目录存在
-mkdir -p "$HARNESS_DIR/.nightshift"
+mkdir -p "$HARNESS_DIR/$STATE_DIR"
+
+# 检查是否已在运行
+for s in nightshift nightshift-watchdog nightshift-reporter; do
+    if tmux has-session -t "$s" 2>/dev/null; then
+        echo "[nightshift] Session '$s' already running. Kill all first:"
+        echo "  for s in nightshift nightshift-watchdog nightshift-reporter; do tmux kill-session -t \$s 2>/dev/null; done"
+        exit 1
+    fi
+done
 
 # 构建 prompt
 PROMPT="$(cat <<EOF
@@ -40,23 +53,28 @@ $DIRECTIONS
 EOF
 )"
 
-echo "[nightshift] Starting continuous learning daemon..."
+echo "[nightshift] Starting three-piece daemon..."
 echo "[nightshift] Directions: $DIRECTIONS"
 echo "[nightshift] Working dir: $HARNESS_DIR"
-echo "[nightshift] Check progress: cat $HARNESS_DIR/morning-brief.md"
-echo "[nightshift] Stop: tmux kill-session -t nightshift"
 echo ""
 
-# 用 tmux 后台运行
-if tmux has-session -t nightshift 2>/dev/null; then
-    echo "[nightshift] Session already running. Kill it first:"
-    echo "  tmux kill-session -t nightshift"
-    exit 1
-fi
-
+# 1. Runner（主进程）
 tmux new-session -d -s nightshift \
-    "cd $HARNESS_DIR && codex exec --full-auto -s workspace-write \"$PROMPT\" 2>&1 | tee .nightshift/session.log"
+    "cd $HARNESS_DIR && codex exec --full-auto -s workspace-write \"$PROMPT\" 2>&1 | tee -a $STATE_DIR/session.log"
+echo "[nightshift] Runner   → tmux attach -t nightshift"
 
-echo "[nightshift] Launched in tmux session 'nightshift'"
-echo "[nightshift] Attach: tmux attach -t nightshift"
-echo "[nightshift] Logs:   tail -f $HARNESS_DIR/.nightshift/session.log"
+# 2. Watchdog（看门狗）
+tmux new-session -d -s nightshift-watchdog \
+    "$SCRIPT_DIR/watchdog.sh nightshift $HARNESS_DIR $STATE_DIR $SKILL \"$DIRECTIONS\" 2>&1 | tee -a $HARNESS_DIR/$STATE_DIR/watchdog.log"
+echo "[nightshift] Watchdog → tmux attach -t nightshift-watchdog"
+
+# 3. Reporter（报告器）
+tmux new-session -d -s nightshift-reporter \
+    "$SCRIPT_DIR/reporter.sh $HARNESS_DIR $STATE_DIR 2>&1 | tee -a $HARNESS_DIR/$STATE_DIR/reporter.log"
+echo "[nightshift] Reporter → tmux attach -t nightshift-reporter"
+
+echo ""
+echo "[nightshift] All three sessions launched."
+echo "[nightshift] Check progress:  cat $HARNESS_DIR/morning-brief.md"
+echo "[nightshift] Reporter logs:   tail -f $HARNESS_DIR/$STATE_DIR/reporter.log"
+echo "[nightshift] Stop all:        for s in nightshift nightshift-watchdog nightshift-reporter; do tmux kill-session -t \$s 2>/dev/null; done"
