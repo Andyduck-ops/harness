@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-03-01T00:03:22Z",
-  "cycle": 75,
+  "updated_at": "2026-03-01T00:10:11Z",
+  "cycle": 76,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -16,8 +16,6 @@
     "PRD->Epic 血缘守恒门禁（prd-epic lineage conservation gate）",
     "Show 晋级双相合同门禁（show promotion dual-phase contract gate）",
     "Show 车道可执行性门禁（show-lane executability gate）",
-    "Show-Top 共振窗口门禁（show-top resonance-window gate）",
-    "Show-Top 冷却预算门禁（show-top cooldown-budget gate）",
     "Shownew 跨车道复采样时滞门禁（shownew-cross-lane-lag-reverify gate）",
     "Shownew 首现时滞下限门禁（shownew-min-lag gate）",
     "Shownew->Top 时滞复采样一体门禁（shownew-top lag-reverify unified gate）",
@@ -31,7 +29,6 @@
     "代理记忆分区闭环治理（agent memory partition closure gate）",
     "信号债务路由（exploit/explore + debt ratchet）",
     "候选晋级表单治理（candidate intake + issue form gate）",
-    "冲突仲裁双相合同治理（conflict arbitration dual-phase contract gate）",
     "冲突入口结构化必填门禁（conflict-intake required-form gate）",
     "冲突账本冻结门禁（contradiction-ledger freeze gate）",
     "冲突超时墓碑门禁（contradiction SLA tombstone gate）",
@@ -82,36 +79,39 @@
     "队列降级恢复门槛治理（queue fallback recovery-threshold gate）",
     "队列降级触发双失效面预算治理（queue fallback dual-failure-surface budget gate）",
     "非文本对比预算治理（non-text contrast budget gate）",
-    "高对比主题压测治理（high-contrast theme stress gate）"
+    "高对比主题压测治理（high-contrast theme stress gate）",
+    "Show-Top 共振冷却一体门禁（show-top resonance-cooldown unified gate）",
+    "冲突恢复双相合同门禁（arbitration reverify-reapprove gate）",
+    "冲突字段版本漂移门禁（conflict form-schema drift gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 75,
+    "last_cycle": 76,
     "actions": [
       {
         "type": "expand",
-        "added": "冲突入口结构化必填门禁（conflict-intake required-form gate）",
-        "reason": "官方 issue forms 支持 required 字段，冲突入口若不结构化将导致双相合同缺字段，无法稳定审计。"
+        "added": "冲突字段版本漂移门禁（conflict form-schema drift gate）",
+        "reason": "冲突入口结构化后会出现表单 schema 演进失配，需单独门禁保证历史 claim 可复验。"
       },
       {
         "type": "split",
         "from": [
-          "需求到实现血缘治理（PRD->Epic->Issue->PR lineage governance）"
+          "冲突仲裁双相合同治理（conflict arbitration dual-phase contract gate）"
         ],
         "into": [
-          "PRD->Epic 血缘守恒门禁（prd-epic lineage conservation gate）",
-          "Issue->PR 证据回填门禁（issue-pr evidence backfill gate）"
+          "冲突恢复双相合同门禁（arbitration reverify-reapprove gate）",
+          "冲突入口结构化必填门禁（conflict-intake required-form gate）"
         ],
-        "reason": "需求链路守恒与执行证据回填属于两个独立失效面，拆分后可分别定义阈值与阻断动作。"
+        "reason": "恢复阶段合同与入口字段完备性是两个独立失效面，拆分后可分别阻断。"
       },
       {
         "type": "merge",
         "from": [
-          "Show 复现验签门禁（show-repro attestation gate）",
-          "Show 预检统一合同门禁（show unified preflight contract gate）"
+          "Show-Top 共振窗口门禁（show-top resonance-window gate）",
+          "Show-Top 冷却预算门禁（show-top cooldown-budget gate）"
         ],
-        "into": "Show 晋级双相合同门禁（show promotion dual-phase contract gate）",
-        "reason": "两者都在治理 show 车道晋级前置条件，合并为双相合同可减少同构方向重复。"
+        "into": "Show-Top 共振冷却一体门禁（show-top resonance-cooldown unified gate）",
+        "reason": "两方向均治理 show/top 晋级节奏，合并可减少同构方向重复并统一预算参数。"
       }
     ]
   },
@@ -139,6 +139,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/control-plane-governance/conflict-arbitration-dual-phase-contract-gate.md",
-  "last_cycle_commit": "pending-cycle-75"
+  "last_pattern": "references/patterns/control-plane-governance/conflict-intake-required-form-gate.md",
+  "last_cycle_commit": "pending-cycle-76"
 }

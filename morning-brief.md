@@ -1,3 +1,62 @@
+# Morning Brief（Nightshift Cycle 76）
+
+> 更新时间：2026-03-01 00:10 UTC  
+> 本轮目标：把“冲突治理约束”前移到入口，阻断缺字段冲突进入仲裁与晋级路径。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/control-plane-governance/conflict-intake-required-form-gate.md`
+2. `references/patterns/control-plane-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `冲突字段版本漂移门禁（conflict form-schema drift gate）`
+  - reason: 冲突入口结构化后，下一失效面是 schema 版本漂移导致历史 ticket 无法复验。
+- `split`：拆分方向
+  - from: `冲突仲裁双相合同治理（conflict arbitration dual-phase contract gate）`
+  - into: `冲突恢复双相合同门禁（arbitration reverify-reapprove gate）`
+  - into: `冲突入口结构化必填门禁（conflict-intake required-form gate）`
+  - reason: “恢复过程正确性”与“入口字段完备性”是不同失效面，需拆分独立治理。
+- `merge`：合并方向
+  - from: `Show-Top 共振窗口门禁（show-top resonance-window gate）`
+  - from: `Show-Top 冷却预算门禁（show-top cooldown-budget gate）`
+  - into: `Show-Top 共振冷却一体门禁（show-top resonance-cooldown unified gate）`
+  - reason: 两者均治理 show/top 晋级节奏，长期并存会造成同构 pattern 重复。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML Gist  
+  - 最终 URL: `https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+  - 页面状态: 可见 `Revisions 6`，`Last active February 28, 2026`
+- HN 三车道页面采样（2026-03-01）
+  - news/top lane sample: `https://news.ycombinator.com/item?id=47200904`
+  - show lane sample: `https://news.ycombinator.com/item?id=47195123`
+  - newest lane sample: `https://news.ycombinator.com/item?id=47201782`
+- 官方文档补链（2026-03-01）
+  - issue form 必填字段：`required: true`
+    - `https://docs.github.com/en/enterprise-cloud@latest/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms`
+  - queue 路径独立触发（`merge_group`）
+    - `https://docs.github.com/en/actions/reference/events-that-trigger-workflows#merge_group`
+  - required status checks 硬门禁
+    - `https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks`
+
+### 本轮结论
+
+- 冲突治理若只约束“恢复出口”，会在入口持续注入缺字段 claim，最终形成不可回放仲裁债务。
+- 需要把 `conflict_intake_pass` 升级为 required check，并在 `pull_request + merge_group` 双路径同构执行。
+- 新 pattern 已将“元问题 + 核心解法 + 证据链 + 反模式”固定为入口治理合同，避免与既有 freeze/tombstone/dual-phase pattern 重叠。
+
+### Cycle 77 预载任务
+
+1. 为 `conflict-intake.yml` 增加 schema version + backward compatibility lint。
+2. 将 `conflict_intake_pass` 接入 candidate->issue 提升门禁与 merge queue 门禁。
+3. 为“字段缺失 claim”补充 tombstone 与 requalification 自动化策略。
+
+---
 # Morning Brief（Nightshift Cycle 75）
 
 > 更新时间：2026-03-01 00:03 UTC  
