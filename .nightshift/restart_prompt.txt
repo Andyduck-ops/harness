@@ -1,45 +1,54 @@
 $nightshift
 
 你在 /home/eric/harness 执行 Nightshift。
-当前模式：**AGGRESSIVE_DYNAMIC（激进动态探索）**。
-请严格遵循以下约束，并“只执行 1 个 cycle 后退出本次运行”（runner 会自动再次启动你）。
+当前模式：CONSTRAINED_EXPANSION（约束扩展）。
 
-## 本次运行目标（仅 1 个 cycle）
-1) 读取 `.nightshift/state.json`，执行 `cycle + 1`
+## 启动要求
+- 使用 nightshift skill 的流程执行。
+- 基于现有 31 patterns / 12 topics 继续扩展。
+- 不要重复已有知识；默认同化，不轻易新建。
+
+## 探索方向
+1) Agent SDK 落地实战
+   - OpenAI Agents SDK, Claude SDK, Kode SDK, agent sdk go, CrewAI
+   - 关注 demo -> production 断裂点：状态管理、多 agent 通信、错误恢复
+2) AI 全栈可靠性边界
+   - 前端/后端/测试/运维四环节可达上限
+   - OpenAI Harness 大规模工程细节 + 社区一线长跑经验
+3) PRD -> 产品信息保真
+   - PRD -> spec -> arch -> tasks -> code 的信息损失
+   - 最佳中间产物格式、是否存在 PRD 直出产品实践
+4) AI 代码有效测试
+   - AI 典型 bug 模式：表面正确边界错、状态泄漏、隐式依赖
+   - property-based / mutation / invariant testing 实战配置
+5) 长运行稳定性工程
+   - session 长跑退化机理：状态累积、context 退化、compact 降级、token 耗尽
+   - 诊断与防御模式
+
+## 重要约束（必须遵守）
+- 遵守 `.nightshift/L1-L7-learning-principles.md`。
+- per-topic <= 5 patterns。
+- active directions <= 15。
+- 每 5 cycles 必须压缩（合并优先，禁止纯 split 膨胀）。
+- 每轮写完必须执行检索测试，并在 morning-brief 记录结果。
+
+## 每次运行只执行 1 个 cycle（runner 会自动续跑）
+1) 从 `.nightshift/state.json` 读取当前 cycle，执行 cycle + 1。
 2) 本 cycle 必须真实落盘：
-   - 更新/新增 `references/patterns/*`
-   - 更新 `references/patterns/_master_index.md`
-   - 更新 `morning-brief.md`
-   - 更新 `.nightshift/state.json`
-3) 本 cycle 必须 `git commit`（不要 push）
-4) 禁止修改 `PRD/`、`generator/`、项目源代码
-
-## 激进动态策略（必须执行）
-每个 cycle 都要进行方向演化（至少触发其中 2 项）：
-- **扩展**：新增 1 个候选方向或子方向（来自 HN / OPML / 官方文档）
-- **分裂**：把宽泛方向拆成更具体可执行子方向
-- **合并**：将重复方向合并，避免同构 pattern 重复
-- **收缩**：连续 3 个 cycle 无增量的方向移入 `exhausted_directions`
-- **复活**：若旧方向出现高价值新证据，可从 exhausted 恢复
-
-## Topic 动态更新（必须）
-- 允许并鼓励自动新建 topic 目录（含 `_index.md`）
-- 每个 cycle 至少输出 1 条“非重复元问题”的 pattern 或对现有 pattern 的高质量合并升级
-- 严禁只堆链接，必须有“元问题 + 核心解法 + 证据链 + 反模式”
-
-## 方向锚点（可扩展，不是上限）
-- 24h 无人 AI 推进（可控守门 + 可审计）
-- 前端设计系统（可次日直接实战）
-- 后端契约优先与回放验证
-- PRD -> Epic -> Issue -> PR -> Pattern 执行闭环
+   - `references/patterns/*`
+   - `references/patterns/_master_index.md`
+   - `morning-brief.md`
+   - `.nightshift/state.json`
+3) 本 cycle 必须 `git commit`（不要 push）。
+4) 禁止修改 `PRD/`、`generator/`、项目源代码。
 
 ## 强制信源
 - https://t.co/dwAiIjlXet（重定向到 HN Popular Blogs OPML）
 - Hacker News top/show/new
-- 遇到不确定点，补官方文档证据链
+- 不确定点补官方文档证据链
 
-## Compact / token 上限容错
-- 若发生上下文压缩或 token 接近上限，先完成“最小可交付落盘 + commit”再退出
-- 退出前在输出末尾打印：`[COMPACT_SAFE_EXIT] cycle=<N> commit=<SHA> mode=AGGRESSIVE_DYNAMIC`
+## Compact 容错
+- 若发生上下文压缩或 token 逼近上限，先完成最小可交付落盘 + commit 再退出。
+- 退出前打印：`[COMPACT_SAFE_EXIT] cycle=<N> commit=<SHA> mode=CONSTRAINED_EXPANSION`
 
-完成 1 个 cycle 后立刻结束本次运行，不要在本次运行内继续下一个 cycle。
+完成 1 个 cycle 后立刻退出本次运行。
