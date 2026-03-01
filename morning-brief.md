@@ -1,3 +1,63 @@
+# Morning Brief（Nightshift Cycle 107）
+
+> 更新时间：2026-03-01 04:41 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/product-delivery/required-checks-snapshot-closure-gate.md`（同化更新）
+2. `references/patterns/product-delivery/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 团队把 workflow 里的 `branches/paths/tags` 当作 ruleset required workflow 的触发边界，导致 checks 认知与实际执行不一致
+  2. 新增 required workflow 后，已打开 PR 没有自动补跑，仍被当作“已满足当前门禁”
+  3. merge queue 在不同仓库配置了不同的队列级通过策略与状态检查超时，闭环口径漂移
+- 已有 pattern 覆盖检查：
+  - `references/patterns/product-delivery/required-checks-snapshot-closure-gate.md` 已覆盖同一元问题（声明 checks 与运行时真实 checks 一致性）
+- 判定：**同化**（补强 ruleset workflow 触发面 + existing PR 补跑触发 + queue 级门禁配置，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+  - raw OPML：`https://gist.githubusercontent.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b/raw/7f5f548c84ea3be5f059f77566cd50f4f1457a9f/hn-popular-blogs-2025.opml`
+- HN 三车道（2026-03-01）
+  - `top`: `Microgpt`
+  - `show`: `Show HN: Xmloxide – an agent made rust replacement for libxml2`
+  - `newest`: `Ask HN: What did you find out or explore today?`
+
+### 官方证据链（不确定点补链）
+
+- GitHub Rulesets Available Rules：required workflows 不沿用 workflow 文件中的 `branch/path/tag` 过滤器，采用默认 activity types
+- GitHub Troubleshooting Required Workflows：新增 required workflow 后，已打开 PR 需更新基分支/新提交/reopen 才会执行
+- GitHub Managing Merge Queue：存在 `Require all queue entries to pass required checks` 与 `Status check timeout`（5-60 分钟）两个队列级策略位
+
+### 检索测试（L5，写后执行）
+
+- Query A：`required workflows do not use branches paths tags filters`
+  - 命中：`references/patterns/product-delivery/required-checks-snapshot-closure-gate.md`（1/1）
+  - 动作：建立 `ruleset_effective_scope` 快照，禁止假设 workflow 过滤器仍生效
+- Query B：`required workflow added to ruleset existing open pull request not run`
+  - 命中：`references/patterns/product-delivery/required-checks-snapshot-closure-gate.md`（1/1）
+  - 动作：在运行时证据中强制记录 `recheck_trigger`
+- Query C：`merge queue require all queue entries pass required checks timeout`
+  - 命中：`references/patterns/product-delivery/required-checks-snapshot-closure-gate.md`（1/1）
+  - 动作：把 `queue_pass_policy` 与 `status_check_timeout_minutes` 纳入 drift 对账
+
+### 约束检查
+
+- per-topic <= 5：通过（product-delivery=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：本轮 cycle=107（下一个强制压缩点=110）
+
+---
+
 # Morning Brief（Nightshift Cycle 106）
 
 > 更新时间：2026-03-01 04:27 UTC  

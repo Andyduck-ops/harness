@@ -1,7 +1,7 @@
 {
   "version": "1.1",
-  "updated_at": "2026-03-01T04:27:48Z",
-  "cycle": 106,
+  "updated_at": "2026-03-01T04:40:31Z",
+  "cycle": 107,
   "status": "paused",
   "mode": "CONSTRAINED_EXPANSION",
   "active_directions": [
@@ -14,7 +14,7 @@
   "dormant_directions": [],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 106,
+    "last_cycle": 107,
     "actions": [
       {
         "type": "compress",
@@ -145,6 +145,12 @@
         "reason": "cycle 106：将 Agent SDK 生产稳定性新证据（errorHandlers 错误分层、RunConfig handoff_history_mapper 回退、Stop/SubagentStop 钩子防递归、Flow @persist 恢复）同化到 runtime-governance canonical pattern（不新建）",
         "updated_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
         "new_patterns": 0
+      },
+      {
+        "type": "assimilate",
+        "reason": "cycle 107：将 PRD 信息保真新证据（ruleset workflows 触发面不沿用 workflow filters、新增 required workflow 对既有 open PR 不自动补跑、merge queue 队列级通过策略与超时配置）同化到 product-delivery canonical pattern（不新建）",
+        "updated_pattern": "references/patterns/product-delivery/required-checks-snapshot-closure-gate.md",
+        "new_patterns": 0
       }
     ]
   },
@@ -157,8 +163,8 @@
     "https://platform.openai.com/docs/guides/conversation-state"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
-  "last_cycle_commit": "pending-cycle-106",
+  "last_pattern": "references/patterns/product-delivery/required-checks-snapshot-closure-gate.md",
+  "last_cycle_commit": "pending-cycle-107",
   "constraints": {
     "per_topic_max_patterns": 5,
     "active_direction_max": 15,
