@@ -1,3 +1,55 @@
+# Morning Brief（Nightshift Cycle 127）
+
+> 更新时间：2026-03-01 19:16 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：空白识别 + 同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/lanes/engineering/patterns/evidence-governance/artifact-retention-reconciliation-governance.md`（cycle 127 同化更新）
+2. `references/lanes/engineering/patterns/evidence-governance/_index.md`
+3. `references/lanes/engineering/patterns/_master_index.md`
+4. `references/bridges/cross-lane-links.md`
+5. `morning-brief.md`
+
+### Scout + Analyst + Cartographer 团队结论
+
+- 空白区域（P0）：
+  1. 仓库级 long-context 索引分片/召回/版本回滚合同缺失
+  2. background agents 编排运行面（lease/heartbeat/dead-letter/backpressure）缺失
+  3. requirement→assertion 自动映射与语义符合性评分缺失
+  4. AI generated code 的 prod-like E2E 场景验证闭环缺失
+- 本轮最小可执行增量：优先补“跨证据工件同源阻断层”，避免“检查全绿但证据错链”。
+
+### 同化决策（L2/L7）
+
+- 归属元问题：`evidence retention + reconciliation + promotion attestation`
+- 判定：同化到 `artifact-retention-reconciliation-governance`（不新建 pattern）
+- 增量：引入 `Artifact Lineage Digest Lock Gate (ALDLG)`，新增三件套工件合同：
+  - `artifact_lineage_manifest.json`
+  - `artifact_digest_set.json`
+  - `artifact_promotion_attestation.json`
+- 阻断条件：`artifact_lineage_lock_pass=true` 才允许 `promote/merge`。
+
+### 检索测试（L5，写后执行）
+
+- Query A：`cross artifact digest mismatch same lineage gate`
+  - 命中：`references/lanes/engineering/patterns/evidence-governance/artifact-retention-reconciliation-governance.md`
+  - 动作：启用 `artifact_lineage_lock_pass` 阻断跨工件错链
+- Query B：`required_checks pass but artifact source not same head`
+  - 命中：`references/lanes/engineering/patterns/evidence-governance/artifact-retention-reconciliation-governance.md`
+  - 动作：强制 `head_sha parity` 校验
+- Query C：`contract replay report from stale run accepted`
+  - 命中：`references/lanes/engineering/patterns/evidence-governance/artifact-retention-reconciliation-governance.md`
+  - 动作：启用 `freshness window + digest_set attestation`
+
+### 约束检查
+
+- 读写范围：仅修改 `references/lanes/engineering/`，跨 lane 仅写 `references/bridges/` 摘要
+- 禁改路径：未修改 `PRD/`、`generator/`
+- 交付节奏：本轮已 commit（不 push）
+
+---
 # Morning Brief（Nightshift Cycle 126）
 
 > 更新时间：2026-03-01 06:59 UTC  
