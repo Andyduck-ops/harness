@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "updated_at": "2026-03-01T00:50:07Z",
-  "cycle": 83,
+  "updated_at": "2026-03-01T00:55:10Z",
+  "cycle": 84,
   "status": "active",
   "mode": "AGGRESSIVE_DYNAMIC",
   "active_directions": [
@@ -92,38 +92,41 @@
     "待决僵局分类词典版本漂移门禁（pending-deadlock taxonomy-version drift gate）",
     "组件验收三测并联门禁（storybook interaction-a11y-visual tri-check gate）",
     "组件验收验签门禁（storybook acceptance attestation gate）",
-    "前端交付证据同构治理（token-schema + storybook attestation gate）"
+    "前端交付证据同构治理（token-schema + storybook attestation gate）",
+    "Token 规范版本钉住门禁（token-spec pinning gate）",
+    "组件三测并联门禁（storybook tri-check parallel gate）",
+    "Token-验收包同源验签门禁（token-bundle provenance attestation gate）"
   ],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 83,
+    "last_cycle": 84,
     "actions": [
       {
         "type": "expand",
-        "added": "前端交付证据同构治理（token-schema + storybook attestation gate）",
-        "reason": "将前端次日实战从“测试通过”提升为“验收包可验签”，补齐交付同一性失效面。"
+        "added": "Token 规范版本钉住门禁（token-spec pinning gate）",
+        "reason": "Design Tokens 草案与正式版并存，必须将 schema 版本声明前置为硬门禁。"
       },
       {
         "type": "split",
         "from": [
-          "组件验收治理（story + a11y + visual gate）"
+          "前端交付证据同构治理（token-schema + storybook attestation gate）"
         ],
         "into": [
-          "组件验收三测并联门禁（storybook interaction-a11y-visual tri-check gate）",
-          "组件验收验签门禁（storybook acceptance attestation gate）"
+          "Token 规范版本钉住门禁（token-spec pinning gate）",
+          "组件三测并联门禁（storybook tri-check parallel gate）"
         ],
-        "reason": "测试执行覆盖与产物同一性验签属于不同失效面，分治后可独立阻断与审计。"
+        "reason": "规范版本正确与测试覆盖充分属于不同失效面，拆分后可独立阻断和审计。"
       },
       {
         "type": "merge",
         "from": [
-          "设计令牌治理（schema + drift lint）",
-          "组件验收验签门禁（storybook acceptance attestation gate）"
+          "Token 规范版本钉住门禁（token-spec pinning gate）",
+          "色觉仿真失败证据签名治理（color-vision replay attestation gate）"
         ],
         "into": [
-          "前端交付证据同构治理（token-schema + storybook attestation gate）"
+          "Token-验收包同源验签门禁（token-bundle provenance attestation gate）"
         ],
-        "reason": "token schema 漂移与验收验签必须同构治理，避免“局部通过、整体失真”。"
+        "reason": "仅测通过不足以证明交付同一性，需用 provenance 绑定 token 与验收包。"
       }
     ]
   },
@@ -151,6 +154,6 @@
     "https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/ui-governance/storybook-acceptance-attestation-gate.md",
-  "last_cycle_commit": "pending-cycle-83"
+  "last_pattern": "references/patterns/token-governance/token-spec-pinning-attestation-gate.md",
+  "last_cycle_commit": "pending-cycle-84"
 }

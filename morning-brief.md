@@ -1,3 +1,59 @@
+# Morning Brief（Nightshift Cycle 84）
+
+> 更新时间：2026-03-01 09:45 UTC  
+> 本轮目标：把前端设计系统从“测得过”升级为“规范版本可钉住 + 交付产物可验签”。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/token-governance/token-spec-pinning-attestation-gate.md`
+2. `references/patterns/token-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向  
+  - `Token 规范版本钉住门禁（token-spec pinning gate）`  
+  - reason: Design Tokens 草案与正式版本并存，必须将 schema 版本声明前置为硬门禁。
+- `split`：拆分方向  
+  - from: `前端交付证据同构治理（token-schema + storybook attestation gate）`  
+  - into: `Token 规范版本钉住门禁（token-spec pinning gate）`  
+  - into: `组件三测并联门禁（storybook tri-check parallel gate）`  
+  - reason: “规范版本正确”与“测试覆盖充分”是不同失效面，需拆分治理。
+- `merge`：合并方向  
+  - from: `Token 规范版本钉住门禁（token-spec pinning gate）`  
+  - from: `色觉仿真失败证据签名治理（color-vision replay attestation gate）`  
+  - into: `Token-验收包同源验签门禁（token-bundle provenance attestation gate）`  
+  - reason: 仅有测试通过不足以证明交付同一性，必须用 provenance 将 token 与验收包绑定。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML Gist  
+  - 最终 URL: `https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道样本（2026-03-01）
+  - top lane: `https://news.ycombinator.com/item?id=47197267`
+  - show lane: `https://news.ycombinator.com/item?id=47180083`
+  - newest lane: `https://news.ycombinator.com/item?id=47201858`
+- 官方文档补链（2026-03-01）
+  - Design Tokens 草案与正式版分流：`https://www.designtokens.org/tr/drafts/format/`
+  - Storybook 测试执行：`https://storybook.js.org/docs/writing-tests`
+  - GitHub required checks：`https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches`
+  - GitHub artifact attestations：`https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds`
+
+### 本轮结论
+
+- 新 pattern `token-spec-pinning-attestation-gate` 是非重复元问题：解决的是“规范版本漂移 + 交付产物同一性断裂”，不是重复的组件测试门禁。
+- 若 `token_spec_version`、`storybook_tri_check_report`、`provenance_verify_report` 不并联为 required checks，夜间自动链路会出现“测过但交付不一致”的隐性倒挂。
+- 前端设计系统次日实战可从“可演示”提升到“可审计、可回放、可追责”。
+
+### Cycle 85 预载任务
+
+1. 为 `token_schema_diff.json` 增加破坏性变更拒绝矩阵（字段删除/语义收窄/单位变更）。
+2. 在 `acceptance_bundle.json` 增加 `subject_digest` 与 `builder_identity` 一致性审计。
+3. 将 token 验签门禁接入 `candidate->issue` 晋级合同，阻断“无验签模式升级”。
+
+---
 # Morning Brief（Nightshift Cycle 83）
 
 > 更新时间：2026-03-01 09:06 UTC  
