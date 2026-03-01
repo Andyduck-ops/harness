@@ -1,3 +1,61 @@
+# Morning Brief（Nightshift Cycle 119）
+
+> 更新时间：2026-03-01 06:00 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md`（同化更新）
+2. `references/patterns/product-delivery/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. PRD 转 spec 时输出“看起来是 JSON”，但 `contract_epoch` / `replay_plan_id` 等关键字段在 schema 层面缺失
+  2. 多 agent 转译链路（spec -> tasks）里，不同执行器对同一字段名做语义近似，导致下游 contract replay 对不上
+  3. 发布前只检查 PR 关联闭环，不检查“结构化字段是否完整落盘”
+- 覆盖检查：
+  - 归属同一元问题：`需求血缘 + 契约回放` 的闭环真实性
+  - 判定：**同化**到 `prd-epic-contract-replay-closure-gate`（不新建）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news/top`: item `47202708` — `Microgpt`
+  - `show`: item `47201816` — `Show HN: DreamBOMB`
+  - `newest`: item `47203831` — `A Transition Experiment by reaching back in internet history`
+
+### 官方证据链（本轮新增）
+
+- OpenAI Structured Outputs：`strict: true` 保证输出匹配给定 JSON Schema；JSON mode 仅保证有效 JSON，不保证 schema 语义完整
+- Anthropic Tool Use：tool `input_schema` 使用 JSON Schema 定义输入合同，可用于多 agent 转译链路合同化
+- GitHub Issue Forms（既有链路继续沿用）：结构化必填字段仍是 PRD 信息守恒入口
+
+### 检索测试（L5，写后执行）
+
+- Query A：`structured outputs strict true json schema vs json mode`
+  - 命中：`references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md:121`
+  - 动作：强制 `schema-locked generation`，禁止把 JSON mode 视为字段保真
+- Query B：`anthropic tool input_schema json schema contract`
+  - 命中：`references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md:124`
+  - 动作：强制多 agent 需求转译复用同一 schema contract
+- Query C：`spec_lock_manifest schema_hash required_fields_pass`
+  - 命中：`references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md:127`
+  - 动作：新增 `spec_lock_manifest.json`，`required_fields_pass=false` 直接阻断晋级
+
+### 约束检查
+
+- per-topic <= 5：通过（product-delivery=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：通过（cycle=119 非压缩窗口，最近压缩为 cycle=115）
+
+---
 # Morning Brief（Nightshift Cycle 118）
 
 > 更新时间：2026-03-01 05:52 UTC  
@@ -3006,118 +3064,6 @@
 1. 输出 `show_resonance_window.json` 与 `show_resonance_cooldown.json` 的 schema + lint。
 2. 将 `show_resonance_reverify_pass` 接入 candidate->issue 晋级表单必填检查。
 3. 给 `show-top` 共振场景补充“冷却失败自动降级到观察队列”的处置模板。
-
-
----
-# Morning Brief（Nightshift Cycle 69）
-
-> 更新时间：2026-02-28 23:39 UTC  
-> 本轮目标：把 Show 热度晋级从“可见性阈值”升级为“复现验签阈值”，阻断仅凭热度的伪晋级。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/discovery-governance/show-repro-attestation-gate.md`
-2. `references/patterns/discovery-governance/_index.md`
-3. `references/patterns/_master_index.md`
-4. `morning-brief.md`
-5. `.nightshift/state.json`
-
-### 激进动态策略执行（本轮）
-
-- `expand`：新增方向
-  - `Show-Top 共振冷却晋级治理（show-top resonance cooldown gate）`
-  - reason: HN `top` 与 `show` 同窗共振会加速晋级冲动，需要独立冷却策略避免热度即执行。
-- `split`：拆分方向
-  - from: `Show 可执行预检门禁（show executability preflight gate）`
-  - into: `Show URL 可达门禁（show-url reachability gate）`
-  - into: `Show 复现验签门禁（show-repro attestation gate）`
-  - reason: 可达性检查与可复现验签属于不同失效面，需分离阈值和阻断依据。
-- `merge`：合并方向
-  - from: `Show 复现证据签名治理（show-repro attestation gate）`
-  - from: `Show 复现工件验签门禁（show-repro artifact attestation gate）`
-  - into: `Show 复现验签门禁（show-repro attestation gate）`
-  - reason: 两方向语义同构，合并后统一 schema 与 required checks，减少重复 pattern 漂移。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已重定向并锚定到 HN Popular Blogs OPML raw（2026-02-28）。
-- HN top/show/new API 同窗采样（2026-02-28）
-  - `topstories[0]`: item `47220686` — `Show HN: BrowserOS: Browser + Linux = local apps in your browser tab`
-  - `showstories[1]`: item `47219451` — `Show HN: Escape from Los Angeles 1996`
-  - `newstories[0]`: item `47220825` — `Show HN: Text containers in tool docs should not be comments`
-- HN Show 规则页（官方）
-  - Show 帖先进入 `shownew`，达到 4 points/2 comments 后才进入 `show`，且可设置 no-show。
-- 官方文档证据链（本轮重点）
-  - GitHub Protected Branches：required status checks 必须通过才能合并
-  - GitHub Artifact Attestations：构建产物 provenance 可加密验签
-
-### 本轮结论
-
-- Show 可见性阈值（shownew→show）是社区分发规则，不是工程可复现规则。
-- candidate->issue 晋级应增加 `show_repro_attestation_verified_pass` 硬门禁。
-- 三车道热度共振只能决定“关注优先级”，不能替代“可复现签名证据”。
-
-### Cycle 70 预载任务
-
-1. 将 `show_repro_attestation.json` 字段映射到 issue form 必填项（缺失即阻断）。
-2. 为 `show-top resonance` 方向补充最小冷却窗口与复采样阈值。
-3. 输出 `show promotion required-checks matrix`，区分可达性失败与验签失败处置路径。
-
-
----
-# Morning Brief（Nightshift Cycle 68）
-
-> 更新时间：2026-02-28 23:33 UTC  
-> 本轮目标：把 Show 热度信号从“可看”升级为“可执行”，阻断 demo 驱动的伪晋级。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/discovery-governance/show-lane-executability-gate.md`
-2. `references/patterns/discovery-governance/_index.md`
-3. `references/patterns/_master_index.md`
-4. `morning-brief.md`
-5. `.nightshift/state.json`
-
-### 激进动态策略执行（本轮）
-
-- `expand`：新增方向
-  - `Show 复现证据签名治理（show-repro attestation gate）`
-  - reason: HN `show` 条目可快速进入 `news`，需要将“可演示”与“可复现”分离并纳入可审计签名证据。
-- `split`：拆分方向
-  - from: `Show 车道可执行性门禁（show-lane executability gate）`
-  - into: `Show 演示可达性门禁（show-demo reachability gate）`
-  - into: `Show 复现工件验签门禁（show-repro artifact attestation gate）`
-  - reason: URL 可达与复现可验证是两个独立失效面，需要独立阈值和阻断条件。
-- `merge`：合并方向
-  - from: `Show 演示可达性门禁（show-demo reachability gate）`
-  - from: `HN 条目存活预检治理（dead/deleted pre-promotion gate）`
-  - into: `Show 可执行预检门禁（show executability preflight gate）`
-  - reason: 两者都用于“晋级前过滤无效条目”，合并后减少同构重复并统一预检口径。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已作为入口验证并落到 HN Popular Blogs OPML Gist（2026-02-28）。
-- HN 三车道页面同窗快照（2026-02-28）
-  - news: item `47218423` — `Show HN: Mowgli - Figma for the agent era...`
-  - show: item `47218423` — `Show HN: Mowgli...`，item `47216687` — `Show HN: A2A Coder`
-  - newest: item `47219335` — `Show HN: Solcoder...`
-- 官方文档证据链（本轮重点）
-  - GitHub Merge Queue（required checks 约束）
-  - GitHub Actions `merge_group`（队列场景检查触发）
-  - Protected Branches required status checks（不可绕过门禁）
-  - Workflow artifacts（回放证据落盘）
-
-### 本轮结论
-
-- Show 的“热度跨车道迁移”不是可执行性证明；必须先过预检合同。
-- candidate->issue 晋级应至少绑定 `capture + preflight + required-check + replay bundle` 四类证据。
-- 没有 required checks 的“手工判断”会在队列场景下失效。
-
-### Cycle 69 预载任务
-
-1. 把 `show_executability_preflight.json` 变成 issue 表单必填工件。
-2. 对 `newest` 的 Show 候选增加冷却复采样阈值。
-3. 给 `merge_group` 增补 Show 证据门禁检查模板。
 
 
 ---

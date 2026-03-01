@@ -2,7 +2,7 @@
 name: prd-epic-contract-replay-closure-gate
 topic: product-delivery
 confidence: 0.82
-verified_count: 7
+verified_count: 8
 sources:
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet -> https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b (redirect checked 2026-03-01)
   - HN top lane snapshot (https://news.ycombinator.com/news, checked 2026-03-01)
@@ -18,6 +18,9 @@ sources:
   - GitHub Docs: REST API best practices (follow redirects) (https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api)
   - OpenAPI Specification (https://spec.openapis.org/oas/latest.html)
   - Pact Docs: Provider verification (https://docs.pact.io/provider)
+  - HN lanes snapshot（news: id=47202708 "Microgpt", show: id=47201816 "Show HN: DreamBOMB", newest: id=47203831 "A Transition Experiment by reaching back in internet history"）(2026-03-01)
+  - OpenAI Structured Outputs guide（`strict: true` 保证输出匹配 JSON Schema；JSON mode 仅保证有效 JSON）(https://platform.openai.com/docs/guides/structured-outputs)
+  - Anthropic Tool Use docs（tool `input_schema` 使用 JSON Schema 定义输入合同）(https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use)
 last_verified: 2026-03-01
 rank: 3
 ---
@@ -109,3 +112,31 @@ rank: 3
 - 查询：`Waiting for status to be reported path filtering required workflow`
   - 命中：本 pattern
   - 动作：required workflow 禁止 path/branch 跳过策略
+
+## Cycle 119 同化增量：Schema-Lock 中间产物（PRD -> Spec 信息保真）
+
+目标：解决 `PRD -> spec -> arch -> tasks -> code` 过程中“字段还在、语义已丢”的隐形损失。
+
+1. 把“结构化输出”前置到需求转译层
+   - OpenAI Structured Outputs 文档明确：`strict: true` 时输出会匹配开发者给定的 JSON Schema；而 JSON mode 仅保证是有效 JSON，不保证字段语义完整。
+   - 动作：在 `PRD -> spec` 和 `spec -> tasks` 两段都强制 schema-locked 生成，禁止自由文本直接进入执行环节。
+2. 把 agent/tool 交互合同化
+   - Anthropic tool use 文档明确 `input_schema` 采用 JSON Schema。
+   - 动作：多 agent 流程中，需求转译工具统一复用同一份 schema contract，避免不同执行器各自“近似理解”导致字段漂移。
+3. 为 PECRCG 增加中间证据件
+   - 新增 `spec_lock_manifest.json`：
+     - `lineage_id`
+     - `contract_epoch`
+     - `schema_id`
+     - `schema_hash`
+     - `required_fields_pass`
+   - 规则：`required_fields_pass=false` 时直接阻断 `contract_replay_closure_pass`。
+4. 同化结论（L2）
+   - 新证据仍落在同一元问题：`需求血缘` 与 `契约回放` 的闭环真实性。
+   - 判定：同化到本 canonical pattern，不新建 topic/pattern。
+
+## Cycle 119 检索锚点（L5）
+
+- `structured outputs strict true json schema vs json mode`
+- `anthropic tool input_schema json schema contract`
+- `prd spec tasks schema lock manifest required fields pass`
