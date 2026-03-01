@@ -1,3 +1,68 @@
+# Morning Brief（Nightshift Cycle 97）
+
+> 更新时间：2026-03-01 03:58 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md`（同化更新）
+2. `references/patterns/product-delivery/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. PRD 字段进入 Issue/PR 后语义丢失，无法在发布前强制校验（字段保真）
+  2. PR 关联了 Issue，但默认分支闭环与契约 epoch 一致性未被强制（回链保真）
+  3. merge queue / path filter 导致 required checks 看似存在但实际未执行（事件面保真）
+- 已有 pattern 覆盖检查：
+  - `references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md` 覆盖同一元问题（PRD→契约→回放闭环）
+- 判定：**同化**（增强字段/回链/事件面三重保真，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `top`: `Verified Spec-Driven Development`
+  - `show`: `Show HN: Xmloxide – an agent made rust replacement for libxml2`
+  - `newest`: `Ask HN: What did you find out or explore today?`
+
+### 官方证据链（不确定点补链）
+
+- GitHub Issue Forms：`body` + `validations.required` 可把 PRD 关键字段转成结构化必填
+- GitHub Linking PR to Issue：closing keywords 仅在默认分支合并时闭环
+- GitHub Actions `merge_group`：merge queue 场景必须显式触发 required checks
+- GitHub required checks troubleshooting：路径过滤会导致 required workflow 跳过并卡在 `Waiting for status to be reported`
+- GitHub REST best practices：重定向链必须显式跟随（`301`/`302`/`307`）
+- OpenAPI 3.2（官方规范）：契约版本基线需机器可读且可差异比对
+- Pact provider verification：提供者验证是契约发布前阻断环节
+
+### 检索测试（L5，写后执行）
+
+- Query A：`issue form validations required prd_slice_id contract_epoch`
+  - 命中：`references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md`
+  - 动作：把 PRD 切片与契约版本固化为必填字段
+- Query B：`Closes default branch only keyword behavior`
+  - 命中：`references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md`
+  - 动作：把 PR 关联升级为“默认分支闭环”验收
+- Query C：`merge_group required checks merge queue`
+  - 命中：`references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md`
+  - 动作：工作流触发面强制 `pull_request + merge_group`
+- Query D：`Waiting for status to be reported path filter`
+  - 命中：`references/patterns/product-delivery/prd-epic-contract-replay-closure-gate.md`
+  - 动作：required workflow 禁用跳过策略并做漂移报告
+
+### 约束检查
+
+- per-topic <= 5：通过（product-delivery=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：本轮 cycle=97（下一个强制压缩点=100）
+
+---
 # Morning Brief（Nightshift Cycle 96）
 
 > 更新时间：2026-03-01 03:33 UTC  
