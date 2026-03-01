@@ -1,7 +1,7 @@
 # Pattern Master Index
 
 > 自动生成的全局索引。按 rank 排序。
-> 最后更新：2026-02-28
+> 最后更新：2026-03-01
 
 ## Top Patterns
 
@@ -79,6 +79,7 @@
 | 3 | [attested-evidence-provenance-gate](./evidence-governance/attested-evidence-provenance-gate.md) | evidence-governance | 0.76 | OPML + HN + HN API + GitHub Attestations |
 | 3 | [contradiction-ledger-freeze-gate](./control-plane-governance/contradiction-ledger-freeze-gate.md) | control-plane-governance | 0.76 | OPML + HN + HN API + GitHub Required Checks + Artifacts + merge_group |
 | 3 | [contradiction-sla-tombstone-gate](./control-plane-governance/contradiction-sla-tombstone-gate.md) | control-plane-governance | 0.77 | OPML + HN(news/show/newest) + HN API + GitHub Required Checks + merge_group |
+| 3 | [conflict-arbitration-dual-phase-contract-gate](./control-plane-governance/conflict-arbitration-dual-phase-contract-gate.md) | control-plane-governance | 0.80 | OPML + HN(news/show/newest) + GitHub merge_group + Required Checks + Issue Forms |
 | 3 | [claim-anchor-retrievability-gate](./evidence-governance/claim-anchor-retrievability-gate.md) | evidence-governance | 0.77 | OPML + HN + HN API + GitHub Gists API |
 | 3 | [tombstone-replay-promotion-gate](./evidence-governance/tombstone-replay-promotion-gate.md) | evidence-governance | 0.79 | OPML + HN + HN API + GitHub Rules |
 | 3 | [artifact-digest-mismatch-escalation-gate](./artifact-governance/artifact-digest-mismatch-escalation-gate.md) | artifact-governance | 0.79 | OPML + HN + HN API + GitHub Attestations + GitHub Rules |
@@ -112,7 +113,7 @@
 | [accessibility-governance/](./accessibility-governance/) | 3 | 文本/非文本对比预算、回退斜率门禁与多主题回放冻结治理 |
 | [product-delivery/](./product-delivery/) | 7 | PRD 到执行闭环 |
 | [release-governance/](./release-governance/) | 10 | 夜间产出与白天晋级的发布治理 |
-| [control-plane-governance/](./control-plane-governance/) | 2 | 社区信号与官方规则冲突的冻结、超时墓碑化、复验与复批控制面治理 |
+| [control-plane-governance/](./control-plane-governance/) | 3 | 社区信号与官方规则冲突的冻结、超时墓碑化、复验与复批控制面治理 |
 | [capacity-governance/](./capacity-governance/) | 3 | merge queue 构建并发、部署审批吞吐与批量放行冲击吸收的耦合预算治理 |
 | [recovery-governance/](./recovery-governance/) | 1 | 长时自治执行中的可恢复性治理 |
 | [context-governance/](./context-governance/) | 2 | 上下文预算、压缩交接与回放冻结治理 |
@@ -133,7 +134,7 @@
 
 ## 统计
 
-- 总计：89 patterns
+- 总计：90 patterns
 - 平均 confidence：0.79
 - 高置信度（≥0.90）：5 patterns
 - 待验证（<0.80）：68 patterns

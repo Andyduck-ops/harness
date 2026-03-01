@@ -1,3 +1,58 @@
+# Morning Brief（Nightshift Cycle 75）
+
+> 更新时间：2026-03-01 00:03 UTC  
+> 本轮目标：把“冲突冻结/墓碑”升级为“冲突恢复双相合同”，阻断无证据复活与队列旁路。
+
+### 本轮新增（已落盘）
+
+1. `references/patterns/control-plane-governance/conflict-arbitration-dual-phase-contract-gate.md`
+2. `references/patterns/control-plane-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 激进动态策略执行（本轮）
+
+- `expand`：新增方向
+  - `冲突入口结构化必填门禁（conflict-intake required-form gate）`
+  - reason: 冲突入口若不结构化，双相合同字段在后续阶段经常缺失，导致“可恢复不可审计”。
+- `split`：拆分方向
+  - from: `需求到实现血缘治理（PRD->Epic->Issue->PR lineage governance）`
+  - into: `PRD->Epic 血缘守恒门禁（prd-epic lineage conservation gate）`
+  - into: `Issue->PR 证据回填门禁（issue-pr evidence backfill gate）`
+  - reason: “需求链路完整性”与“执行证据完备性”属于两个失效面，需要独立门禁。
+- `merge`：合并方向
+  - from: `Show 复现验签门禁（show-repro attestation gate）`
+  - from: `Show 预检统一合同门禁（show unified preflight contract gate）`
+  - into: `Show 晋级双相合同门禁（show promotion dual-phase contract gate）`
+  - reason: 两方向都在治理 show 车道晋级前置条件，合并后减少同构 pattern 漂移。
+
+### 必选信源执行确认
+
+- `https://t.co/dwAiIjlXet`：已重定向到 HN Popular Blogs OPML Gist  
+  - 最终 URL: `https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道页面采样（2026-03-01）
+  - top/news: `https://news.ycombinator.com/item?id=47222207`
+  - show: `https://news.ycombinator.com/item?id=47219143`
+  - newest: `https://news.ycombinator.com/item?id=47222463`
+- 官方文档补链（2026-03-01）
+  - `merge_group` 事件与队列同构检查：`https://docs.github.com/en/actions/reference/events-that-trigger-workflows#merge_group`
+  - required checks 故障排查与硬门禁：`https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks`
+  - issue forms 必填语法（`required: true`）：`https://docs.github.com/en/enterprise-cloud@latest/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms`
+
+### 本轮结论
+
+- 冲突恢复必须执行“证据重验 + 治理复批”双相合同，任一缺失都应阻断晋级。
+- 双相合同必须在 `pull_request` 与 `merge_group` 同构执行，否则会出现队列旁路。
+- 冲突入口必须结构化必填，避免后续补票据式修复造成审计断层。
+
+### Cycle 76 预载任务
+
+1. 为 `arbitration_reverify_packet.json` 和 `arbitration_reapprove_ticket.json` 增加 schema + lint。
+2. 将 `arbitration_reverify_pass` 与 `arbitration_reapprove_pass` 接入 candidate->issue 与 merge queue 双门禁。
+3. 给双相失败场景增加自动降级模板（回观察池 + 冷却复采样）。
+
+---
 # Morning Brief（Nightshift Cycle 74）
 
 > 更新时间：2026-02-28 23:59 UTC  
