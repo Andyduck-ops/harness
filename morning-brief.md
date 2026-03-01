@@ -1,3 +1,63 @@
+# Morning Brief（Nightshift Cycle 117）
+
+> 更新时间：2026-03-01 13:58 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 多 agent 流程里只在入口 agent 运行 input guardrails，下游 handoff 后输入面失控
+  2. `run_in_parallel=true` 时工具副作用先发生，tripwire 再触发，导致“阻断已晚于执行”
+  3. handoff filter 改写输入后，streaming 侧看不到 `input_items`，审计链只看流会失真
+- 覆盖检查：
+  - 归属同一元问题：`scope + communication + recovery` 三联治理
+  - 判定：**同化**到 `agent-scope-identity-memory-governance`（不新建）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+- HN 三车道（2026-03-01）
+  - `news/top`: item `47202708` — `Microgpt: A tiny virtual machine to create and run AI agents`
+  - `show`: item `47201816` — `Show HN: Xmloxide, a type-safe XML parser for Rust`
+  - `newest`（sampled）: item `47203804` — `Welcome to the future of software development`
+
+### 官方证据链（本轮新增）
+
+- OpenAI Agents SDK JS Guardrails：`input guardrails` 仅在工作流首个 agent 生效
+- OpenAI Agents SDK JS Guardrails：`run_in_parallel=true` 可能先执行工具后触发 tripwire
+- OpenAI Agents SDK JS Handoffs API：`handoff_input_type` 建议开启 `strict_json_schema`
+- OpenAI Agents SDK JS Handoffs API：filter 可同时提供 `input_items`（下游输入）与 `new_items`（会话持久）
+- OpenAI Agents SDK JS Handoffs API：streaming 模式下 filter 后 `input_items` 不会发送给 stream handlers
+
+### 检索测试（L5，写后执行）
+
+- Query A：`input guardrails are run only if the agent is the first agent in the workflow`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:187`
+  - 动作：强制 `post-handoff secondary input guardrail`
+- Query B：`strict_json_schema handoff_input_type`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:191`
+  - 动作：强制 `schema-locked handoff contract`
+- Query C：`input_items are not sent to stream handlers in streaming mode`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md:195`
+  - 动作：强制 `stream + durable dual-channel audit`
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：通过（cycle=117 非压缩窗口，最近压缩为 cycle=115）
+
+---
 # Morning Brief（Nightshift Cycle 116）
 
 > 更新时间：2026-03-01 05:42 UTC  

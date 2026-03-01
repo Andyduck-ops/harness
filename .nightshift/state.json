@@ -1,7 +1,7 @@
 {
   "version": "1.1",
-  "updated_at": "2026-03-01T05:42:20Z",
-  "cycle": 116,
+  "updated_at": "2026-03-01T05:47:59Z",
+  "cycle": 117,
   "status": "paused",
   "mode": "CONSTRAINED_EXPANSION",
   "active_directions": [
@@ -14,7 +14,7 @@
   "dormant_directions": [],
   "exhausted_directions": [],
   "direction_evolution": {
-    "last_cycle": 116,
+    "last_cycle": 117,
     "actions": [
       {
         "type": "compress",
@@ -217,6 +217,12 @@
         "reason": "cycle 116：将长运行稳定性新证据（subagent transcript 独立持久化、resume 连续性、errorHandlers maxTurns 单一内建兜底、handoff 默认 filter 回落、CrewAI 监听与持久化前置）同化到 runtime-governance compaction canonical pattern（不新建）",
         "updated_pattern": "references/patterns/runtime-governance/context-compaction-replay-governance.md",
         "new_patterns": 0
+      },
+      {
+        "type": "assimilate",
+        "reason": "cycle 117：将 guardrail 触发面与 handoff 输入语义新证据（首 agent input guardrail 范围、run_in_parallel 副作用时序、strict_json_schema 与 input_items/new_items 双轨、streaming 可见性限制）同化到 runtime-governance canonical pattern（不新建）",
+        "updated_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
+        "new_patterns": 0
       }
     ]
   },
@@ -229,8 +235,8 @@
     "https://platform.openai.com/docs/guides/conversation-state"
   ],
   "last_brief": "morning-brief.md",
-  "last_pattern": "references/patterns/runtime-governance/context-compaction-replay-governance.md",
-  "last_cycle_commit": "pending-cycle-116",
+  "last_pattern": "references/patterns/runtime-governance/agent-scope-identity-memory-governance.md",
+  "last_cycle_commit": "pending-cycle-117",
   "constraints": {
     "per_topic_max_patterns": 5,
     "active_direction_max": 15,

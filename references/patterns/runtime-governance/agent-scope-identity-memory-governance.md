@@ -2,7 +2,7 @@
 name: agent-scope-identity-memory-governance
 topic: runtime-governance
 confidence: 0.87
-verified_count: 24
+verified_count: 25
 sources:
   - OpenAI Agent Platform docs (Python/TypeScript/Go support) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (2026-03-01)
@@ -41,9 +41,12 @@ sources:
   - OpenAI Agents SDK JS Sessions docs（setMaxTurnsPerTurn / setSessionLimit memory budget policy）(2026-03-01)
   - OpenAI Agents SDK JS Sessions docs（sessionInputCallback pre-send carry-over trimming）(2026-03-01)
   - OpenAI Agents SDK JS running agents docs（errorHandlers.maxTurnsExceeded fallback strategy）(2026-03-01)
+  - OpenAI Agents SDK JS guardrails docs（input guardrails 仅在工作流首个 agent 生效 + `run_in_parallel` 并发副作用边界）(2026-03-01)
+  - OpenAI Agents SDK JS handoffs API ref（`strict_json_schema` 建议 + `input_items/new_items` 语义 + streaming 可见性限制）(2026-03-01)
   - HN top/show/new snapshots (2026-03-01)
   - HN top item: Deterministic Programming with LLMs (using Jujutsu)（id=47203405, 2026-03-01）
   - HN newest item: Show HN: Memctl: Persistent memory and context management for AI coding agents（id=47205594, 2026-03-01）
+  - HN lanes snapshot（news: id=47202708 "Microgpt", show: id=47201816 "Xmloxide", newest sampled: id=47203804 "Welcome to the future of software development"）(2026-03-01)
   - HN Popular Blogs OPML via https://t.co/dwAiIjlXet (redirect verified 2026-03-01)
 last_verified: 2026-03-01
 rank: 3
@@ -179,6 +182,20 @@ Demo 能跑不等于 production 能跑。
 - **失败恢复要绑定预算耗尽类型，而不是统一重试**：JS `errorHandlers.maxTurnsExceeded` 可把“预算耗尽”与普通异常分开处理；推荐降级到 checkpoint replay 或 background 恢复链路。
 - **社区热区继续收敛到“持久记忆 + 可预测执行”**：HN `top`（Deterministic Programming with LLMs）与 `newest`（Memctl persistent memory）共同提示：production 断裂点仍是记忆治理与可恢复性，而不是 agent 数量扩张。
 
+## Cycle 117 同化增量（Guardrail 触发面收口 + Handoff 输入语义固化）
+
+- **输入护栏并非全链路默认生效**：OpenAI Agents JS guardrails 文档明确，`input guardrails` 仅在“工作流首个 agent”上运行；
+  - 治理动作：多 agent 链路必须在交接后执行二次输入校验，禁止假设下游 agent 自动继承首段 guardrail。
+- **并行护栏仍可能先触发工具副作用**：同文档指出 `run_in_parallel=true` 时可能先执行工具再触发 tripwire；
+  - 治理动作：含外部副作用的工具统一降级串行护栏，并在执行前增加 dry-run/intent gate。
+- **handoff 输入结构要强约束而不是软约定**：Handoffs API ref 对 `handoff_input_type` 提供 `strict_json_schema`（强烈建议开启）；
+  - 治理动作：跨 agent 通信合同默认开启 strict schema，避免“字段看似兼容、语义实际漂移”。
+- **过滤与持久化是双轨，不可混为一谈**：Handoffs API ref 允许 filter 返回 `input_items`（发送给下一 agent）并保留 `new_items`（写回会话历史）；
+  - 治理动作：回放证据包必须同时记录“下游输入视图”和“会话持久视图”，否则无法解释通信分歧。
+- **streaming 可见性有盲区**：同文档明确 streaming 模式下，filter 后的 `input_items` 不会推送到 stream handlers；
+  - 治理动作：生产审计必须补充非流式落盘日志，避免只看实时流导致审计缺失。
+- **强制信源侧证（本轮）**：`https://t.co/dwAiIjlXet` 重定向仍指向 HN Popular Blogs OPML；HN `news/show/newest` 当窗继续高频出现 agent 工程实践议题。
+
 ## 合并来源
 
 - agent scope drift severity budget
@@ -193,6 +210,7 @@ Demo 能跑不等于 production 能跑。
 - OpenAI JS running agents + Python handoffs + Anthropic hooks/subagents + CrewAI @persist 共同补强了“错误分层恢复 + 停机防递归 + 持久子代理隔离”证据链
 - OpenAI JS Sessions（`setMaxTurnsPerTurn`/`setSessionLimit`/`sessionInputCallback`）与 JS running agents（`errorHandlers.maxTurnsExceeded`）补强了“记忆预算闸门 + 预算耗尽恢复”执行合同
 - HN `top/newest`（Deterministic Programming with LLMs / Memctl）作为“可预测执行 + 持久记忆”社区热区侧证
+- OpenAI JS guardrails（首 agent 输入护栏触发面 + 并行副作用边界）与 JS handoffs API（strict schema + input/history 双轨 + streaming 可见性限制）补强了“通信合同可验证 + 审计可回放”执行合同
 
 ## 检索测试
 
@@ -262,3 +280,12 @@ Demo 能跑不等于 production 能跑。
 - 查询：`errorHandlers maxTurnsExceeded fallback replay`  
   命中：本 pattern  
   动作：收敛到 `budget-exhausted recovery branch + checkpoint resume`
+- 查询：`input guardrails are run only if the agent is the first agent in the workflow`  
+  命中：本 pattern  
+  动作：收敛到 `post-handoff secondary input guardrail`
+- 查询：`strict_json_schema handoff_input_type`  
+  命中：本 pattern  
+  动作：收敛到 `schema-locked handoff contract`
+- 查询：`input_items are not sent to stream handlers in streaming mode`  
+  命中：本 pattern  
+  动作：收敛到 `stream + durable dual-channel audit`
