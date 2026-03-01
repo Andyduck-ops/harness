@@ -21,11 +21,39 @@ morning-brief.md 增量更新，人随时打开都能看到最新进展。
 
 ---
 
-## 执行模型：持续学习循环
+## 两个 Nightshift 的关系
+
+Harness 有两个独立的 nightshift 实现：
+
+| | nightshift | nightshift-phi |
+|---|---|---|
+| **领域** | AI 工程实践 | 哲学与方法论 |
+| **半衰期** | 1-3 年 | 10-100 年 |
+| **目标** | 怎么做（How） | 为什么这样做（Why） |
+| **消费场景** | 具体实现时检索 | 决策和思考时检索 |
+| **架构** | 共享 L1-L7 约束 | 共享 L1-L7 约束 |
+
+两个 skill 完全独立运行，知识库物理隔离。跨域关联在人审核时发现。
+
+---
+
+## 执行模型：三角色 Team 架构
+
+### Step 1: 组建 Team
+
+使用 `spawn_team` 创建三角色团队：
+
+| 角色 | 职责 | 模型 |
+|------|------|------|
+| cartographer | 知识制图、方向决策、压缩合并 | gpt-5.3-codex |
+| scout | 搜索探索、信源采集 | gpt-5.2 |
+| analyst | 第一性原理验证、蒸馏 | gpt-5.3-codex |
+
+**Cartographer 是 Lead**，执行持续循环。
 
 ### 核心循环
 
-
+Cartographer 读取知识地图 → 识别空白 → 指派 Scout 探索 → Scout 搜索信源 → Analyst 验证蒸馏 → Cartographer 合并压缩 → 更新 morning-brief → Git commit → 下一轮
 
 ### 目标选择策略（轮转）
 
@@ -200,17 +228,91 @@ morning-brief.md 增量更新，人随时打开都能看到最新进展。
 
 ---
 
+## 学习原则（Anti-Governance-Recursion）
+
+> **来自 nightshift 第一轮运行的教训：87 cycles，103 patterns 膨胀到 33 topics。**
+> **76 个碎片 pattern 本质是同一主题的不同切面。根因是只 split 不 merge。**
+
+以下 7 条原则是硬约束，Cartographer 必须在每个 cycle 遵守。
+
+### L1: 学习是压缩不是积累（饱和门）
+
+**per-topic pattern 上限 = 5。** 超过 5 个时，必须先 merge 再添加。
+新 pattern 必须证明它和已有 5 个解决的是不同的具体问题。
+
+### L2: 默认同化，例外创建（Assimilate-First）
+
+发现新信息后，Cartographer 必须先执行 3 问比较：
+
+1. 列出新发现能解决的 3 个具体场景
+2. 逐个检查：已有 patterns 能解决这些场景吗？
+3. 判定：
+   - 3 个场景全部已被覆盖 → **不入库**，更新已有 pattern 的 sources
+   - 1-2 个场景已覆盖 → **合并**到最相关的已有 pattern
+   - 3 个场景全新 → **创建**新 pattern
+
+**默认路径是同化，不是创建。**
+
+**检索信噪比约束**：同化的目标是让未来检索更高效，不是减少文件数。
+判断是否同化时，问："有人搜这个问题时，命中这个 pattern 能直接得到答案吗？"
+- 同 topic 同元问题 → 同化（信噪比不变或提升）
+- 跨 topic 或不同元问题维度 → 优先创建新 pattern（避免信噪比下降）
+- 一个 pattern 不应承载超过一个元问题——否则它变成噪声源而非知识源
+
+### L3: 注意力有限（方向上限）
+
+**active_directions 硬上限 = 15。**
+- 新方向只能从 dormant 槽位释放或 serendipity 产生
+- 无空槽时，必须先收缩或合并一个方向
+
+### L4: 周期性压缩（Compression Cycle）
+
+**每 5 cycles 强制执行一次压缩：**
+1. 遍历所有 topics，找可合并的 patterns → merge
+2. 跨 topic 检查：本质相同但散在不同 topic 的 → 合并或重新归类
+3. 输出 compression_report（合并了什么、为什么）
+
+这模拟人脑睡眠时的 replay + compression。
+
+### L5: 检索测试 + 功能去重
+
+新 pattern 写完后，立即自测：
+
+> "面对什么决策/设计选择时，我会查这个 pattern？查了能得到什么具体指导？"
+
+- 如果回答模糊 → pattern 不够具体，不入库
+- 如果回答和已有 pattern 重复 → 同化到已有 pattern
+- 如果能给出已有 pattern 无法覆盖的具体指导 → 入库
+
+### L6: 显式衰减
+
+- 10 cycles 无引用无更新 → 标记 dormant
+- 30 cycles 仍 dormant → 移入 archive/
+- 不使用时间（天/月），使用 cycle 计数——因为运行频率不固定
+
+### L7: 不量化不可量化的
+
+- **可量化的**：pattern 数量、cycle 数、source 个数、方向数量
+- **不可量化的**："相似度"、"重要性"、"新颖程度"
+- 不可量化的东西用**功能性判断**替代数值判断
+- confidence 分数只保留粗粒度（高/中/低），不伪精确到小数点
+
+---
+
 ## 核心原则
 
-> **Nightshift 是不知疲倦的图书馆员。**
+> **Nightshift 是不知疲倦的知识制图者。**
 >
-> 它整理、分类、清洁知识库。
-> 它永远不会重新设计图书馆本身——那是人 + calibrate 的事。
+> 给它几个大方向，它自己探索整片大陆，动态调整路线。
 
 > **Morning brief 是增量的，不是最后才写的。**
 >
 > 人随时打开 morning-brief.md 都能看到最新进展。
 > 不需要等到"完成"才能看结果。
+
+> **方向是活的，不是死的。**
+>
+> 探索过程中不断发现新的子领域、合并重复、淘汰穷尽的方向。
 
 > **Commit but never push.**
 >
