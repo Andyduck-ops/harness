@@ -1,8 +1,8 @@
 ---
 name: agent-scope-identity-memory-governance
 topic: runtime-governance
-confidence: 0.86
-verified_count: 22
+confidence: 0.87
+verified_count: 23
 sources:
   - OpenAI Agent Platform docs (Python/TypeScript/Go support) (2026-03-01)
   - OpenAI Agents SDK Sessions docs (2026-03-01)
@@ -24,12 +24,17 @@ sources:
   - OpenAI API Conversations / conversation state docs (2026-03-01)
   - Anthropic Agent SDK / tool use docs (2026-03-01)
   - Anthropic Claude Code subagents docs（separate context window isolation）(2026-03-01)
+  - Anthropic Claude Code subagents docs（subagent transcript persistence across restart/compaction）(2026-03-01)
+  - Anthropic Claude Code hooks guide（Stop/SubagentStop + stop_hook_active loop guard）(2026-03-01)
   - Anthropic Claude Code context editing docs（clear_tool_inputs / clear_tool_results controls）(2026-03-01)
   - Anthropic Agent SDK overview（tool loop + auto context management）(2026-03-01)
   - Anthropic API compaction docs（beta + non-ZDR constraints）(2026-03-01)
   - CrewAI Flows persistence docs (2026-03-01)
+  - CrewAI Flows docs（@persist class/method + automatic state recovery）(2026-03-01)
   - CrewAI Event Listeners docs（event bus instrumentation）(2026-03-01)
   - CrewAI Conditional Tasks docs（runtime routing for fallback/recovery paths）(2026-03-01)
+  - OpenAI Agents SDK JS running agents docs（errorHandlers default/maxTurns + typed exceptions）(2026-03-01)
+  - OpenAI Agents SDK Python handoffs docs（RunConfig.handoff_history_mapper fallback）(2026-03-01)
   - Kode Agent SDK README（stateful sessions / retry / multi-agent traceability）(2026-03-01)
   - Kode Agent SDK architecture README（7-stage checkpoint + stateless API/stateful worker）(2026-03-01)
   - nlpodyssey/openai-agents-go README（session stores/hook callbacks/retry & telemetry）(2026-03-01)
@@ -153,6 +158,15 @@ Demo 能跑不等于 production 能跑。
 - **子代理隔离与上下文编辑要成对治理**：Anthropic 文档一方面明确 subagents 使用独立上下文窗口，另一方面 context editing 默认会清理部分 tool 结果；长跑恢复中应显式配置 `clear_tool_inputs` / `clear_tool_results` 策略，避免压缩后出现隐式依赖漂移。
 - **社区热区继续指向“稳态优先”**：本轮 HN `top`（Show HN: MCPCat）、`show`（Show HN: Track nutrition by taking photos of your food）、`newest`（How can AI check software requirements and identify ambiguities?）与 OPML 锚点同向，说明一线实践焦点仍是“可恢复执行链路”而非盲目扩编 agent。
 
+## Cycle 106 同化增量（长跑退化防御：错误分层 + 停机钩子 + 持久子代理）
+
+- **错误恢复要从“重试次数”升级到“错误类型策略”**：OpenAI Agents SDK JS `run()` 支持 `errorHandlers`（`default` 与 `maxTurnsExceeded`），并显式区分 `ModelBehaviorError`、`GuardrailTripwireTriggered`、`MaxTurnsExceededError` 等错误类型。生产上应按错误类型分配不同恢复动作（重试/降级/人工接管），而不是统一重跑。
+- **handoff 历史裁剪应设运行级兜底**：OpenAI Python handoffs 文档指出，当单次 handoff 未提供 `input_filter` 时，可由 `RunConfig.handoff_history_mapper` 提供全局回退。多 agent 系统应把该 mapper 作为“通信最小化兜底”，避免某个 handoff 漏配导致历史透传漂移。
+- **子代理生命周期要纳入长跑恢复合同**：Anthropic subagents 文档明确子代理拥有独立上下文窗口，且子代理转录可在重启后恢复，同时不会被主对话 compaction 影响。治理上应将子代理视作“隔离状态单元”，并要求交接时只传最小上下文摘要。
+- **停止钩子必须防自触发死循环**：Anthropic hooks guide 明确 `Stop` / `SubagentStop` 钩子可在 agent 停止时执行，且示例要求检查 `stop_hook_active` 以避免递归触发。长运行场景应把 stop hook 作为最后防线并加“自触发保护位”。
+- **状态持久化要上升到流程默认**：CrewAI Flows 文档的 `@persist`（类级/方法级）和“automatic state recovery after failures/restarts”说明，恢复能力应是默认机制而不是补丁；同时保持事务化更新，避免半写入状态破坏 replay。
+- **强制信源侧证保持一致**：HN 当前窗口 `top`（Ask HN: Did quality of Google Search decrease?）、`show`（Show HN: Webree – 200 free 20-second game challenge）、`newest`（How to increase the speed at which your software system can evolve?）与 OPML 锚点（`https://t.co/dwAiIjlXet` -> HN popular blogs OPML）继续指向“稳态执行链路”优先级高于功能膨胀。
+
 ## 合并来源
 
 - agent scope drift severity budget
@@ -164,6 +178,7 @@ Demo 能跑不等于 production 能跑。
 - HN top/show/new 与 OPML 作为“实践热区”信号，不单独作为入库依据
 - OpenAI 与 CrewAI 官方文档提供运行级配置、事务边界和条件路由证据；HN 仅作为热区侧证
 - OpenAI Python Sessions/Lifecycle + Anthropic context editing 文档补强了“状态后端分层 + 上下文编辑防漂移”证据链
+- OpenAI JS running agents + Python handoffs + Anthropic hooks/subagents + CrewAI @persist 共同补强了“错误分层恢复 + 停机防递归 + 持久子代理隔离”证据链
 
 ## 检索测试
 
@@ -215,3 +230,12 @@ Demo 能跑不等于 production 能跑。
 - 查询：`Claude subagents separate context window`  
   命中：本 pattern  
   动作：收敛到 `subagent isolation boundary + scoped handoff contract`
+- 查询：`errorHandlers maxTurnsExceeded GuardrailTripwireTriggered`  
+  命中：本 pattern  
+  动作：收敛到 `error-class recovery matrix + escalation policy`
+- 查询：`handoff_history_mapper fallback`  
+  命中：本 pattern  
+  动作：收敛到 `run-level handoff fallback + communication minimization`
+- 查询：`stop_hook_active SubagentStop`  
+  命中：本 pattern  
+  动作：收敛到 `stop hook recursion guard + graceful shutdown protocol`

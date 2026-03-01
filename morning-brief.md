@@ -1,3 +1,65 @@
+# Morning Brief（Nightshift Cycle 106）
+
+> 更新时间：2026-03-01 04:27 UTC  
+> 模式：CONSTRAINED_EXPANSION  
+> 本轮策略：同化优先（不新建 pattern）
+
+### 本轮落盘（已完成）
+
+1. `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（同化更新）
+2. `references/patterns/runtime-governance/_index.md`
+3. `references/patterns/_master_index.md`
+4. `morning-brief.md`
+5. `.nightshift/state.json`
+
+### 同化决策（L2）
+
+- 新发现可解决的 3 个场景：
+  1. 多 agent 长跑中把所有异常统一重试，导致 max-turns/guardrail/model error 混淆，恢复路径失真
+  2. 部分 handoff 未显式配置 `input_filter`，历史对话被全量透传，通信边界漂移
+  3. 停机钩子在子代理结束时被递归触发，形成退出风暴或重复清理
+- 已有 pattern 覆盖检查：
+  - `references/patterns/runtime-governance/agent-scope-identity-memory-governance.md` 已覆盖同一元问题（state + communication + recovery）
+- 判定：**同化**（补强错误分层恢复 + handoff 回退映射 + 停机防递归，不新增 pattern）
+
+### 强制信源执行记录
+
+- OPML 锚点：`https://t.co/dwAiIjlXet`
+  - 重定向目标：`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`
+  - raw OPML：`https://gist.githubusercontent.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b/raw/hn-popular-blogs-2025.opml`
+- HN 三车道（2026-03-01）
+  - `top`: `Ask HN: Did quality of Google Search decrease?`
+  - `show`: `Show HN: Webree – 200 free 20-second game challenge`
+  - `newest`: `How to increase the speed at which your software system can evolve?`
+
+### 官方证据链（不确定点补链）
+
+- OpenAI Agents SDK JS Running Agents：`errorHandlers`（`default`/`maxTurnsExceeded`）与类型化异常（`ModelBehaviorError`、`GuardrailTripwireTriggered`、`MaxTurnsExceededError`）
+- OpenAI Agents SDK Python Handoffs：`RunConfig.handoff_history_mapper` 可作为 `input_filter` 缺失时的运行级兜底
+- Anthropic Claude Code Subagents：子代理独立上下文窗口，且转录可在重启后恢复，不受主会话 compaction 影响
+- Anthropic Claude Code Hooks：`Stop` / `SubagentStop` 事件与 `stop_hook_active` 防递归保护
+- CrewAI Flows：`@persist`（类级/方法级）与 `automatic state recovery after failures/restarts`
+
+### 检索测试（L5，写后执行）
+
+- Query A：`errorHandlers maxTurnsExceeded GuardrailTripwireTriggered`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（3/3）
+  - 动作：错误分层恢复矩阵（retry / degrade / human handoff）
+- Query B：`handoff_history_mapper fallback`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（2/2）
+  - 动作：运行级 handoff 回退映射，兜底通信最小化
+- Query C：`stop_hook_active SubagentStop`
+  - 命中：`references/patterns/runtime-governance/agent-scope-identity-memory-governance.md`（2/2）
+  - 动作：停机钩子防递归 + 优雅退出协议
+
+### 约束检查
+
+- per-topic <= 5：通过（runtime-governance=3）
+- active directions <= 15：通过（当前=5）
+- 每 5 cycles 必压缩：本轮 cycle=106（下一个强制压缩点=110）
+
+---
+
 # Morning Brief（Nightshift Cycle 105）
 
 > 更新时间：2026-03-01 04:23 UTC  
@@ -62,6 +124,9 @@
 - 每 5 cycles 必压缩：通过（cycle 105 已执行压缩扫描）
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 104）
 
 > 更新时间：2026-03-01 04:18 UTC  
@@ -124,6 +189,9 @@
 - 每 5 cycles 必压缩：本轮 cycle=104（下一个强制压缩点=105）
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 103）
 
 > 更新时间：2026-03-01 04:13 UTC  
@@ -184,6 +252,9 @@
 - 每 5 cycles 必压缩：本轮 cycle=103（下一个强制压缩点=105）
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 102）
 
 > 更新时间：2026-03-01 04:08 UTC  
@@ -243,6 +314,9 @@
 - 每 5 cycles 必压缩：本轮 cycle=102（下一个强制压缩点=105）
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 101）
 
 > 更新时间：2026-03-01 04:04 UTC  
@@ -306,6 +380,9 @@
 - 每 5 cycles 必压缩：本轮 cycle=101（下一个强制压缩点=105）
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 100）
 
 > 更新时间：2026-03-01 03:59 UTC  
@@ -379,6 +456,9 @@
 - 每 5 cycles 必压缩：通过（cycle=100 已执行）
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 99）
 
 > 更新时间：2026-03-01 03:54 UTC  
@@ -443,6 +523,9 @@
 - 每 5 cycles 必压缩：本轮 cycle=99（下一个强制压缩点=100）
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 98）
 
 > 更新时间：2026-03-01 03:50 UTC  
@@ -508,6 +591,9 @@
 - 每 5 cycles 必压缩：通过（下一个强制压缩点=100）
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 97）
 
 > 更新时间：2026-03-01 03:58 UTC  
@@ -573,6 +659,9 @@
 - 每 5 cycles 必压缩：本轮 cycle=97（下一个强制压缩点=100）
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 96）
 
 > 更新时间：2026-03-01 03:33 UTC  
@@ -637,6 +726,9 @@
 - 每 5 cycles 必压缩：本轮 cycle=96（下一个强制压缩点=100）
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 95）
 
 > 更新时间：2026-03-01 03:28 UTC  
@@ -706,6 +798,9 @@
 - 每 5 cycles 必压缩：通过（本轮已执行 compression cycle）
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 94）
 
 > 更新时间：2026-03-01 03:21 UTC  
@@ -768,6 +863,8 @@
 
 ---
 
+---
+
 # Morning Brief（Nightshift Cycle 93）
 
 > 更新时间：2026-03-01 03:18 UTC  
@@ -826,6 +923,8 @@
 - per-topic <= 5：通过（runtime-governance=3）
 - active directions <= 15：通过（当前=5）
 - 每 5 cycles 必压缩：本轮 cycle=93（下一个强制压缩点=95）
+
+---
 
 ---
 
@@ -893,6 +992,8 @@
 
 ---
 
+---
+
 # Morning Brief（Nightshift Cycle 91）
 
 > 更新时间：2026-03-01 03:10 UTC  
@@ -956,6 +1057,8 @@
 
 ---
 
+---
+
 # Morning Brief（Nightshift Cycle 90）
 
 > 更新时间：2026-03-01 UTC  
@@ -1016,6 +1119,8 @@
 
 ---
 
+---
+
 # Morning Brief（Nightshift Cycle 89）
 
 > 更新时间：2026-03-01 UTC  
@@ -1071,6 +1176,8 @@
 - per-topic <= 5：通过（runtime-governance=3）
 - active directions <= 15：通过（当前=5）
 - 每 5 cycles 压缩：本轮 cycle=89（下轮 cycle=90 强制压缩）
+
+---
 
 ---
 
@@ -1155,6 +1262,8 @@
 
 ---
 
+---
+
 # Morning Brief（Nightshift Cycle 87）
 
 > 更新时间：2026-03-01 01:08 UTC  
@@ -1206,6 +1315,9 @@
 3. 将 `required_check_identity_pass` 接入 `promotion_closure.json` 作为硬门禁。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 86）
 
 > 更新时间：2026-03-01 11:02 UTC  
@@ -1265,6 +1377,9 @@
 3. 在 `merge_group` 失败恢复流程中加入 checks 快照重采样，防止恢复后直接继承旧绿灯。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 85）
 
 > 更新时间：2026-03-01 10:15 UTC  
@@ -1322,6 +1437,9 @@
 3. 在 `candidate->issue` 晋级合同中前置 `contract_replay_closure_pass`。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 84）
 
 > 更新时间：2026-03-01 09:45 UTC  
@@ -1378,6 +1496,9 @@
 3. 将 token 验签门禁接入 `candidate->issue` 晋级合同，阻断“无验签模式升级”。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 83）
 
 > 更新时间：2026-03-01 09:06 UTC  
@@ -1434,6 +1555,9 @@
 3. 将 `storybook_acceptance_attestation_pass` 接入 candidate->issue 晋级合同链。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 82）
 
 > 更新时间：2026-03-01 00:41 UTC  
@@ -1485,6 +1609,9 @@
 3. 设计 `class_action_policy.json` 的自动审计规则，禁止 `trigger_missing` 进入 re-run 白名单。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 81）
 
 > 更新时间：2026-03-01 00:38 UTC  
@@ -1541,6 +1668,9 @@
 3. 设计 `self_heal_exhausted` 的人工接管 SLA 与回放追责模板。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 80）
 
 > 更新时间：2026-03-01 00:32 UTC  
@@ -1597,6 +1727,9 @@
 3. 设计 `self_heal_exhausted` 到人工仲裁队列的 SLA 与回放格式。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 79）
 
 > 更新时间：2026-03-01 08:30 UTC  
@@ -1652,6 +1785,9 @@
 3. 将 `pending_deadlock_pass` 并入 candidate->issue->PR 的晋级合同链。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 78）
 
 > 更新时间：2026-03-01 00:21 UTC  
@@ -1709,6 +1845,9 @@
 3. 设计 replay fixture 过期预算（TTL）并和 breaking budget 联动。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 77）
 
 > 更新时间：2026-03-01 00:16 UTC  
@@ -1766,6 +1905,9 @@
 3. 为 `form_schema_version` 定义兼容窗口策略（N, N-1）与淘汰节奏。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 76）
 
 > 更新时间：2026-03-01 00:10 UTC  
@@ -1825,6 +1967,9 @@
 3. 为“字段缺失 claim”补充 tombstone 与 requalification 自动化策略。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 75）
 
 > 更新时间：2026-03-01 00:03 UTC  
@@ -1880,6 +2025,9 @@
 3. 给双相失败场景增加自动降级模板（回观察池 + 冷却复采样）。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 74）
 
 > 更新时间：2026-02-28 23:59 UTC  
@@ -1939,6 +2087,9 @@
 3. 增加 `requalify_packet` 的最小证据要求（new_evidence_digest + new_lane_snapshot + reapprove_ticket）。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 73）
 
 > 更新时间：2026-02-28 23:58 UTC  
@@ -2001,6 +2152,9 @@
 3. 给冲突 `open > 24h` 增加自动升级到人工裁决队列的处置模板。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 72）
 
 > 更新时间：2026-02-28 23:46 UTC  
@@ -2055,6 +2209,9 @@
 3. 给“复采样失败”增加自动回退观察池模板与冷却重试策略。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 71）
 
 > 更新时间：2026-03-01 07:48 UTC  
@@ -2113,6 +2270,9 @@
 3. 给“复采样失败”场景补充自动回退到观察池的处置模板。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 70）
 
 > 更新时间：2026-03-01 00:05 UTC  
@@ -2167,6 +2327,9 @@
 3. 给 `show-top` 共振场景补充“冷却失败自动降级到观察队列”的处置模板。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 69）
 
 > 更新时间：2026-02-28 23:39 UTC  
@@ -2222,6 +2385,9 @@
 3. 输出 `show promotion required-checks matrix`，区分可达性失败与验签失败处置路径。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 68）
 
 > 更新时间：2026-02-28 23:33 UTC  
@@ -2277,6 +2443,9 @@
 3. 给 `merge_group` 增补 Show 证据门禁检查模板。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 67）
 
 > 更新时间：2026-02-28 23:17 UTC  
@@ -2331,6 +2500,9 @@
 3. 给 `Start all waiting jobs` 增加最小独立审批人数和 incident 绑定模板。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 66）
 
 > 更新时间：2026-02-28 23:11 UTC  
@@ -2385,6 +2557,9 @@
 3. 为审批冲击场景补充“自动降并发 + 禁止旁路常态化”的回退模板。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 65）
 
 > 更新时间：2026-02-28 23:07 UTC  
@@ -2439,6 +2614,9 @@
 3. 为审批超载场景补充“自动降并发 + 禁止旁路常态化”的回退策略模板。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 64）
 
 > 更新时间：2026-02-28 23:02 UTC  
@@ -2494,6 +2672,9 @@
 3. 将容量压差 gate 接入 candidate->issue 晋级表单，阻断无容量预算的提速请求。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 63）
 
 > 更新时间：2026-02-28 23:10 UTC  
@@ -2549,6 +2730,9 @@
 3. 将 `queue_fallback_dual_failure_surface_budget` 接入候选晋级表单，统一触发面预算。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 62）
 
 > 更新时间：2026-02-28 22:52 UTC  
@@ -2604,6 +2788,9 @@
 3. 把 `queue reorder throughput-loss` 与 `fallback recovery` 联立为统一夜间阈值仪表盘。
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 61）
 
 > 更新时间：2026-02-28 22:48 UTC  
@@ -2661,6 +2848,9 @@
 ---
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 60）
 
 > 更新时间：2026-02-28 22:42 UTC  
@@ -2718,6 +2908,9 @@
 ---
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 59）
 
 > 更新时间：2026-02-28 22:36 UTC  
@@ -2774,6 +2967,9 @@
 ---
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 58）
 
 > 更新时间：2026-02-28 22:28 UTC  
@@ -2831,6 +3027,9 @@
 ---
 
 ---
+
+---
+
 # Morning Brief（Nightshift Cycle 57）
 
 > 更新时间：2026-02-28 22:23 UTC  
@@ -2883,118 +3082,6 @@
 1. 为 `semantic_role_delta_report.json` 增加严重度分桶（mild/moderate/severe）并固化阻断规则。
 2. 把 `color_vision_replay_pass` 接入 candidate->issue->PR 证据包模板，减少人工补证成本。
 3. 为高对比主题补“语义角色冲突热点榜”，优先治理最常失效组件。
-
----
-
----
-# Morning Brief（Nightshift Cycle 56）
-
-> 更新时间：2026-02-28 22:18 UTC  
-> 本轮目标：把“达标但断崖式退化”的可读性风险显式化，新增对比回退斜率门禁并接入晋级硬检查。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/accessibility-governance/theme-contrast-regression-slope-gate.md`
-2. `references/patterns/accessibility-governance/_index.md`（新增 pattern 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 计数与统计更新）
-4. `morning-brief.md`（新增 Cycle 56）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `expand`：新增方向
-  - `主题对比回退斜率治理（theme contrast regression slope gate）`
-  - reason: HN `newstories` 出现 `Thinking deeply about Theming and Color Naming`，结合 WCAG 仅给绝对下限，提示需补“相对回退幅度”门禁。
-- `split`：拆分方向
-  - from: `色觉可达性安全调色治理（color-vision accessibility palette gate）`
-  - into: `高对比主题压测治理（high-contrast theme stress gate）`
-  - into: `色觉仿真回放治理（color-vision simulation replay gate）`
-  - reason: 压测强度控制与色觉仿真回放是两个不同失效面，需独立 gate。
-- `merge`：合并方向
-  - from: `show 讨论原型车道（HN show + builder chatter）`
-  - from: `new 早信号车道（HN newest + freshness spike）`
-  - into: `原型-早信号双车道仲裁治理（show-new dual-lane arbitration gate）`
-  - reason: 两者都在解决“早期信号晋级仲裁”，合并后可减少同构 pattern 重复。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已解析到 OPML 原始源（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b/raw/4292aaea6b37c7c486f8998ea0f12f64bf2ac91d/hn-popular-blogs-2025.opml`，checked 2026-02-28T22:18:54Z）。
-- HN API `top/show/new`：已采样（2026-02-28）
-  - top (`topstories`): item `47202466` — `Obsidian Sync now has a headless client`
-  - show (`showstories`): item `47195123` — `Show HN: Now I Get It – Translate scientific papers into interactive webpages`
-  - new (`newstories`): item `47203158` — `Thinking deeply about Theming and Color Naming`
-- 官方文档证据链（本轮重点）
-  - W3C WCAG 2.2：`Contrast (Minimum)` 与 `Non-text Contrast`
-  - Storybook：`writing-tests`（多主题回放落点）
-  - GitHub Protected Branches：required status checks（晋级硬门禁）
-
-### 本轮结论
-
-- 仅满足 WCAG 绝对阈值不足以阻断“达标但显著退化”的风险。
-- 必须并列强制 `contrast_regression_slope_pass` 与文本/非文本阈值门禁。
-- 对比回退达到 `severe` 时必须 quarantine，不可自动晋级。
-
-### Cycle 57 预载任务
-
-1. 将 `ratio_drop` 分桶（mild/moderate/severe）写入统一晋级策略枚举，消除实现歧义。
-2. 为 `theme_contrast_baseline.json` 增加基线冻结策略，防止每轮覆盖导致“回退被洗白”。
-3. 把 `show-new` 双车道仲裁结果接入 candidate->issue 的入库门禁。
-
----
-
----
-# Morning Brief（Nightshift Cycle 55）
-
-> 更新时间：2026-02-28 22:13 UTC  
-> 本轮目标：把“语义色名正确但可读性失效”的缺口收敛为可阻断门禁，确保多主题无人值守发布可回放、可冻结。
-
-### 本轮新增（已落盘）
-
-1. `references/patterns/accessibility-governance/theme-contrast-readability-budget-gate.md`
-2. `references/patterns/accessibility-governance/_index.md`（新建 topic 索引）
-3. `references/patterns/_master_index.md`（新增 pattern 行、topic 行与统计更新）
-4. `morning-brief.md`（新增 Cycle 55）
-5. `.nightshift/state.json`（`cycle + 1` 与方向演化更新）
-
-### 激进动态策略执行（本轮）
-
-- `expand`：新增方向
-  - `色觉可达性安全调色治理（color-vision accessibility palette gate）`
-  - reason: WCAG 2.2 文本/非文本对比规则与 HN `newstories` 的产品化反思同向，说明“可读性预算”必须从单主题扩展到色觉可达性。
-- `split`：拆分方向
-  - from: `主题对比可读性预算治理（theme contrast readability budget gate）`
-  - into: `文本对比预算治理（text contrast budget gate）`
-  - into: `非文本对比预算治理（non-text contrast budget gate）`
-  - reason: 文本与非文本对比失效面的检测规则和阻断阈值不同，必须拆分独立 gate。
-- `merge`：合并方向
-  - from: `语义色名规范化治理（semantic color naming canonicalization gate）`
-  - from: `主题切换回放门禁（theme-switch replay gate）`
-  - into: `主题语义回放治理（theme semantic replay governance）`
-  - reason: 二者都服务“主题语义一致性 + 回放验证”，合并可避免同构 pattern 重复。
-
-### 必选信源执行确认
-
-- `https://t.co/dwAiIjlXet`：已验证重定向至 OPML Gist（`https://gist.github.com/emschwartz/e6d2bf860ccc367fe37ff953ba6de66b`），并解析到 OPML 原文（`hn-popular-blogs-2025.opml`），checked `2026-02-28T22:13:06Z`。
-- HN `top/show/new`：已采样（2026-02-28，Hacker News API）
-  - top (`topstories`): item `47197267` — `Obsidian Sync now has a headless client`
-  - show (`showstories`): item `47195123` — `Show HN: Now I Get It – Translate scientific papers into interactive webpages`
-  - new (`newstories`): item `47200840` — `The Bitter Lesson is coming for AI products, not just AI research`
-- 官方文档证据链（本轮重点）
-  - W3C WCAG 2.2：`Contrast (Minimum)` 与 `Non-text Contrast`
-  - Storybook：`writing-tests`（多主题组件测试落点）
-  - GitHub Protected Branches：required status checks（晋级硬门禁）
-
-### 本轮结论
-
-- “语义 token 正确”不等于“主题可读性合格”，对比预算必须进入 required checks。
-- `text_contrast_budget_pass`、`non_text_contrast_budget_pass`、`theme_replay_pass` 缺一不可。
-- 任一主题预算失败必须 quarantine，而不是降级为 warning。
-
-### Cycle 56 预载任务
-
-1. 增加 `theme_contrast_matrix.json` 的阈值偏差分桶（轻微/中等/严重）用于自动晋级策略。
-2. 将 `theme semantic replay governance` 与 `candidate -> issue -> PR` 产物链路绑定，补失败证据最小字段。
-3. 为高对比主题补“组件边界对比”快速回放基线，避免只测文本不测控件。
 
 ---
 
