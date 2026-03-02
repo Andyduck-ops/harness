@@ -2,13 +2,17 @@
 name: long-context-index-sharding-recall-rollback-contract
 topic: runtime-governance
 evidence_band: medium
-verified_count: 4
+verified_count: 8
 sources:
   - context-compaction-replay-governance (cycle 127 cross-check)
   - agent-scope-identity-memory-governance (cycle 127 cross-check)
   - control-plane-conflict-governance (cycle 127 cross-check)
   - Scout/Analyst/Cartographer team synthesis (cycle 128)
-last_verified: 2026-03-01
+  - Temporal Docs: continue-as-new
+  - Scout findings synthesis (cycle 137)
+  - Analyst L2/L5 verdict (cycle 137)
+  - Analyst/Cartographer L2/L5 verdict (cycle 139)
+last_verified: 2026-03-02
 rank: 3
 ---
 
@@ -40,6 +44,7 @@ rank: 3
 | `index_shard_manifest.json` | `lineage_id`, `shard_id`, `shard_epoch`, `shard_digest`, `head_sha` | 分片摘要与当前索引不一致 |
 | `recall_manifest.json` | `lineage_id`, `query_id`, `hit_shards[]`, `min_hit_ratio`, `actual_hit_ratio` | `actual_hit_ratio < min_hit_ratio` |
 | `rollback_attestation.json` | `lineage_id`, `rollback_target_epoch`, `checkpoint_digest`, `continuity_replay_pass` | 回滚后 replay 失败 |
+| `history_budget_report.json` | `lineage_id`, `event_history_count`, `history_size_bytes`, `continue_as_new_threshold`, `segment_seq`, `rollover_pass` | 超预算未分段或未触发 continue-as-new |
 
 ## 阻断门禁
 
@@ -49,6 +54,8 @@ rank: 3
   - 失败条件：召回命中率低于阈值、召回分片与 lineage 不同源。
 - `rollback_integrity_pass`
   - 失败条件：回滚目标 epoch 未签名、checkpoint 摘要不一致。
+- `history_budget_rollover_pass`
+  - 失败条件：`event_history_count/history_size_bytes` 超预算且未执行 `continue-as-new`。
 
 ## 检索测试（L5）
 
@@ -61,6 +68,35 @@ rank: 3
 - 查询：`lineage shard epoch continuity replay`
   - 命中：本 pattern
   - 动作：验证 `lineage_id + shard_epoch` 连续性
+
+## Cycle 137 同化增量（History Budget Rollover）
+
+### 空白判定
+
+此前仅覆盖 shard/recall/rollback 一致性，缺少“长运行历史预算”超阈后的分段续跑合同，恢复链在超长运行下仍有失稳风险。
+
+### 核心补丁
+
+- 新增 `history_budget_report.json`，记录 `event_history_count/history_size_bytes/continue_as_new_threshold/segment_seq`。
+- 新增 `history_budget_rollover_pass`，明确超预算必须 `continue-as-new`，否则阻断。
+
+## Cycle 139 同化增量（Budget Overflow Telemetry）
+
+### 空白判定
+
+cycle 137 已有预算超阈阻断，但缺少“超阈前告警/硬超阈事件”的可审计字段，
+无法区分“提前收敛失败”与“突发超限”。
+
+### 核心补丁
+
+- `history_budget_report.json` 新增：
+  - `warn_limit_events`
+  - `hard_limit_events`
+  - `hard_limit_bytes`
+  - `rollover_triggered_at`
+- `history_budget_rollover_pass` 增加失败条件：
+  - `hard_limit_events > 0` 且 `rollover_triggered_at` 缺失；
+  - `hard_limit_bytes` 超阈但未进入下一段 `segment_seq+1`。
 
 ## 合并来源
 

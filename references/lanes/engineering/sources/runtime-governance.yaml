@@ -1,0 +1,297 @@
+# engineering lane sources: runtime-governance
+sources:
+  - name: GitHub Docs - About protected branches
+    url: https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches
+    type: primary-doc
+    topic: threshold-registry-gate-runner-binding
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "required status checks 与 merge 阻断语义基线。"
+
+  - name: GitHub Docs - Troubleshooting required status checks
+    url: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks
+    type: primary-doc
+    topic: threshold-registry-gate-runner-binding
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "required checks 来源、freshness 与失败排查边界。"
+
+  - name: GitHub Docs - Running variations of jobs in a workflow
+    url: https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs
+    type: primary-doc
+    topic: threshold-registry-gate-runner-binding
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "跨 runner/matrix 复现实验的官方执行语义，可用于 evidence_high round-1/round-2 复验设计。"
+
+  - name: GitHub Docs - Re-running workflows and jobs
+    url: https://docs.github.com/en/actions/managing-workflow-runs-and-deployments/managing-workflow-runs/re-running-workflows-and-jobs
+    type: primary-doc
+    topic: threshold-registry-gate-runner-binding
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "rerun 使用相同 GITHUB_SHA/GITHUB_REF，仅触发 actor 变化；用于 round-2 连续复现的同提交重放对账。"
+
+  - name: Augment Docs - Context Services Overview
+    url: https://docs.augmentcode.com/context-services/overview
+    type: primary-doc
+    topic: context-index-freshness-recall
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "长上下文索引与上下文服务能力边界。"
+
+  - name: Augment Docs - MCP Overview
+    url: https://docs.augmentcode.com/context-services/mcp/overview
+    type: primary-doc
+    topic: context-index-freshness-recall
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "MCP surface 与上下文接入路径。"
+
+  - name: OpenAI Docs - Background mode guide
+    url: https://developers.openai.com/api/docs/guides/background
+    type: primary-doc
+    topic: background-agent-checkpoint-resume
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "长任务执行、异步恢复与状态查询语义。"
+
+  - name: LangGraph Docs - Durable execution
+    url: https://docs.langchain.com/oss/python/langgraph/durable-execution
+    type: primary-doc
+    topic: background-agent-checkpoint-resume
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "checkpoint/resume 与 side-effect 可恢复约束。"
+
+  - name: AWS Docs - Step Functions callback token
+    url: https://docs.aws.amazon.com/step-functions/latest/dg/connect-to-resource.html
+    type: primary-doc
+    topic: background-agent-checkpoint-resume
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "外部任务回调与长时运行等待模型。"
+
+  - name: Argo Rollouts Docs - Analysis feature
+    url: https://argo-rollouts.readthedocs.io/en/stable/features/analysis/
+    type: primary-doc
+    topic: threshold-shadow-promote-rollback
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "shadow/canary 分析与失败/中止语义，可映射 promote/rollback 守卫。"
+
+  - name: Evidently Docs - Data drift methods and threshold customization
+    url: https://docs.evidentlyai.com/metrics/explainer_drift
+    type: primary-doc
+    topic: hidden-holdout-drift-resample
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "PSI/KL/JSD/Wasserstein 等漂移方法与阈值策略，可用于 holdout 漂移重采样门禁。"
+
+  - name: Hypothesis Docs - Stateful testing
+    url: https://hypothesis.readthedocs.io/en/latest/stateful.html
+    type: primary-doc
+    topic: anti-fake-property-mutation-stateful
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "stateful 序列探索与最小复现机制。"
+
+  - name: Stryker Docs - Mutation testing and score thresholds
+    url: https://stryker-mutator.io/docs/
+    type: primary-doc
+    topic: anti-fake-property-mutation-stateful
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "mutation score 与阈值配置，支撑 break 门禁。"
+
+  - name: Augment Docs - Context Connectors Overview
+    url: https://docs.augmentcode.com/context-services/context-connectors/overview
+    type: primary-doc
+    topic: context-index-freshness-recall
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "connector + S3 + webhook/CI 自动再索引，用于本地/远端索引一致性。"
+
+  - name: Microsoft Agent Framework Docs - Background responses
+    url: https://learn.microsoft.com/en-us/agent-framework/agents/background-responses
+    type: primary-doc
+    topic: background-agent-checkpoint-resume
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "continuation token 恢复语义与 24h 过期窗口，可同化到 checkpoint/resume 合同。"
+
+  - name: Temporal Docs - Continue-As-New
+    url: https://docs.temporal.io/develop/python/continue-as-new
+    type: primary-doc
+    topic: context-index-freshness-recall
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "超长历史预算下的分段续跑语义，支撑 history budget rollover 门禁。"
+
+  - name: fast-check Docs - Model based testing
+    url: https://fast-check.dev/docs/advanced/model-based-testing/
+    type: primary-doc
+    topic: anti-fake-property-mutation-stateful
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "stateful/model-based/shrink/replay 一手语义。"
+
+  - name: Stryker Docs - Incremental mutation testing
+    url: https://stryker-mutator.io/docs/stryker-js/incremental/
+    type: primary-doc
+    topic: anti-fake-property-mutation-stateful
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "增量 mutation 运行语义，可用于 CI 门禁可审计落地。"
+
+  - name: Istio Docs - Traffic mirroring
+    url: https://istio.io/latest/docs/tasks/traffic-management/mirroring/
+    type: primary-doc
+    topic: prodlike-e2e-prebug
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "shadow traffic 验证路径与镜像比例控制。"
+
+  - name: Playwright Docs - Trace viewer
+    url: https://playwright.dev/docs/trace-viewer
+    type: primary-doc
+    topic: prodlike-e2e-prebug
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "trace 工件回放与 CI 失败取证能力。"
+
+  - name: arXiv - PROMPTEVALS (2025)
+    url: https://arxiv.org/abs/2504.14738
+    type: paper
+    topic: requirement-assertion-conformance
+    trust_band: medium
+    last_checked: 2026-03-02
+    notes: "requirement->assertion 评测数据集与基线，先以研究证据同化。"
+
+  - name: arXiv - Spec2Assertion (2025)
+    url: https://arxiv.org/abs/2505.07995
+    type: paper
+    topic: requirement-assertion-conformance
+    trust_band: medium
+    last_checked: 2026-03-02
+    notes: "spec 到形式化断言生成，补齐质量指标字段。"
+
+  - name: OpenAI Docs - Background mode guide
+    url: https://platform.openai.com/docs/guides/background
+    type: primary-doc
+    topic: background-agent-checkpoint-resume
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "background=true 状态机与 streaming starting_after 续传游标。"
+
+  - name: OpenAI Docs - Webhooks guide
+    url: https://platform.openai.com/docs/guides/webhooks
+    type: primary-doc
+    topic: background-agent-checkpoint-resume
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "response.completed 回调与签名校验，补 completion 一致性门禁。"
+
+  - name: OpenAI Docs - Realtime session client secret
+    url: https://platform.openai.com/docs/api-reference/realtime-sessions/create-realtime-client-secret
+    type: primary-doc
+    topic: background-agent-checkpoint-resume
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "client_secret expires_at 窗口语义，可映射 token 过期合同。"
+
+  - name: IETF RFC 6749 - OAuth 2.0
+    url: https://datatracker.ietf.org/doc/rfc6749/
+    type: standard
+    topic: background-agent-checkpoint-resume
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "expires_in/refresh_token 生命周期术语基线。"
+
+  - name: W3C QA Framework - Specification Guidelines
+    url: https://www.w3.org/TR/2004/WD-qaframe-test-20040225/
+    type: standard
+    topic: requirement-assertion-conformance
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "assertion 标识、规范定位、级别与版本适用性元数据基线。"
+
+  - name: GitHub Docs - Compare two commits
+    url: https://docs.github.com/en/enterprise-server@3.20/rest/commits/commits
+    type: primary-doc
+    topic: evidence-high-round2-execution
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "`BASE...HEAD` 比较语义可机读化，用于分支偏差审计字段 `branch_divergence_commits`。"
+
+  - name: GitHub Docs - Workflow syntax (matrix)
+    url: https://docs.github.com/en/enterprise-cloud@latest/actions/reference/workflows-and-actions/workflow-syntax
+    type: primary-doc
+    topic: evidence-high-round2-execution
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "matrix 组合执行与上限语义，支撑 `pass_matrix` 覆盖审计。"
+
+  - name: GitHub Docs - Variables (run attempt semantics)
+    url: https://docs.github.com/en/enterprise-server@3.14/actions/reference/workflows-and-actions/variables
+    type: primary-doc
+    topic: evidence-high-round2-execution
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "`GITHUB_RUN_ID` 稳定与 `GITHUB_RUN_ATTEMPT` 递增语义，支撑 rerun 身份一致性门禁。"
+
+  - name: GitHub Docs - Verify attestations offline
+    url: https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/verify-attestations-offline
+    type: primary-doc
+    topic: evidence-high-round2-execution
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "attestation bundle + trusted root 离线验签语义，支撑 `attestation_offline_verify_pass`。"
+
+  - name: Istio Docs - VirtualService reference
+    url: https://istio.io/latest/docs/reference/config/networking/virtual-service/
+    type: primary-doc
+    topic: prodlike-e2e-prebug
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "mirrorPercentage 与 rewrite/authority 控制语义，补 shadow route isolation 合同。"
+
+  - name: GitHub - claude-context-mode
+    url: https://github.com/mksglu/claude-context-mode
+    type: repo
+    topic: context-index-freshness-recall
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "上下文压缩/索引检索插件实现与目录结构入口（hooks/skills/tests）。"
+
+  - name: claude-context-mode README
+    url: https://raw.githubusercontent.com/mksglu/claude-context-mode/main/README.md
+    type: primary-doc
+    topic: context-index-freshness-recall
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "intent-driven filtering、matchLayer fallback chain、head60-tail40、tool-path decision matrix、deterministic safe mode（零检索直出）与 progressive throttling（1-3/4-8/9+）语义。"
+
+  - name: claude-context-mode BENCHMARK
+    url: https://raw.githubusercontent.com/mksglu/claude-context-mode/main/BENCHMARK.md
+    type: primary-doc
+    topic: context-index-freshness-recall
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "strict/fallback 双模式 token-cost-latency-quality 对账样本 + 可复跑命令（用于 benchmark trade-off consistency、fixture lineage 与 coverage disclosure 审计）。"
+
+  - name: claude-context-mode hooks (PreToolUse routing)
+    url: https://github.com/mksglu/claude-context-mode/tree/main/hooks
+    type: repo
+    topic: context-index-freshness-recall
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "PreToolUse 路由升级与可用工具绑定语义（bash -> general-purpose），可用于 hook sha/注入标记审计。"
+
+  - name: claude-context-mode tests/fixtures
+    url: https://github.com/mksglu/claude-context-mode/tree/main/tests
+    type: repo
+    topic: context-index-freshness-recall
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "benchmark fixtures 与可复现实测样本入口（用于 fallback/truncation/code-block fidelity 校验）。"
