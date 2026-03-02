@@ -60,7 +60,7 @@ sources:
     last_checked: 2026-03-01
     notes: "持久图稳定性定理，给出扰动下瓶颈距离上界"
 
-  - name: Robert Ghrist - Barcodes: The Persistent Topology of Data
+  - name: "Robert Ghrist - Barcodes: The Persistent Topology of Data"
     author: Robert Ghrist
     year: 2008
     url: https://www.ams.org/bull/2008-45-01/S0273-0979-07-01191-3/
@@ -89,6 +89,96 @@ sources:
     trust_band: medium-high
     last_checked: 2026-03-01
     notes: "拓扑方法计算化的标准教材"
+
+  - name: "W3C PROV Working Group - PROV-DM: The PROV Data Model"
+    author: Luc Moreau; Paolo Missier; W3C Provenance Working Group
+    year: 2013
+    url: https://www.w3.org/TR/prov-dm/
+    type: primary-standard
+    topic: 高维拓扑
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "实体-活动-主体关系模型，为跨系统证据链复核提供标准图语义"
+
+  - name: W3C Distributed Tracing Working Group - Trace Context
+    author: Sergey Kanzhelev; Morgan McLean; Alois Reitbauer; W3C Distributed Tracing Working Group
+    year: 2021
+    url: https://www.w3.org/TR/trace-context/
+    type: primary-standard
+    topic: 高维拓扑
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "跨服务 trace 上下文传播标准，是生产拓扑链路可拼接与可复演的关键锚点"
+
+  - name: Google - ClusterData 2011 Trace
+    author: John Wilkes; Charles Reiss; Google
+    year: 2011
+    url: https://raw.githubusercontent.com/google/cluster-data/master/ClusterData2011_2.md
+    type: primary-dataset
+    topic: 高维拓扑
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "公开大规模生产集群追踪数据，支持拓扑信号在真实调度场景下复验"
+
+  - name: Alibaba - Cluster Trace Program
+    author: Alibaba Group
+    year: 2018
+    url: https://raw.githubusercontent.com/alibaba/clusterdata/master/README.md
+    type: primary-dataset
+    topic: 高维拓扑
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "公开生产集群 DAG 与资源追踪，为跨环境复演与拓扑阈值校验提供样本"
+
+  - name: U.S.-Canada Power System Outage Task Force - Final Report on the August 14, 2003 Blackout
+    author: U.S.-Canada Power System Outage Task Force
+    year: 2004
+    url: https://www.nerc.com/globalassets/our-work/reports/event-reports/august_2003_blackout_final_report.pdf
+    type: primary-official-report
+    topic: 高维拓扑
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "电网拓扑异常的一手调查报告，覆盖热极限、树线接触与告警链路失效联动"
+
+  - name: Bureau of Transportation Statistics - Number 14 Time Reporting
+    author: U.S. Bureau of Transportation Statistics
+    year: 2009
+    url: https://www.bts.gov/topics/airlines-and-airports/number-14-time-reporting
+    type: primary-regulatory-guidance
+    topic: 高维拓扑
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "航空准点阈值口径定义（计划到达+15分钟）的一手规则锚点"
+
+  - name: U.S. GAO - Airline Competition and On-Time Performance (RCED-90-154)
+    author: U.S. Government Accountability Office
+    year: 1990
+    url: https://www.gao.gov/assets/rced-90-154.pdf
+    type: primary-audit-report
+    topic: 高维拓扑
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "记录计划时间调整与准点统计口径漂移的原始审计证据"
+
+  - name: European Commission - Implementing Regulation (EU) 2024/2835
+    author: European Commission
+    year: 2024
+    url: https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32024R2835
+    type: primary-regulation
+    topic: 高维拓扑
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "平台治理透明度模板，提供 Precision/Recall 与撤销字段用于阈值漂移复验"
+
+  - name: Joint Authorities Technical Review - Boeing 737 MAX Flight Control System Report
+    author: Joint Authorities Technical Review
+    year: 2019
+    url: https://www.faa.gov/sites/faa.gov/files/2021-08/Final_JATR_Submittal_to_FAA_Oct_2019.pdf
+    type: primary-investigation-report
+    topic: 高维拓扑
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "错误传感输入导致控制触发阈值前移的高后果一手调查样本"
 
   - name: Karl Marx - Theses on Feuerbach
     author: Karl Marx
@@ -120,7 +210,7 @@ sources:
     last_checked: 2026-03-01
     notes: "探究中的自校正机制与信念收敛"
 
-  - name: John Dewey - Logic: The Theory of Inquiry
+  - name: "John Dewey - Logic: The Theory of Inquiry"
     author: John Dewey
     year: 1938
     url: https://philpapers.org/rec/DEULTT
@@ -189,3 +279,2603 @@ sources:
     trust_band: medium-high
     last_checked: 2026-03-01
     notes: "单环/双环学习框架的原始著作"
+
+  - name: Mao Zedong - On Contradiction
+    author: Mao Zedong
+    year: 1937
+    url: https://www.marxists.org/reference/archive/mao/selected-works/volume-1/mswv1_17.htm
+    type: primary-paper
+    topic: 矛盾论
+    trust_band: high
+    last_checked: 2026-03-01
+    notes: "主要矛盾/次要矛盾与主要方面转化的原始文本"
+
+  - name: Vladimir I. Lenin - Philosophical Notebooks
+    author: Vladimir I. Lenin
+    year: 1914
+    url: https://www.marxists.org/archive/lenin/works/cw/volume38.htm
+    type: primary-notebook
+    topic: 矛盾论
+    trust_band: high
+    last_checked: 2026-03-01
+    notes: "对立统一与辩证分析操作线索的一手笔记"
+
+  - name: G. W. F. Hegel - Science of Logic
+    author: G. W. F. Hegel
+    year: 1812
+    url: https://archive.org/details/HegelScienceOfLogic
+    type: primary-book
+    topic: 矛盾论
+    trust_band: high
+    last_checked: 2026-03-01
+    notes: "矛盾作为生成机制与范畴跃迁的原典"
+
+  - name: Karl Marx - Capital Vol. 1
+    author: Karl Marx
+    year: 1867
+    url: https://www.marxists.org/archive/marx/works/1867-c1/
+    type: primary-book
+    topic: 矛盾论
+    trust_band: high
+    last_checked: 2026-03-01
+    notes: "结构性矛盾在资本运动中的展开"
+
+  - name: Karl Marx - Grundrisse
+    author: Karl Marx
+    year: 1858
+    url: https://www.marxists.org/archive/marx/works/1857/grundrisse/
+    type: primary-manuscript
+    topic: 矛盾论
+    trust_band: medium-high
+    last_checked: 2026-03-01
+    notes: "多重规定性与从抽象到具体的方法基础"
+
+  - name: Friedrich Engels - Anti-Duhring
+    author: Friedrich Engels
+    year: 1878
+    url: https://www.marxists.org/archive/marx/works/1877/anti-duhring/
+    type: primary-book
+    topic: 矛盾论
+    trust_band: medium-high
+    last_checked: 2026-03-01
+    notes: "对立统一与阶段性转化的系统论述"
+
+  - name: Friedrich Engels - Dialectics of Nature
+    author: Friedrich Engels
+    year: 1883
+    url: https://www.marxists.org/archive/marx/works/1883/don/
+    type: primary-manuscript
+    topic: 矛盾论
+    trust_band: medium-high
+    last_checked: 2026-03-01
+    notes: "临界点、突变与层级涌现的辩证材料"
+
+  - name: Louis Althusser - Contradiction and Overdetermination
+    author: Louis Althusser
+    year: 1962
+    url: https://www.marxists.org/reference/archive/althusser/1962/overdetermination.htm
+    type: primary-essay
+    topic: 矛盾论
+    trust_band: medium-high
+    last_checked: 2026-03-01
+    notes: "过度决定：主矛盾由多重结构共同塑形"
+
+  - name: Immanuel Kant - Critique of Pure Reason
+    author: Immanuel Kant
+    year: 1781
+    url: https://www.gutenberg.org/ebooks/4280
+    type: primary-book
+    topic: 矛盾论
+    trust_band: medium-high
+    last_checked: 2026-03-01
+    notes: "二律背反提供对象矛盾与范畴误用的边界"
+
+  - name: Aristotle - Metaphysics (Book Gamma)
+    author: Aristotle
+    year: -350
+    url: https://classics.mit.edu/Aristotle/metaphysics.html
+    type: primary-book
+    topic: 矛盾论
+    trust_band: medium-high
+    last_checked: 2026-03-01
+    notes: "非矛盾律作为形式逻辑护栏"
+
+  - name: U.S. Supreme Court - NYSRPA v. Bruen
+    author: U.S. Supreme Court
+    year: 2022
+    url: https://www.supremecourt.gov/opinions/21pdf/597us1r54_7648.pdf
+    type: primary-judgment
+    topic: 矛盾论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "比例衡量阈值在特定法域迁移失败的一手判决样本"
+
+  - name: Court of Justice of the European Union - Schrems II Judgment
+    author: Court of Justice of the European Union
+    year: 2020
+    url: https://www.dataprotection.ie/sites/default/files/uploads/2021-03/CJEU%20Judgment%2016.07.2020.pdf
+    type: primary-judgment
+    topic: 矛盾论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "EU-US 数据充分性阈值迁移失败的核心判决链路"
+
+  - name: European Commission - Implementing Decision (EU) 2016/1250
+    author: European Commission
+    year: 2016
+    url: https://op.europa.eu/en/publication-detail/-/publication/c183d956-57a6-11e6-89bd-01aa75ed71a1/language-en
+    type: primary-decision
+    topic: 矛盾论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "Privacy Shield 充分性阈值迁移的原始制度文本"
+
+  - name: Court of Justice of the European Union - Press Release No 117/15 (Schrems I)
+    author: Court of Justice of the European Union
+    year: 2015
+    url: https://curia.europa.eu/jcms/upload/docs/application/pdf/2015-10/cp150117en.pdf
+    type: primary-press-release
+    topic: 矛盾论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "Safe Harbor 充分性决定失效的官方一手摘要"
+
+  - name: European Commission - Decision 2000/520/EC (Safe Harbor)
+    author: European Commission
+    year: 2000
+    url: https://op.europa.eu/en/publication-detail/-/publication/10e48a32-d701-4524-b7e9-8f270365c5c0
+    type: primary-decision
+    topic: 矛盾论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "Safe Harbor 阈值迁移的原始制度文本"
+
+  - name: WTO Panel Report - EC Measures Concerning Meat and Meat Products (Hormones), WT/DS26/R/USA
+    author: WTO Dispute Settlement Panel
+    year: 1997
+    url: https://www.wto.org/english/tratop_e/dispu_e/26rusa.pdf
+    type: primary-report
+    topic: 矛盾论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "风险治理阈值跨法域迁移失败的争端审查样本"
+
+  - name: Samuel Eilenberg; Saunders Mac Lane - General Theory of Natural Equivalences
+    author: Samuel Eilenberg; Saunders Mac Lane
+    year: 1945
+    url: https://doi.org/10.2307/1990284
+    type: primary-paper
+    topic: 范畴论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "范畴/函子/自然变换原始框架，用于定义跨层抽象映射的保结构条件"
+
+  - name: Daniel M. Kan - Adjoint Functors
+    author: Daniel M. Kan
+    year: 1958
+    url: https://doi.org/10.1090/S0002-9947-1958-0131451-0
+    type: primary-paper
+    topic: 范畴论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "伴随函子提供约束下最经济映射原型，可用于抽象边界选型"
+
+  - name: F. William Lawvere - Functorial Semantics of Algebraic Theories
+    author: F. William Lawvere
+    year: 1963
+    url: https://doi.org/10.1073/pnas.50.5.869
+    type: primary-paper
+    topic: 范畴论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "理论到模型的函子语义，把规格到实现映射变成可验证语义保持问题"
+
+  - name: Jean Benabou - Introduction to Bicategories
+    author: Jean Benabou
+    year: 1967
+    url: https://doi.org/10.1007/BFb0074299
+    type: primary-paper
+    topic: 范畴论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "双范畴给出“到同构为止”的组合结构，支撑工程近似交换判定"
+
+  - name: Saunders Mac Lane - Categories for the Working Mathematician
+    author: Saunders Mac Lane
+    year: 1971
+    url: https://doi.org/10.1007/978-1-4757-4721-8
+    type: primary-book
+    topic: 范畴论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "以泛性质/极限语言定义结构不变量，为抽象边界治理提供通用语法"
+
+  - name: Ross Street - The Formal Theory of Monads
+    author: Ross Street
+    year: 1972
+    url: https://doi.org/10.1016/0022-4049(72)90019-9
+    type: primary-paper
+    topic: 范畴论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "monad 的形式理论为组合流程和效应边界提供可推导约束"
+
+  - name: F. William Lawvere - Metric Spaces, Generalized Logic, and Closed Categories
+    author: F. William Lawvere
+    year: 1973
+    url: https://doi.org/10.1007/BF02924844
+    type: primary-paper
+    topic: 范畴论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "把距离/代价纳入范畴语义，为决策边界的代价结构判定提供形式入口"
+
+  - name: Eugenio Moggi - Notions of Computation and Monads
+    author: Eugenio Moggi
+    year: 1991
+    url: https://doi.org/10.1016/0890-5401(91)90052-4
+    type: primary-paper
+    topic: 范畴论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "计算效应的 monad 语义原典，直接对应纯核与效应边界建模"
+
+  - name: Philip Wadler - Comprehending Monads
+    author: Philip Wadler
+    year: 1992
+    url: https://doi.org/10.1017/S0960129500001560
+    type: primary-paper
+    topic: 范畴论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "将 monad 落到可执行程序构造，连接形式抽象与工程实现"
+
+  - name: Joseph A. Goguen; Rod M. Burstall - Introducing Institutions
+    author: Joseph A. Goguen; Rod M. Burstall
+    year: 1984
+    url: https://doi.org/10.1007/3-540-17162-2_69
+    type: primary-paper
+    topic: 范畴论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "为异构逻辑系统提供统一语义框架，是交换图阈值跨系统治理的逻辑基础"
+
+  - name: David I. Spivak - Functorial Data Migration
+    author: David I. Spivak
+    year: 2012
+    url: https://www.sciencedirect.com/science/article/pii/S0890540112001010
+    type: primary-paper
+    topic: 范畴论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "把异构数据迁移写成伴随函子，支持“先迁移后查询/先查询后迁移”可交换验收"
+
+  - name: Brendan Fong - Decorated Cospans
+    author: Brendan Fong
+    year: 2015
+    url: https://www.kurims.kyoto-u.ac.jp/EMIS/journals/TAC/volumes/30/33/30-33.pdf
+    type: primary-paper
+    topic: 范畴论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "给出开放异构部件组合的范畴语法，可用于组合顺序稳健性和阈值分级验收"
+
+  - name: Patrick Schultz; Ryan Wisnesky - Algebraic Data Integration
+    author: Patrick Schultz; Ryan Wisnesky
+    year: 2017
+    url: https://www.cambridge.org/core/journals/journal-of-functional-programming/article/algebraic-data-integration/AC36B1C39D4C76A18CB54F75B0D26796
+    type: primary-paper
+    topic: 范畴论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "将 pushout 驱动的数据集成与失败边界显式化，支撑异构系统交换图阈值验证"
+
+  - name: Exposition of a New Theory on the Measurement of Risk
+    author: Daniel Bernoulli
+    year: 1738
+    url: https://www.econometricsociety.org/publications/econometrica/1954/01/01/exposition-new-theory-measurement-risk
+    type: primary-paper
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "风险与期望效用传统的源头文本（常用 1954 英译版作为可检索入口）"
+
+  - name: Truth and Probability
+    author: Frank P. Ramsey
+    year: 1926
+    url: https://www.routledge.com/Foundations-of-Mathematics-and-other-Logical-Essays/Ramsey/p/book/9780415408523
+    type: primary-chapter
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "主观概率与效用早期公理化框架，奠定后续个人主义决策论基础"
+
+  - name: Theory of Games and Economic Behavior
+    author: John von Neumann; Oskar Morgenstern
+    year: 1944
+    url: https://cart.press.princeton.edu/theory-of-games-and-economic-behavior-pb-395.html
+    type: primary-book
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "期望效用公理与博弈框架经典原点"
+
+  - name: Statistical Decision Functions
+    author: Abraham Wald
+    year: 1950
+    url: https://academic.oup.com/jrsssa/article-abstract/114/2/250/7095017
+    type: primary-book
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "统计决策论奠基文本，系统化损失函数与风险最小化"
+
+  - name: The Foundations of Statistics
+    author: Leonard J. Savage
+    year: 1954
+    url: https://www.barnesandnoble.com/w/the-foundations-of-statistics-leonard-j-savage/1000531118
+    type: primary-book
+    topic: 决策论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "sure-thing principle 与主观概率框架原典"
+
+  - name: Theory of Games and Statistical Decisions
+    author: David Blackwell; M. A. Girshick
+    year: 1954
+    url: https://academic.oup.com/jrsssa/article-abstract/118/1/102/7101393
+    type: primary-book
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "把统计决策放入对策语言，连接 Wald 与更广义对抗不确定性"
+
+  - name: A Behavioral Model of Rational Choice
+    author: Herbert A. Simon
+    year: 1955
+    url: https://doi.org/10.2307/1884852
+    type: primary-paper
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "有限理性与满意化范式的关键原始论文"
+
+  - name: "Games and Decisions: Introduction and Critical Survey"
+    author: R. Duncan Luce; Howard Raiffa
+    year: 1957
+    url: https://www.cambridge.org/core/journals/mathematical-gazette/article/abs/games-and-decisions-by-r-duncan-luce-and-howard-raiffa-pp-xi-509-70s-1957-j-wiley-sons/76C456F5A8E61A0F518112867AD36DD7
+    type: primary-book
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "早期系统综述，汇合效用、博弈与统计决策"
+
+  - name: "Decisions with Multiple Objectives: Preferences and Value Trade-Offs"
+    author: Ralph L. Keeney; Howard Raiffa
+    year: 1976
+    url: https://doi.org/10.1017/CBO9781139174084
+    type: primary-book
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "多目标价值权衡与 MAUT 经典框架"
+
+  - name: "Prospect Theory: An Analysis of Decision under Risk"
+    author: Amos Tversky; Daniel Kahneman
+    year: 1979
+    url: https://doi.org/10.2307/1914185
+    type: primary-paper
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "对期望效用的描述性反例与替代模型"
+
+  - name: Novum Organum
+    author: Francis Bacon
+    year: 1620
+    url: https://archive.org/details/novumorganum00bacouoft
+    type: primary-book
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "系统经验归纳与实验排错的原始框架，提供可操作证据积累起点"
+
+  - name: An Essay towards solving a Problem in the Doctrine of Chances
+    author: Thomas Bayes
+    year: 1763
+    url: https://royalsocietypublishing.org/doi/10.1098/rstl.1763.0053
+    type: primary-paper
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "后验更新思想源头，为不确定条件下信念修正提供形式语法"
+
+  - name: An Enquiry Concerning Human Understanding
+    author: David Hume
+    year: 1748
+    url: https://www.gutenberg.org/ebooks/9662
+    type: primary-book
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "归纳问题与因果怀疑论原典，要求验证机制显式面对可错性"
+
+  - name: The Fixation of Belief
+    author: Charles Sanders Peirce
+    year: 1877
+    url: https://peirce.org/writings/p107.html
+    type: primary-paper
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "把探究定义为可自校正过程，强调方法优于权威"
+
+  - name: The Logic of Scientific Discovery
+    author: Karl Popper
+    year: 1934
+    url: https://archive.org/details/logicscientificd0000popp
+    type: primary-book
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "可证伪性作为理论边界，支持反证触发闸门设计"
+
+  - name: Experience and Prediction
+    author: Hans Reichenbach
+    year: 1938
+    url: https://press.uchicago.edu/ucp/books/book/chicago/E/bo3636502.html
+    type: primary-book
+    topic: 认识论与知识验证
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "概率与预测连接经验验证，提供统计推断与知识更新接口"
+
+  - name: Two Dogmas of Empiricism
+    author: W. V. O. Quine
+    year: 1951
+    url: https://www.ditext.com/quine/quine.html
+    type: primary-paper
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "反对分析/综合二分，提示理论检验是网络级而非单命题级"
+
+  - name: The Structure of Scientific Revolutions
+    author: Thomas S. Kuhn
+    year: 1962
+    url: https://press.uchicago.edu/ucp/books/book/chicago/S/bo13179781.html
+    type: primary-book
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "范式转换与常规科学边界，解释何时参数修补不足以维持旧框架"
+
+  - name: Falsification and the Methodology of Scientific Research Programmes
+    author: Imre Lakatos
+    year: 1970
+    url: https://doi.org/10.1017/CBO9781139171434.009
+    type: primary-chapter
+    topic: 认识论与知识验证
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "以进步/退化判定研究纲领，支撑更新闸门中的迁移判据"
+
+  - name: Error and the Growth of Experimental Knowledge
+    author: Deborah G. Mayo
+    year: 1996
+    url: https://press.uchicago.edu/ucp/books/book/chicago/E/bo3686327.html
+    type: primary-book
+    topic: 认识论与知识验证
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "严峻检验框架把错误发现能力转为可执行验证标准"
+
+  - name: 45 CFR 46.114 Cooperative Research
+    author: U.S. Department of Health and Human Services OHRP
+    year: 2018
+    url: https://www.hhs.gov/ohrp/regulations-and-policy/single-irb-exception-determinations/index.html
+    type: official-regulation
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "多机构研究 single-IRB 与例外条款，提供跨机构复核协议的硬约束边界"
+
+  - name: Final NIH Policy on the Use of a Single IRB for Multi-Site Research
+    author: National Institutes of Health
+    year: 2016
+    url: https://grants.nih.gov/grants/guide/notice-files/not-od-16-094.html
+    type: official-policy
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "跨机构研究中复核责任与执行机制的政策化样本"
+
+  - name: SMART IRB Reliance Agreement v3.0
+    author: SMART IRB
+    year: 2025
+    url: https://smartirb.org/agreement/
+    type: official-agreement
+    topic: 认识论与知识验证
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "跨机构复核授权关系的标准化协议模板"
+
+  - name: OECD Council Decision C(81)30(Final) Mutual Acceptance of Data
+    author: OECD Council
+    year: 1981
+    url: https://one.oecd.org/document/ENV/MC/CHEM(98)17/en/pdf
+    type: official-decision
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "跨机构/跨国家数据互认制度，给出可复核数据交换的制度前提"
+
+  - name: ICH E6(R3) Good Clinical Practice Step 4 Final Guideline
+    author: International Council for Harmonisation (ICH)
+    year: 2025
+    url: https://database.ich.org/sites/default/files/ICH_E6%28R3%29_Step4_FinalGuideline_2025_0106.pdf
+    type: primary-guideline
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "跨机构临床数据复核与质量管理的一手规范文本"
+
+  - name: On the Problem of the Most Efficient Tests of Statistical Hypotheses
+    author: Jerzy Neyman; Egon S. Pearson
+    year: 1933
+    url: https://royalsocietypublishing.org/doi/pdf/10.1098/rsta.1933.0009
+    type: primary-paper
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "显式化 I/II 类错误取舍，为反证优先级排序提供统计决策基线"
+
+  - name: ASA Statement on Statistical Significance and P-Values
+    author: American Statistical Association
+    year: 2016
+    url: https://www.amstat.org/asa/files/pdfs/P-ValueStatement.pdf
+    type: official-statement
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "反对单阈值真伪判定，强调完整证据链与可复核解释"
+
+  - name: A Proof for the Queuing Formula L = λW
+    author: John D. C. Little
+    year: 1961
+    url: https://doi.org/10.1287/opre.9.3.383
+    type: primary-paper
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "提供在制品、吞吐与等待时间的硬约束关系，可用于误冻结成本可计算化"
+
+  - name: Stochastic Processes Occurring in the Theory of Queues and their Analysis by the Method of the Imbedded Markov Chain
+    author: D. G. Kendall
+    year: 1953
+    url: https://doi.org/10.1214/aoms/1177728975
+    type: primary-paper
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "给出队列随机过程标准语法，可用于跨语境阈值迁移的一致性检验"
+
+  - name: Problems of Monetary Management The U.K. Experience
+    author: Charles A. E. Goodhart
+    year: 1975
+    url: https://doi.org/10.1007/978-1-349-15494-0_8
+    type: primary-chapter
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "目标化指标失真原典锚点，可作为阈值迁移失效与误冻结反例的制度基线"
+
+  - name: The Psychology of Waiting Lines
+    author: David H. Maister
+    year: 1985
+    url: https://davidmaister.com/articles/the-psychology-of-waiting-lines/
+    type: primary-essay
+    topic: 认识论与知识验证
+    trust_band: medium
+    last_checked: 2026-03-02
+    notes: "反例指出客观队列指标改善不必然等于主观体验改善，需并行校验阈值"
+
+  - name: Regulation (EU) 2022/2065 Digital Services Act
+    author: European Union
+    year: 2022
+    url: https://eur-lex.europa.eu/eli/reg/2022/2065/oj
+    type: official-regulation
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "跨语境平台治理阈值迁移样本，提供风险分层、透明度与审计的统一框架"
+
+  - name: 互联网信息服务算法推荐管理规定
+    author: 国家互联网信息办公室等四部门
+    year: 2022
+    url: https://www.cac.gov.cn/2022-01/04/c_1642894606364259.htm
+    type: official-regulation
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "中国语境下算法治理与阈值干预规则，为跨文化迁移重标定提供对照锚点"
+
+  - name: Guidance for the use of Annex 2 of the International Health Regulations 2005
+    author: World Health Organization
+    year: 2008
+    url: https://www.who.int/publications/m/item/who-guidance-for-the-use-of-annex-2-of-the-international-health-regulations-%282005%29
+    type: official-guidance
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "公共卫生事件跨国家阈值触发与通报流程原始规范，可做跨文化迁移基准"
+
+  - name: US Interim Recommendation for Use of Janssen COVID-19 Vaccine After Pause
+    author: Oliver Brooks; Kathleen Dooling; Kathryn M. Mbaeyi; et al. (CDC/ACIP)
+    year: 2021
+    url: https://www.cdc.gov/mmwr/volumes/70/wr/mm7017e4.htm
+    type: official-report
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "暂停-恢复公开决策链路样本，可用于误冻结成本与安全复核收益对照"
+
+  - name: Commission Implementing Regulation (EU) 2024/2835
+    author: European Commission
+    year: 2024
+    url: https://eur-lex.europa.eu/eli/reg_impl/2024/2835/oj
+    type: official-regulation
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "DSA 透明报告统一模板与机器可读要求，提供跨平台口径可比性硬约束"
+
+  - name: Implementing Regulation Templates for DSA Transparency Reporting
+    author: European Commission DG CONNECT
+    year: 2024
+    url: https://digital-strategy.ec.europa.eu/en/library/implementing-regulation-laying-down-templates-concerning-transparency-reporting-obligations
+    type: official-template
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "官方字段字典与填报说明，可直接映射申诉/撤销/披露滞后统一口径"
+
+  - name: How the DSA Enhances Transparency Online
+    author: European Commission
+    year: 2025
+    url: https://digital-strategy.ec.europa.eu/en/policies/dsa-brings-transparency
+    type: official-policy
+    topic: 认识论与知识验证
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "官方透明度入口与报告节奏说明，可作为披露滞后计算的基准锚点"
+
+  - name: X DSA Transparency Report (Oct 2024)
+    author: X Corp
+    year: 2024
+    url: https://transparency.x.com/dsa-transparency-report.html
+    type: official-report
+    topic: 认识论与知识验证
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "提供处置-申诉-成功申诉连续链路，但需做维度归一后方可跨平台比较"
+
+  - name: Appeals Centre Europe First Transparency Report
+    author: Appeals Centre Europe
+    year: 2025
+    url: https://www.appealscentre.eu/appeals-centre-publishes-first-transparency-report/
+    type: official-report
+    topic: 认识论与知识验证
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "独立争议机构口径可用于平台自报口径外部校准与冲突识别"
+
+  - name: On Governors
+    author: James Clerk Maxwell
+    year: 1868
+    url: https://en.wikisource.org/wiki/File:On_Governors.pdf
+    type: primary-paper
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "反馈稳定性分析前史原典，提供过冲与调速器振荡分析框架"
+
+  - name: Behavior, Purpose and Teleology
+    author: Arturo Rosenblueth; Norbert Wiener; Julian Bigelow
+    year: 1943
+    url: https://www.cambridge.org/core/journals/philosophy-of-science/article/behavior-purpose-and-teleology/73ACBBEC616CE78767088694F357D57B
+    type: primary-paper
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "把目的性行为与反馈分类统一到控制分析语法"
+
+  - name: "Cybernetics: Or Control and Communication in the Animal and the Machine"
+    author: Norbert Wiener
+    year: 1948
+    url: https://mitpress.mit.edu/9780262355919/cybernetics-or-control-and-communication-in-the-animal-and-the-machine/
+    type: primary-book
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "控制论命名与跨学科反馈-通信统一框架"
+
+  - name: A Mathematical Theory of Communication
+    author: Claude E. Shannon
+    year: 1948
+    url: https://doi.org/10.1002/j.1538-7305.1948.tb01338.x
+    type: primary-paper
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "信道容量与噪声边界原典，为控制信号质量提供硬约束"
+
+  - name: Regeneration Theory
+    author: Harry Nyquist
+    year: 1932
+    url: https://cir.nii.ac.jp/crid/1363388845563954560
+    type: primary-paper
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "稳定性判据源头文本，奠定反馈系统频域稳定边界"
+
+  - name: Stabilized Feedback Amplifiers
+    author: Harold S. Black
+    year: 1934
+    url: https://www.nokia.com/bell-labs/publications-and-media/publications/stabilized-feedback-amplifiers/
+    type: primary-paper
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "负反馈工程化原始案例，展示牺牲峰值增益换全局鲁棒"
+
+  - name: An Outline of General System Theory
+    author: Ludwig von Bertalanffy
+    year: 1950
+    url: https://academic.oup.com/bjps/article/I/2/134/1514614
+    type: primary-paper
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "一般系统论纲领文，给出开放系统与跨学科同构入口"
+
+  - name: An Introduction to Cybernetics
+    author: W. Ross Ashby
+    year: 1956
+    url: https://onlinebooks.library.upenn.edu/webbin/book/lookupid?key=olbp10975
+    type: primary-book
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "必要多样性与调节结构原典，支撑扰动-控制匹配判据"
+
+  - name: General Systems Theory—The Skeleton of Science
+    author: Kenneth E. Boulding
+    year: 1956
+    url: https://EconPapers.repec.org/RePEc:inm:ormnsc:v:2:y:1956:i:3:p:197-208
+    type: primary-paper
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "系统层级骨架模型原典，支撑跨组织层级约束建模"
+
+  - name: Design for a Brain
+    author: W. Ross Ashby
+    year: 1960
+    url: https://www.biodiversitylibrary.org/item/31036
+    type: primary-book
+    topic: 系统论与控制论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "适应行为与控制结构协同演化经典文本"
+
+  - name: The Architecture of Complexity
+    author: Herbert A. Simon
+    year: 1962
+    url: https://doi.org/10.1098/rspa.1962.0123
+    type: primary-paper
+    topic: 复杂性科学与涌现
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "近可分解层级系统原典，给出复杂系统可理解与可治理的分层语法"
+
+  - name: More Is Different
+    author: Philip W. Anderson
+    year: 1972
+    url: https://doi.org/10.1126/science.177.4047.393
+    type: primary-paper
+    topic: 复杂性科学与涌现
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "提出宏观规律不可由微观线性外推替代，确立涌现边界"
+
+  - name: Dynamic Models of Segregation
+    author: Thomas C. Schelling
+    year: 1971
+    url: https://doi.org/10.1080/0022250X.1971.9989794
+    type: primary-paper
+    topic: 复杂性科学与涌现
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "局部偏好经邻域交互放大为宏观分化的经典模型"
+
+  - name: Micromotives and Macrobehavior
+    author: Thomas C. Schelling
+    year: 1978
+    url: https://wwnorton.com/books/9780393092097
+    type: primary-book
+    topic: 复杂性科学与涌现
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "微观动机与宏观行为错位机制的系统化原著"
+
+  - name: Order Out of Chaos
+    author: Ilya Prigogine; Isabelle Stengers
+    year: 1984
+    url: https://www.bantam.com/books/78064/order-out-of-chaos-by-ilya-prigogine-and-isabelle-stengers/
+    type: primary-book
+    topic: 复杂性科学与涌现
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "远离平衡态下结构生成与耗散结构机制的原始阐释"
+
+  - name: Self-Organized Criticality
+    author: Per Bak; Chao Tang; Kurt Wiesenfeld
+    year: 1987
+    url: https://doi.org/10.1103/PhysRevLett.59.381
+    type: primary-paper
+    topic: 复杂性科学与涌现
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "自组织临界性原典，解释级联突变与幂律尾部分布"
+
+  - name: The Evolution of Cooperation
+    author: Robert Axelrod
+    year: 1984
+    url: https://www.basicbooks.com/titles/robert-axelrod/the-evolution-of-cooperation-revised-edition/9780465005642/
+    type: primary-book
+    topic: 复杂性科学与涌现
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "重复博弈下局部策略如何涌现稳定合作结构"
+
+  - name: Governing the Commons
+    author: Elinor Ostrom
+    year: 1990
+    url: https://doi.org/10.1017/CBO9780511807763
+    type: primary-book
+    topic: 复杂性科学与涌现
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "多中心治理中局部规则组合如何生成可持续群体秩序"
+
+  - name: Hidden Order
+    author: John H. Holland
+    year: 1995
+    url: https://www.basicbooks.com/titles/john-h-holland/hidden-order/9780738200149/
+    type: primary-book
+    topic: 复杂性科学与涌现
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "复杂适应系统框架，把规则、选择与涌现连接为可迁移方法"
+
+  - name: Growing Artificial Societies
+    author: Joshua M. Epstein; Robert Axtell
+    year: 1996
+    url: https://direct.mit.edu/books/monograph/1886/Growing-Artificial-SocietiesSocial-Science-from
+    type: primary-book
+    topic: 复杂性科学与涌现
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "agent-based 生成式实验原典，提供“规则变更-宏观结果”可复验路径"
+
+  - name: Threshold Models of Collective Behavior
+    author: Mark Granovetter
+    year: 1978
+    url: https://doi.org/10.1086/226707
+    type: primary-paper
+    topic: 复杂性科学与涌现
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "阈值分布微小变化可导致群体行为从局部变化跃迁为全局级联"
+
+  - name: A Simple Model of Global Cascades on Random Networks
+    author: Duncan J. Watts
+    year: 2002
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC122850/
+    type: primary-paper
+    topic: 复杂性科学与涌现
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "随机网络中的阈值规则模型，给出小扰动触发全局级联的可复验框架"
+
+  - name: Early-warning signals for critical transitions
+    author: Marten Scheffer; Jordi Bascompte; William A. Brock; Victor Brovkin; Stephen R. Carpenter; Vasilis Dakos; Hermann Held; Egbert H. van Nes; Max Rietkerk; George Sugihara
+    year: 2009
+    url: https://doi.org/10.1038/nature08227
+    type: primary-paper
+    topic: 复杂性科学与涌现
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "缓慢参数漂移逼近临界点时的通用预警信号原始综述"
+
+  - name: Final Report on the August 14, 2003 Blackout in the United States and Canada
+    author: U.S.-Canada Power System Outage Task Force
+    year: 2004
+    url: https://eta-publications.lbl.gov/sites/default/files/2003-blackout-us-canada.pdf
+    type: official-accident-report
+    topic: 复杂性科学与涌现
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "北美停电官方复盘，呈现局部监测与规则失配如何演化为跨区级联失稳"
+
+  - name: Findings Regarding the Market Events of May 6, 2010
+    author: U.S. SEC; U.S. CFTC
+    year: 2010
+    url: https://www.sec.gov/about/reports-publications/newsstudies2010marketevents-reportpdf
+    type: official-accident-report
+    topic: 复杂性科学与涌现
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "闪崩官方报告，展示局部交易规则与流动性反馈如何放大全局相态突变"
+
+  - name: Exchange Act Release No. 70694 - In the Matter of Knight Capital Americas LLC
+    author: U.S. SEC
+    year: 2013
+    url: https://www.sec.gov/files/litigation/admin/2013/34-70694.pdf
+    type: official-accident-report
+    topic: 复杂性科学与涌现
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "部署参数漂移引发错误订单洪泛，提供“局部失效 -> 市场级冲击”证据链"
+
+  - name: "Toyota Production System: Beyond Large-Scale Production"
+    author: Taiichi Ohno
+    year: 1978
+    url: https://www.routledge.com/Toyota-Production-System-Beyond-Large-Scale-Production/Ohno/p/book/9780915299140
+    type: primary-book
+    topic: 精益与约束理论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "TPS 核心设计者一手著作，给出节拍化流动与现场约束治理基础语法"
+
+  - name: A Study of the Toyota Production System
+    author: Shigeo Shingo
+    year: 1989
+    url: https://www.routledge.com/A-Study-of-the-Toyota-Production-System-From-an-Industrial-Engineering-Viewpoint/Shingo-Dillon/p/book/9780915299171
+    type: primary-book
+    topic: 精益与约束理论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "以工业工程视角拆解 TPS 机制，补齐约束点识别与工序节拍关系"
+
+  - name: Zero Quality Control
+    author: Shigeo Shingo
+    year: 1986
+    url: https://www.routledge.com/product/isbn/9780915299072
+    type: primary-book
+    topic: 精益与约束理论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "源头检验与防错体系原典，支撑瓶颈保护中的质量前移机制"
+
+  - name: Out of the Crisis
+    author: W. Edwards Deming
+    year: 1986
+    url: https://mitpress.mit.edu/9780262541152/out-of-the-crisis/
+    type: primary-book
+    topic: 精益与约束理论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "管理系统改进与统计质量控制原著，解释指标驱动失配如何损害全局流量"
+
+  - name: Triumph of the Lean Production System
+    author: John F. Krafcik
+    year: 1988
+    url: https://sloanreview.mit.edu/article/triumph-of-the-lean-production-system/
+    type: primary-paper
+    topic: 精益与约束理论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "把 Lean 生产从 TPS 经验转译为可跨行业复用的管理语法"
+
+  - name: The Goal
+    author: Eliyahu M. Goldratt; Jeff Cox
+    year: 1984
+    url: https://www.routledge.com/The-Goal-A-Process-of-Ongoing-Improvement/Goldratt-Cox/p/book/9780566086656
+    type: primary-book
+    topic: 精益与约束理论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "TOC 母文本，提出约束优先与持续改进闭环"
+
+  - name: The Haystack Syndrome
+    author: Eliyahu M. Goldratt
+    year: 1990
+    url: https://search.worldcat.org/title/318320130
+    type: primary-book
+    topic: 精益与约束理论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "强调信息与数据区分，约束治理中反对局部度量幻觉"
+
+  - name: It's Not Luck
+    author: Eliyahu M. Goldratt
+    year: 1994
+    url: https://www.routledge.com/Its-Not-Luck/Goldratt/p/book/9780566076275
+    type: primary-book
+    topic: 精益与约束理论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "TOC Thinking Processes 延展，补充约束冲突澄清与策略切换路径"
+
+  - name: Critical Chain
+    author: Eliyahu M. Goldratt
+    year: 1997
+    url: https://www.routledge.com/Critical-Chain-A-Business-Novel/Goldratt/p/book/9780566080388
+    type: primary-book
+    topic: 精益与约束理论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "把约束优先扩展到项目系统，给出缓冲保护与多任务切换治理"
+
+  - name: Necessary But Not Sufficient
+    author: Eliyahu M. Goldratt; Eli Schragenheim; Carol A. Ptak
+    year: 2000
+    url: https://www.routledge.com/Necessary-But-Not-Sufficient-A-Theory-of-Constraints-Business-Novel/Goldratt/p/book/9780566084508
+    type: primary-book
+    topic: 精益与约束理论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "将 TOC 与 IT/ERP 落地冲突结合，强调规则重构先于工具上线"
+
+  - name: On the origin of species by means of natural selection
+    author: Charles Darwin
+    year: 1859
+    url: https://darwin-online.org.uk/converted/published/1859_Origin_F373/1859_Origin_F373.html
+    type: primary-book
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "自然选择原典，定义选择压力与适配更新的基础语法"
+
+  - name: On the Tendency of Species to form Varieties; and on the Perpetuation of Varieties and Species by Natural Means of Selection
+    author: Charles Darwin; Alfred Russel Wallace
+    year: 1858
+    url: https://www.biodiversitylibrary.org/part/280350
+    type: primary-paper
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "Darwin-Wallace 联名原始论文，自然选择首次公开发表"
+
+  - name: The Descent of Man, and Selection in Relation to Sex
+    author: Charles Darwin
+    year: 1871
+    url: https://www.loc.gov/item/04033382/
+    type: primary-book
+    topic: 演化与适应
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "扩展演化框架到人类与性选择，补足适应机制边界"
+
+  - name: The Genetical Theory of Natural Selection
+    author: Ronald A. Fisher
+    year: 1930
+    url: https://www.biodiversitylibrary.org/item/69976
+    type: primary-book
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "整合自然选择与遗传机制，是现代综合演化论核心文献"
+
+  - name: Evolution in Mendelian Populations
+    author: Sewall Wright
+    year: 1931
+    url: https://doi.org/10.1093/genetics/16.2.97
+    type: primary-paper
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "适应景观与群体结构原始来源，支持策略漂移阈值建模"
+
+  - name: The Causes of Evolution
+    author: J. B. S. Haldane
+    year: 1932
+    url: https://openlibrary.org/books/OL6282844M/The_causes_of_evolution
+    type: primary-book
+    topic: 演化与适应
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "群体遗传学早期代表作，系统讨论选择、变异与适应"
+
+  - name: Genetics and the Origin of Species
+    author: Theodosius Dobzhansky
+    year: 1937
+    url: https://openlibrary.org/books/OL6361774M/Genetics_and_the_origin_of_species.
+    type: primary-book
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "连接实验遗传学与演化生物学，奠定现代综合理论"
+
+  - name: The genetical evolution of social behaviour. I
+    author: W. D. Hamilton
+    year: 1964
+    url: https://doi.org/10.1016/0022-5193(64)90038-4
+    type: primary-paper
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "包容适应度理论原始论文，重塑社会性适应解释框架"
+
+  - name: Evolutionary Rate at the Molecular Level
+    author: Motoo Kimura
+    year: 1968
+    url: https://doi.org/10.1038/217624a0
+    type: primary-paper
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "分子层中性理论起点，对强适应主义提出关键约束"
+
+  - name: "The spandrels of San Marco and the Panglossian paradigm: a critique of the adaptationist programme"
+    author: Stephen Jay Gould; Richard C. Lewontin
+    year: 1979
+    url: https://doi.org/10.1098/rspb.1979.0086
+    type: primary-paper
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "经典反适应主义批判，强调结构约束与副产物边界"
+
+  - name: Selection and Covariance
+    author: George R. Price
+    year: 1970
+    url: https://www.nature.com/articles/227520a0
+    type: primary-paper
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "Price 方程原始论文，把选择变化拆解为协方差与传递项，避免错因归因"
+
+  - name: Long-Term Experimental Evolution in Escherichia coli. I. Adaptation and Divergence During 2,000 Generations
+    author: Richard E. Lenski; Michael R. Rose; Suzanne C. Simpson; Scott C. Tadler
+    year: 1991
+    url: https://doi.org/10.1086/285289
+    type: primary-paper
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "长期实验演化原始论文，提供跨代适应与分化的可复核时序样本"
+
+  - name: E. coli Long-term Experimental Evolution Project
+    author: Richard Lenski Lab
+    year: 1988
+    url: https://lenski.mmg.msu.edu/ecoli/
+    type: primary-project
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "LTEE 官方项目档案，提供菌株、协议、发表清单与长期数据入口"
+
+  - name: Natural Selection in the Wild
+    author: John A. Endler
+    year: 1986
+    url: https://www.jstor.org/stable/j.ctvx5w9v9
+    type: primary-book
+    topic: 演化与适应
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "自然场景下选择强度与梯度的实证方法论，补齐长期阈值漂移测量语法"
+
+  - name: Resilience and Stability of Ecological Systems
+    author: C. S. Holling
+    year: 1973
+    url: https://doi.org/10.1146/annurev.es.04.110173.000245
+    type: primary-paper
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "生态系统韧性原始论文，给出阈值跃迁与体制转换边界"
+
+  - name: The Population Ecology of Organizations
+    author: Michael T. Hannan; John Freeman
+    year: 1977
+    url: https://doi.org/10.1086/226424
+    type: primary-paper
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "组织生态学原始论文，将选择压力映射到组织存活阈值与结构惰性"
+
+  - name: Exploration and Exploitation in Organizational Learning
+    author: James G. March
+    year: 1991
+    url: https://doi.org/10.1287/orsc.2.1.71
+    type: primary-paper
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "组织学习经典论文，揭示短期利用与长期适应阈值漂移张力"
+
+  - name: Risk Management in a Dynamic Society - A Modelling Problem
+    author: Jens Rasmussen
+    year: 1997
+    url: https://doi.org/10.1016/S0925-7535(97)00052-0
+    type: primary-paper
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "社会技术系统中边界漂移原始模型，支撑冻结/解冻与回滚窗口治理"
+
+  - name: Vienna Convention on the Law of Treaties
+    author: United Nations
+    year: 1969
+    url: https://legal.un.org/ilc/texts/instruments/english/conventions/1_1_1969.pdf
+    type: primary-treaty
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "条约变更、保留与终止的原始程序框架，为跨法域迁移回滚窗口合法性定标提供基线"
+
+  - name: Case C-311/18 Data Protection Commissioner v Facebook Ireland and Maximillian Schrems (Schrems II)
+    author: Court of Justice of the European Union
+    year: 2020
+    url: https://curia.europa.eu/juris/liste.jsf?num=C-311/18
+    type: primary-judgment
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "跨法域数据迁移的冻结-重标定原始判决样本，提供高后果场景回滚触发边界"
+
+  - name: Commission Implementing Decision (EU) 2021/914 on Standard Contractual Clauses
+    author: European Commission
+    year: 2021
+    url: https://eur-lex.europa.eu/eli/dec_impl/2021/914/oj
+    type: primary-regulation
+    topic: 演化与适应
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "跨法域迁移中的合同化控制变量，支撑触发等价映射与双轨影子审计"
+
+  - name: Boeing 737 MAX Return to Service
+    author: Federal Aviation Administration
+    year: 2020
+    url: https://www.faa.gov/newsroom/updates-boeing-737-max
+    type: primary-regulatory-dossier
+    topic: 演化与适应
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "跨监管域分阶段复飞原始样本，提供窗口化放行、增量验证与受控回滚时序"
+
+  - name: Airworthiness Directive 2021-0039 (B737-8/-9)
+    author: European Union Aviation Safety Agency
+    year: 2021
+    url: https://ad.easa.europa.eu/ad/2021-0039
+    type: primary-regulation
+    topic: 演化与适应
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "与 FAA 复飞方案形成跨法域对照，补齐回滚窗口与救济可达性差异证据"
+
+  - name: 礼记·中庸
+    author: 传子思及后学
+    year: -300
+    url: https://ctext.org/liji/zhong-yong/zh
+    type: classic-primary
+    topic: 中国哲学方法论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "中道与中和的原典，提供边界锚定语法"
+
+  - name: 孟子
+    author: 孟子及弟子
+    year: -300
+    url: https://ctext.org/mengzi/zh
+    type: classic-primary
+    topic: 中国哲学方法论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "权然后知轻重，提供张力目标下的权衡线索"
+
+  - name: 荀子
+    author: 荀况及后学
+    year: -250
+    url: https://ctext.org/xunzi/zh
+    type: classic-primary
+    topic: 中国哲学方法论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "礼法与名实的制度化方法，可转译为治理约束"
+
+  - name: 道德经
+    author: 传老子
+    year: -350
+    url: https://ctext.org/dao-de-jing/zh
+    type: classic-primary
+    topic: 中国哲学方法论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "反与柔的策略观，为高不确定情境提供权变语法"
+
+  - name: 孙子兵法
+    author: 孙武
+    year: -500
+    url: https://ctext.org/art-of-war/zh
+    type: classic-primary
+    topic: 中国哲学方法论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "因敌变化与先胜后战，提供可执行的情势建模框架"
+
+  - name: 韩非子
+    author: 韩非
+    year: -230
+    url: https://ctext.org/hanfeizi/zh
+    type: classic-primary
+    topic: 中国哲学方法论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "法术势合流处理治理权变，强调制度可执行性"
+
+  - name: 管子
+    author: 管仲学派文献汇编
+    year: -200
+    url: https://ctext.org/guanzi/zh
+    type: classic-primary
+    topic: 中国哲学方法论
+    trust_band: medium
+    last_checked: 2026-03-02
+    notes: "政术与经济治理并重，提供跨领域权变素材"
+
+  - name: 盐铁论
+    author: 桓宽
+    year: -81
+    url: https://ctext.org/yan-tie-lun/zh
+    type: practice-primary
+    topic: 中国哲学方法论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "政策辩论实录，可观测方法论落地时的冲突与取舍"
+
+  - name: 传习录（卷中）
+    author: 王守仁门人辑录
+    year: 1520
+    url: https://zh.wikisource.org/wiki/%E5%82%B3%E7%BF%92%E9%8C%84/%E5%8D%B7%E4%B8%AD
+    type: practice-primary
+    topic: 中国哲学方法论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "知行合一核心材料，直接对应认知-执行耦合"
+
+  - name: 大学问
+    author: 王守仁
+    year: 1527
+    url: https://zh.wikisource.org/wiki/%E5%A4%A7%E5%AD%B8%E5%95%8F
+    type: classic-primary
+    topic: 中国哲学方法论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "知行并进与万物一体框架，补足知行闭环的规范层"
+
+  - name: Every Good Regulator of a System Must Be a Model of That System
+    author: Roger C. Conant; W. Ross Ashby
+    year: 1970
+    url: https://pespmc1.vub.ac.be/books/Conant_Ashby.pdf
+    type: primary-paper
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "调节器必须内含系统模型，为跨组织接口契约复核提供理论硬约束"
+
+  - name: On the Criteria To Be Used in Decomposing Systems into Modules
+    author: D. L. Parnas
+    year: 1972
+    url: https://sunnyday.mit.edu/16.355/parnas-criteria.html
+    type: primary-paper
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "模块边界与信息隐藏原典，可转译为接口契约最小暴露与变更隔离规则"
+
+  - name: Time, Clocks, and the Ordering of Events in a Distributed System
+    author: Leslie Lamport
+    year: 1978
+    url: https://www.microsoft.com/en-us/research/publication/time-clocks-ordering-events-distributed-system/
+    type: primary-paper
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "分布式事件偏序与时钟边界原典，支撑跨组织时滞链可证顺序性"
+
+  - name: An Investigation of the Therac-25 Accidents
+    author: Nancy G. Leveson; Clark S. Turner
+    year: 1993
+    url: https://web.mit.edu/6.033/2004/wwwdocs/papers/Therac_1.html
+    type: primary-paper
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "人机接口时序约束失配导致高风险失效，补强接口契约中的状态机与节奏条件"
+
+  - name: Mars Climate Orbiter Mishap Investigation Board Phase I Report
+    author: Arthur G. Stephenson; Mars Climate Orbiter Mishap Investigation Board
+    year: 1999
+    url: https://llis.nasa.gov/llis_lib/pdf/1009464main1_0641-mr.pdf
+    type: official-report
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "单位契约失配叠加长链路时滞造成轨道偏移失控，是跨组织接口复核失败的典型公开样本"
+
+  - name: Final Report on the August 14, 2003 Blackout in the United States and Canada
+    author: U.S.-Canada Power System Outage Task Force
+    year: 2004
+    url: https://www.energy.gov/oe/articles/blackout-2003-final-report-august-14-2003-blackout-united-states-and-canada-causes-and
+    type: official-report
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "监测故障与协调迟滞引发级联失效，提供多层时滞阈值公开证据链"
+
+  - name: Final Report on the Implementation of the Task Force Recommendations
+    author: U.S.-Canada Power System Outage Task Force
+    year: 2006
+    url: https://www.energy.gov/oe/articles/blackout-2003-blackout-final-implementation-report
+    type: official-report
+    topic: 系统论与控制论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "从事故调查到强制可靠性标准落地，补齐跨组织治理闭环的后验验证"
+
+  - name: The simplex architecture for safe on-line control system upgrades
+    author: D. Seto; B. Krogh; L. Sha; A. Chutinan
+    year: 1998
+    url: https://doi.org/10.1109/ACC.1998.703255
+    type: primary-paper
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "Simplex 架构原始论文，给出先进控制器/监控器/保底控制器切换协议"
+
+  - name: A Verification Framework for Runtime Assurance of Autonomous UAS
+    author: J. T. Slagel; L. M. White; A. Dutle; C. A. Munoz; N. Crespo
+    year: 2024
+    url: https://ntrs.nasa.gov/citations/20240007986
+    type: official-paper
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "将 Runtime Assurance 形式化验证落地到自主系统接管边界"
+
+  - name: 14 CFR 25.1329 Flight guidance system
+    author: U.S. Federal Aviation Administration
+    year: 2006
+    url: https://www.law.cornell.edu/cfr/text/14/25.1329
+    type: regulation
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "规定飞行引导系统脱开、模式指示与告警要求，是航空接管边界硬约束"
+
+  - name: UN Regulation No.157 Automated Lane Keeping Systems
+    author: UNECE WP.29
+    year: 2020
+    url: https://unece.org/transport/documents/2021/03/standards/un-regulation-no-157-automated-lane-keeping-systems-alks
+    type: regulation
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "把 Transition Demand 与 Minimum Risk Manoeuvre 写成自动驾驶可审查接管条款"
+
+  - name: J3016 Taxonomy and Definitions for Terms Related to Driving Automation Systems
+    author: SAE International
+    year: 2021
+    url: https://saemobilus.sae.org/standards/j3016_202104-taxonomy-definitions-terms-related-driving-automation-systems-road-motor-vehicles
+    type: standard
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "统一 DDT 与 fallback 责任术语，为人机接管边界提供语义底座"
+
+  - name: EOP-008-2 Loss of Control Center Functionality
+    author: North American Electric Reliability Corporation
+    year: 2017
+    url: https://www.nerc.com/pa/Stand/Reliability%20Standards/EOP-008-2.pdf
+    type: standard
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "要求主控失效时限内切入备控并持续运行，是电力控制架构切换模板"
+
+  - name: 17 CFR 240.15c3-5 Market Access Rule
+    author: U.S. Securities and Exchange Commission
+    year: 2010
+    url: https://www.law.cornell.edu/cfr/text/17/240.15c3-5
+    type: regulation
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "把预交易风控与直接控制权法定化，界定自动交易系统强制接管边界"
+
+  - name: Collision Between Vehicle Controlled by Developmental Automated Driving System and Pedestrian, Tempe, Arizona
+    author: National Transportation Safety Board
+    year: 2019
+    url: https://www.ntsb.gov/investigations/AccidentReports/Reports/HAR1903.pdf
+    type: official-report
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "Uber ATG 事故官方报告，揭示接管触发逻辑与冗余链失效"
+
+  - name: Joint Authorities Technical Review of the Boeing 737 MAX Flight Control System
+    author: Joint Authorities Technical Review
+    year: 2019
+    url: https://www.faa.gov/sites/faa.gov/files/2021-08/Final_JATR_Submittal_to_FAA_Oct_2019.pdf
+    type: official-report
+    topic: 系统论与控制论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "系统级切换条件与接管假设未完整验证，暴露认证链路边界失配"
+
+  - name: In the Matter of Knight Capital Americas LLC, Release No. 70694
+    author: U.S. Securities and Exchange Commission
+    year: 2013
+    url: https://www.sec.gov/files/litigation/admin/2013/34-70694.pdf
+    type: official-report
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "Knight Capital 事件执法文书，显示上线与断路机制失效可快速跨越可恢复边界"
+
+  - name: Annex 13 Aircraft Accident and Incident Investigation (13th ed.)
+    author: International Civil Aviation Organization
+    year: 2024
+    url: https://store.icao.int/en/annex-13-aircraft-accident-and-incident-investigation
+    type: official-standard
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "把事故调查目标定义为预防复发，给出事实-分析-建议-跟踪的程序骨架"
+
+  - name: The Investigative Process
+    author: National Transportation Safety Board
+    year: 2026
+    url: https://www.ntsb.gov/investigations/process/Pages/default.aspx
+    type: official-process
+    topic: 系统论与控制论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "官方调查流程页，明确证据采集、分析、建议与后续跟踪闭环"
+
+  - name: Columbia Accident Investigation Board Report Volume I
+    author: Columbia Accident Investigation Board
+    year: 2003
+    url: https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/20030093634.pdf
+    type: official-report
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "把技术失效与组织治理失效并列分析，适合做接管失败分层复盘模板"
+
+  - name: Final Report on the accident on 1st June 2009 to the Airbus A330-203 registered F-GZCP operated by Air France flight AF447
+    author: Bureau d'Enquetes et d'Analyses (BEA)
+    year: 2012
+    url: https://bea.aero/docspa/2009/f-cp090601.en/pdf/f-cp090601.en.pdf
+    type: official-report
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "自动化脱离后的接管信息断裂样本，可用于人类否决时延阈值校准"
+
+  - name: Communication during patient handovers
+    author: World Health Organization
+    year: 2007
+    url: https://cdn.who.int/media/docs/default-source/patient-safety/patient-safety-solutions/ps-solution3-communication-during-patient-handovers.pdf
+    type: official-guidance
+    topic: 系统论与控制论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "定义交接最小信息集，提供跨行业接口契约与接管失效复盘参考"
+
+  - name: MIL-STD-882E Standard Practice System Safety
+    author: U.S. Department of Defense
+    year: 2012
+    url: https://quicksearch.dla.mil/qsDocDetails.aspx?ident_number=36027
+    type: official-standard
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "风险接受与审批权限分层标准，可映射 T0-T3 风险带到治理动作与授权边界"
+
+  - name: Sequential Tests of Statistical Hypotheses
+    author: Abraham Wald
+    year: 1945
+    url: https://doi.org/10.1214/aoms/1177731118
+    type: primary-paper
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "序贯检验原始论文，给出最小样本与错误率权衡，可映射复核成本上界"
+
+  - name: NIST/SEMATECH e-Handbook of Statistical Methods - Process or Product Monitoring and Control
+    author: NIST/SEMATECH
+    year: 2003
+    url: https://www.itl.nist.gov/div898/handbook/pmc/pmc.htm
+    type: official-handbook
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "提供漂移监测、顺序抽检与过程控制制度语法，可落地长期漂移冻结阈值"
+
+  - name: 45 CFR Part 46 Protection of Human Subjects
+    author: U.S. Department of Health and Human Services
+    year: 2018
+    url: https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-A/part-46
+    type: official-regulation
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "风险分层持续复核制度锚点，可映射复核强度与频次预算"
+
+  - name: 21 CFR Part 58 Good Laboratory Practice for Nonclinical Laboratory Studies
+    author: U.S. Food and Drug Administration
+    year: 1978
+    url: https://www.ecfr.gov/current/title-21/chapter-I/subchapter-A/part-58
+    type: official-regulation
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "长期数据留存与审计追溯规范，可作为长期漂移冻结与解冻复核的制度样本"
+
+  - name: Marketing Submission Recommendations for a Predetermined Change Control Plan for AI-Enabled Device Software Functions
+    author: U.S. Food and Drug Administration
+    year: 2025
+    url: https://www.fda.gov/regulatory-information/search-fda-guidance-documents/marketing-submission-recommendations-predetermined-change-control-plan-artificial-intelligence
+    type: official-guidance
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "预设变更边界与持续监测要求，适合作为冻结核心边界与受控更新的公开范式"
+
+  - name: Appendix A Procedures and AR6 Drafts and Review Materials
+    author: Intergovernmental Panel on Climate Change
+    year: 2021
+    url: https://www.ipcc.ch/report/ar6/wg1/downloads/drafts-and-reviews/
+    type: official-review-record
+    topic: 认识论与知识验证
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "多轮评审与评审意见公开链路，适合作为高成本复核流程的跨机构样本"
+
+  - name: Federal Rules of Evidence Rule 901 (Dec 1, 2024)
+    author: U.S. Courts
+    year: 2024
+    url: https://www.uscourts.gov/sites/default/files/2025-02/federal-rules-of-evidence-dec-1-2024_0.pdf
+    type: official-rule
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "给出证据认证与系统输出可采性的法定语法，可作为跨法域证据认证等价映射锚点"
+
+  - name: Federal Rules of Evidence Rule 702 (Dec 1, 2024)
+    author: U.S. Courts
+    year: 2024
+    url: https://www.uscourts.gov/sites/default/files/2025-02/federal-rules-of-evidence-dec-1-2024_0.pdf
+    type: official-rule
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "把专家证词可采性从‘观点权威’改写为‘方法可靠性 + 可应用性’的制度锚点"
+
+  - name: Daubert v. Merrell Dow Pharmaceuticals, 509 U.S. 579
+    author: Supreme Court of the United States
+    year: 1993
+    url: https://supreme.justia.com/cases/federal/us/509/579/
+    type: official-case-law
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "确立科学证据可采性的可检验标准（可测试性、同行评议、错误率、普遍接受）"
+
+  - name: General Electric Co. v. Joiner, 522 U.S. 136
+    author: Supreme Court of the United States
+    year: 1997
+    url: https://supreme.justia.com/cases/federal/us/522/136/
+    type: official-case-law
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "强调方法与结论链路可审查，限制“结论跳跃”作为可采性判据"
+
+  - name: Kumho Tire Co. v. Carmichael, 526 U.S. 137
+    author: Supreme Court of the United States
+    year: 1999
+    url: https://supreme.justia.com/cases/federal/us/526/137/
+    type: official-case-law
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "把 Daubert 审查扩展到非科学专家意见，补齐跨领域可采性一致性约束"
+
+  - name: 21 CFR Part 11 Electronic Records; Electronic Signatures
+    author: U.S. Food and Drug Administration
+    year: 1997
+    url: https://www.ecfr.gov/current/title-21/chapter-I/subchapter-A/part-11
+    type: official-regulation
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "规定电子记录真实性、完整性与审计追踪要求，可映射证据可采性与时效闸门"
+
+  - name: Electronic Signatures in Global and National Commerce Act 15 U.S.C. 7001(d)(1)
+    author: U.S. Congress
+    year: 2000
+    url: https://uscode.house.gov/view.xhtml?req=(title:15%20section:7001%20edition:prelim)
+    type: official-law
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "规定电子记录准确反映与可再现要求，可用于证据时效与追溯闸门"
+
+  - name: Regulation (EU) No 910/2014 (eIDAS) Articles 25, 26, 32
+    author: European Union
+    year: 2014
+    url: https://eur-lex.europa.eu/eli/reg/2014/910/2024-10-18/eng
+    type: official-regulation
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "提供电子签名法律效力分层与验证流程，是跨法域可采性映射的重要制度锚点"
+
+  - name: 中华人民共和国电子签名法（2019修正）
+    author: 全国人民代表大会常务委员会
+    year: 2019
+    url: https://www.cac.gov.cn/2004-08/28/c_126468489.htm
+    type: official-law
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "“专有+专控+防篡改”四要件可直接映射证据认证等价分级"
+
+  - name: UNCITRAL Model Law on Electronic Signatures Article 12
+    author: United Nations Commission on International Trade Law
+    year: 2001
+    url: https://uncitral.un.org/sites/uncitral.un.org/files/media-documents/uncitral/en/ml-elecsig-e.pdf
+    type: international-model-law
+    topic: 认识论与知识验证
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "提供跨境签名认可的非歧视与实质等同性原则，可作为解冲放行基线"
+
+  - name: About PRIS
+    author: International Atomic Energy Agency
+    year: 2026
+    url: https://pris.iaea.org/PRIS/About.aspx
+    type: official-dataset-intro
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "PRIS 提供核电机组长时序运行口径（since 1970），可用于跨周期阈值校准"
+
+  - name: NRC Data Reporting and Transparency
+    author: U.S. Nuclear Regulatory Commission
+    year: 2026
+    url: https://www.nrc.gov/data/index
+    type: official-dataset-portal
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "包含 Action Matrix、Findings/Violations、Operating Reactor PI 等可审计数据入口"
+
+  - name: PI Summary and FAQ
+    author: U.S. Nuclear Regulatory Commission; Nuclear Energy Institute
+    year: 2025
+    url: https://www.nrc.gov/reactors/operating/oversight/pi-summary-faq
+    type: official-guidance
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "NEI 99-02 Rev.8 的官方锚点，用于 PI 口径一致性与跨周期复验"
+
+  - name: Inspection Manual Chapter Index
+    author: U.S. Nuclear Regulatory Commission
+    year: 2024
+    url: https://www.nrc.gov/reading-rm/doc-collections/insp-manual/manual-chapter/index
+    type: official-process
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "覆盖 IMC 0305 评估流程，是监管反馈闭环的制度入口"
+
+  - name: NUREG-1022 Event Report Guidelines Rev.3 Supplement 2
+    author: U.S. Nuclear Regulatory Commission
+    year: 2024
+    url: https://www.nrc.gov/reading-rm/doc-collections/nuregs/staff/sr1022/r3/s2/index
+    type: official-guidance
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "定义 10 CFR 50.72/50.73 上报判据，可把事故事件流映射为复盘数据流"
+
+  - name: INES - The International Nuclear and Radiological Event Scale Users Manual
+    author: International Atomic Energy Agency
+    year: 2013
+    url: https://www.iaea.org/publications/10508/ines-the-international-nuclear-and-radiological-event-scale-users-manual
+    type: official-manual
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "国际统一事件分级语法，可把叙事事故转成可比较风险层级"
+
+  - name: Service Level Objectives
+    author: Chris Jones; John Wilkes; Niall Murphy
+    year: 2017
+    url: https://sre.google/sre-book/service-level-objectives/
+    type: primary-practice-chapter
+    topic: 系统论与控制论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "SLO/SLI/SLA 定义软件可靠性目标函数，是控制目标设定的一手实践来源"
+
+  - name: Tracking Outages
+    author: Gabe Krabbe
+    year: 2017
+    url: https://sre.google/sre-book/tracking-outages/
+    type: primary-practice-chapter
+    topic: 系统论与控制论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "Outalator 提供事故聚合与趋势分析机制，可迁移到复盘自动化指标管道"
+
+  - name: Postmortem Culture
+    author: Google SRE Workbook Team
+    year: 2018
+    url: https://sre.google/workbook/postmortem-culture/
+    type: primary-practice-guide
+    topic: 系统论与控制论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "模板预填充、元数据入库与趋势报表流程，支持长期复盘自动化"
+
+  - name: Error Budget Policy
+    author: Google SRE Workbook Team
+    year: 2018
+    url: https://sre.google/workbook/error-budget-policy/
+    type: primary-practice-guide
+    topic: 系统论与控制论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "用 error budget 触发 postmortem 与行动项，是阈值触发治理的实践锚点"
+
+  - name: Dapper, a Large-Scale Distributed Systems Tracing Infrastructure
+    author: Benjamin H. Sigelman; Luiz Andre Barroso; Mike Burrows; Pat Stephenson; Manoj Plakal; Donald Beaver; Saul Jaspan; Chandan Shanbhag
+    year: 2010
+    url: https://research.google/pubs/dapper-a-large-scale-distributed-systems-tracing-infrastructure/
+    type: primary-paper
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "低开销分布式追踪基础，可为回放一致性与时延比指标提供观测数据"
+
+  - name: Applying STAMP in Accident Analysis
+    author: Nancy Leveson; Denise Daouk; Nicolas Dulac; Karen Marais
+    year: 2003
+    url: https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/20030111708.pdf
+    type: primary-paper
+    topic: 系统论与控制论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "将事故分析统一为约束控制失效框架，支撑核电与 SRE 跨域复盘同构化"
+
+  - name: The Theory of Constraints and Its Implications for Management Accounting
+    author: Eric Noreen; Debra Smith; James T. Mackey
+    year: 1995
+    url: https://www.amazon.com/Theory-Constraints-Implications-Management-Accounting/dp/0884271347
+    type: primary-book
+    topic: 精益与约束理论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "基于企业样本阐明 TOC 与传统成本会计的决策分歧，是吞吐会计争议的一手锚点"
+
+  - name: The Single Server Queue in Heavy Traffic
+    author: J. F. C. Kingman
+    year: 1961
+    url: https://doi.org/10.1017/S0305004100036094
+    type: primary-paper
+    topic: 精益与约束理论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "给出高利用率下等待时间爆炸的经典结果，支持反对“利用率压满”局部最优"
+
+  - name: The Theory of Probabilities and Telephone Conversations
+    author: A. K. Erlang
+    year: 1909
+    url: https://archive.org/details/erlang-1909-en
+    type: primary-paper
+    topic: 精益与约束理论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "服务系统排队理论源头文献，为吞吐-等待权衡提供原始数学基础"
+
+  - name: "Queueing Models of Call Centers: An Introduction"
+    author: Ger Koole; Avishai Mandelbaum
+    year: 2002
+    url: https://www.researchgate.net/publication/220534799_Queueing_Models_of_Call_Centers_An_Introduction
+    type: primary-paper
+    topic: 精益与约束理论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "把排队理论映射到服务运营，是单位成本与等待成本冲突的实践桥接"
+
+  - name: "Telephone Call Centers: Tutorial, Review, and Research Prospects"
+    author: Noah Gans; Ger Koole; Avishai Mandelbaum
+    year: 2003
+    url: https://doi.org/10.1287/msom.5.2.79.16071
+    type: primary-paper
+    topic: 精益与约束理论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "综述服务队列运营与成本口径冲突，提供跨行业可迁移的指标框架"
+
+  - name: A Conceptual Model of Emergency Department Crowding
+    author: Brent R. Asplin; David J. Magid; Kevin V. Rhodes; Lisa I. Solberg; Nicole Lurie; Carlos A. Camargo Jr.
+    year: 2003
+    url: https://doi.org/10.1067/mem.2003.302
+    type: primary-paper
+    topic: 精益与约束理论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "医疗系统 input-throughput-output 三段耦合模型，证明局部提效可转移拥堵"
+
+  - name: Managing unnecessary variability in patient demand to reduce nursing stress and improve patient safety
+    author: Eugene Litvak; Maureen Fineberg
+    year: 2005
+    url: https://doi.org/10.1016/S1553-7250(05)31044-0
+    type: primary-paper
+    topic: 精益与约束理论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "医疗排程波动治理研究，支持把吞吐与安全联立而非只看单位成本"
+
+  - name: Report of the Presidential Commission on the Space Shuttle Challenger Accident
+    author: The Presidential Commission (Rogers Commission)
+    year: 1986
+    url: https://ntrs.nasa.gov/api/citations/19860015255/downloads/19860015255.pdf
+    type: official-report
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "官方调查显示风险信号被制度化忽略时，延迟停止会把局部技术问题升级为系统治理灾难"
+
+  - name: Ariane 501 Failure - Report by the Inquiry Board
+    author: ESA/CNES Inquiry Board
+    year: 1996
+    url: https://esamultimedia.esa.int/docs/esa-x-1819eng.pdf
+    type: official-report
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "复用假设失效导致发射后不可回退，证明高时滞/低可逆场景必须提前设置停止与回滚闸门"
+
+  - name: Columbia Accident Investigation Board Report, Volume I
+    author: Columbia Accident Investigation Board
+    year: 2003
+    url: https://ntrs.nasa.gov/api/citations/20030091059/downloads/20030091059.pdf
+    type: official-report
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "跨代复现样本，显示同类决策缺陷会穿透技术代际并放大长期回滚成本"
+
+  - name: In the Matter of Knight Capital Americas LLC (Release No. 70694)
+    author: U.S. Securities and Exchange Commission
+    year: 2013
+    url: https://www.sec.gov/files/litigation/admin/2013/34-70694.pdf
+    type: official-report
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "分钟级变更失效可迅速跨越可恢复边界，适合构建回滚窗口与不可恢复成本账本字段"
+
+  - name: Management Weaknesses Delayed Response to Flint Water Crisis (Report No. 18-P-0221)
+    author: U.S. EPA Office of Inspector General
+    year: 2018
+    url: https://www.epa.gov/sites/default/files/2018-07/documents/_epaoig_20180719-18-p-0221.pdf
+    type: official-report
+    topic: 决策论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "公共治理中延迟响应的官方证据，可用于比较短期政治回避与长期健康/财政回滚成本"
+
+  - name: Post Office Horizon IT Inquiry, Volume 1 Report
+    author: Post Office Horizon IT Inquiry
+    year: 2025
+    url: https://www.gov.uk/government/publications/post-office-horizon-it-inquiry-volume-1-report
+    type: official-report
+    topic: 决策论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "公共服务与软件治理的长期失败样本，揭示错误制度化后的司法纠偏与信任修复回滚成本"
+
+  - name: DORA Publications
+    author: DORA; Google Cloud
+    year: 2014
+    url: https://dora.dev/research/publications/
+    type: official-report
+    topic: 精益与约束理论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "连续多年发布软件交付绩效研究，为吞吐、前置时间、恢复时间和失败率提供长时序样本"
+
+  - name: The History of DevOps Reports
+    author: Puppet
+    year: 2014
+    url: https://www.puppet.com/resources/history-of-devops-reports
+    type: official-report
+    topic: 精益与约束理论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "汇总多年份 DevOps 报告，补强软件交付流量治理的跨周期证据链"
+
+  - name: CNCF Annual Survey 2024
+    author: CNCF; Linux Foundation Research
+    year: 2024
+    url: https://www.cncf.io/reports/cncf-annual-survey-2024/
+    type: official-report
+    topic: 精益与约束理论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "覆盖云原生组织实践的年度调查，可用于观察平台工程约束与吞吐迁移边界"
+
+  - name: State of the Octoverse
+    author: GitHub
+    year: 2012
+    url: https://octoverse.github.com/
+    type: official-report
+    topic: 精益与约束理论
+    trust_band: medium
+    last_checked: 2026-03-02
+    notes: "长期协作与代码流量的官方观测，为软件交付系统吞吐变化提供背景样本"
+
+  - name: Referral to Treatment (RTT) Waiting Times
+    author: NHS England
+    year: 2012
+    url: https://www.england.nhs.uk/statistics/statistical-work-areas/rtt-waiting-times/
+    type: official-dataset
+    topic: 精益与约束理论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "公共医疗长时序等待数据，可验证瓶颈迁移和积压治理效果"
+
+  - name: A&E Attendances and Emergency Admissions
+    author: NHS England
+    year: 2001
+    url: https://www.england.nhs.uk/statistics/statistical-work-areas/ae-waiting-times-and-activity/
+    type: official-dataset
+    topic: 精益与约束理论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "急诊系统到达-处理-出院链路的公开时序数据，适合约束识别与节拍重配验证"
+
+  - name: NHAMCS Questionnaires, Datasets, and Documentation
+    author: CDC; NCHS
+    year: 1992
+    url: https://www.cdc.gov/nchs/nhamcs/documentation/index.html
+    type: official-dataset
+    topic: 精益与约束理论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "美国国家级门急诊长期样本，可用于跨周期分析等待与吞吐耦合"
+
+  - name: NYC 311 Service Requests from 2010 to Present Updates
+    author: NYC Open Data; NYC311
+    year: 2010
+    url: https://opendata.cityofnewyork.us/311-service-requests-from-2010-to-present-updates/
+    type: official-dataset
+    topic: 精益与约束理论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "城市公共服务请求的高频长时序数据，可用于公共服务积压和节拍治理复验"
+
+  - name: Federal IT Dashboard Data Transparency
+    author: GSA; OMB OFCIO
+    year: 2009
+    url: https://www.gsa.gov/policy-regulations/policy/information-technology-policy/it-data-transparency
+    type: official-dataset
+    topic: 精益与约束理论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "公共部门数字化项目的预算与健康度公开视图，可用于双账并行迁移边界审计"
+
+  - name: Robodebt Royal Commission Report
+    author: Royal Commission into the Robodebt Scheme
+    year: 2023
+    url: https://robodebt.royalcommission.gov.au/publications/report
+    type: official-report
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "公共治理自动化误触发的系统性反例，提供停止阈值、申诉能力与问责链脱节的官方证据"
+
+  - name: Ongekend onrecht - Parlementaire ondervragingscommissie Kinderopvangtoeslag
+    author: Tweede Kamer der Staten-Generaal
+    year: 2020
+    url: https://www.tweedekamer.nl/sites/default/files/atoms/files/20201217_eindverslag_parlementaire_ondervragingscommissie_kinderopvangtoeslag.pdf
+    type: official-report
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "荷兰托儿补贴案官方调查，揭示阈值迁移与程序失衡可将局部风控放大为长期制度性伤害"
+
+  - name: International Health Regulations (2005), Third Edition
+    author: World Health Organization
+    year: 2016
+    url: https://www.who.int/publications/i/item/9789241580496
+    type: official-regulation
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "公共卫生事件通报与分级决策的国际原始框架，适合校准预防性停机与证据充分之间的阈值边界"
+
+  - name: Regulation (EU) 2022/2065 (Digital Services Act)
+    author: European Parliament; Council of the European Union
+    year: 2022
+    url: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32022R2065
+    type: official-regulation
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "大型平台风险治理和透明义务的法定门槛，为程序正义闸门提供跨法域可比锚点"
+
+  - name: Commission launches transparency database under the Digital Services Act
+    author: European Commission
+    year: 2023
+    url: https://digital-strategy.ec.europa.eu/en/news/commission-launches-transparency-database-under-digital-services-act
+    type: official-notice
+    topic: 决策论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "DSA 透明数据库上线公告，提供平台处置与申诉链路可审计化的公开执行样本"
+
+  - name: 互联网信息服务算法推荐管理规定（国家网信办等部门令第9号）
+    author: 国家互联网信息办公室; 工业和信息化部; 公安部; 国家市场监督管理总局
+    year: 2022
+    url: https://www.cac.gov.cn/2022-01/04/c_1642894606364259.htm
+    type: official-regulation
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "中国平台算法治理原始规范，明确推荐透明、用户选择与申诉义务，可用于跨文化阈值迁移校准"
+
+  - name: OMB Memorandum M-24-10 - Advancing Governance, Innovation, and Risk Management for Agency Use of AI
+    author: Office of Management and Budget, The White House
+    year: 2024
+    url: https://www.whitehouse.gov/wp-content/uploads/2024/03/M-24-10-Advancing-Governance-Innovation-and-Risk-Management-for-Agency-Use-of-Artificial-Intelligence.pdf
+    type: official-policy
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "美国联邦 AI 治理政策，要求高影响场景建立测试、审查与人工干预路径，可直接映射程序正义闸门"
+
+  - name: European Convention on Human Rights - Article 35
+    author: Council of Europe
+    year: 1950
+    url: https://www.echr.coe.int/documents/d/echr/convention_eng
+    type: official-convention
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "受理条件与申诉时限（4个月）的一手法律锚点，可映射程序正义与申诉入口闸门"
+
+  - name: European Court of Human Rights Annual Reports
+    author: European Court of Human Rights
+    year: 2001
+    url: https://www.echr.coe.int/en/annual-reports
+    type: official-report-series
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "提供 incoming/decided/pending 连续年报（2001-2025），可标定 backlog 与 clearance ratio 阈值"
+
+  - name: EOIR Adjudication Statistics - New Cases and Total Completions (Historical)
+    author: Executive Office for Immigration Review, U.S. Department of Justice
+    year: 1983
+    url: https://www.justice.gov/eoir/media/1344801/dl?inline=
+    type: official-dataset
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "1983-2025(Q3) 连续时序可直接计算 receipts-completions 缺口与持续期，适配申诉积压闸门"
+
+  - name: EOIR Adjudication Statistics - All Appeals Filed, Completed, and Pending
+    author: Executive Office for Immigration Review, U.S. Department of Justice
+    year: 2016
+    url: https://www.justice.gov/eoir/media/1344986/dl?inline=
+    type: official-dataset
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "2016-2026(Q1) 上诉层 Filed/Completed/Pending 时序，可校准 appeal_backlog_ratio 与纠错时延边界"
+
+  - name: eCFR 8 CFR 1003.38 Appeals
+    author: Office of the Federal Register
+    year: 2026
+    url: https://www.ecfr.gov/current/title-8/chapter-V/subchapter-A/part-1003/subpart-C/section-1003.38
+    type: official-regulation
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "规定上诉受理 30 天窗口与送达规则，是申诉链路程序闸门的一手法规"
+
+  - name: "SSA OIG Audit A-05-22-51159 - The SSA's Hearings Backlog and Average Processing Times"
+    author: Social Security Administration Office of Inspector General
+    year: 2023
+    url: https://oig.ssa.gov/assets/uploads/a-05-22-51159r.pdf
+    type: official-audit
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "官方审计提供听证积压与处理时长的治理证据，可校准 correction-latency 与扩容禁行阈值"
+
+  - name: DSA Transparency Database
+    author: European Commission
+    year: 2023
+    url: https://acc.sor.dsa.ec.europa.eu/
+    type: official-dataset
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "平台 statements of reasons 官方数据库入口，可用于构建处置-申诉-撤销时序证据链"
+
+  - name: Commission releases Research API for DSA Transparency Database
+    author: European Commission
+    year: 2025
+    url: https://digital-strategy.ec.europa.eu/en/news/commission-releases-research-api-facilitate-programmatic-analysis-data-digital-services-acts
+    type: official-notice
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "官方公告给出可编程研究接口与可复核访问路径，支持跨平台时序口径统一"
+
+  - name: EU DSA Transparency Report (Jan-Jun 2025)
+    author: Google LLC
+    year: 2025
+    url: https://storage.googleapis.com/transparencyreport/report-downloads/pdf-report-27_2025-1-1_2025-6-30_en_v1.pdf
+    type: official-report
+    topic: 决策论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "官方半年度报告披露自动处置、申诉与初判撤销数据，可用于误触发复发率与纠偏时延校准"
+
+  - name: Oversight Board 2024 Annual Report
+    author: Oversight Board
+    year: 2025
+    url: https://www.oversightboard.com/wp-content/uploads/2025/08/2024-Annual-Report.pdf
+    type: official-report
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "监督委员会年度报告提供上诉受理、建议执行与落实状态，可补平台治理申诉链路时序证据"
+
+  - name: Taiwan Job Scam Warning Case
+    author: Oversight Board
+    year: 2025
+    url: https://www.oversightboard.com/pc/taiwan-job-scam-warning/
+    type: official-case
+    topic: 决策论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "官方个案披露自动化误触发与申诉纠偏过程，是阈值误触发反例库的一手样本"
+
+  - name: Commission Implementing Regulation (EU) 2024/2835
+    author: European Commission
+    year: 2024
+    url: https://eur-lex.europa.eu/eli/reg_impl/2024/2835/oj
+    type: official-regulation
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "为 DSA 透明报告提供统一字段和机器可读口径，是跨平台申诉/撤销率比较的法定锚点"
+
+  - name: Implementing Regulation Templates for DSA Transparency Reporting
+    author: European Commission DG CONNECT
+    year: 2024
+    url: https://digital-strategy.ec.europa.eu/en/library/implementing-regulation-laying-down-templates-concerning-transparency-reporting-obligations
+    type: official-template
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "官方模板给出 action taxonomy 与申诉字段定义，可用于处置强度归一化与时间锚点对齐"
+
+  - name: X DSA Transparency Report (Oct 2024)
+    author: X Corp
+    year: 2024
+    url: https://transparency.x.com/dsa-transparency-report.html
+    type: official-report
+    topic: 决策论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "提供平台侧处置-申诉链路样本，适合校准 unresolved_case_ratio 与 anchor_drift"
+
+  - name: Appeals Centre Europe First Transparency Report
+    author: Appeals Centre Europe
+    year: 2025
+    url: https://www.appealscentre.eu/appeals-centre-publishes-first-transparency-report/
+    type: official-report
+    topic: 决策论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "独立争议机构报告可作为平台自报口径外部校准样本，支撑程序等价闸门"
+
+  - name: 尚书·虞书·大禹谟
+    author: 先秦文献（后世传本整理）
+    year: -500
+    url: https://ctext.org/shang-shu/counsels-of-the-great-yu/zhs
+    type: primary-text
+    topic: 中国哲学方法论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "包含“允执厥中”原典语义，可作为中道边界锚定的一手文本"
+
+  - name: 礼记·中庸
+    author: 传统归子思，载《礼记》
+    year: -300
+    url: https://ctext.org/liji/zhong-yong/zhs
+    type: primary-text
+    topic: 中国哲学方法论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "提供“时中/中节”原文框架，可直接映射阈值区间思维"
+
+  - name: 孟子·尽心上
+    author: 孟子及弟子门人
+    year: -320
+    url: https://ctext.org/mengzi/jin-xin-i/zhs
+    type: primary-text
+    topic: 中国哲学方法论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "包含“执中无权，犹执一也”，是中道与权变联立的一手语义锚点"
+
+  - name: 孙子兵法·九变
+    author: 传统归孙武
+    year: -500
+    url: https://ctext.org/art-of-war/variation-in-tactics
+    type: primary-text
+    topic: 中国哲学方法论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "提供“君命有所不受”的条件触发式权变语法"
+
+  - name: 韩非子·有度
+    author: 韩非
+    year: -250
+    url: https://ctext.org/hanfeizi/you-du/zhs
+    type: primary-text
+    topic: 中国哲学方法论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "以“有度”强调法度边界，可映射治理阈值上限与下限"
+
+  - name: 中华人民共和国突发事件应对法（2024修订）
+    author: 全国人民代表大会常务委员会
+    year: 2024
+    url: https://www.npc.gov.cn/npc/c2/c30834/202406/t20240628_437888.html
+    type: official-law
+    topic: 中国哲学方法论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "提供分级响应与预警触发法定框架，可用于权变触发器制度化"
+
+  - name: 国家突发事件总体应急预案
+    author: 中共中央; 国务院
+    year: 2025
+    url: https://www.gov.cn/yaowen/liebiao/202502/content_7005639.htm
+    type: official-plan
+    topic: 中国哲学方法论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "提供国家级“分级-触发-响应-恢复”链路，适合映射中道阈值量化与动作切换"
+
+  - name: 气象灾害预警信号发布与传播办法（中国气象局令第16号）
+    author: 中国气象局
+    year: 2007
+    url: https://www.cma.gov.cn/gzk/202005/t20200528_1694399.html
+    type: official-regulation
+    topic: 中国哲学方法论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "给出预警信号标准、分级与防御指南，适合作为阈值分级的公开治理样本"
+
+  - name: Vienna Convention on the Law of Treaties
+    author: United Nations
+    year: 1969
+    url: https://legal.un.org/ilc/texts/instruments/english/conventions/1_1_1969.pdf
+    type: official-convention
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "条约解释与冲突处理的基础法源框架，可作为跨法域程序冲突分级的元规则锚点"
+
+  - name: Fragmentation of International Law (A/CN.4/L.682)
+    author: UN International Law Commission
+    year: 2006
+    url: https://legal.un.org/ilc/documentation/english/a_cn4_l682.pdf
+    type: official-report
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "提供法域碎片化条件下的冲突协调工具箱，支撑 D1-D3 解冲策略设计"
+
+  - name: Agreement on the Application of Sanitary and Phytosanitary Measures
+    author: World Trade Organization
+    year: 1994
+    url: https://www.wto.org/english/tratop_e/sps_e/spsagr_e.htm
+    type: official-agreement
+    topic: 决策论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "以科学证据和等效认定约束跨法域监管差异，可迁移为程序等效性证据闸门"
+
+  - name: Decision on the Implementation of Article 4 (G/SPS/19/Rev.2)
+    author: WTO SPS Committee
+    year: 2001
+    url: https://www.wto.org/english/tratop_e/sps_e/equivalence.htm
+    type: official-decision
+    topic: 决策论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "把等效承认写成可执行程序条件，可直接映射解冲放行/暂停规则"
+
+  - name: Choice of Court Convention
+    author: Hague Conference on Private International Law
+    year: 2005
+    url: https://www.hcch.net/en/instruments/conventions/full-text/?cid=98
+    type: official-convention
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "先锚定管辖与程序再承认执行，适合作为 G21 管辖锚定闸门样本"
+
+  - name: Judgments Convention
+    author: Hague Conference on Private International Law
+    year: 2019
+    url: https://www.hcch.net/en/instruments/conventions/full-text/?cid=137
+    type: official-convention
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "承认/执行与拒绝事由双轨结构，可用于 D0-D3 冲突分级判据"
+
+  - name: Model Law on Cross-Border Insolvency
+    author: UNCITRAL
+    year: 1997
+    url: https://uncitral.un.org/en/texts/insolvency/modellaw/cross-border_insolvency
+    type: official-model-law
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "跨法域程序承认与公共政策例外并存，为解冲退出条件提供原始模板"
+
+  - name: Regulation (EU) No 604/2013 (Dublin III)
+    author: European Union
+    year: 2013
+    url: https://eur-lex.europa.eu/eli/reg/2013/604/oj/eng
+    type: official-regulation
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "成员国移送与中止条件的一手法规，可用于程序冲突等级触发规则"
+
+  - name: Regulation (EU) 2016/679 (GDPR, Arts. 44-49)
+    author: European Union
+    year: 2016
+    url: https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng
+    type: official-regulation
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "跨法域数据流动的充分性/保障/例外分层，为证据可携带闸门提供法定结构"
+
+  - name: Data Protection Commissioner v Facebook Ireland and Maximillian Schrems (C-311/18)
+    author: Court of Justice of the European Union
+    year: 2020
+    url: https://curia.europa.eu/juris/liste.jsf?num=C-311/18
+    type: official-judgment
+    topic: 决策论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "判明形式合规并不保证实质等效，是 D2 升级 D3 的关键判例锚点"
+
+  - name: Council Framework Decision 2002/584/JHA (European Arrest Warrant)
+    author: Council of the European Union
+    year: 2002
+    url: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32002F0584
+    type: official-decision
+    topic: 决策论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "互认机制中的默认执行与例外拒绝结构，可迁移为跨法域解冲门设计"
+
+  - name: Carl von Clausewitz - On War
+    author: Carl von Clausewitz
+    year: 1832
+    url: https://www.gutenberg.org/ebooks/1946
+    type: primary-book
+    topic: 矛盾论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "原始文本中的 Schwerpunkt（主努力）切换语法，可映射主次矛盾重排逻辑"
+
+  - name: Taiichi Ohno - Toyota Production System
+    author: Taiichi Ohno
+    year: 1978
+    url: https://www.routledge.com/Toyota-Production-System-Beyond-Large-Scale-Production/Ohno/p/book/9780915299140
+    type: primary-book
+    topic: 矛盾论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "丰田体系原典，提供约束排序反转后的资源重排与节拍切换样本"
+
+  - name: Eliyahu M. Goldratt - The Goal
+    author: Eliyahu M. Goldratt; Jeff Cox
+    year: 1984
+    url: https://www.goldratt.com/product/the-goal-a-process-of-ongoing-improvement/
+    type: primary-book
+    topic: 矛盾论
+    trust_band: medium-high
+    last_checked: 2026-03-02
+    notes: "约束迁移与瓶颈切换的原始管理叙事，为主次矛盾切换提供制造域证据"
+
+  - name: Report of the Presidential Commission on the Space Shuttle Challenger Accident
+    author: Presidential Commission on the Space Shuttle Challenger Accident
+    year: 1986
+    url: https://history.nasa.gov/rogersrep/genindex.htm
+    type: official-report
+    topic: 矛盾论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "航天高后果场景的官方失败报告，揭示进度优先对安全主矛盾的误判机制"
+
+  - name: Columbia Accident Investigation Board Report
+    author: Columbia Accident Investigation Board
+    year: 2003
+    url: https://ntrs.nasa.gov/citations/20030093610
+    type: official-report
+    topic: 矛盾论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "组织结构与技术风险耦合导致主次排序漂移，是主矛盾误切换的一手反例"
+
+  - name: U.S. Bureau of Transportation Statistics - On-Time Performance Data
+    author: Bureau of Transportation Statistics
+    year: 1987
+    url: https://www.transtats.bts.gov/Fields.asp?QO_VQ=EFD
+    type: official-dataset
+    topic: 矛盾论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "航空系统公开长时序数据，可观测效率-可靠性主次矛盾在不同窗口下的排序反转"
+
+  - name: "FRED - Capacity Utilization: Manufacturing (NAICS)"
+    author: Board of Governors of the Federal Reserve System; FRED
+    year: 1967
+    url: https://fred.stlouisfed.org/series/CUMFNS
+    type: official-dataset
+    topic: 矛盾论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "制造业长期产能利用率序列，可用于识别效率目标与韧性目标的主次切换阈值"
+
+  - name: U.S. EIA - Electric Power Monthly
+    author: U.S. Energy Information Administration
+    year: 1973
+    url: https://www.eia.gov/electricity/monthly/
+    type: official-dataset
+    topic: 矛盾论
+    trust_band: high
+    last_checked: 2026-03-02
+    notes: "能源系统月度长时序样本，可用于验证成本-可靠性主次矛盾切换与回切窗口"
