@@ -1,138 +1,97 @@
 #!/bin/bash
-# harness — The interactive, global CLI entry point for Harness Meta-Framework
+# harness — The global CLI entry point for Harness Meta-Framework (Supports both Interactive & Flag modes)
 
 set -e
 
 HARNESS_DIR="${HARNESS_DIR:-$HOME/harness}"
 if [ ! -d "$HARNESS_DIR" ]; then
-    # Try current directory if $HOME/harness doesn't exist
     if [ -f "PRD/core-principles.md" ]; then
         HARNESS_DIR="$(pwd)"
     else
         echo "[ERROR] Cannot find Harness repository."
-        echo "Please run this inside the harness directory or export HARNESS_DIR=/path/to/harness"
         exit 1
     fi
 fi
-
-# Resolve absolute path
 HARNESS_DIR="$(cd "$HARNESS_DIR" && pwd)"
 export HARNESS_DIR
 
-echo "================================================="
-echo "   Harness Environment Compiler & Nightshift     "
-echo "================================================="
-echo ""
-
-echo "选择你想启动的操作模式:"
-echo "1) 启动夜巡 (Nightshift) - 去互联网探索新知识"
-echo "2) 启动睡眠 (Sleep) - 蒸馏和编译现有知识"
-echo "3) 全自动闭环 (Nightshift + Sleep + 同步回灌)"
-echo "4) 取消"
-read -p "请输入选项 [1-4]: " mode_choice
-
-if [ "$mode_choice" = "4" ] || [ -z "$mode_choice" ]; then
-    echo "操作已取消。"
-    exit 0
-fi
-
-echo ""
-echo "选择通道 (Knowledge Lane):"
-echo "1) engineering (工程实现与 How)"
-echo "2) philosophy (方法论与 Why)"
-echo "3) both (两者同时)"
-read -p "请输入通道 [1-3] (默认: 1): " lane_choice
-lane_choice=${lane_choice:-1}
-
-TARGET="engineering"
-if [ "$lane_choice" = "2" ]; then
-    TARGET="philosophy"
-elif [ "$lane_choice" = "3" ]; then
-    TARGET="both"
-fi
-
-if [ "$mode_choice" = "1" ] || [ "$mode_choice" = "3" ]; then
-    echo ""
-    read -p "请输入 Nightshift 主要学习方向或信源 (留空使用默认): " custom_directions
-fi
-
-echo ""
-echo "================================================="
-echo "即将开始执行编排..."
-echo "目标目录: $HARNESS_DIR"
-echo "目标通道: $TARGET"
-echo "================================================="
-echo ""
-
-# Functions to launch
+# --- Functions ---
 launch_nightshift() {
     local lane="$1"
+    local directions="$2"
     local script="$HARNESS_DIR/codex-skill/nightshift/scripts/nightshift-launch.sh"
-    if [ "$lane" = "philosophy" ]; then
-        script="$HARNESS_DIR/codex-skill/nightshift-phi/scripts/nightshift-phi-launch.sh"
-    fi
-    
-    if [ -n "${custom_directions:-}" ]; then
-        "$script" "$custom_directions"
-    else
-        "$script"
-    fi
+    [ "$lane" = "philosophy" ] && script="$HARNESS_DIR/codex-skill/nightshift-phi/scripts/nightshift-phi-launch.sh"
+    "$script" "$directions"
 }
 
 launch_sleep() {
     local lane="$1"
-    local script="$HARNESS_DIR/codex-skill/nightshift-sleep/scripts/nightshift-sleep-launch.sh"
-    
-    # Run sleep with auto-stop and watchdog disabled for automation
     export SLEEP_MAX_MINUTES=45
     export SLEEP_ENABLE_WATCHDOG=0
-    
-    "$script" "$lane"
+    "$HARNESS_DIR/codex-skill/nightshift-sleep/scripts/nightshift-sleep-launch.sh" "$lane"
 }
 
-case "$mode_choice" in
-    1)
-        if [ "$TARGET" = "both" ]; then
-            launch_nightshift "engineering"
-            launch_nightshift "philosophy"
-        else
-            launch_nightshift "$TARGET"
-        fi
+# --- Arg Parsing ---
+MODE=""
+LANE="engineering"
+DIRECTIONS=""
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --mode) MODE="$2"; shift 2 ;;
+        --lane) LANE="$2"; shift 2 ;;
+        --focus) DIRECTIONS="$2"; shift 2 ;;
+        *) echo "Unknown option: $1"; exit 1 ;;
+    esac
+done
+
+# --- Interactive Mode (if no mode provided) ---
+if [ -z "$MODE" ]; then
+    echo "================================================="
+    echo "   Harness Environment Compiler & Nightshift     "
+    echo "================================================="
+    echo "1) Nightshift (Explore)"
+    echo "2) Sleep (Compile)"
+    echo "3) Closed-loop (Auto-evolution)"
+    read -p "Option [1-3]: " mode_idx
+    [ "$mode_idx" = "1" ] && MODE="nightshift"
+    [ "$mode_idx" = "2" ] && MODE="sleep"
+    [ "$mode_idx" = "3" ] && MODE="loop"
+    
+    echo "Lanes: 1) engineering 2) philosophy 3) both"
+    read -p "Lane [1-3]: " lane_idx
+    [ "$lane_idx" = "1" ] && LANE="engineering"
+    [ "$lane_idx" = "2" ] && LANE="philosophy"
+    [ "$lane_idx" = "3" ] && LANE="both"
+
+    if [[ "$MODE" == "nightshift" || "$MODE" == "loop" ]]; then
+        read -p "Focus directions: " DIRECTIONS
+    fi
+fi
+
+# --- Execution ---
+case "$MODE" in
+    nightshift)
+        [ "$LANE" = "both" ] && { launch_nightshift "engineering" "$DIRECTIONS"; launch_nightshift "philosophy" "$DIRECTIONS"; } || launch_nightshift "$LANE" "$DIRECTIONS"
         ;;
-    2)
-        if [ "$TARGET" = "both" ]; then
-            launch_sleep "engineering"
-            launch_sleep "philosophy"
-        else
-            launch_sleep "$TARGET"
-        fi
+    sleep)
+        [ "$LANE" = "both" ] && { launch_sleep "engineering"; launch_sleep "philosophy"; } || launch_sleep "$LANE"
         ;;
-    3)
-        echo "[Harness] 启动全自动闭环机制..."
-        if [ "$TARGET" = "both" ]; then
-            launch_nightshift "engineering"
-            launch_nightshift "philosophy"
-            # Give nightshift time to bootstrap
+    loop)
+        echo "[Harness] Launching closed-loop..."
+        if [ "$LANE" = "both" ]; then
+            launch_nightshift "engineering" "$DIRECTIONS"
+            launch_nightshift "philosophy" "$DIRECTIONS"
             sleep 5
             launch_sleep "engineering"
             launch_sleep "philosophy"
-            
-            # Start sync daemon in background
-            tmux new-session -d -s "harness-sync-daemon" \
-                "RESTART_AFTER_SYNC=1 $HARNESS_DIR/codex-skill/scripts/wait-sleep-and-reconcile.sh both"
+            tmux new-session -d -s "harness-sync-daemon" "RESTART_AFTER_SYNC=1 $HARNESS_DIR/codex-skill/scripts/wait-sleep-and-reconcile.sh both"
         else
-            launch_nightshift "$TARGET"
+            launch_nightshift "$LANE" "$DIRECTIONS"
             sleep 5
-            launch_sleep "$TARGET"
-            
-            tmux new-session -d -s "harness-sync-daemon" \
-                "RESTART_AFTER_SYNC=1 $HARNESS_DIR/codex-skill/scripts/wait-sleep-and-reconcile.sh $TARGET"
+            launch_sleep "$LANE"
+            tmux new-session -d -s "harness-sync-daemon" "RESTART_AFTER_SYNC=1 $HARNESS_DIR/codex-skill/scripts/wait-sleep-and-reconcile.sh $LANE"
         fi
-        echo "[Harness] 自动回灌与同步守护进程 (harness-sync-daemon) 已启动。"
-        echo "你可以随时用 `tmux ls` 查看所有后台进程。"
         ;;
 esac
-
-echo ""
-echo "✅ 指令下发完成。Agent 已经在对应的 Worktree 中开始工作。"
-echo "若要查看状态，请查阅相应 worktree 的 morning-brief.md 或 sleep-report.md"
+echo "✅ Operation $MODE launched on lane $LANE."
